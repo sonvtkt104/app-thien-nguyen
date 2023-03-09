@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import React  from 'react';
+import Router from './routes';
 
 function App() {
 
@@ -8,8 +9,8 @@ function App() {
   }, [])
 
   return (
-    <div className="App">
-        hello du a hihio
+    <div className="app">
+        <Router />
     </div>
   );
 }
