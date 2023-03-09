@@ -1,0 +1,3 @@
+.radio-app-item > div:hover .radio-app-item-circle {
+    border: 2px solid #58CA8C !important;
+}

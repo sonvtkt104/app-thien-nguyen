@@ -1,0 +1,16 @@
+.checkbox-app-custom-icon {
+    width: 19px;
+    height: 19px;
+    border: 1px solid #DBDFE8;
+    border-radius: 6px;
+    margin-right: 8px;
+    position: relative;
+}
+.checkbox-app-custom-icon > svg {
+    position: absolute;
+    top: 4px;
+    left: 3px;
+}
+.checkbox-app-custom > div > div:hover .checkbox-app-custom-icon {
+    border: 1px solid #58CA8C;
+}

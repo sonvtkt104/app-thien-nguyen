@@ -1,0 +1,19 @@
+.ant-tooltip-arrow, .ant-popover-arrow {
+    display: none !important;
+}
+:where(.css-dev-only-do-not-override-j0nf2s).ant-popover .ant-popover-inner {
+    background: '#FFFFFF' !important;
+    border: 1px solid #ECEBED !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    padding: 3px 0 15px !important;
+}
+.filter-app-custom-option {
+    background: #ffffff;
+}
+.filter-app-custom-option:hover {
+    background: #F5F5F5;
+}
+.filter-app-custom-option.active {
+    background: #E6F7FF !important;
+}

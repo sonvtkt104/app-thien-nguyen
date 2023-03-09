@@ -1,0 +1,158 @@
+
+
+.ant-table-thead>tr>th {
+    background: #fff !important;
+}
+
+.sb-image-optimize-table .ant-table {
+    border-radius: 20px !important;
+}
+
+.sb-image-optimize-table .ant-table-container table>thead>tr:first-child th:last-child {
+    border-top-right-radius: 20px !important;
+}
+
+.sb-image-optimize-table .ant-table-container table>thead>tr:first-child th:first-child {
+    border-top-left-radius: 20px !important;
+}
+.sb-image-optimize-table td {
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.sb-image-optimize-table th:first-child {
+    border-top-left-radius: 0px;
+}
+
+.sb-image-optimize-table th:last-child {
+    border-top-right-radius: 0px;
+}
+
+.sb-image-optimize-table td:first-child {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.sb-image-optimize-table td:last-child {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.sb-ant-pagination.mini .ant-pagination-prev,
+.sb-ant-pagination.mini .ant-pagination-next {
+    background: transparent !important;
+}
+
+.sb-ant-pagination.mini .ant-pagination-prev .ant-pagination-item-link .anticon svg,
+.sb-ant-pagination.mini .ant-pagination-next .ant-pagination-item-link .anticon svg {
+    fill: #44b3cf;
+}
+
+.sb-ant-pagination.mini .ant-pagination-prev .ant-pagination-item-link .anticon svg:hover,
+.sb-ant-pagination.mini .ant-pagination-next .ant-pagination-item-link .anticon svg:hover {
+    fill: #38383a;
+}
+
+.sb-ant-pagination.mini .ant-pagination-item:not(.ant-pagination-item-active) {
+    background: transparent !important;
+    color: #44b3cf !important;
+}
+
+.sb-ant-pagination.mini .ant-pagination-item:not(.ant-pagination-item-active) :hover {
+    color: #38383a !important;
+}
+
+.sb-ant-pagination.mini .ant-pagination-item-active {
+    background: transparent !important;
+    border-color: #38383a !important;
+    color: #38383a !important;
+    margin: 0 2px !important;
+}
+
+.sb-ant-pagination.mini .ant-pagination-options .ant-select-single.ant-select-show-arrow .ant-select-selection-item {
+    padding-right: 10px !important;
+}
+
+.sb-ant-pagination.mini .ant-pagination-options .ant-select-single.ant-select-show-arrow .ant-select-selection-item {
+    padding-right: 10px !important;
+}
+
+.sb-ant-pagination.mini .ant-pagination-options .ant-select-single .ant-select-selector::after {
+    margin-right: 30px !important;
+}
+
+.sb-ant-pagination.mini .ant-pagination-options .ant-select-single .ant-select-selector .ant-select-selection-item {
+    color: #96a2ba;
+}
+
+.sb-ant-pagination.mini .ant-pagination-options .ant-select-single .ant-select-selector .ant-select-selection-search {
+    right: 0px !important;
+}
+
+.sb-ant-pagination.mini .ant-pagination-options .ant-select-single.ant-select-show-arrow .ant-select-selection-item {
+    padding-right: 10px !important;
+}
+
+.ant-table-pagination.ant-pagination {
+    margin: 16px 0;
+}
+
+.ant-table-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 8px;
+}
+
+.ant-table-pagination>* {
+    flex: none;
+}
+
+.ant-table-pagination-left {
+    justify-content: flex-start;
+}
+
+.ant-table-pagination-center {
+    justify-content: center;
+}
+
+.ant-table-pagination-right {
+    justify-content: flex-end;
+}
+
+.ant-table-wrapper.ant-table-wrapper-rtl .ant-table-pagination-left {
+    justify-content: flex-end;
+}
+
+.ant-table-wrapper.ant-table-wrapper-rtl .ant-table-pagination-right {
+    justify-content: flex-start;
+}
+
+.ant-transfer-customize-list .ant-table-wrapper .ant-table-pagination.ant-pagination {
+    margin: 16px 0 4px;
+}
+.ant-table-cell::before {
+    display: none;
+}
+.ant-table-tbody .ant-table-row:last-child .ant-table-cell{
+    border-bottom: none;
+}
+.table-app-custom .ant-select-arrow {
+    margin-right: 0;
+}
+.table-app-custom .ant-pagination-item,
+.table-app-custom .ant-pagination-prev,
+.table-app-custom .ant-pagination-next {
+    border-radius: 2px;
+    border: 1px solid #D9D9D9 !important;
+}
+.table-app-custom .ant-pagination-item-active {
+    border: 1px solid #1890FF !important;
+}
+.table-app-custom .ant-pagination-item,
+.table-app-custom .ant-pagination-prev,
+.table-app-custom .ant-pagination-next {
+    margin: 0 4px !important;
+}
+.table-app-custom .ant-select-selector {
+    border-radius: 2px !important;
+}

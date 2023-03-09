@@ -1,0 +1,10 @@
+.btn-hover:hover {
+    opacity: 0.87;
+}
+
+button:disabled,
+button[disabled] {
+    background: #edf1f5 !important;
+    color: #c9c9c9 !important;
+    cursor: no-drop;
+}

@@ -13,6 +13,7 @@ export default function Home () {
     return (
         <div>
             <div>Home</div>
+            <div>Example use Redux Toolkit</div>
             <Row>
                 <span>Name: </span>
                 <span>{app?.name}</span>

@@ -1,0 +1,19 @@
+.progress {
+    display: flex;
+    height: 22px;
+    overflow: hidden;
+    background-color: #EDF1F5;
+    border-radius: 3px;
+}
+.progress-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    transition: width 0.6s ease; 
+}  
+.progress-bar-striped {
+    background: #58CA8C;
+}

@@ -1,0 +1,18 @@
+.segmented-app .ant-segmented-item .ant-segmented-item-label {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    padding: 8px 16px;
+    color: #96A2BA;;
+}
+
+.segmented-app .ant-segmented-item.ant-segmented-item-selected .ant-segmented-item-label {
+    font-weight: 600;
+    color: #38383A;
+}
+
+.segmented-app .ant-segmented {
+    padding: 5px 4px;
+    background: #EAEBED;
+    border-radius: 6px;
+}

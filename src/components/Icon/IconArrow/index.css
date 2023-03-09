@@ -1,0 +1,9 @@
+.rotate-svg-90deg {
+    transform: rotate(90deg);
+    transition-duration: 0.5s;
+}
+
+.rotate-reset {
+    transform: rotate(0);
+    transition-duration: 0.5s;
+}
