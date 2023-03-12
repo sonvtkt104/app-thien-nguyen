@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Home, NotFound } from '../pages'
 
-import Donation from '../pages/Donations/Donation';
-import MyDonation from '../pages/Donations/MyDonation';
+import Donation from '../pages/admin/Donations/Donation';
+import MyDonation from '../pages/admin/Donations/MyDonation';
 
 export default function Router() {
     return (
