@@ -121,12 +121,10 @@ function MyDonation({id = "abc123"}) {
                     options={[{label: "Trạng thái 1", value: 2}, {label: "Trạng thái 2", value: 3 }, {label: "Trạng thái 3", value: 4 }]}
                     onChange={(value) => {
                         setSegment(value)
-                        // setDonations(donations.filter(donation => donation.status = value))
                     }}
                 />
             </div>
             <TableApp
-                // title="Danh sách" columns={columns} dataSource={donationsRef.current.filter(donation => donation.status === segment)}
                 title="Danh sách" columns={columns} dataSource={donations.filter(donation => donation.status === segment)}
             />
             {
