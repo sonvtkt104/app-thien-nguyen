@@ -1,3 +1,9 @@
+/* .segmented-app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
 .segmented-app .ant-segmented-item .ant-segmented-item-label {
     font-size: 14px;
     font-weight: 400;

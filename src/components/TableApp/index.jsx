@@ -3,7 +3,7 @@ import "./index.css"
 
 export function TableApp({
     columns,
-    dataSource
+    dataSource, 
 }) {
     return (
         <Table
