@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Home, NotFound, Donation, MyDonation } from '../pages'
+import { Home, NotFound, Donation, MyDonation, CamPaignList } from '../pages'
 
 
 
@@ -12,6 +12,7 @@ export default function Router() {
                 <Route path="/test" element={<NotFound />} />
                 <Route path="/donation" element={<Donation />} />
                 <Route path="/mydonation" element={<MyDonation />} />
+                <Route path="/campaign-list" element={<CamPaignList />} />
             </Routes>
         </BrowserRouter>
     )

@@ -1,0 +1,38 @@
+.campaign-list-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.campaign-list-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.campaign-list-title .c-l-t-name {
+    font-size:28px;
+    font-weight: 600;
+}
+
+
+
+.actions-hide{
+    font-size: 18px;
+    color: green;
+    cursor: pointer;
+}
+
+.actions-edit {
+    font-size: 18px;
+    color: orange;
+    cursor: pointer;
+
+}
+
+.actions-delete {
+    font-size: 18px;
+    color: red;
+    cursor: pointer;
+}
