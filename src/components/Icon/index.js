@@ -21,3 +21,4 @@ export { ArrowDropdownIcon } from './ArrowDropdownIcon';
 export { SearchIcon } from './SearchIcon';
 export { PauseIcon } from "./PauseIcon";
 export { ArrowLeftIcon } from './ArrowLeftIcon';
+export { NotificationIcon } from "./NotificationIcon";
