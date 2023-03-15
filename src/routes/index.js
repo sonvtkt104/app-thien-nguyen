@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Home, NotFound, Donation, MyDonation, CamPaignList } from '../pages'
+import { Home, NotFound, Donation, MyDonation } from '../pages'
 import CamPaignPreview from '../pages/CampaignList/CampaignPreview';
+import CamPaignList from '../pages/CampaignList/CampaignList';
 
 
 
