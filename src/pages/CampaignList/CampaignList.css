@@ -11,6 +11,24 @@
     margin: 20px 0;
 }
 
+.campaign-list-table {
+    background-color: #fff;
+    margin: 0 auto;
+    border-radius: 16px;
+    padding: 8px 8px;
+}
+
+.header-title {
+    display: flex;
+    align-items: center;
+    height: 48px;
+}
+
+.h-t-name {
+    font-size: 18px;
+    font-weight: 600;
+}
+
 .campaign-list-title .c-l-t-name {
     font-size:28px;
     font-weight: 600;
@@ -35,4 +53,18 @@
     font-size: 18px;
     color: red;
     cursor: pointer;
+}
+
+.preview {
+    cursor: pointer;
+    font-size: 14px;
+    color: unset;
+}
+
+.preview:hover {
+    text-decoration: underline;
+}
+
+:where(.css-dev-only-do-not-override-1me4733).ant-divider-horizontal {
+    margin: 0 !important;
 }

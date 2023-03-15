@@ -2,7 +2,8 @@ import { Component } from "react";
 import { PageLayout, TableApp } from "../../components";
 import {EyeOutlined, EditOutlined, DeleteOutlined} from '@ant-design/icons';
 import './CampaignList.css'
-import { Button, Modal } from "antd";
+import { Button, Divider, Modal } from "antd";
+import { Link } from "react-router-dom";
 
   
 class CamPaignList extends Component {
@@ -48,6 +49,15 @@ class CamPaignList extends Component {
                     title: "Xem",
                     dataIndex: "preview",
                     align: 'center',
+                    render: () => {
+                        return (
+                            <Link
+                                to="/campaign-list/preview" 
+                                className="preview"
+                                // onClick={() => this.handleClickPreview()}
+                            >Preview</Link>
+                        )
+                    }
                 },
                 {
                     key: "actions",
@@ -83,7 +93,7 @@ class CamPaignList extends Component {
                     receive: '100.000.000 VNĐ',
                     complete: '5%',
                     status: 'Hoạt động',
-                    preview: 'Xem trước',
+                    // preview: 'Preview',
                     hide: false,
                 },
                 {
@@ -93,7 +103,7 @@ class CamPaignList extends Component {
                     receive: '500.000.000 VNĐ',
                     complete: '50%',
                     status: 'Hoạt động',
-                    preview: 'Xem trước',
+                    // preview: 'Preview',
                     hide: false,
                 },
                 {
@@ -103,10 +113,60 @@ class CamPaignList extends Component {
                     receive: '40.000.000 VNĐ',
                     complete: '80%',
                     status: 'Hoạt động',
-                    preview: 'Xem trước',
+                    // preview: 'Preview',
                     hide: false,
                 }
-            ]
+            ],
+            columns2: [
+                {
+                  key: 1,
+                  title: "Tiêu đề",
+                  dataIndex: "name",
+                  align: 'center',
+                },
+                {
+                  key: 2,
+                  title: "Kiểu bài đăng",
+                  dataIndex: "postType",
+                  align: 'center',
+                },
+                {
+                  key: 3,
+                  title: "Trạng thái",
+                  dataIndex: "status",
+                  align: 'center',
+                },
+                {
+                  key: 4,
+                  title: "Thời gian đăng",
+                  dataIndex: "date",
+                  align: 'center',
+                },
+                {
+                  key: "status",
+                  title: "Trạng thái",
+                  dataIndex: "action",
+                  align: 'center',
+                },
+            ],
+            dataSource2: [
+                {
+                    key: 1,
+                    name: "Kêu gọi toàn dân vận động",
+                    postType: "Kêu gọi",
+                    status: "Hoạt động",
+                    date: '15/03/2023',
+                    action: 'no'
+                },
+                {
+                    key: 2,
+                    name: "Đi hoạt động ở Hà Nội",
+                    postType: "Hoạt động",
+                    status: "Ẩn",
+                    date: '15/03/2023',
+                    action: 'no'
+                },
+            ],
         }
     }
 
@@ -158,6 +218,10 @@ class CamPaignList extends Component {
         })
     }
 
+    handleClickPreview = () => {
+        console.log('aaa')
+    }
+
     render() {
         return (
             <>
@@ -171,9 +235,15 @@ class CamPaignList extends Component {
                             Tạo cuộc vận động mới
                         </Button>
                     </div>
-                    <TableApp columns={this.state.columns} dataSource={this.state.dataSource}>
+                    <div className="campaign-list-table">
+                        <div className="header-title">
+                            <div className="h-t-name">Danh sách cuộc vận động</div>
+                        </div>
+                        <Divider />
+                        <TableApp columns={this.state.columns} dataSource={this.state.dataSource}>
 
-                    </TableApp>
+                        </TableApp>
+                    </div>
 
                     <Modal title="Modal Edit" open={this.state.isOpenModalEdit} onOk={this.handleOk} onCancel={this.handleCancel}>
                         <p>Some contents...</p>

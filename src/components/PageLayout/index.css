@@ -13,7 +13,38 @@
     background: #FFFFFF;
     z-index: 1;
     filter: drop-shadow(0px 10px 40px rgba(0, 0, 0, 0.051));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
+.p-l-s-container {
+    display: flex;
+    gap: 24px;
+    min-width: 200px;
+    margin: 8px 0;
+    color: unset;
+    align-items: center;
+}
+
+.p-l-s-container:hover {
+    text-decoration: underline;
+}
+
+.p-l-s-icon span {
+    font-size: 28px;
+}
+
+.p-l-s-container div {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.p-l-s-container div:hover {
+    cursor: pointer;
+}
+
+
 .page-layout-header {
     position: fixed;
     height: 56px;

@@ -1,0 +1,163 @@
+.campaign-preview-container{
+
+}
+
+.navigation-bar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.n-b-left{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.n-b-l-back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.n-b-right{
+
+}
+
+.segmented-app {
+    margin: 24px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.c-p-c-content {
+    width: 80%;
+    background-color: #fff;
+    padding: 32px 64px;
+    margin: 0 auto;
+    border-radius: 16px;
+    position: relative;
+}
+
+.btn-preview-edit {
+    border: none;
+    outline: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #fff;
+    background-color: #34B1F8;
+    position: absolute;
+    right: 24px;
+    top: 18px;
+}
+
+.btn-preview-save {
+    border: none;
+    outline: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #fff;
+    background-color: #34B1F8;
+    margin-top: 12px;
+}
+
+.form-group {
+    display: flex;
+    margin: 8px 0;
+    align-items: center;
+}
+
+.form-group label {
+    font-size: 18px;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.activity-container {
+    background-color: #fff;
+    margin: 0 auto;
+    border-radius: 16px;
+    padding: 8px;
+}
+
+.statement-container{
+
+}
+.s-c-up{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 12px 0;
+}
+
+.s-c-down {
+    background-color: #fff;
+    margin: 0 auto;
+    border-radius: 16px;
+    padding: 8px;
+}
+
+.total-donor{
+    font-size: 18px;
+    font-weight: 600;
+}
+.btn-actions{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.btn-action-import, .btn-action-export{
+    border: none;
+    outline: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #fff;
+    background-color: #34B1F8;
+    margin-top: 12px;
+}
+.btn-action-export{
+
+}
+
+.statement-table {
+    background-color: #fff;
+    margin: 0 auto;
+    border-radius: 16px;
+}
+
+.statistical-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.statistical-up{
+    display: flex;
+    gap: 50px;
+    margin: 30px 0;
+}
+.s-t-left{
+    width: 415px;
+    height: 213px;
+    background-color: #fff;
+    border-radius: 20px;
+
+}
+.s-t-right{
+    width: 415px;
+    height: 213px;
+    background-color: #fff;
+    border-radius: 20px;
+}
+
+.statistical-down {
+    width: 888px;
+    height: 258px;
+    background-color: #fff;
+    border-radius: 20px;
+
+}
