@@ -23,15 +23,11 @@ function ModalDetail({ dataDetail, handleCloseModalDetail}) {
                 <p><b>Thông tin ủng hộ:</b> {dataDetail.name}, ủng hộ {dataDetail.donationObject}, ở {dataDetail.donationAddress}</p>
                 <p><b>Mô tả:</b> {dataDetail.description}</p>
                 <p><b>Ảnh:</b></p>
-                {/* <Image
-                    width={100}
-                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                /> */}
                 <div>
                     {
                         dataDetail.images?.map((image,index) => 
                                 <Image 
-                                    style={{ paddingRight :"5px", paddingBottom :"5px"}}
+                                    style={{padding :"2px"}}
                                     key={index}
                                     width={100}
                                     src={image}>
@@ -39,11 +35,6 @@ function ModalDetail({ dataDetail, handleCloseModalDetail}) {
                             )
                     }
                 </div>
-                {/* <div>
-                    {
-                        dataDetail.images.map((image,index) => `<Image key=${index} style="background-image: url('${image}')"></Image>`)
-                    }
-                </div> */}
             </Modal>
     )
 }

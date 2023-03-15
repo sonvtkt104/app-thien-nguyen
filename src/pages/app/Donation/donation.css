@@ -1,0 +1,21 @@
+.dnt-delete {
+    font-size: 18px;
+    color: #FF372A;
+}
+
+
+.dnt-delete:hover, .donation-detail:hover, .donation-phone:hover {
+    opacity: 0.5;
+}
+
+
+.donation-detail {
+    margin-right: 20px;
+    font-size: 18px;
+    color: #43DA86;
+}
+
+.donation-phone {
+    font-size: 18px;
+    color: #44B3CF;
+}

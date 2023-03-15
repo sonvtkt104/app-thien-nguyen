@@ -1,7 +1,7 @@
 import Home from "./Home";
 import NotFound from "./NotFound";
-import Donation from "./admin/Donations/Donation";
-import MyDonation from "./admin/Donations/MyDonation";
+import Donation from "./app/Donation/listDonation/Donation";
+import MyDonation from "./app/Donation/myDonation/MyDonation";
 
 export {
     Home,
