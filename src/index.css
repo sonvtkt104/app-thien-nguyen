@@ -8,16 +8,17 @@
     --color-border: #DADFE9;
     --color-background: #F5F6FA;
     --color-background-icon: rgb(204 204 204 / 40%);
+    --color-background-website: #F2F2F2;
 }
 
 body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: #38383A;
-    scroll-behavior: smooth;
-    font-size: 14px;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #38383a;
+  scroll-behavior: smooth;
+  font-size: 14px;
 }
 
 h1,
@@ -26,49 +27,64 @@ h3,
 h4,
 h5,
 h6 {
-    margin: 0px;
-    color: #38383A;
-    font-family: "Poppins";
+  margin: 0px;
+  color: #38383a;
+  font-family: "Poppins";
 }
 
 p {
-    margin: 0px;
-    font-family: "Poppins";
-    color: #38383A;
+  margin: 0px;
+  font-family: "Poppins";
+  color: #38383a;
 }
 
 ul {
-    list-style-type: none;
+  list-style-type: none;
 }
 
 a {
-    text-decoration: none;
-    white-space: nowrap;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 .flex {
-    display: flex;
+  display: flex;
 }
 
 .flex-col {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .flex-col-center {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .app-hover:hover {
-    opacity: 0.87;
+    opacity: 0.80;
 }
 
 .app-hover-background:hover {
-    background: var(--color-background);
+  background: var(--color-background);
 }
 
 .ant-popover-inner {
     padding: 0px !important;
+}
+
+.btn {
+    font-weight: 600;
+    font-size: 12px;
+    padding: 9px 20px !important;
+    color: var(--color-blue);
+    border: 1px solid var(--color-blue) !important;
+    border-radius: 4px;
+    line-height: 18px;
+    height: auto;
+}
+.btn:hover {
+    background: var(--color-blue) !important;
+    color: #ffffff !important;
 }

@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { PageLayout, TableApp } from "../../components";
+import { PageLayout, TableApp } from "../../../components";
 import {EyeOutlined, EditOutlined, DeleteOutlined} from '@ant-design/icons';
 import './CampaignList.css'
 import { Button, Divider, Modal } from "antd";
@@ -66,10 +66,12 @@ class CamPaignList extends Component {
                     render: (text, record, index) => {
                         return (
                             <div className="campaign-list-actions">
-                                <EyeOutlined
-                                    className="actions-hide"
-                                    onClick={()=> this.handleActions(record,'hide')}
-                                />
+                                <Link to="/campaign-list/preview">
+                                    <EyeOutlined
+                                        className="actions-hide"
+                                        onClick={()=> this.handleActions(record,'hide')}
+                                    />
+                                </Link> 
             
                                 <EditOutlined
                                     className="actions-edit"
@@ -93,7 +95,6 @@ class CamPaignList extends Component {
                     receive: '100.000.000 VNĐ',
                     complete: '5%',
                     status: 'Hoạt động',
-                    // preview: 'Preview',
                     hide: false,
                 },
                 {
@@ -103,7 +104,6 @@ class CamPaignList extends Component {
                     receive: '500.000.000 VNĐ',
                     complete: '50%',
                     status: 'Hoạt động',
-                    // preview: 'Preview',
                     hide: false,
                 },
                 {
@@ -113,7 +113,6 @@ class CamPaignList extends Component {
                     receive: '40.000.000 VNĐ',
                     complete: '80%',
                     status: 'Hoạt động',
-                    // preview: 'Preview',
                     hide: false,
                 }
             ],
@@ -227,7 +226,7 @@ class CamPaignList extends Component {
             <>
                 <PageLayout>
                     <div className="campaign-list-title">
-                        <div className="c-l-t-name">Cuộc vận động</div>
+                        <div className="c-l-t-name">Danh sách cuộc vận động</div>
                         <Button 
                             type="primary"
                             onClick={() => this.handleClickCampaign()}
@@ -236,10 +235,10 @@ class CamPaignList extends Component {
                         </Button>
                     </div>
                     <div className="campaign-list-table">
-                        <div className="header-title">
+                        {/* <div className="header-title">
                             <div className="h-t-name">Danh sách cuộc vận động</div>
                         </div>
-                        <Divider />
+                        <Divider /> */}
                         <TableApp columns={this.state.columns} dataSource={this.state.dataSource}>
 
                         </TableApp>

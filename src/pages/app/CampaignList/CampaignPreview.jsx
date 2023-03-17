@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { ArrowLeftIcon, PageLayout, SegmentedApp, TableApp } from "../../components";
+import { ArrowLeftIcon, PageLayout, SegmentedApp, TableApp } from "../../../components";
 import {EyeOutlined, EditOutlined, DeleteOutlined} from '@ant-design/icons';
 import { Button, Divider, Modal } from "antd";
 import { Link } from "react-router-dom";

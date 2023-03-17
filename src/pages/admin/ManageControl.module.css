@@ -1,0 +1,49 @@
+.manage {
+  color: #38383a;
+  padding: 1.2rem;
+  height: 100vh;
+  font-size: 1rem;
+}
+
+.manage-list {
+  list-style: none;
+  padding: 0;
+}
+
+.manage-list li {
+  margin-bottom: 1.2rem;
+}
+
+/* .manage-list li a:link,
+.manage-list li a:visited {
+  text-decoration: none;
+  color: #38383a;
+} */
+
+.manage-list a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #38383a;
+}
+
+.manage-list li:hover {
+  color: #6d8be5;
+  text-decoration: solid;
+}
+
+.icon-camp,
+.icon-user {
+  width: 1.3rem;
+  height: 1.3rem;
+  color: #38383a;
+  margin-right: 4px;
+}
+
+.manage-list a.active {
+  color: #4e73df;
+}
+
+.active path {
+  fill: #4e73df;
+}
