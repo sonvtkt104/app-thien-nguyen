@@ -7,7 +7,9 @@ import {
   MyDonation,
   ManageUser,
   ManageCVD,
+  CamPaignList,
 } from "../pages";
+import CamPaignPreview from "../pages/app/CampaignList/CampaignPreview";
 
 export default function Router() {
   return (
@@ -17,6 +19,8 @@ export default function Router() {
         <Route path="/test" element={<NotFound />} />
         <Route path="/donation" element={<Donation />} />
         <Route path="/mydonation" element={<MyDonation />} />
+        <Route path="/campaign-list" element={<CamPaignList />} />
+        <Route path="/campaign-list/preview" element={<CamPaignPreview />} />
         <Route path="/admin" element={<ManageUser />} />
         <Route path="/admin/cuocvandong" element={<ManageCVD />} />
       </Routes>
