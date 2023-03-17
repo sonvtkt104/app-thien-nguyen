@@ -1,7 +1,7 @@
 import Home from "./client/Home";
 import NotFound from "./NotFound";
-import Donation from "./app/Donations/Donation";
-import MyDonation from "./app/Donations/MyDonation";
+import Donation from "./app/Donation/listDonation/Donation";
+import MyDonation from "./app/Donation/myDonation/MyDonation";
 import ManageUser from "./admin/ManageUser";
 import ManageCVD from "./admin/ManageCVD";
 
