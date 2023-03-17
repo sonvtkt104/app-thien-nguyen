@@ -1,16 +1,21 @@
+.ant-input-affix-wrapper.css-dev-only-do-not-override-1me4733 {
+    /* width: 300px !important;  */
+    /* position: relative; */
+    /* top: 55px; */
+    /* right: 10px; */
+    /* left: calc(100% - 314px); */
+    /* z-index: 2; */
+}
+
 .dnt-delete {
     font-size: 18px;
     color: #FF372A;
-}
-
-
-.dnt-delete:hover, .donation-detail:hover, .donation-phone:hover {
-    opacity: 0.5;
+    margin-left: 20px;
 }
 
 
 .donation-detail {
-    margin-right: 20px;
+    /* margin-right: 20px; */
     font-size: 18px;
     color: #43DA86;
 }
@@ -18,4 +23,56 @@
 .donation-phone {
     font-size: 18px;
     color: #44B3CF;
+    margin-left: 20px;
+}
+
+.dnt-delete:hover, .donation-detail:hover, .donation-phone:hover {
+    opacity: 0.5;
+}
+
+.dn-modal {
+    margin: 10px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+}
+
+.dn-modal-content {
+    background-color: #fff;
+    padding: 10px 10px 0 10px;
+}
+
+.dn-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.dn-title {
+    padding-left: 20px;
+}
+
+.db-input-search, .mdb-input-search {
+    width: 300px;
+}
+
+.mdn-segmented {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px; */
+}
+
+.mdn-modal {
+    background-color: #fff;
+    padding: 10px 10px 0 10px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+}
+
+.mdn-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.mdn-title {
+    padding-left: 20px;
 }

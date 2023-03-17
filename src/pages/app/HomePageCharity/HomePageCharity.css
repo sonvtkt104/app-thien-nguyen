@@ -1,0 +1,58 @@
+.hpc-modal {
+    background-color: #fff;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+}
+.hpc-modal-main {
+    padding: 20px 0;
+}
+.hpc-title {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.hpc-title-left {
+    display: flex;
+    align-items: center;
+    width: 60%;
+}
+
+.hpc-image {
+    border-radius: 50%;
+}
+
+.hpc-name {
+    margin: 0 10px;
+}
+
+.hpc-icon-check {
+    color: #43DA86;
+    font-size: 20px;
+}
+
+.hpc-follow, .hpc-number-campaigns {
+    width: 25%;
+    padding-left: 20px;
+    font-size: 18px;
+}
+
+.hpc-content {
+    display: flex;
+    justify-content: space-around;
+}
+
+.hpc-introduction {
+    width: 60%;
+}
+
+.hpc-modal-reach {
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+}
+
+.ant-image .ant-image-mask {
+    border-radius: 50% ;
+}
