@@ -1,4 +1,4 @@
-import Home from "./Home";
+import Home from "./client/Home";
 import NotFound from "./NotFound";
 import Donation from "./app/Donation/listDonation/Donation";
 import MyDonation from "./app/Donation/myDonation/MyDonation";
