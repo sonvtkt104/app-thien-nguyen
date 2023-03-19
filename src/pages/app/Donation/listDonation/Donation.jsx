@@ -1,5 +1,5 @@
 import { Button, Col, Input, Row, Modal, Image   } from 'antd'
-import {EyeOutlined, PhoneOutlined} from '@ant-design/icons';
+import {EyeOutlined, PhoneOutlined, SearchOutlined} from '@ant-design/icons';
 
 import React, { useState, useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -9,29 +9,31 @@ import { getDonations } from './DonationService'
 import { TableApp } from "../../../../components/TableApp"
 import { DetailIcon } from '../../../../components/Icon/DetailIcon'
 import ModalDetail from '../ModalDetail';
-// import { Table } from "ant-table-extensions";
 import { PageLayout } from '../../../../components';
+import { Table, SearchTableInput } from "ant-table-extensions";
+
+
 
 function Donation() {
     const dispatch = useDispatch()
     
     const [donations, setDonations] = useState([])
     const [openModalDetail, setOpenModalDetail] = useState(false)
-    const [openModalConfirm, setOpenModalConfirm] = useState(false)
     const [dataDetail, setDataDetail] = useState({})
-    // const [searchedText, setSearchedText] = useState("")
-    // const [searchedText1, setSearchedText1] = useState("")
-    // const [searchedData, setSearcheddata] = useState([])
+    const [searchedData, setSearcheddata] = useState([])
     
     useEffect(()=> {
         getDonations().then(res=> dispatch(getDonation(res.data)) )
     },[])
+
     const listdonation = useSelector((state) => state.donation.donation)
     // console.log(listdonation)
     
     useEffect(()=> {
         setDonations(listdonation)
+        setSearcheddata(listdonation)
     },[listdonation])
+    
 
     // console.log(donations)
     const handleCloseModalDetail = () => {
@@ -88,89 +90,63 @@ function Donation() {
                         <PhoneOutlined 
                             className='donation-phone'
                             onClick={()=> {
-                                setOpenModalConfirm(true)
-                                setDataDetail(rowData)
+                                onContact(rowData)
                             }}
                         />
                     </>
                 )
             }
         }
-        // {
-        //   key: "6",
-        //   title: "Actions",
-        //   render: (record) => {
-        //     return (
-        //       <>
-        //         <EditOutlined
-        //           title="sua"
-        //           onClick={() => {
-        //             onEditStudent(record);
-        //           }}
-        //         />
-        //         <DeleteOutlined
-        //           onClick={() => {
-        //             onDeleteStudent(record);
-        //           }}
-        //           style={{ color: "red", marginLeft: 12 }}
-        //         />
-        //       </>
-        //     );
-        //   },
-        // },
       ];
-    // console.log(dataDetail)
-    // const globalSearch = () => {
-    //     const filteredData = donations.filter((value) => {
-    //         return (
-    //             value.name.toLowerCase().includes(searchedText.toLowerCase()) ||
-    //             value.donationObject.toLowerCase().includes(searchedText.toLowerCase())
-    //         )
-    //     })
-    //     setSearcheddata(filteredData)
-    // }
+
+    const onContact = (rowData) => {
+        Modal.confirm({
+            title: `Bạn có chắc chắn, bạn muốn liên hệ với ${rowData.donorName}?`,
+            cancelText: "Quay lại",
+            okText: "Có",
+            okType: "danger",
+            onOk: () => {
+                console.log("lien he")
+            }
+        });
+    };
+    const globalSearch = (value) => {
+        const filteredData = donations.filter((donation) => {
+            return (
+                donation.name.toLowerCase().includes(value.toLowerCase()) ||
+                donation.donationAddress.toLowerCase().includes(value.toLowerCase()) ||
+                donation.contactInfo.toLowerCase().includes(value.toLowerCase()) ||
+                donation.date.toLowerCase().includes(value.toLowerCase()) ||
+                donation.donorName.toLowerCase().includes(value.toLowerCase()) ||
+                donation.donationObject.toLowerCase().includes(value.toLowerCase())
+            )
+        })
+        setSearcheddata(filteredData)
+    }
     return (
         <PageLayout>
-
-            <div>  
-                {/* <Input.Search
-                    placeholder="Tìm kiếm..."
-                    allowClear 
-                    onSearch={(value) => {
-                        setSearchedText(value)
-                    }} 
-                    onChange={(e) => {
-                        setSearchedText(e.target.value)
-                    }}
-                    style={{ width: 200 }}
-                />
-                <Input.Search
-                    placeholder="Tìm kiếm..."
-                    onSearch={(value) => {
-                        setSearchedText1(value)
-                    }} 
-                    onChange={(e) => {
-                        setSearchedText1(e.target.value)
-                    }}
-                    style={{ width: 200 }}
-                /> */}
-                <TableApp
-                    title="Danh sách" columns={columns} dataSource={donations}
-                />
-                <Modal
-                    title="Xác nhận"
-                    open={openModalConfirm}
-                    onCancel={()=> {
-                        setOpenModalConfirm(false)
-                    }}
-                    onOk={() => {
-                        setOpenModalConfirm(false)
-                    }}
-                    cancelText="Quay lại"
-                    okText="Liên hệ"
-                >
-                    <p>Bạn chắc chắn muốn liên hệ với {dataDetail.donorName}</p>
-                </Modal>
+            <div className='dn-modal'>
+                <div className='dn-modal-content'>
+                    <div className='dn-header'>
+                        <h2 className='dn-title'>Danh sánh quyên góp</h2>
+                        <Input.Search
+                            placeholder="Tìm kiếm..."
+                            allowClear 
+                            onSearch={(value) => {
+                                globalSearch(value)
+                            }} 
+                            onChange={(e) => {
+                                globalSearch(e.target.value)
+                            }}
+                            className= "db-input-search"
+                        /> 
+                    </div>
+                    <TableApp
+                        rowKey={(rowdata)=> rowdata.id} 
+                        columns={columns} 
+                        dataSource={searchedData}
+                    />
+                </div>
 
                 {
                     openModalDetail && <ModalDetail 

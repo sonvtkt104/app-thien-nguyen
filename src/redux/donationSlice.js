@@ -5,6 +5,7 @@ export const donationSlice = createSlice({
     initialState: {
         donation: [],
         myDonation: {},
+        infoCharity: {},
     },
     reducers: {
         getDonation: (state, action) => {
@@ -18,9 +19,15 @@ export const donationSlice = createSlice({
         updateMyDonation: (state, action) => {
             // console.log(action)
             state.myDonation = action.payload.myDonation
+            // state.myDonation = action.payload
+        },
+        getInfoCharity: (state, action) => {
+            // console.log(action)
+            // state.myDonation = action.payload.myDonation
+            state.infoCharity = action.payload
         },
     }
 })
 
-export const { getDonation, getMyDonation, updateMyDonation} = donationSlice.actions
+export const { getDonation, getMyDonation, updateMyDonation, getInfoCharity} = donationSlice.actions
 export default donationSlice.reducer

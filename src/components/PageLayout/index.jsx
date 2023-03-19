@@ -28,12 +28,12 @@ export function PageLayout({
                     mode="inline"
                 >
                     <Menu.Item icon={<HomeOutlined style={{fontSize: 24}} />} key='dashboard'>
-                        <Link to="/">
+                        <Link to="/home-page-charity">
                             <span style={{fontSize: 16}}>Trang chủ</span>
                         </Link>
                     </Menu.Item>
                     <Menu.Item icon={<ExceptionOutlined style={{fontSize: 24}} />} key='info'>
-                        <Link to="/">
+                        <Link to="/general-information">
                             <span style={{fontSize: 16}}>Thông tin chung</span>
                         </Link>
                     </Menu.Item>

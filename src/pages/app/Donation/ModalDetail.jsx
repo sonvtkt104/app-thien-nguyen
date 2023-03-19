@@ -14,9 +14,10 @@ function ModalDetail({ dataDetail, handleCloseModalDetail}) {
                 centered
                 width={700}
                 open={open}
+                footer= {null}
                 onOk={()=> { setOpen(false); handleCloseModalDetail()}}
                 onCancel={()=> { setOpen(false); handleCloseModalDetail() }}
-                style={{fontFamily:"sans-serif"}}
+                style={{fontFamily:"Poppins"}}
             >
                 <p><b>Người ủng hộ:</b> {dataDetail.donorName}</p>
                 <p><b>Thông tin liên hệ:</b> {dataDetail.contactInfo} </p>

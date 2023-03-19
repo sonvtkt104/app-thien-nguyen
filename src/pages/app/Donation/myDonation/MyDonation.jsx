@@ -1,6 +1,6 @@
 import "../donation.css"
-import { Button, Col, Input, Row, Table, Modal, Image   } from 'antd'
-import {EyeOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Button, Col, Input, Row, Modal, Image   } from 'antd'
+import {EyeOutlined, DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
 
 import React, { useState, useEffect, useRef} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -11,10 +11,9 @@ import { getApp, updateApp } from './MyDonationService';
 import { TableApp } from "../../../../components/TableApp"
 import { SegmentedApp } from "../../../../components/SegmentedApp"
 import { RemoveIcon } from "../../../../components/Icon/RemoveIcon"
-// import { Button } from '../../../components/Button';
 import ModalDetail from '../ModalDetail';
-
-
+import { PageLayout } from '../../../../components';
+import { Table, SearchTableInput } from "ant-table-extensions";
 
 
 
@@ -24,24 +23,26 @@ function MyDonation() {
     const [segment, setSegment] = useState("waitConfirmation")
     const [donations, setDonations] = useState([])
     const [openModalDetail, setOpenModalDetail] = useState(false)
-    const [openModalConfirm, setOpenModalConfirm] = useState(false)
     const [dataDetail, setDataDetail] = useState({})
-    // const [test, setTest] = useState(0)
+    const [searchedData, setSearcheddata] = useState([])
 
+    
     useEffect(()=> {
         getApp("abc123").then(res=> dispatch(getMyDonation(res.data)))
     },[segment, dataDetail])
-
+    
     const myDonation = useSelector((state) => state.donation.myDonation)
-    // console.log(dataDetail)
+    // console.log(myDonation)
 
+    // console.log(dataDetail)
 
     useEffect(()=> {
         setDonations(myDonation)
-        console.log("myDonation update")
+        setSearcheddata(myDonation[segment])
     },[myDonation])
 
-    // console.log("donations",donations)
+  
+
 
     const handleCloseModalDetail = () => {
         setOpenModalDetail(false)
@@ -92,11 +93,11 @@ function MyDonation() {
                 return (
                     <Button 
                         type="primary" 
-                        disabled={segment === "waitingReceive" || segment === "received" ? false : true}
+                        disabled={segment === "confirmed" || segment === "received" ? false : true}
                         onClick={() => {
                             let data = {}
-                            if(segment === "waitingReceive") {
-                                data = {...myDonation, "waitingReceive": [...myDonation.waitingReceive.filter(donation=> donation.id !== rowData.id)],
+                            if(segment === "confirmed") {
+                                data = {...myDonation, "confirmed": [...myDonation.confirmed.filter(donation=> donation.id !== rowData.id)],
                                      "received": [{...rowData, message:"Đã nhận"}, ...myDonation.received]}
 
                             }
@@ -123,7 +124,6 @@ function MyDonation() {
                     >
                         Chuyển
                     </Button>
-                    // segment === "waitConfirmation" || segment === "cancel" ? <Button type="primary" disabled>Chuyển</Button> : <Button type="primary">Chuyển</Button>
                 )
             }
         },
@@ -134,7 +134,6 @@ function MyDonation() {
             render: (rowData) => {
                 return (
                     <>
-                        {/* <span style={{ padding:"5px 4px" ,borderRadius:"50%", backgroundColor: "red"}}> */}
                             <EyeOutlined
                                 className="donation-detail"
                                 onClick={()=> {
@@ -142,51 +141,83 @@ function MyDonation() {
                                     setDataDetail(rowData)
                                 }}
                             />
-                        {/* </span> */}
-                        <DeleteOutlined 
-                            className= "dnt-delete action-hover"
-                            onClick={() => {
-                                setOpenModalConfirm(true)
-                                setDataDetail(rowData)
-                            }}
-                        />
+                        {
+                            segment === "cancel" ? 
+                                <DeleteOutlined 
+                                    className= "dnt-delete"
+                                    onClick={() => {
+                                        onDeleteDonation(rowData)
+                                    }}
+                                />
+                            : null
+                        }
+                        
                     </>
                 )
             }
         }
-      ];
+    ];
+
+    const onDeleteDonation = (rowData) => {
+        Modal.confirm({
+            title: `Bạn có chắc chắn, bạn muốn xóa bản ghi này?`,
+            okText: "Có",
+            cancelText: "Quay lại",
+            okType: "danger",
+            onOk: () => {
+                console.log("xoa xoa")
+            }
+        });
+    };
     
+    const globalSearch = (value) => {
+        const filteredData = donations[segment].filter((donation) => {
+            return (
+                donation.name.toLowerCase().includes(value.toLowerCase()) ||
+                donation.donationAddress.toLowerCase().includes(value.toLowerCase()) ||
+                donation.contactInfo.toLowerCase().includes(value.toLowerCase()) ||
+                donation.date.toLowerCase().includes(value.toLowerCase()) ||
+                donation.donorName.toLowerCase().includes(value.toLowerCase()) ||
+                donation.donationObject.toLowerCase().includes(value.toLowerCase())
+            )
+        })
+        setSearcheddata(filteredData)
+    }
+
     return (
-        <>  
-            <div style={{display:"flex",justifyContent: "center",alignItems: "center"}}>
+        <PageLayout>  
+            <div className="mdn-segmented">
                 <SegmentedApp
-                    style={{align:"center"}}
                     value={segment}
                     options={[{label: "Đợi xác nhận", value: "waitConfirmation"}, {label: "Đã xác nhận", value: "confirmed" }, {label: "Đã nhận", value: "received" }, {label: "Đã quyên góp", value: "donated" }, {label: "Bị hủy", value: "cancel" }]}
-                    // options={["Đợi xác nhận","Chờ nhận", "Đã nhận", "Đã quyên góp", "Bị hủy"]}
                     onChange={(value) => {
                         setSegment(value)
                     }}
                 />
             </div>
-            <TableApp
-                title="Danh sách" columns={columns} dataSource={donations[segment]}
-            />
-            <Modal
-                title="Xác nhận"
-                open={openModalConfirm}
-                onCancel={()=> {
-                    setOpenModalConfirm(false)
-                }}
-                onOk={() => {
-                    setOpenModalConfirm(false)
-        
-                }}
-                cancelText="Quay lại"
-                okText="Xóa"
-            >
-                <p>Bạn chắc chắn muốn xóa bản ghi Quyên góp này của {dataDetail.donorName}</p>
-            </Modal>
+            <div className="mdn-modal">
+                <div className="mdn-header">
+                    <h2  className="mdn-title">Quyên góp của tôi</h2>
+                    <Input.Search
+                            placeholder="Tìm kiếm..."
+                            allowClear 
+                            onSearch={(value) => {
+                                globalSearch(value)
+                            }} 
+                            onChange={(e) => {
+                                globalSearch(e.target.value)
+                            }}
+                            className='mdb-input-search'
+                        /> 
+                </div>
+                <TableApp
+                    rowKey={(rowdata)=> rowdata.id} 
+                    columns={segment === "cancel" ? columns.filter(column => column.key !== "8") :   (segment === "confirmed" || segment === "received" ?  columns.filter(column => column.key !== "7") : columns.filter(column => column.key !== "7" && column.key !== "8"))}
+                    // columns={segment === "confirmed" || segment === "received" ? columns : columns.filter(column => column.key !== "8")}
+                    // columns={columns}
+                    dataSource={searchedData}
+                />
+             </div>
             {
                 openModalDetail && <ModalDetail 
                                         dataDetail={dataDetail}
@@ -194,7 +225,7 @@ function MyDonation() {
                                     />
             }
 
-        </>
+        </PageLayout>
 
     )
 }

@@ -1,3 +1,4 @@
+
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
@@ -8,6 +9,8 @@ import {
   ManageUser,
   ManageCVD,
   CamPaignList,
+  GeneralInformation,
+  HomePageCharity
 } from "../pages";
 import CamPaignPreview from "../pages/app/CampaignList/CampaignPreview";
 
@@ -23,6 +26,8 @@ export default function Router() {
         <Route path="/campaign-list/preview" element={<CamPaignPreview />} />
         <Route path="/admin" element={<ManageUser />} />
         <Route path="/admin/cuocvandong" element={<ManageCVD />} />
+        <Route path="/home-page-charity" element={<HomePageCharity />} />
+        <Route path="/general-information" element={<GeneralInformation />} />
       </Routes>
     </BrowserRouter>
   );
