@@ -18,8 +18,9 @@ function ItemCampaign({
     return (
         <Col xs={7} sm={7} md={7} lg={7} xl={7}
             style={{padding: '0 10px', }}
-        >   
+            >   
             <div
+                className='box-shadow-app'
                 style={{
                     borderRadius: 4,
                     background: '#ffffff',

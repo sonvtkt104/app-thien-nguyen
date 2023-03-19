@@ -48,7 +48,7 @@ function HomeCampaign({
         <div>
             <div
                 style={{fontSize: 32, fontWeight: '600', textAlign: 'center', margin: "50px 0 30px", color: 'var(--color-blue)'}}
-            >Các dự án nổi bật</div>
+            >CÁC DỰ ÁN NỔI BẬT</div>
             <Row justify='center'>
                 {
                     campaigns.map((item, i) => (

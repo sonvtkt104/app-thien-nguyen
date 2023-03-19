@@ -2,13 +2,13 @@
     --color-red: #FF3C00;
     --color-green: #58CA8C;
     --color-yellow: #FFB721;
-    --color-blue: #6DCCE3;
+    --color-blue: #44b3cf;
     --color-black: #38383A;
     --color-gray: #96A2BA;
     --color-border: #DADFE9;
     --color-background: #F5F6FA;
     --color-background-icon: rgb(204 204 204 / 40%);
-    --color-background-website: #F2F2F2;
+    --color-background-website: #f5fcff;
 }
 
 body {
@@ -29,12 +29,10 @@ h5,
 h6 {
   margin: 0px;
   color: #38383a;
-  font-family: "Poppins";
 }
 
 p {
   margin: 0px;
-  font-family: "Poppins";
   color: #38383a;
 }
 
@@ -87,4 +85,56 @@ a {
 .btn:hover {
     background: var(--color-blue) !important;
     color: #ffffff !important;
+}
+.btn-primary {
+  font-weight: 600;
+    font-size: 12px;
+    padding: 9px 20px !important;
+    border: 1px solid var(--color-blue) !important;
+    border-radius: 4px;
+    line-height: 18px;
+    height: auto;
+    background: var(--color-blue) !important;
+    color: #ffffff !important;
+}
+.btn-primary:hover {
+  opacity: 0.8;
+}
+
+.h1-app {
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--color-blue);
+}
+.ant-collapse.collapse-app {
+  border: none;
+  border-radius: 0 0 8px 8px;
+  background-color: #F5F6F8;
+}
+
+ 
+
+.ant-collapse.collapse-app .ant-collapse-header {
+  padding: 10px 20px 10px 0;
+  padding-inline-start: 0px !important;
+}
+.ant-collapse.collapse-app .ant-collapse-content-box {
+  padding: 16px 20px 16px 0;
+}
+
+.ant-collapse.collapse-app .ant-collapse-item-active .collapse-app-header svg {
+  transform: rotate(0deg) !important;
+}
+.collapse-app{
+  background: none !important;
+}
+.ant-collapse-content {
+  border: none !important;
+}
+.ant-collapse-item {
+  border-bottom: 1px dotted var(--color-border) !important;
+}
+.box-shadow-app:hover {
+  transition: all 0.2s;
+  box-shadow: 4px 3px 19px 0 rgba(0,0,0,.14) !important;
 }

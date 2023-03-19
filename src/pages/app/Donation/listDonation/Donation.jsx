@@ -10,7 +10,6 @@ import { TableApp } from "../../../../components/TableApp"
 import { DetailIcon } from '../../../../components/Icon/DetailIcon'
 import ModalDetail from '../ModalDetail';
 import { PageLayout } from '../../../../components';
-import { Table, SearchTableInput } from "ant-table-extensions";
 
 
 
