@@ -145,13 +145,39 @@
     height: 213px;
     background-color: #fff;
     border-radius: 20px;
-
+    padding: 4px 8px;
 }
+
+.s-t-l-body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.thong-ke{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.thong-ke div {
+    min-width: 200px;
+    font-size: 13px;
+}
+
+.s-t-l-title, .s-t-r-title {
+    font-weight: 600;
+    font-size: 16px;
+}
+
 .s-t-right{
     width: 415px;
     height: 213px;
     background-color: #fff;
     border-radius: 20px;
+    padding: 4px 8px;
 }
 
 .statistical-down {
@@ -159,5 +185,6 @@
     height: 258px;
     background-color: #fff;
     border-radius: 20px;
+    padding: 4px 8px;
 
 }
