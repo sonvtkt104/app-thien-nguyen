@@ -3,6 +3,7 @@ import { ArrowLeftIcon, PageLayout, SegmentedApp, TableApp } from "../../../comp
 import {EyeOutlined, EditOutlined, DeleteOutlined} from '@ant-design/icons';
 import { Button, Divider, Modal } from "antd";
 import { Link } from "react-router-dom";
+import Chart from 'react-apexcharts';
 
 import './CampaignPreview.css';
 
@@ -11,16 +12,11 @@ import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 
-function handleEditorChange({ html, text }) {
-    console.log('handleEditorChange', html, text);
-  }
-
 class CamPaignPreview extends Component {
     constructor(props) {
         super(props);
         
         this.state = {
-            // options: ['Thông tin chung', 'Bài viết giới thiệu', 'Hoạt động', 'Sao kê', 'Thống kê'],
             options: [
                 {label: 'Thông tin chung', value: 1},
                 {label: 'Bài viết giới thiệu', value: 2}, 
@@ -164,6 +160,50 @@ class CamPaignPreview extends Component {
                     action: 'no'
                 },
             ],
+            optionsChart1: {
+                series: [98, 2],
+                labels: ["Đã ủng hộ", "Chưa ủng hộ"],
+                chart: {
+                type: 'donut',
+              },
+              responsive: [{
+                breakpoint: 480,
+                options: {
+                  chart: {
+                    width: 200
+                  },
+                  legend: {
+                    position: 'bottom'
+                  }
+                }
+              }]
+            },
+            optionsChart2: {
+                series: [{
+                    name: 'Số lượt tiếp cận',
+                    data: [100, 200, 150, 400, 1000, 800, 100, 2000, 300, 40, 600, 1000]
+                }],
+                xaxis:{
+                    categories: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"]
+                  },
+
+                  options: {
+                    chart: {
+                      height: 300,
+                      type: 'area'
+                    },
+                    dataLabels: {
+                      enabled: false,
+                      style: {
+                        colors: ['#F44336', '#E91E63', '#9C27B0']
+                      }
+                    },
+                    stroke: {
+                      curve: 'smooth'
+                    },
+                  },
+                
+            }
         }
     }
 
@@ -292,14 +332,27 @@ class CamPaignPreview extends Component {
                             <div className="statistical-container">
                                 <div className="statistical-up">
                                     <div className="s-t-left">
-                                        abc
+                                        <div className="s-t-l-title">Tiến độ hoàn thành</div>
+                                        <Divider />
+                                        <div className="s-t-l-body">
+                                            <Chart options={this.state.optionsChart1} type="donut" series={this.state.optionsChart1.series} width={'100%'} height={120} />
+                                        </div>
+                                            <div className="thong-ke">
+                                                <div>Trạng thái: <span style={{fontWeight: '600'}}>Hoạt động</span></div>
+                                                <div>Mục tiêu: <span style={{fontWeight: '600'}}>500.000.000 triệu</span></div>
+                                                <div>Đã ủng hộ: <span style={{fontWeight: '600'}}>490.000.000 triệu</span></div>
+                                            </div>
                                     </div>
                                     <div className="s-t-right">
-                                        def
+                                        <div className="s-t-r-title">Thống kê số lượt tiếp cận</div>
+                                        <Divider />
+                                        <Chart options={this.state.optionsChart2} type="area" series={this.state.optionsChart2.series} width={'100%'} height={220} />                                      
                                     </div>
                                 </div>
                                 <div className="statistical-down">
-                                    jqk
+                                    <div className="s-t-r-title">Thống kê ủng hộ</div>
+                                    <Divider />  
+                                    <Chart options={this.state.optionsChart2} type="area" series={this.state.optionsChart2.series} width={'100%'} height={250} />                                                                         
                                 </div>
                             </div>
                         }
