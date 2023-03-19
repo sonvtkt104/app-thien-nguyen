@@ -43,7 +43,7 @@ export function HeaderClient({
                         <Col
                             className="home-item-header flex-col-center"
                         >
-                            <Link to="campaign-all">
+                            <Link to="/campaign-all">
                                 <span
                                 >
                                     Toàn bộ các dự án
@@ -53,9 +53,11 @@ export function HeaderClient({
                         <Col
                             className="home-item-header flex-col-center"
                         >
-                            <span>
-                                Liên hệ
-                            </span>
+                            <Link to='/contact-us'>
+                                <span>
+                                    Liên hệ
+                                </span>
+                            </Link>
                         </Col>
                     </Row>
                 </Col>

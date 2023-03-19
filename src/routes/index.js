@@ -11,7 +11,8 @@ import {
   CamPaignList,
   GeneralInformation,
   HomePageCharity,
-  CampaignAll
+  CampaignAll,
+  ContactUs
 } from "../pages";
 import CamPaignPreview from "../pages/app/CampaignList/CampaignPreview";
 
@@ -30,6 +31,7 @@ export default function Router() {
         <Route path="/home-page-charity" element={<HomePageCharity />} />
         <Route path="/general-information" element={<GeneralInformation />} />
         <Route path="/campaign-all" element={<CampaignAll />} />
+        <Route path="/contact-us" element={<ContactUs />} />
       </Routes>
     </BrowserRouter>
   );

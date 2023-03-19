@@ -18,4 +18,5 @@ export { CheckboxMultiple } from './CheckboxMultiple'
 export { Tag } from './Tag';
 export { HeaderClient } from './HeaderClient'
 export { ItemCampaign } from './ItemCampaign'
+export { FooterClient } from './FooterClient'
 export * from './Icon';
