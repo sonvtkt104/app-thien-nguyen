@@ -37,7 +37,7 @@ function Header({
             >
                 <span style={{ marginRight: 30 }} className='flex-col-center'>
                     <Popover
-                        placement="bottomLeft"
+                        placement="bottomRight"
                         content={
                             <div style={{ maxWidth: '360px' }}>
                                 <Row
@@ -89,7 +89,7 @@ function Header({
                 </span>
                 <span>
                     <Popover
-                        placement="bottomLeft"
+                        placement="bottomRight"
                         content={
                             <div style={{ width: 250 }}>
                                 <Row style={{ padding: '16px 16px 8px', borderBottom: '1px solid var(--color-border)', flexWrap: 'nowrap' }}>

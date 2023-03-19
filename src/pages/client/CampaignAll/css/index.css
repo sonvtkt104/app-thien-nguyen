@@ -1,0 +1,15 @@
+.item-filter-search {
+    animation: open-content 0.4s 0s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    transform-origin: top;
+}
+
+@keyframes open-content {
+    0% {
+        opacity: 0;
+        transform: scaleY(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}

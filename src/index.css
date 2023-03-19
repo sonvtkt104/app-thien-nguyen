@@ -101,6 +101,15 @@ a {
   opacity: 0.8;
 }
 
+.input-app:hover,
+.input-app:focus{
+  border-color: var(--color-blue) !important;
+}
+
+.text-hover:hover {
+  color: var(--color-blue) !important;
+}
+
 .h1-app {
   font-size: 32px;
   font-weight: 600;
@@ -138,3 +147,4 @@ a {
   transition: all 0.2s;
   box-shadow: 4px 3px 19px 0 rgba(0,0,0,.14) !important;
 }
+
