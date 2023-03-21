@@ -9,6 +9,7 @@
     --color-background: #F5F6FA;
     --color-background-icon: rgb(204 204 204 / 40%);
     --color-background-website: #f5fcff;
+    --color-background-header: rgb(240, 240, 240);
 }
 
 body {
@@ -100,6 +101,24 @@ a {
 .btn-primary:hover {
   opacity: 0.8;
 }
+.input-app,
+.textarea-app {
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  padding: 12px 20px;
+  text-align: left;
+}
+
+.input-app:hover,
+.input-app:focus,
+.textarea-app:hover,
+.textarea-app:focus{
+  border-color: var(--color-blue) !important;
+}
+
+.text-hover:hover {
+  color: var(--color-blue) !important;
+}
 
 .h1-app {
   font-size: 32px;
@@ -138,3 +157,4 @@ a {
   transition: all 0.2s;
   box-shadow: 4px 3px 19px 0 rgba(0,0,0,.14) !important;
 }
+

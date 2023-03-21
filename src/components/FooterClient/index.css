@@ -1,0 +1,48 @@
+.landing-page-footer{
+    background-color: #2c2c2c;
+    padding: 70px 20px 50px;
+    color : white;
+    justify-content: space-between;
+    display: flex;
+  }
+  .landing-page-footer .landing-page-footer-middle > div  {
+    display: flex;
+    justify-content:center;
+  }
+  .landing-page-footer .landing-page-footer-middle > div > a {
+    border: 1px solid white;
+    color: white !important;
+    padding: 7px 30px;
+    margin-bottom: 50px;
+  }
+  .landing-page-footer .landing-page-footer-middle > div > a:hover {
+    border: 1px solid var(--color-blue);
+    color: var(--color-blue) !important;
+  }
+  .landing-page-footer .landing-page-footer-middle > div > span {
+    margin: 0 20px;
+    font-size: 20px;
+  }
+  .landing-page-footer  .landing-page-footer-middle> div:last-child {
+    flex-direction: column;
+    text-align: center;
+  }
+  .landing-page-footer h2,
+  .landing-page-footer-title {
+    color: var(--color-blue);
+    margin-top: 20px;
+    font-size: 24px;
+  }
+  .landing-page-footer .landing-page-footer-middle  >div >div span {
+    padding: 0 15px;
+    cursor: pointer;
+    text-decoration:underline;
+    border-right: 1px solid white;
+  }
+  .landing-page-footer .landing-page-footer-middle >div >div span:last-child {
+    border: none;
+  }
+  .landing-page-footer-item p {
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
