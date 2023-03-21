@@ -10,7 +10,8 @@ import {
   ManageCVD,
   CamPaignList,
   GeneralInformation,
-  HomePageCharity
+  HomePageCharity,
+  DetailCampaign
 } from "../pages";
 import CamPaignPreview from "../pages/app/CampaignList/CampaignPreview";
 
@@ -28,6 +29,7 @@ export default function Router() {
         <Route path="/admin/cuocvandong" element={<ManageCVD />} />
         <Route path="/home-page-charity" element={<HomePageCharity />} />
         <Route path="/general-information" element={<GeneralInformation />} />
+        <Route path="/detail-campaign/:campaignId" element={<DetailCampaign />} />
       </Routes>
     </BrowserRouter>
   );

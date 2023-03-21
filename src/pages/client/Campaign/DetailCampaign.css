@@ -1,0 +1,38 @@
+.detail-campaign-container{
+    padding: 32px;
+    display: flex;
+    justify-content: flex-end;
+}
+.detail-campaign-left{
+    position: fixed;
+    left: 32px;
+    top: 90px;
+    bottom: 0;
+    overflow: hidden;
+    overflow-y: scroll;
+    padding: 24px 8px;
+    width: 50%;
+}
+
+.name-campaign {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.detail-campaign-block {
+    padding: 8px 16px;
+    width: 400px;
+    background-color: #F5F5F5;
+    border-radius: 12px;
+    margin: 12px 0;
+}
+
+.link-youtube{
+
+}
+.detail-campaign-info{
+    /* width: 100%; */
+}
+.detail-campaign-right{
+    width: 40%;
+}
