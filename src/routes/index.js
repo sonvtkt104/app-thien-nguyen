@@ -11,9 +11,13 @@ import {
   CamPaignList,
   GeneralInformation,
   HomePageCharity,
+  DetailCampaign,
+  CampaignAll,
+  ContactUs,
   Account, 
   Confirmation,
   DonationPost
+
 } from "../pages";
 import CamPaignPreview from "../pages/app/CampaignList/CampaignPreview";
 
@@ -31,6 +35,11 @@ export default function Router() {
         <Route path="/admin/cuocvandong" element={<ManageCVD />} />
         <Route path="/home-page-charity" element={<HomePageCharity />} />
         <Route path="/general-information" element={<GeneralInformation />} />
+        <Route path="/detail-campaign/:campaignId" element={<DetailCampaign />} />
+        <Route path="/home-page-charity" element={<HomePageCharity />} />
+        <Route path="/general-information" element={<GeneralInformation />} />
+        <Route path="/campaign-all" element={<CampaignAll />} />
+        <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/my-account" element={<Account />} />
         <Route path="/my-account/donation-post" element={<DonationPost />} />
         <Route path="/my-account/request-confirmation" element={<Confirmation />} />

@@ -4,10 +4,11 @@ import './CampaignList.css'
 import { Col, message, Modal, Row, Upload } from "antd";
 import { Input } from "../../../components";
 
-function ModalEditCampaign({
-    isOpenModalEdit,
+function ModalCreateCampaign({
+    isOpenModalCompaign,
     handleOk,
     handleCancel,
+    type
 }) {
 
     const [nameCampaign, setNameCampaign] = useState('')
@@ -71,15 +72,15 @@ function ModalEditCampaign({
         <>
                  <Modal
                      width={1000}
-                     okText={"Lưu thay đổi"}
+                     okText={type === 'create' ? "Đồng ý" : "Lưu thay đổi"}
                      cancelText={"Quay lại"}
                      centered 
-                     open={isOpenModalEdit} 
+                     open={isOpenModalCompaign} 
                      onOk={handleOk} 
                      onCancel={handleCancel}
                      className="modal-create"
                  >
-                     <div className="modal-header">Chỉnh sửa cuộc vận động</div>
+                     <div className="modal-header">Tạo mới cuộc vận động</div>
                      <div className="modal-body">
                          <Row>
                              <Col span={12}>
@@ -147,4 +148,4 @@ function ModalEditCampaign({
     )
 }
 
-export default ModalEditCampaign;
+export default ModalCreateCampaign;

@@ -13,7 +13,6 @@ import { SegmentedApp } from "../../../../components/SegmentedApp"
 import { RemoveIcon } from "../../../../components/Icon/RemoveIcon"
 import ModalDetail from '../ModalDetail';
 import { PageLayout } from '../../../../components';
-import { Table, SearchTableInput } from "ant-table-extensions";
 
 
 

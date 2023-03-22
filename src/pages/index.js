@@ -11,7 +11,9 @@ import CampaignPreview from "./app/CampaignList/CampaignPreview";
 import Account from "./client/MyAccount/Account";
 import Confirmation from "./client/MyAccount/Confirmation";
 import DonationPost from "./client/MyAccount/DonationPost";
+import CampaignAll  from "./client/CampaignAll";
+import ContactUs  from "./client/ContactUs";
+import DetailCampaign from "./client/Campaign/DetailCampaign";
 
-export { Home, NotFound, Donation, MyDonation, ManageUser, ManageCVD, 
-    CamPaignList, CampaignPreview, HomePageCharity, GeneralInformation, Account, Confirmation, DonationPost};
+export { Home, NotFound, Donation, MyDonation, ManageUser, ManageCVD, CamPaignList, CampaignPreview, HomePageCharity, GeneralInformation, CampaignAll, ContactUs, DetailCampaign, Account, Confirmation, DonationPost };
 

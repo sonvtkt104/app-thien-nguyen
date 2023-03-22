@@ -1,9 +1,12 @@
 import { Component } from "react";
-import { PageLayout, TableApp } from "../../../components";
+import { Input, PageLayout, TableApp } from "../../../components";
 import {EyeOutlined, EditOutlined, DeleteOutlined} from '@ant-design/icons';
 import './CampaignList.css'
-import { Button, Divider, Modal } from "antd";
+import { Button} from "antd";
 import { Link } from "react-router-dom";
+import ModalCreateCampaign from "./ModalCreateCompaign";
+import ModalEditCompaign from "./ModalEditCompaign";
+import { toast } from "react-toastify";
 
   
 class CamPaignList extends Component {
@@ -52,7 +55,7 @@ class CamPaignList extends Component {
                     render: () => {
                         return (
                             <Link
-                                to="/campaign-list/preview" 
+                                to="/detail-campaign/14" 
                                 className="preview"
                                 // onClick={() => this.handleClickPreview()}
                             >Preview</Link>
@@ -178,17 +181,15 @@ class CamPaignList extends Component {
     }
 
     handleActions = (record, type) => {
-        if(type === 'hide') {
-            // console.log(record)
-            // this.showModal();
-        }
         if(type === 'edit') {
             this.showModal();
         }
     }
 
     handleClickCampaign = () => {
-        this.showModalCreateNewCampaign();
+        this.setState({
+            isOpenModalCompaign: true
+        })
     }
 
     showModal = () => {
@@ -198,6 +199,7 @@ class CamPaignList extends Component {
     }
 
     handleOk = () => {
+        toast.success('Tạo mới thành công!');
         this.setState({
             isOpenModalEdit: false,
             isOpenModalCompaign: false
@@ -210,18 +212,14 @@ class CamPaignList extends Component {
             isOpenModalCompaign: false
         })
     }
-
-    showModalCreateNewCampaign = () => {
-        this.setState({
-            isOpenModalCompaign: true
-        })
-    }
-
+    
     handleClickPreview = () => {
         console.log('aaa')
     }
 
     render() {
+        const {isOpenModalCompaign, isOpenModalEdit} = this.state;
+
         return (
             <>
                 <PageLayout>
@@ -235,26 +233,23 @@ class CamPaignList extends Component {
                         </Button>
                     </div>
                     <div className="campaign-list-table">
-                        {/* <div className="header-title">
-                            <div className="h-t-name">Danh sách cuộc vận động</div>
-                        </div>
-                        <Divider /> */}
                         <TableApp columns={this.state.columns} dataSource={this.state.dataSource}>
 
                         </TableApp>
                     </div>
 
-                    <Modal title="Modal Edit" open={this.state.isOpenModalEdit} onOk={this.handleOk} onCancel={this.handleCancel}>
-                        <p>Some contents...</p>
-                        <p>Some contents...</p>
-                        <p>Some contents...</p>
-                    </Modal>
-
-                    <Modal title="Create new a campaign" open={this.state.isOpenModalCompaign} onOk={this.handleOk} onCancel={this.handleCancel}>
-                        <p>Some contents...</p>
-                        <p>Some contents...</p>
-                        <p>Some contents...</p>
-                    </Modal>
+                    <ModalEditCompaign 
+                        isOpenModalEdit={isOpenModalEdit} 
+                        handleOk={this.handleOk}
+                        handleCancel={this.handleCancel}
+                        type={'edit'}
+                    />
+                    <ModalCreateCampaign 
+                        isOpenModalCompaign={isOpenModalCompaign}
+                        handleOk={this.handleOk}
+                        handleCancel={this.handleCancel}
+                        type={'create'}
+                    />
                 </PageLayout>
             </>
         )

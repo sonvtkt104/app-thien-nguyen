@@ -1,0 +1,10 @@
+.home-item-header span {
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: 30px;
+    cursor: pointer;
+    color: var(--color-black);
+}
+.home-item-header span:hover {
+    color: var(--color-blue) !important;
+}

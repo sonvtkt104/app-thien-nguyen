@@ -1,0 +1,128 @@
+.detail-campaign-container{
+    padding: 0 32px;
+    display: flex;
+    justify-content: flex-end;
+    height: 2000px;
+}
+.detail-campaign-left{
+    position: fixed;
+    left: 32px;
+    top: 90px;
+    bottom: 0;
+    overflow: hidden;
+    overflow-y: scroll;
+    padding: 24px 8px;
+    width: 50%;
+}
+
+.name-campaign {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.detail-campaign-block {
+    padding: 8px 16px;
+    width: 400px;
+    background-color: #EAEBED;
+    border-radius: 12px;
+    margin: 12px 0;
+}
+
+.link-youtube{
+
+}
+.detail-campaign-right{
+    width: 540px;
+
+}
+
+.detail-campaign-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.detail-campaign-intro{
+    width: 100%;
+    padding: 8px 16px;
+    position: relative;
+}
+
+.btn-ung-ho-ngay {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.detail-campaign-activity{
+    width: 100%;
+    padding: 8px 16px;
+    background-color: #EAEBED;
+    border-radius: 12px;
+    margin-bottom: 24px;
+}
+
+.detail-campaign-img {
+    width: 250px;
+}
+
+.see-detail {
+    font-size: 13px;
+    font-style: italic;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.see-detail:hover {
+    text-decoration: underline;
+}
+
+.btn-actions {
+    border: none;
+    outline: none;
+    min-width: 120px;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #EAEBED;
+}
+
+.btn-actions:hover {
+    background-color: rgb(219, 213, 213);
+}
+
+.detail-campaign-statement{
+    width: 100%;
+    padding: 8px 16px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th, td {
+    text-align: center;
+  }
+
+  tr {
+    background-color: aliceblue;
+  }
+
+  tr:hover {
+    cursor: pointer;
+    background-color: #ddd;
+  }
+  
+  th {
+    background-color: #04AA6D;
+    color: white;
+  }
