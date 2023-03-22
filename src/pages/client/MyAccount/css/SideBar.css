@@ -1,5 +1,5 @@
 .sb-layout {
-    margin: 56px 160px 0 490px;
+    margin: 0 160px 0 490px;
     /* background: var(--color-background); */
     /* background: red; */
     min-height: calc(100vh - 56px);
@@ -9,7 +9,7 @@
     position: fixed;
     width: 330px;
     /* top: 56px; */
-    top: 67px;
+    top: 100px;
     left: 160px;
     bottom: 0;
     background: #FFFFFF;

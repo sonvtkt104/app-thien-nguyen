@@ -2,6 +2,7 @@ import "./css/SideBar.css"
 import { Link, useNavigate, useLocation } from "react-router-dom"
 import { Menu } from "antd"
 import Header from "../../../components/PageLayout/Header";
+import HomeHeader from "../Home/components/HomeHeader";
 import { useState } from "react";
 
 
@@ -23,6 +24,7 @@ function SideBar({children,key})  {
     }
   return (
     <div >
+        <HomeHeader/>
         <div className="sb-layout">
             <div className="sb-sidebar">
                 <Menu
@@ -64,7 +66,7 @@ function SideBar({children,key})  {
                     
                 </Menu>
             </div>
-            <Header/>
+            {/* <Header/> */}
             
             <div style={{ padding: "14px 0 20px 20px" }}>
                 {children}
