@@ -9,6 +9,7 @@
    padding: 40px; 
    font-size: 18px;
    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+   border-radius: 6px;
 }
 
 .gi-modal-header{
@@ -21,10 +22,36 @@
     margin: 4px 20px;
 }
 
-.gi-image {
+.gi-image, .gid-image {
     border-radius: 50%;
 }
 
-.ant-image .ant-image-mask {
+.gi-image + .ant-image-mask, .gid-image + .ant-image-mask  {
     border-radius: 50% ;
+}
+.gi-name {
+    display: flex;
+    align-items: center;
+    font-size: 30px;
+    margin: 10px 0 20px;
+}
+.gi-icon-check {
+    color: #43DA86;
+    margin-left: 10px;
+}
+/* .ant-image .ant-image-mask {
+    border-radius: 50% ;
+} */
+
+
+.gid-modal .ant-form-item {
+    margin-bottom: 0;
+}
+
+.gid-modal .ant-modal-title {
+    font-size: 24px;
+}
+
+.gid-image {
+    width: 250px;
 }

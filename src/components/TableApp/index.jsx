@@ -4,9 +4,11 @@ import "./index.css"
 export function TableApp({
     columns,
     dataSource, 
+    bordered
 }) {
     return (
         <Table
+            bordered = {bordered}
             columns={columns}
             dataSource={dataSource}
             rowClassName={() =>

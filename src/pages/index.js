@@ -8,6 +8,10 @@ import ManageUser from "./admin/ManageUser";
 import ManageCVD from "./admin/ManageCVD";
 import CamPaignList from "./app/CampaignList/CampaignList";
 import CampaignPreview from "./app/CampaignList/CampaignPreview";
+import Account from "./client/MyAccount/Account";
+import Confirmation from "./client/MyAccount/Confirmation";
+import DonationPost from "./client/MyAccount/DonationPost";
 
-export { Home, NotFound, Donation, MyDonation, ManageUser, ManageCVD, CamPaignList, CampaignPreview, HomePageCharity, GeneralInformation };
+export { Home, NotFound, Donation, MyDonation, ManageUser, ManageCVD, 
+    CamPaignList, CampaignPreview, HomePageCharity, GeneralInformation, Account, Confirmation, DonationPost};
 

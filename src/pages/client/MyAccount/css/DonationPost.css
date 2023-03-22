@@ -1,0 +1,29 @@
+.dp-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* margin-bottom: 10px; */
+    margin: 7px 0 10px;
+    padding: 0 5px;
+}
+
+.dp-container {
+    display: flex;
+    /* justify-content: space-between; */
+    flex-wrap: wrap;
+}
+
+.dp-create {
+
+}
+
+.dpd-modal {
+    z-index: 10;
+}
+.dpd-modal .ant-form-item {
+    margin-bottom: 0;
+}
+
+.dpd-modal .ant-modal-title {
+    font-size: 24px;
+}
