@@ -1,5 +1,5 @@
-import { CheckCircleTwoTone, HeartOutlined, HeartTwoTone, SmileTwoTone, StarOutlined } from "@ant-design/icons";
-import { Button, Progress, Row, Space } from "antd";
+import { CheckCircleTwoTone, CommentOutlined, HeartOutlined, HeartTwoTone, ShareAltOutlined, SmileTwoTone, StarOutlined } from "@ant-design/icons";
+import { Button, Col, Input, Progress, Row, Space } from "antd";
 import { useState } from "react";
 import { SegmentedApp} from "../../../components";
 import HomeHeader from "../Home/components/HomeHeader";
@@ -12,6 +12,13 @@ function DetailCampaign() {
         {label: 'Hoạt động', value: 2},
         {label: 'Sao kê', value: 3}
     ]
+
+    const { Search } = Input;
+
+    const handleOnSearch = () => {
+        console.log('hi')
+    }
+
     const [valueOption, setValueOption] = useState(1)
 
 
@@ -85,15 +92,156 @@ Xin trân trọng cảm ơn sâu sắc những tấm lòng đóng góp quý báu
                         />
                         {
                             valueOption && valueOption === 1 &&
-                            <div>Hi 1</div>
+                            <div className="detail-campaign-intro">
+                                <div style={{fontWeight: 600}}>Chi tiết về cuộc vận động:</div>
+                                <div>
+                                Để kịp thời chia sẻ với những khó khăn, thiệt hại to lớn của đồng bào và các địa phương bị thiệt hại do mưa lũ gây ra, và hưởng ứng lời kêu gọi của Chính phủ và Bộ Tài chính, Công đoàn Bộ cũng đã phát động toàn thể cán bộ, công chức, viên chức, người lao động ở các đơn vị thuộc và trực thuộc Bộ Tài chính tham gia ủng hộ đồng bào các tỉnh miền Trung bị thiệt hại do bão lũ tối thiểu 01 ngày lương.
+                                </div>
+                                <br />
+                                <div style={{fontWeight: 600}}>Đối tượng vận động: </div>
+                                <div>Toàn bộ người dân trong nước</div>
+                                <br />
+                                <div style={{fontWeight: 600}}>Địa chỉ vận động:</div>
+                                <div>Nhân dân miền Trung</div>
+                                <br />
+                                <div style={{fontWeight: 600}}>Ảnh & Video mô tả:</div>
+                                <div>
+                                    <img src="/images/mien-trung-1.jpg" alt="Image"></img>
+                                    <img src="/images/mien-trung-2.jpg" alt="Image"></img>
+                                </div>
+                                <br />
+                                <Button className="" type="primary" style={{fontWeight: 600}}>Ủng hộ ngay</Button>
+                            </div>
                         }
                         {
                             valueOption && valueOption === 2 &&
-                            <div>Hi 2</div>
+                            <>
+                                <div className="detail-campaign-activity">
+                                    <Row align={"middle"}>
+                                        <div style={{fontSize: 18, fontWeight: 600}}>Bài đăng ủng hộ bão lũ miền Trung</div>
+                                        <div style={{marginLeft: 20}}>Thời gian đăng: 22/03/2023</div>
+                                    </Row>
+                                    <br />
+                                    <div style={{fontSize: 16, fontWeight: 600}}>Mô tả - Giới thiệu:</div>
+                                    <div>Trong thời gian vừa qua, thanh thiếu nhi và nhân dân nhiều địa phương trong cả nước, đặc biệt là các tỉnh duyên hải miền Trung, Tây Nguyên phải hứng chịu nhiều thiên tai gây thiệt hại nặng nề về người và của, đời sống của nhân dân gặp nhiều khó khăn; nhằm phát huy tinh thần “Tương thân tương ái”, “Lá lành đùm lá rách” của dân tộc. </div>
+                                    <br />
+                                    <Row>
+                                        <Space>
+                                            <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="Image"></img>
+                                            <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="Image"></img>
+                                        </Space>
+                                    </Row>
+                                    <div className="see-detail">Xem chi tiết</div>
+                                    <div style={{margin: '12px 0', height: '1px', background: 'gray'}}></div>
+                                    <Row justify={"space-around"}>
+                                        <Col>
+                                            <button className='btn-actions' style={{fontWeight: 600}}><HeartOutlined /> Thích</button>
+                                        </Col>
+                                        <Col>
+                                            <button className='btn-actions' style={{fontWeight: 600}}><CommentOutlined /> Bình luận</button>
+                                        </Col>
+                                        <Col>
+                                            <button className='btn-actions' style={{fontWeight: 600}}><ShareAltOutlined /> Chia sẻ</button>                              
+                                        </Col>
+                                    </Row>
+                                </div>
+
+                                <div className="detail-campaign-activity">
+                                    <Row align={"middle"}>
+                                        <div style={{fontSize: 18, fontWeight: 600}}>Bài đăng ủng hộ bão lũ miền Trung</div>
+                                        <div style={{marginLeft: 20}}>Thời gian đăng: 22/03/2023</div>
+                                    </Row>
+                                    <br />
+                                    <div style={{fontSize: 16, fontWeight: 600}}>Mô tả - Giới thiệu:</div>
+                                    <div>Trong thời gian vừa qua, thanh thiếu nhi và nhân dân nhiều địa phương trong cả nước, đặc biệt là các tỉnh duyên hải miền Trung, Tây Nguyên phải hứng chịu nhiều thiên tai gây thiệt hại nặng nề về người và của, đời sống của nhân dân gặp nhiều khó khăn; nhằm phát huy tinh thần “Tương thân tương ái”, “Lá lành đùm lá rách” của dân tộc. </div>
+                                    <br />
+                                    <Row>
+                                        <Space>
+                                            <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="Image"></img>
+                                            <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="Image"></img>
+                                        </Space>
+                                    </Row>
+                                    <div className="see-detail">Xem chi tiết</div>
+                                    <div style={{margin: '12px 0', height: '1px', background: 'gray'}}></div>
+                                    <Row justify={"space-around"}>
+                                        <Col>
+                                            <button className='btn-actions' style={{fontWeight: 600}}><HeartTwoTone /> Thích</button>
+                                        </Col>
+                                        <Col>
+                                            <button className='btn-actions' style={{fontWeight: 600}}><CommentOutlined /> Bình luận</button>
+                                        </Col>
+                                        <Col>
+                                            <button className='btn-actions' style={{fontWeight: 600}}><ShareAltOutlined /> Chia sẻ</button>                              
+                                        </Col>
+                                    </Row>
+                                </div>
+                            </>
                         }
                         {
                             valueOption && valueOption === 3 &&
-                            <div>Hi 3</div>
+                            <div className="detail-campaign-statement">
+                                <Row justify={"end"}>
+                                    <Space>
+                                        <Search
+                                            placeholder="Tìm kiếm"
+                                            onSearch={handleOnSearch}
+                                            style={{
+                                                width: 200,
+                                            }}
+                                        />
+                                        <Button type="primary">
+                                            Tải xuống
+                                        </Button>
+                                    </Space>
+                                </Row>
+                                <br />
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <th>Họ và tên</th>
+                                                <th>Số tiền quyên góp</th>
+                                                <th>Ghi chú</th>
+                                                <th>Thời gian</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Sơn</td>
+                                                <td>500.000đ</td>
+                                                <td>kcj</td>
+                                                <td>22/03/2023</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Hoàng</td>
+                                                <td>500.000đ</td>
+                                                <td>ủng hộ</td>
+                                                <td>22/03/2023</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Tiên</td>
+                                                <td>300.000đ</td>
+                                                <td>pro vjp</td>
+                                                <td>22/03/2023</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Linh</td>
+                                                <td>300.000đ</td>
+                                                <td>pro vjp</td>
+                                                <td>22/03/2023</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Hải</td>
+                                                <td>400.000đ</td>
+                                                <td>kcj</td>
+                                                <td>22/03/2023</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Kiên</td>
+                                                <td>400.000đ</td>
+                                                <td>kcj</td>
+                                                <td>22/03/2023</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
                         }
                     </div>
                     
