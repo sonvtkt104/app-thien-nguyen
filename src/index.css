@@ -20,6 +20,8 @@ body {
   color: #38383a;
   scroll-behavior: smooth;
   font-size: 14px;
+  /* overflow-y: scroll; */
+
 }
 
 h1,
@@ -116,6 +118,11 @@ a {
   border-color: var(--color-blue) !important;
 }
 
+.modal-preview-image-app .ant-modal-content {
+  padding: 0;
+  background-color: transparent;
+}
+
 .text-hover:hover {
   color: var(--color-blue) !important;
 }
@@ -157,4 +164,5 @@ a {
   transition: all 0.2s;
   box-shadow: 4px 3px 19px 0 rgba(0,0,0,.14) !important;
 }
+
 

@@ -44,7 +44,7 @@ export function PageLayout({
                     </Menu.Item>
                     <Menu.SubMenu 
                         icon={<ShopOutlined style={{fontSize: 24}} />} 
-                        key='donation'
+                        key='donate'
                         title="Quyên góp"
                     >
                         <Menu.Item icon={<UnorderedListOutlined style={{fontSize: 24}} />} key='donation'>
@@ -52,7 +52,7 @@ export function PageLayout({
                                 <span style={{fontSize: 16}}>Danh sách</span>
                             </Link>
                         </Menu.Item>
-                        <Menu.Item icon={<DropboxOutlined style={{fontSize: 24}} />} key='my-donation'>
+                        <Menu.Item icon={<DropboxOutlined style={{fontSize: 24}} />} key='mydonation'>
                             <Link to="/mydonation">
                                 <span style={{fontSize: 16}}>Quyên góp của tôi</span>
                             </Link>

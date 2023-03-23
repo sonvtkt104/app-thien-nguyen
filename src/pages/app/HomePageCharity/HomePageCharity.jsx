@@ -1,12 +1,13 @@
 import "./HomePageCharity.css"
 import { PageLayout } from "../../../components"
 import { Button, Col, Input, Row, Table, Modal, Image   } from 'antd'
-import {EyeOutlined, PhoneOutlined, SearchOutlined,CheckCircleFilled} from '@ant-design/icons';
+import {CheckCircleFilled} from '@ant-design/icons';
 import React, { useState, useEffect, useRef} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import ReactApexChart from "react-apexcharts";
 import { getInfoCharity } from "../../../redux/donationSlice";
 import { getApp } from "../Donation/myDonation/MyDonationService";
+import { getCharity } from "./HomePageCharityService";
 
 
 function HomePageCharity() {
@@ -36,7 +37,7 @@ function HomePageCharity() {
             curve: 'smooth',
           },
           title: {
-            text: 'Thống kê lượt tiếp cận năm 2022',
+            text: 'Thống kê Lượt tiếp cận năm 2022',
             align: 'center',
             style: {
                 fontSize:  '20px',
@@ -65,9 +66,28 @@ function HomePageCharity() {
         getApp("abc123").then(res=> dispatch(getInfoCharity(res.data)))
     },[])
     
-    const infoCharity = useSelector((state) => state.donation.infoCharity)
+    // const infoCharity = useSelector((state) => state.donation.infoCharity)
     // console.log(infoCharity)
-    
+    const infoCharity = {
+      "id": "abc123",
+      "name": "Hội Từ thiện Minh Tâm Hà Nội",
+      "avatar": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
+      "phone": "0369852147",
+      "email": "tuthien@gmail.com",
+      "targetOfOrganization": "Giúp đỡ người gặp hoàn cảnh khó khăn trong cuộc sống mà tự họ không thể thay đổi được",
+      "mottoOfOrganization": "Chung sức vì nhân đạo",
+      "socialNetwork": [
+        "https://www.google.com/",
+        "https://www.facebook.com/"
+      ],
+      "isVerification": true,
+      "followers": 157422,
+      "introduction": "Hội Từ thiện Minh Tâm Hà Nội được thành lập vào ngày 15/4/2014, là Hội từ thiện tự nguyện do các thành viên ở khắp mọi nơi với nhiều ngành nghề khác nhau có cùng chung một mục đích chia sẻ với những hoàn cảnh kém may mắn. Dựa trên tinh thần tự nguyện nên các thành viên tự đóng góp tài chính và kêu gọi từ anh, chị, em, bạn bè, người thân cho các hoạt động chung của Hội",
+      "numberCampaigns": 4,
+      "accountNumber": "0123456789 - Nguyen Van A - MB Bank - Ngân hàng Quân đội",
+      "reach": [3034, 1355, 5432, 4000, 7342, 3245, 8543, 5234, 6543, 12423, 8403, 13024],
+  }
+
     useEffect(()=> {
         setCharity(infoCharity)
         setChart((chart)=> {
@@ -102,7 +122,7 @@ function HomePageCharity() {
                             <Image 
                                 className="hpc-image"
                                 src= {charity.avatar}
-                                width={60}
+                                width={80}
                             />
                             <h1 className="hpc-name">{charity.name}</h1>
                             <CheckCircleFilled 
@@ -110,6 +130,7 @@ function HomePageCharity() {
                               style={{display: charity.isVerification ? "" : "none"}}
                               // disabled
                             />
+                            
                         </div>
                         <p className="hpc-follow">Số người theo dõi: {convertToString(charity.followers)}</p>
                     </div>
