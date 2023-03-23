@@ -104,7 +104,7 @@
     padding: 8px 16px;
 }
 
-table {
+table.detail-campaign-table {
     border-collapse: collapse;
     width: 100%;
   }
@@ -113,7 +113,7 @@ table {
     text-align: center;
   }
 
-  tr {
+  tr.detail-campaign-table {
     background-color: aliceblue;
   }
 
@@ -121,8 +121,8 @@ table {
     cursor: pointer;
     background-color: #ddd;
   }
-  
-  th {
+
+  tr.detail-campaign-table th {
     background-color: #04AA6D;
     color: white;
   }

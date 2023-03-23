@@ -57,6 +57,7 @@ class CamPaignList extends Component {
                             <Link
                                 to="/detail-campaign/14" 
                                 className="preview"
+                                target="_blank"
                                 // onClick={() => this.handleClickPreview()}
                             >Preview</Link>
                         )
