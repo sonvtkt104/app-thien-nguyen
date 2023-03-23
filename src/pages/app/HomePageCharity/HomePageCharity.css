@@ -1,6 +1,7 @@
 .hpc-modal {
     background-color: #fff;
     box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+    border-radius: 6px;
 }
 .hpc-modal-main {
     padding: 20px 0;
@@ -51,8 +52,14 @@
     padding: 20px;
     margin-top: 20px;
     box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+    border-radius: 6px;
 }
 
-.ant-image .ant-image-mask {
+/* .ant-image .ant-image-mask {
+    border-radius: 50% ;
+} */
+
+.hpc-image + .ant-image-mask {
     border-radius: 50% ;
 }
+

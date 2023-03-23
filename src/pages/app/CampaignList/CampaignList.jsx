@@ -55,7 +55,7 @@ class CamPaignList extends Component {
                     render: () => {
                         return (
                             <Link
-                                to="/campaign-list/preview" 
+                                to="/detail-campaign/14" 
                                 className="preview"
                                 // onClick={() => this.handleClickPreview()}
                             >Preview</Link>

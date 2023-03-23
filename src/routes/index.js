@@ -14,7 +14,11 @@ import {
   DetailCampaign,
   CampaignAll,
   ContactUs,
-  ProfileCharity
+  ProfileCharity,
+  Account, 
+  Confirmation,
+  DonationPost
+
 } from "../pages";
 import CamPaignPreview from "../pages/app/CampaignList/CampaignPreview";
 
@@ -38,6 +42,9 @@ export default function Router() {
         <Route path="/campaign-all" element={<CampaignAll />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/profile-charity" element={<ProfileCharity />} />
+        <Route path="/my-account" element={<Account />} />
+        <Route path="/my-account/donation-post" element={<DonationPost />} />
+        <Route path="/my-account/request-confirmation" element={<Confirmation />} />
       </Routes>
     </BrowserRouter>
   );
