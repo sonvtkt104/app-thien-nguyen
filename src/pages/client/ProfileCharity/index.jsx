@@ -1,11 +1,12 @@
-import { EnvironmentOutlined, GlobalOutlined, MailOutlined, NotificationOutlined, PhoneOutlined } from "@ant-design/icons";
-import { Button, Col, Row } from "antd";
+import { CloseOutlined, EnvironmentOutlined, GlobalOutlined, MailOutlined, NotificationOutlined, PhoneOutlined } from "@ant-design/icons";
+import { Button, Col, Input, Modal, Row } from "antd";
 import { useState } from "react";
-import { FooterClient, HeaderClient } from "../../../components";
+import { FooterClient, HeaderClient, ItemCampaign, SearchIcon } from "../../../components";
 import "./css/index.css"
 
 export default function ProfileCharity() {
-    const [tab, setTab] = useState(0)
+    const [tab, setTab] = useState(2)
+    const [previewImage, setPreviewImage] = useState(false)
 
     return (
         <div>
@@ -241,22 +242,110 @@ export default function ProfileCharity() {
                                                 </div>
                                             </div>
                                         </div>
+                                        <div
+                                            style={{background: '#fff',boxShadow: '-1px 1px 6px rgba(0,0,0,.05)', padding: 20, marginTop: '20px'}}
+                                        >
+                                            <Row style={{paddingLeft : 10, borderLeft: '3px solid var(--color-blue)', fontSize: 16, fontWeight: '600', marginBottom: 20}}>
+                                                Dự án nổi bật
+                                            </Row>
+                                            <div>
+                                                <ItemCampaign 
+                                                    style={{marginBottom: 0}}
+                                                />
+                                            </div>
+                                        </div>
                                     </Col>
                                 </Row>
                             </div>
                         ) : tab == 1 ? (
-                            <div style={{marginTop: 20}}>
-                                hello
+                            <div style={{marginTop: 20, background: '#ffffff', borderRadius: 6, boxShadow: '-1px 1px 6px rgba(0,0,0,.05)', padding: '30px 50px'}}>
+                                <Row justify='space-between'
+                                    style={{marginBottom: 30}}
+                                >
+                                    <Col style={{lineHeight: '30px'}}>
+                                        <Row style={{paddingLeft : 10, borderLeft: '3px solid var(--color-blue)', fontSize: 18, fontWeight: '600', marginBottom: 10}}>
+                                            Danh sách dự án
+                                        </Row>
+                                    </Col>
+                                    <Col>
+                                        <Row style={{flexWrap: 'nowrap'}}>
+                                            <Input className="input-app"
+                                                style={{maxHeight: 40, borderRadius: "4px 0 0 4px", minWidth: 300}}
+                                            />
+                                            <Button className="btn-primary"
+                                                style={{maxHeight: 40, borderRadius: '0 4px 4px 0', border: "1px solid var(--color-blue)"}}
+                                            >
+                                                <Row style={{flexWrap: 'nowrap', lineHeight:'20px'}}>
+                                                    <span>
+                                                        <SearchIcon color='#fff' style={{marginRight: 5}}/>
+                                                    </span>
+                                                    Tìm kiếm
+                                                </Row>
+                                            </Button>
+                                        </Row>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Row justify='space-between'>
+                                        {
+                                            [1,2,3,4,5,6,7,8,9,10].map((item, i) => (
+                                                <Col xs={11} sm={11} md={11} lg={11} xl={11}>
+                                                    <ItemCampaign /> 
+                                                </Col>
+                                            ))
+                                        }
+                                    </Row>
+                                </Row>
                             </div>
                         ) : (
-                            <div style={{marginTop: 20}}>
-                                hello image
+                            <div style={{marginTop: 20, background: '#ffffff', borderRadius: 6, boxShadow: '-1px 1px 6px rgba(0,0,0,.05)', padding: '30px 50px'}}>
+                                <Row
+                                    style={{marginBottom: 30}}
+                                >
+                                    <Col style={{lineHeight: '30px'}}>
+                                        <Row style={{paddingLeft : 10, borderLeft: '3px solid var(--color-blue)', fontSize: 18, fontWeight: '600', marginBottom: 10}}>
+                                            Tất cả hình ảnh của tổ chức
+                                        </Row>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Row>
+                                        {
+                                            [1,2,3,4,5,6,7,8,9,10].map((item, i) => (
+                                                <Col xs={6} sm={6} md={6} lg={6} xl={6}
+                                                    style={{padding: '0 12px', marginBottom: 20}}
+                                                >
+                                                    <img src="https://media.doisongphapluat.com/333/2014/4/8/7.jpg" alt="charity_image" 
+                                                        style={{width: '100%', borderRadius: 10, cursor: 'pointer'}}
+                                                        onClick={() => {
+                                                            setPreviewImage(true)
+                                                        }}
+                                                    />
+                                                </Col>
+                                            ))
+                                        }
+                                    </Row>
+                                </Row>
                             </div>
                         )
                     }
                 </Col>
             </Row>
             <FooterClient/>
+            <Modal
+                className="modal-preview-image-app"
+                open={previewImage}
+                footer={null}
+                closeIcon={<CloseOutlined style={{fontSize:24, color: '#ffffff'}} />}
+                width={800}
+                onCancel={() => {
+                    setPreviewImage(false);
+                }}
+            >
+                <img src="https://media.doisongphapluat.com/333/2014/4/8/7.jpg" alt="charity_image" 
+                    style={{width: '100%', height: '100%'}}
+                />
+            </Modal>
         </div>
     )
 }
