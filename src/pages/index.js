@@ -12,6 +12,7 @@ import CampaignPreview from "./app/CampaignList/CampaignPreview";
 import CampaignAll  from "./client/CampaignAll";
 import ContactUs  from "./client/ContactUs";
 import DetailCampaign from "./client/Campaign/DetailCampaign";
+import ProfileCharity from "./client/ProfileCharity";
 
-export { Home, NotFound, Donation, MyDonation, ManageUser, ManageCVD, CamPaignList, CampaignPreview, HomePageCharity, GeneralInformation, CampaignAll, ContactUs, DetailCampaign };
+export { Home, NotFound, Donation, MyDonation, ManageUser, ManageCVD, CamPaignList, CampaignPreview, HomePageCharity, GeneralInformation, CampaignAll, ContactUs, DetailCampaign, ProfileCharity };
 
