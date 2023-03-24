@@ -195,45 +195,45 @@ Xin trân trọng cảm ơn sâu sắc những tấm lòng đóng góp quý báu
                                     </Space>
                                 </Row>
                                 <br />
-                                    <table>
+                                    <table className="detail-campaign-table">
                                         <tbody>
-                                            <tr>
+                                            <tr className="detail-campaign-table">
                                                 <th>Họ và tên</th>
                                                 <th>Số tiền quyên góp</th>
                                                 <th>Ghi chú</th>
                                                 <th>Thời gian</th>
                                             </tr>
-                                            <tr>
+                                            <tr className="detail-campaign-table">
                                                 <td>Sơn</td>
                                                 <td>500.000đ</td>
                                                 <td>kcj</td>
                                                 <td>22/03/2023</td>
                                             </tr>
-                                            <tr>
+                                            <tr className="detail-campaign-table">
                                                 <td>Hoàng</td>
                                                 <td>500.000đ</td>
                                                 <td>ủng hộ</td>
                                                 <td>22/03/2023</td>
                                             </tr>
-                                            <tr>
+                                            <tr className="detail-campaign-table">
                                                 <td>Tiên</td>
                                                 <td>300.000đ</td>
                                                 <td>pro vjp</td>
                                                 <td>22/03/2023</td>
                                             </tr>
-                                            <tr>
+                                            <tr className="detail-campaign-table">
                                                 <td>Linh</td>
                                                 <td>300.000đ</td>
                                                 <td>pro vjp</td>
                                                 <td>22/03/2023</td>
                                             </tr>
-                                            <tr>
+                                            <tr className="detail-campaign-table">
                                                 <td>Hải</td>
                                                 <td>400.000đ</td>
                                                 <td>kcj</td>
                                                 <td>22/03/2023</td>
                                             </tr>
-                                            <tr>
+                                            <tr className="detail-campaign-table">
                                                 <td>Kiên</td>
                                                 <td>400.000đ</td>
                                                 <td>kcj</td>
