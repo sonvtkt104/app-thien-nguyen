@@ -1,6 +1,7 @@
 import "./GeneralInformation.css"
 import { memo, useState } from 'react'
 import { Modal, Image, Button, Checkbox, Form, Input, Upload } from 'antd'
+import { PlusOutlined } from '@ant-design/icons';
 
 function GeneralInformationDialog({ dataUpdate, handleCloseModal }) {
     const [open, setOpen] = useState(true)
@@ -58,6 +59,8 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal }) {
             okText="Tạo"
             centered
             width={1200}
+            // height={500}
+            // style={{padding:"30px 0"}}
             open={open}
             maskClosable={false}
             footer={null}
@@ -73,7 +76,8 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal }) {
                 name="basic"
                 style={{
                     width: "100%",
-                    flexWrap: "wrap"
+                    flexWrap: "wrap",
+                    // height: 500,
                 }}
                 initialValues={{
                     // avatar: dataUpdate?.avatar,
@@ -85,7 +89,13 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal }) {
                     targetOfOrganization: dataUpdate?.targetOfOrganization,
                     mottoOfOrganization: dataUpdate?.mottoOfOrganization,
                     introduction: dataUpdate?.introduction,
-                    socialNetwork: dataUpdate?.socialNetwork.join(" ; "),
+                    facebook: dataUpdate?.socialNetwork.facebook,
+                    instagram: dataUpdate?.socialNetwork.instagram,
+                    twitter: dataUpdate?.socialNetwork.twitter,
+                    linkedIn: dataUpdate?.socialNetwork.linkedIn,
+                    introVideo: dataUpdate?.introVideo,
+                    
+                    // socialNetwork: dataUpdate?.socialNetwork.join(" ; "),
                     // name: dataUpdate.name,
                 }}
                 autoComplete="off"
@@ -160,7 +170,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal }) {
                         />
                         <Button>Chọn ảnh đại diện</Button>
                     </div> */}
-                    <div style={{ width: "80%" }}>
+                    <div style={{ width: "80%", height: 500, overflowY:"scroll"}}>
                         <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                             <Form.Item
                                 style={{ width: "49%", marginBottom: 10 }}
@@ -282,18 +292,72 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal }) {
                             {/* <Input /> */}
                             <Input.TextArea rows={4} />
                         </Form.Item>
+                        <p style={{marginBottom: 10}}>Mạng xã hội khác</p>
+                        <div style={{ display: "flex", justifyContent: "space-between", width: "100%", flexWrap:"wrap" }}>
+                            <Form.Item
+                                // layout={"horizontal"}
+                                style={{ width: "48%", marginBottom: 16, marginLeft:10 }}
+                                label="Facebook"
+                                name="facebook"
+                            >
+                                <Input />
+                            </Form.Item>
+                            <Form.Item
+                                style={{ width: "49%", marginBottom: 16 }}
+                                label="Instagram"
+                                name="instagram"
+                            >
+                                <Input />
+                            </Form.Item>
+                            <Form.Item
+                                style={{ width: "48%", marginBottom: 16, marginLeft:10 }}
+                                label="Twitter"
+                                name="twitter"
+                            >
+                                <Input />
+                            </Form.Item>
+                            <Form.Item
+                                style={{ width: "49%", marginBottom: 16 }}
+                                label="LinkedIn"
+                                name="linkedIn"
+                            >
+                                <Input />
+                            </Form.Item>
+                        </div>
                         <Form.Item
                             style={{ width: "100%", marginBottom: 16 }}
-                            label="Link Mạng xã hội khác"
-                            name="socialNetwork"
-                        // rules={[
-                        //     {
-                        //         required: true,
-                        //         message: 'Vui lòng nhập Link Mạng xã hội khác!',
-                        //     },
-                        // ]}
+                            label="Video Giới thiệu"
+                            name="introVideo"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng nhập Video Giới thiệu!',
+                                },
+                            ]}
                         >
-                            <Input />
+                            {/* <Input /> */}
+                            <Input/>
+                        </Form.Item>
+                        <Form.Item label="Ảnh" name="images">
+                            <Upload
+                                listType="picture-card"
+                                // customRequest={(e) => {
+                                //     // setImage({...image,})
+                                //     console.log(e)
+                                //     console.log("upload")
+                                // }}
+                            >
+                                <div>
+                                    <PlusOutlined />
+                                    <div
+                                        style={{
+                                            marginTop: 8,
+                                        }}
+                                    >
+                                        Ảnh
+                                    </div>
+                                </div>
+                            </Upload>
                         </Form.Item>
 
 

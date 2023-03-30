@@ -19,6 +19,7 @@ import {
   DonationPost,
   LoginPage,
   RegistrationPage,
+  PassWord,
 } from "../pages";
 import CamPaignPreview from "../pages/app/CampaignList/CampaignPreview";
 
@@ -46,6 +47,7 @@ export default function Router() {
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/profile-charity" element={<ProfileCharity />} />
         <Route path="/my-account" element={<Account />} />
+        <Route path="/my-account/password" element={<PassWord />} />
         <Route path="/my-account/donation-post" element={<DonationPost />} />
         <Route
           path="/my-account/request-confirmation"

@@ -17,6 +17,7 @@ import DetailCampaign from "./client/Campaign/DetailCampaign";
 import ProfileCharity from "./client/ProfileCharity";
 import LoginPage from "./Authentication/Login";
 import RegistrationPage from "./Authentication/Registration";
+import PassWord from "./client/MyAccount/PassWord";
 
 export { Home, NotFound, Donation, MyDonation, ManageUser, ManageCVD, 
     CamPaignList, CampaignPreview, HomePageCharity, GeneralInformation, 
@@ -24,5 +25,6 @@ export { Home, NotFound, Donation, MyDonation, ManageUser, ManageCVD,
     ProfileCharity,
     LoginPage,
     RegistrationPage,
+    PassWord,
  };
 

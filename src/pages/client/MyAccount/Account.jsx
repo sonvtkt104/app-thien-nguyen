@@ -135,22 +135,14 @@ function Account() {
                         </Form.Item>
                     </Form>
                 </div>
-                <div>
+                {/* <div>
                     <h2>Thay đổi mật khẩu</h2>
                     <Form
                         layout={"vertical"}
                         name="basic"
-                        // labelCol={{
-                        //     span: 8,
-                        // }}
-                        // wrapperCol={{
-                        //     span: 16,
-                        // }}
                         style={{
                             width: "100%",
                             padding: "10px 0 10px 20px",
-                            // maxWidth: 850,
-                            // display: "flex",
                             flexWrap: "wrap"
                         }}
                         initialValues={{
@@ -207,7 +199,6 @@ function Account() {
 
                         <Form.Item
                             wrapperCol={{
-                                // offset: 8,
                                 span: 16,
                             }}
                         >
@@ -216,194 +207,8 @@ function Account() {
                             </Button>
                         </Form.Item>
                     </Form>
-                </div>
+                </div> */}
             </div>
-            {/* <div>
-                <h2>Thông tin chung</h2>
-                <Form
-                    layout={"vertical"}
-                    name="basic"
-                    // labelCol={{
-                    //     span: 8,
-                    // }}
-                    // wrapperCol={{
-                    //     span: 16,
-                    // }}
-                    style={{
-                        width: "100%",
-                        padding: "10px 0 10px 20px",
-                        // maxWidth: 850,
-                        // display: "flex",
-                        flexWrap: "wrap"
-                    }}
-                    initialValues={{
-                        // remember: true,
-                    }}
-                    // onFinish={onFinish}
-                    // onFinishFailed={onFinishFailed}
-                    autoComplete="off"
-                >
-
-                    <Form.Item
-                        style={{ width: "100%", marginBottom: 10 }}
-                        label="Họ và tên"
-                        name="name"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Vui lòng nhập Họ và tên!',
-                            },
-                        ]}
-                    >
-                        <Input 
-                            value={info}
-                            onChange={(e) => { setInfo(e.target.value)}}
-                        
-                        />
-                    </Form.Item>
-
-                    <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-                        <Form.Item
-                            style={{ width: "49%", marginBottom: 10 }}
-                            label="Số điện thoại"
-                            name="phone"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập Số điện thoại!',
-                                },
-                            ]}
-                        >
-                            <Input />
-                        </Form.Item>
-
-                        <Form.Item
-                            style={{ width: "49%", marginBottom: 10 }}
-                            label="Email"
-                            name="email"
-                            rules={[
-                                {
-                                    type: 'email',
-                                    message: 'Email không hợp lệ!',
-                                },
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập Email!',
-                                },
-                            ]}
-                        >
-                            <Input />
-                        </Form.Item>
-                    </div>
-
-                    <Form.Item
-                        style={{ width: "100%", marginBottom: 16 }}
-                        label="Địa chỉ"
-                        name="address"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Vui lòng nhập Địa chỉ của bạn!',
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-
-                    <Form.Item
-                        wrapperCol={{
-                            // offset: 8,
-                            // span: 8,
-                        }}
-                    >
-                        <Button type="primary" htmlType="submit">
-                            Lưu thay đổi
-                        </Button>
-                    </Form.Item>
-                </Form>
-            </div>
-            <div>
-                <h2>Thay đổi mật khẩu</h2>
-                <Form
-                    layout={"vertical"}
-                    name="basic"
-                    // labelCol={{
-                    //     span: 8,
-                    // }}
-                    // wrapperCol={{
-                    //     span: 16,
-                    // }}
-                    style={{
-                        width: "100%",
-                        padding: "10px 0 10px 20px",
-                        // maxWidth: 850,
-                        // display: "flex",
-                        flexWrap: "wrap"
-                    }}
-                    initialValues={{
-                        // remember: true,
-                    }}
-                    // onFinish={onFinish}
-                    // onFinishFailed={onFinishFailed}
-                    autoComplete="off"
-                >
-
-                    <Form.Item
-                        style={{ width: "100%", marginBottom: 10 }}
-                        label="Mật khẩu hiện tại"
-                        name="pass"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Vui lòng nhập Mật khẩu hiện tại!',
-                            },
-                        ]}
-                    >
-                        <Input.Password />
-                    </Form.Item>
-
-                    <Form.Item
-                        style={{ width: "100%", marginBottom: 10 }}
-                        label="Mật khẩu mới"
-                        name="name"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Vui lòng nhập Mật khẩu mới!',
-                            },
-                        ]}
-                    >
-                        <Input.Password />
-                    </Form.Item>
-
-
-
-                    <Form.Item
-                        style={{ width: "100%", marginBottom: 16 }}
-                        label="Xác nhận mật khẩu mới"
-                        name="address"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Vui lòng nhập Xác nhận mật khẩu mới!',
-                            },
-                        ]}
-                    >
-                        <Input.Password />
-                    </Form.Item>
-
-                    <Form.Item
-                        wrapperCol={{
-                            // offset: 8,
-                            span: 16,
-                        }}
-                    >
-                        <Button type="primary" htmlType="submit">
-                            Lưu thay đổi
-                        </Button>
-                    </Form.Item>
-                </Form>
-            </div> */}
         </SideBar>
     )
 }
