@@ -109,15 +109,15 @@ table.detail-campaign-table {
     width: 100%;
   }
   
-  th, td {
+  /* th, td {
     text-align: center;
-  }
+  } */
 
   tr.detail-campaign-table {
     background-color: aliceblue;
   }
 
-  tr:hover {
+  tr.detail-campaign-table:hover {
     cursor: pointer;
     background-color: #ddd;
   }
