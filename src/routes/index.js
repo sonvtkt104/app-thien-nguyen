@@ -1,4 +1,3 @@
-
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
@@ -15,10 +14,12 @@ import {
   CampaignAll,
   ContactUs,
   ProfileCharity,
-  Account, 
+  Account,
   Confirmation,
-  DonationPost
-
+  DonationPost,
+  LoginPage,
+  RegistrationPage,
+  PassWord,
 } from "../pages";
 import CamPaignPreview from "../pages/app/CampaignList/CampaignPreview";
 
@@ -36,15 +37,24 @@ export default function Router() {
         <Route path="/admin/cuocvandong" element={<ManageCVD />} />
         <Route path="/home-page-charity" element={<HomePageCharity />} />
         <Route path="/general-information" element={<GeneralInformation />} />
-        <Route path="/detail-campaign/:campaignId" element={<DetailCampaign />} />
+        <Route
+          path="/detail-campaign/:campaignId"
+          element={<DetailCampaign />}
+        />
         <Route path="/home-page-charity" element={<HomePageCharity />} />
         <Route path="/general-information" element={<GeneralInformation />} />
         <Route path="/campaign-all" element={<CampaignAll />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/profile-charity" element={<ProfileCharity />} />
         <Route path="/my-account" element={<Account />} />
+        <Route path="/my-account/password" element={<PassWord />} />
         <Route path="/my-account/donation-post" element={<DonationPost />} />
-        <Route path="/my-account/request-confirmation" element={<Confirmation />} />
+        <Route
+          path="/my-account/request-confirmation"
+          element={<Confirmation />}
+        />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/sign-up" element={<RegistrationPage />} />
       </Routes>
     </BrowserRouter>
   );

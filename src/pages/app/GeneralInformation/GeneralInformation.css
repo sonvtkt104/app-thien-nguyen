@@ -43,7 +43,9 @@
     border-radius: 50% ;
 } */
 
-
+.gid-modal {
+    /* overflow-y: scroll; */
+}
 .gid-modal .ant-form-item {
     margin-bottom: 0;
 }
@@ -54,4 +56,18 @@
 
 .gid-image {
     width: 250px;
+}
+
+.gi-socialNetwork {
+    display: flex;
+}
+
+.gi-socialNetwork-link {
+    line-height: 1.8rem;
+    height: 1.8rem;
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
 }

@@ -1,5 +1,6 @@
 .sb-layout {
-    margin: 0 160px 0 490px;
+    /* margin: 0 160px 0 490px; */
+    margin: 0 160px 0 440px;
     /* background: var(--color-background); */
     /* background: red; */
     min-height: calc(100vh - 56px);
@@ -7,7 +8,8 @@
   
 .sb-sidebar {
     position: fixed;
-    width: 330px;
+    /* width: 330px; */
+    width: 280px;
     /* top: 56px; */
     top: 100px;
     left: 160px;

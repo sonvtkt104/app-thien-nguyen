@@ -33,8 +33,8 @@ function HomePageCharity() {
             enabled: false
           },
           stroke: {
-            // curve: 'straight'
-            curve: 'smooth',
+            curve: 'straight'
+            // curve: 'smooth',
           },
           title: {
             text: 'Thống kê Lượt tiếp cận năm 2022',
@@ -62,9 +62,9 @@ function HomePageCharity() {
     const [charity, setCharity] = useState({})
     const [chart, setChart] = useState(chartObj)
     
-    useEffect(()=> {
-        getApp("abc123").then(res=> dispatch(getInfoCharity(res.data)))
-    },[])
+    // useEffect(()=> {
+    //     getApp("abc123").then(res=> dispatch(getInfoCharity(res.data)))
+    // },[])
     
     // const infoCharity = useSelector((state) => state.donation.infoCharity)
     // console.log(infoCharity)
@@ -76,10 +76,12 @@ function HomePageCharity() {
       "email": "tuthien@gmail.com",
       "targetOfOrganization": "Giúp đỡ người gặp hoàn cảnh khó khăn trong cuộc sống mà tự họ không thể thay đổi được",
       "mottoOfOrganization": "Chung sức vì nhân đạo",
-      "socialNetwork": [
-        "https://www.google.com/",
-        "https://www.facebook.com/"
-      ],
+      "socialNetwork": {
+        "facebook": "https://www.facebook.com/",
+        "instagram": "https://www.instagram.com/",
+        "twitter": "https://twitter.com/?lang=en",
+        "linkedIn": "https://www.linkedin.com/",
+      },
       "isVerification": true,
       "followers": 157422,
       "introduction": "Hội Từ thiện Minh Tâm Hà Nội được thành lập vào ngày 15/4/2014, là Hội từ thiện tự nguyện do các thành viên ở khắp mọi nơi với nhiều ngành nghề khác nhau có cùng chung một mục đích chia sẻ với những hoàn cảnh kém may mắn. Dựa trên tinh thần tự nguyện nên các thành viên tự đóng góp tài chính và kêu gọi từ anh, chị, em, bạn bè, người thân cho các hoạt động chung của Hội",
