@@ -1,6 +1,7 @@
 .gi-header {
     display: flex;
     justify-content: space-between;
+    /* text-align: right; */
     padding: 10px 0 15px;
 }
 
@@ -14,9 +15,11 @@
 
 .gi-modal-header{
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     justify-content: center;
-    align-items: center;
+    align-items: center; 
+    /* justify-items: center; */
+    margin-bottom: 20px;
 }
 .gi-link {
     margin: 4px 20px;
@@ -32,12 +35,13 @@
 .gi-name {
     display: flex;
     align-items: center;
-    font-size: 30px;
-    margin: 10px 0 20px;
+    font-size: 25px;
+    margin: 10px 0 20px 10px;
 }
 .gi-icon-check {
     color: #43DA86;
     margin-left: 10px;
+    font-size: 20px;
 }
 /* .ant-image .ant-image-mask {
     border-radius: 50% ;
@@ -59,10 +63,15 @@
 }
 
 .gi-socialNetwork {
-    display: flex;
+    /* display: flex; */
+    margin-top: 8px;
+    margin-right: 12px;
+    padding: 0 10px;
+    text-align: center;
 }
 
 .gi-socialNetwork-link {
+    margin-left: 5px;
     line-height: 1.8rem;
     height: 1.8rem;
     overflow: hidden;
