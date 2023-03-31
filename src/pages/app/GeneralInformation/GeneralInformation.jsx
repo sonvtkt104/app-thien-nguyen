@@ -97,7 +97,7 @@ function GeneralInformation() {
                                     <div className="gi-modal-header">
                                         <Image
                                             src={charity.avatar}
-                                            width={80}
+                                            width={60}
                                             className="gi-image"
                                         />
                                         <div className="gi-name">
@@ -177,7 +177,7 @@ function GeneralInformation() {
                                 Liên hệ
                             </Row>
                             {/* <Row style={{ padding: '3px 0', borderBottom: '1px solid var(--color-border)' }}></Row> */}
-                            <div style={{ padding: '16px 0' }}>
+                            <div style={{ paddingTop: 6}}>
                                 <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px', marginLeft: 10,}}>
                                     <PhoneOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
                                     {charity.phone}

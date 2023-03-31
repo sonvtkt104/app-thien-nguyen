@@ -170,7 +170,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal }) {
                         />
                         <Button>Chọn ảnh đại diện</Button>
                     </div> */}
-                    <div style={{ width: "80%", height: 500, overflowY:"scroll"}}>
+                    <div style={{ width: "80%", height: 500, overflowY:"scroll", paddingRight: 8}}>
                         <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                             <Form.Item
                                 style={{ width: "49%", marginBottom: 10 }}
