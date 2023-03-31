@@ -7,6 +7,7 @@ import {
   MyDonation,
   ManageUser,
   ManageCVD,
+  CampaignStar,
   CamPaignList,
   GeneralInformation,
   HomePageCharity,
@@ -22,6 +23,9 @@ import {
   PassWord,
 } from "../pages";
 import CamPaignPreview from "../pages/app/CampaignList/CampaignPreview";
+import { action as loginAction } from "../pages/Authentication/Login";
+// import LoginPage from "../pages/Authentication/Login";
+// import RegistrationPage from "../pages/Authentication/Registration";
 
 export default function Router() {
   return (
@@ -35,6 +39,7 @@ export default function Router() {
         <Route path="/campaign-list/preview" element={<CamPaignPreview />} />
         <Route path="/admin" element={<ManageUser />} />
         <Route path="/admin/cuocvandong" element={<ManageCVD />} />
+        <Route path="/admin/cuocvandongnoibat" element={<CampaignStar />} />
         <Route path="/home-page-charity" element={<HomePageCharity />} />
         <Route path="/general-information" element={<GeneralInformation />} />
         <Route
