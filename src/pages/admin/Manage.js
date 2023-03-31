@@ -5,10 +5,12 @@ import classes from "./Manage.module.css";
 const Manage = (props) => {
   return (
     <div className={classes.container}>
-      <ManageHeader />
       <main className={classes.main}>
         <ManageControl />
-        {props.children}
+        <div>
+          <ManageHeader />
+          {props.children}
+        </div>
       </main>
     </div>
   );

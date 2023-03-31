@@ -18,13 +18,28 @@ import ProfileCharity from "./client/ProfileCharity";
 import LoginPage from "./Authentication/Login";
 import RegistrationPage from "./Authentication/Registration";
 import PassWord from "./client/MyAccount/PassWord";
+import CampaignStar from "./admin/CampaignStar";
 
-export { Home, NotFound, Donation, MyDonation, ManageUser, ManageCVD, 
-    CamPaignList, CampaignPreview, HomePageCharity, GeneralInformation, 
-    CampaignAll, ContactUs, DetailCampaign, Account, Confirmation, DonationPost,
-    ProfileCharity,
-    LoginPage,
-    RegistrationPage,
-    PassWord,
- };
-
+export {
+  Home,
+  NotFound,
+  Donation,
+  MyDonation,
+  ManageUser,
+  ManageCVD,
+  CampaignStar,
+  CamPaignList,
+  CampaignPreview,
+  HomePageCharity,
+  GeneralInformation,
+  CampaignAll,
+  ContactUs,
+  DetailCampaign,
+  Account,
+  Confirmation,
+  DonationPost,
+  ProfileCharity,
+  LoginPage,
+  RegistrationPage,
+  PassWord,
+};

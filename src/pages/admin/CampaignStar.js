@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { Button } from "../../components/Button";
 import InputSearch from "./InputSearch";
 import Manage from "./Manage";
-import classes from "./ManageCVD.module.css";
+import classes from "./CampaignStar.module.css";
 import TrCvd from "./TrCvd";
 
 const CVD_DATA = [
@@ -88,7 +87,7 @@ const CVD_DATA = [
   },
 ];
 
-const ManageCVD = () => {
+const CampaignStar = () => {
   const [numberShowCvds, setNumberShowCvds] = useState(0);
   const [showCvds, setShowCvds] = useState(true);
   const [cvdsActive, setCvdsActive] = useState(
@@ -98,15 +97,15 @@ const ManageCVD = () => {
     CVD_DATA.filter((cvd) => cvd.status === (!showCvds ? 1 : 0))
   );
 
-  const buttonToCvdHandler = () => {
-    setShowCvds(true);
-    setNumberShowCvds(0);
-  };
+  // const buttonToCvdHandler = () => {
+  //   setShowCvds(true);
+  //   setNumberShowCvds(0);
+  // };
 
-  const buttonToCvdRemoveHandler = () => {
-    setShowCvds(false);
-    setNumberShowCvds(0);
-  };
+  // const buttonToCvdRemoveHandler = () => {
+  //   setShowCvds(false);
+  //   setNumberShowCvds(0);
+  // };
 
   const deleteCvdHandler = (id) => {
     const item = cvdsActive.find((user) => user.id === id);
@@ -160,7 +159,7 @@ const ManageCVD = () => {
         <header className={classes["header-table"]}>
           {/* <p className={classes["header-title"]}>Quản lý cuộc vận động</p> */}
           {/* <button>Thêm tài khoản</button> */}
-          <div className={classes.switch}>
+          {/* <div className={classes.switch}>
             <Button
               color={!showCvds ? "#d0ebff" : "#1971c2"}
               onClick={buttonToCvdHandler}
@@ -171,14 +170,14 @@ const ManageCVD = () => {
               color={showCvds ? "#ffc9c9" : "#e8590c"}
               onClick={buttonToCvdRemoveHandler}
             >
-              Cuộc vận động đã xong
+              Cuộc vận động bị xóa
             </Button>
-          </div>
+          </div> */}
         </header>
 
         <div className={classes.list}>
           <div className={classes["user-list"]}>
-            <p>Danh sách cuộc vận động</p>
+            <p>Danh sách cuộc vận động nổi bật</p>
             <InputSearch placeHolder="Tìm kiếm cuộc vận động" />
           </div>
 
@@ -243,4 +242,4 @@ const ManageCVD = () => {
   );
 };
 
-export default ManageCVD;
+export default CampaignStar;
