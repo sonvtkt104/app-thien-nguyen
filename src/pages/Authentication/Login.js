@@ -1,4 +1,4 @@
-import { Link, json, redirect, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import signIn from "./signIn.jpg";
 import classes from "./Login.module.css";
 import { useState } from "react";
@@ -45,12 +45,24 @@ const LoginPage = () => {
         };
 
         const response = await fetch("http://localhost:8080/Login", {
+          // mode: "no-cors",
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            // "Sec-Fetch-Mode": "cors",
+            // "Sec-Fetch-Site": "same-origin",
+            // Origin: "http://localhost:8080",
+            "Access-Control-Allow-Origin": "*",
+          },
           body: JSON.stringify(submitData),
         });
 
-        if (!response.ok) {
+        const data = await response.json();
+
+        console.log(data);
+
+        if (!data.isSuccess) {
+          console.log("Không đăng nhập được");
           return;
         }
 
@@ -94,6 +106,7 @@ const LoginPage = () => {
                 name="username"
                 id="username"
                 placeholder="Tên đăng nhập"
+                value={username}
                 onChange={usernameChangeHandler}
                 onBlur={usernameBlurHandler}
               />
@@ -107,6 +120,7 @@ const LoginPage = () => {
                 type="password"
                 name="password"
                 id="password"
+                value={password}
                 placeholder="Mật khẩu"
                 onChange={passwordChangeHandler}
                 onBlur={passwordBlurHandler}
