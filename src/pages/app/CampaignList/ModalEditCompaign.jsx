@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {PlusOutlined} from '@ant-design/icons';
-import './CampaignList.css'
+import './CampaignList.scss'
 import { Col, message, Modal, Row, Upload } from "antd";
 import { Input } from "../../../components";
 

@@ -1,14 +1,16 @@
 import { Component } from "react";
 import { Input, PageLayout, TableApp } from "../../../components";
 import {EyeOutlined, EditOutlined, DeleteOutlined} from '@ant-design/icons';
-import './CampaignList.css'
+import './CampaignList.scss'
 import { Button} from "antd";
 import { Link } from "react-router-dom";
 import ModalCreateCampaign from "./ModalCreateCompaign";
 import ModalEditCompaign from "./ModalEditCompaign";
 import { toast } from "react-toastify";
+import Search from "antd/es/input/Search";
 
-  
+
+
 class CamPaignList extends Component {
     constructor(props) {
         super(props);
@@ -16,6 +18,7 @@ class CamPaignList extends Component {
         this.state = {
             isOpenModalCompaign: false,
             isOpenModalEdit: false,
+            valueSearch: '',
             columns: [
                 {
                   key: "name",
@@ -65,7 +68,7 @@ class CamPaignList extends Component {
                 },
                 {
                     key: "actions",
-                    title: "Actions",
+                    title: "Hành động",
                     align: 'center',
                     render: (text, record, index) => {
                         return (
@@ -170,15 +173,18 @@ class CamPaignList extends Component {
                     action: 'no'
                 },
             ],
+            dataSourceSearch: []
         }
     }
 
     componentDidMount() {
-
+        this.setState({
+            dataSourceSearch: this.state.dataSource
+        })
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-
+        
     }
 
     handleActions = (record, type) => {
@@ -218,6 +224,21 @@ class CamPaignList extends Component {
         console.log('aaa')
     }
 
+    globalSearch = (value) => {
+        const filteredData = this.state.dataSource.filter((data) => {
+            return (
+                data.name.toLowerCase().includes(value.toLowerCase()) ||
+                data.target.toLowerCase().includes(value.toLowerCase()) ||
+                data.receive.toLowerCase().includes(value.toLowerCase()) ||
+                data.complete.toLowerCase().includes(value.toLowerCase()) ||
+                data.status.toLowerCase().includes(value.toLowerCase())
+            )
+        })
+        this.setState({
+            dataSourceSearch: filteredData
+        })
+    }
+
     render() {
         const {isOpenModalCompaign, isOpenModalEdit} = this.state;
 
@@ -225,7 +246,6 @@ class CamPaignList extends Component {
             <>
                 <PageLayout>
                     <div className="campaign-list-title">
-                        <div className="c-l-t-name">Danh sách cuộc vận động</div>
                         <Button 
                             type="primary"
                             onClick={() => this.handleClickCampaign()}
@@ -234,9 +254,28 @@ class CamPaignList extends Component {
                         </Button>
                     </div>
                     <div className="campaign-list-table">
-                        <TableApp columns={this.state.columns} dataSource={this.state.dataSource}>
-
-                        </TableApp>
+                        <div className="c-l-t-header">
+                            <h2 className="c-l-t-name">Danh sách cuộc vận động</h2>
+                            <Search
+                                placeholder="Tìm kiếm"
+                                allowClear
+                                style={{
+                                    width: 300,
+                                }}
+                                onSearch={(value) => {
+                                    this.globalSearch(value)
+                                }} 
+                                onChange={(e) => {
+                                    this.globalSearch(e.target.value)
+                                }}
+                            />
+                        </div>
+                        
+                        <TableApp 
+                            columns={this.state.columns} 
+                            dataSource={this.state.dataSourceSearch} 
+                        />
+                        
                     </div>
 
                     <ModalEditCompaign 

@@ -6,7 +6,7 @@
 
 .campaign-list-title {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     margin: 20px 0;
 }
@@ -16,6 +16,20 @@
     margin: 0 auto;
     border-radius: 16px;
     padding: 8px 8px;
+
+    .c-l-t-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        
+        .c-l-t-name {
+            font-size: 24px;
+            font-weight: 600;
+            padding-left: 24px;
+        }
+
+    }
+
 }
 
 .header-title {
@@ -64,10 +78,6 @@
 .preview:hover {
     text-decoration: underline;
 }
-
-/* :where(.css-dev-only-do-not-override-1me4733).ant-divider-horizontal {
-    margin: 0 !important;
-} */
 
 .ant-divider {
     margin: 0 !important;
