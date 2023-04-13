@@ -3,7 +3,7 @@ import classes from "./ManageHeader.module.css";
 const ManageHeader = () => {
   return (
     <header className={classes.header}>
-      <h2 className={classes["header-title"]}>Admin</h2>
+      {/* <h2 className={classes["header-title"]}>Admin</h2> */}
       <div className={classes["user-information"]}>
         <p className={classes["user-name"]}>Theo Rodriguez</p>
         <img

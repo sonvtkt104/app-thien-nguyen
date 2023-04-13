@@ -35,13 +35,13 @@
   font-size: 14px;
   padding: 4px;
   cursor: pointer;
-  background-color: #dee2e6;
+  background-color: transparent;
   text-align: center;
   justify-content: center;
 }
 
 .typeOfRegis span.active {
-  background-color: transparent;
+  background-color: #dee2e6;
   color: var(--color-blue);
 }
 
@@ -98,7 +98,6 @@
   border: none;
   border-bottom: 1px solid #999;
   padding: 6px 6px;
-  font-family: Poppins;
   box-sizing: border-box;
   outline: none;
 }
@@ -153,4 +152,32 @@ textarea {
   border-radius: 4px;
   background-color: #f8f8f8;
   resize: none;
+}
+
+.container-2 {
+  /* display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px; */
+  width: 900px;
+  background: #fff;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  padding: 80px 90px;
+  box-sizing: border-box;
+}
+
+.login-form-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 60px;
+}
+
+.type-small {
+  font-size: 15px !important;
+}
+
+.hidd {
+  display: none;
 }

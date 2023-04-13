@@ -3,7 +3,6 @@ import { useState } from "react";
 import InputSearch from "./InputSearch";
 import Manage from "./Manage";
 import classes from "./ManageUser.module.css";
-import { Button } from "../../components/Button";
 import TrUser from "./TrUser";
 const DUMMY_DATA = [
   {
@@ -149,52 +148,32 @@ const DUMMY_DATA = [
 ];
 
 const ManageUser = () => {
-  const [numberShowUsers, setNumberShowUsers] = useState(0);
-  const [usersIsRemove, setUsersIsRemove] = useState(false);
-  const [users, setUsers] = useState(
-    DUMMY_DATA.filter((user) => user.status === (usersIsRemove ? 0 : 1))
-  );
+  const [numberOfPages, setNumberOfPages] = useState(0);
+  const [users, setUsers] = useState(DUMMY_DATA);
 
-  const [usersDelete, setDeleteUsers] = useState(
-    DUMMY_DATA.filter((user) => user.status === (!usersIsRemove ? 0 : 1))
-  );
-
-  const buttonToUsersHandler = () => {
-    setUsersIsRemove(false);
-    setNumberShowUsers(0);
-  };
-
-  const buttonToUsersRemoveHandler = () => {
-    setUsersIsRemove(true);
-    setNumberShowUsers(0);
-  };
-
-  const deleteUserHandler = (id) => {
-    const item = users.find((user) => user.id === id);
-
+  const lockUserHandler = (id) => {
     setUsers((prev) => {
-      return prev.filter((user) => user.id !== id);
-    });
+      const listItems = prev;
+      const item = listItems.find((user) => user.id === id);
+      item.status = item.status === 1 ? 0 : 1;
 
-    setDeleteUsers((prev) => {
-      return [...prev, item];
+      return listItems;
     });
   };
 
-  const restoreUserHandler = (id) => {
-    const item = usersDelete.find((user) => user.id === id);
-
-    setDeleteUsers((prev) => {
-      return prev.filter((user) => user.id !== id);
-    });
-
+  const unLockUserHandler = (id) => {
     setUsers((prev) => {
-      return [...prev, item];
+      const listItems = prev;
+      const item = listItems.find((user) => user.id === id);
+      item.status = item.status === 1 ? 0 : 1;
+      console.log(listItems);
+
+      return listItems;
     });
   };
 
   const prevHandler = () => {
-    setNumberShowUsers((prev) => {
+    setNumberOfPages((prev) => {
       if (prev === 0) return prev;
 
       return prev - 1;
@@ -202,10 +181,10 @@ const ManageUser = () => {
   };
 
   const nextHandler = () => {
-    setNumberShowUsers((prev) => {
-      const numberOfUsers = usersIsRemove ? usersDelete.length : users.length;
+    setNumberOfPages((prev) => {
+      const numberOfUsers = users.length;
 
-      if ((numberShowUsers + 1) * 6 > numberOfUsers) return prev;
+      if ((numberOfPages + 1) * 6 > numberOfUsers) return prev;
 
       return prev + 1;
     });
@@ -214,23 +193,6 @@ const ManageUser = () => {
   return (
     <Manage>
       <div className={classes.main}>
-        <header className={classes["header-table"]}>
-          <div className={classes.switch}>
-            <Button
-              color={usersIsRemove ? "#d0ebff" : "#1971c2"}
-              onClick={buttonToUsersHandler}
-            >
-              Tài khoản
-            </Button>
-            <Button
-              color={!usersIsRemove ? "#ffc9c9" : "#e8590c"}
-              onClick={buttonToUsersRemoveHandler}
-            >
-              Tài khoản bị khóa
-            </Button>
-          </div>
-        </header>
-
         <div className={classes.list}>
           <div className={classes["user-list"]}>
             <p>Danh sách tài khoản</p>
@@ -249,21 +211,20 @@ const ManageUser = () => {
               </tr>
             </thead>
             <tbody>
-              {(usersIsRemove ? usersDelete : users)
+              {users
                 .filter(
                   (user, index) =>
-                    index >= numberShowUsers * 6 &&
-                    index < (numberShowUsers + 1) * 6
+                    index >= numberOfPages * 6 &&
+                    index < (numberOfPages + 1) * 6
                 )
                 .map((user, index) => {
                   return (
                     <tr key={index}>
                       <TrUser
                         userData={user}
-                        index={index + numberShowUsers * 6}
-                        usersIsRemove={usersIsRemove}
-                        onDelete={deleteUserHandler}
-                        onRestore={restoreUserHandler}
+                        index={index + numberOfPages * 6}
+                        onLock={lockUserHandler}
+                        onUnLock={unLockUserHandler}
                       />
                     </tr>
                   );
@@ -279,8 +240,8 @@ const ManageUser = () => {
             </p>
             <p className={classes["footer-control"]}>
               <span className={classes["footer-text"]}>
-                {numberShowUsers * 6 + "-" + (numberShowUsers + 1) * 6} trong{" "}
-                {usersIsRemove ? usersDelete.length : users.length}
+                {numberOfPages * 6 + "-" + (numberOfPages + 1) * 6} trong{" "}
+                {users.length}
               </span>
               <button className={classes["icon-left"]} onClick={prevHandler}>
                 &lt;
