@@ -3,7 +3,12 @@
     display: flex;
     justify-content: flex-end;
     height: 2000px;
+
+    .hi {
+        color: red;
+    }
 }
+
 .detail-campaign-left{
     position: fixed;
     left: 32px;

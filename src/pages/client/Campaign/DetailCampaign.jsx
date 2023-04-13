@@ -3,7 +3,7 @@ import { Button, Col, Input, Progress, Row, Space } from "antd";
 import { useState } from "react";
 import { SegmentedApp} from "../../../components";
 import HomeHeader from "../Home/components/HomeHeader";
-import './DetailCampaign.css';
+import './DetailCampaign.scss';
 
 function DetailCampaign() {
 
@@ -106,8 +106,8 @@ Xin trân trọng cảm ơn sâu sắc những tấm lòng đóng góp quý báu
                                 <br />
                                 <div style={{fontWeight: 600}}>Ảnh & Video mô tả:</div>
                                 <div>
-                                    <img src="/images/mien-trung-1.jpg" alt="Image"></img>
-                                    <img src="/images/mien-trung-2.jpg" alt="Image"></img>
+                                    <img src="/images/mien-trung-1.jpg" alt="bla bla"></img>
+                                    <img src="/images/mien-trung-2.jpg" alt="bla bla"></img>
                                 </div>
                                 <br />
                                 <Button className="" type="primary" style={{fontWeight: 600}}>Ủng hộ ngay</Button>
@@ -127,8 +127,8 @@ Xin trân trọng cảm ơn sâu sắc những tấm lòng đóng góp quý báu
                                     <br />
                                     <Row>
                                         <Space>
-                                            <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="Image"></img>
-                                            <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="Image"></img>
+                                            <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="bla bla"></img>
+                                            <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="bla bla"></img>
                                         </Space>
                                     </Row>
                                     <div className="see-detail">Xem chi tiết</div>
@@ -157,8 +157,8 @@ Xin trân trọng cảm ơn sâu sắc những tấm lòng đóng góp quý báu
                                     <br />
                                     <Row>
                                         <Space>
-                                            <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="Image"></img>
-                                            <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="Image"></img>
+                                            <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="bla bla"></img>
+                                            <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="bla bla"></img>
                                         </Space>
                                     </Row>
                                     <div className="see-detail">Xem chi tiết</div>
