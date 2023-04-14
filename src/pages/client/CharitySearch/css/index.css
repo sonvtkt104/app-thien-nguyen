@@ -1,0 +1,5 @@
+.charity-search-item:hover {
+    cursor: pointer;
+    box-shadow: -1px 1px 6px rgba(0,0,0,.13) !important;
+    transition: 0.2s linear;
+}

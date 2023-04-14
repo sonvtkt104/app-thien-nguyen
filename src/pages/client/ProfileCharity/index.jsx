@@ -5,7 +5,7 @@ import { FooterClient, HeaderClient, ItemCampaign, SearchIcon } from "../../../c
 import "./css/index.css"
 
 export default function ProfileCharity() {
-    const [tab, setTab] = useState(2)
+    const [tab, setTab] = useState(0)
     const [previewImage, setPreviewImage] = useState(false)
 
     return (
