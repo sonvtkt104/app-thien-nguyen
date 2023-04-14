@@ -3,7 +3,6 @@ import signUp from "./signUp.jpg";
 import classes from "./Registration.module.css";
 import { useState } from "react";
 import TextArea from "antd/es/input/TextArea";
-// import InputFile from "./InputFile";
 
 const RegistrationPage = () => {
   const [name, setName] = useState("");
@@ -35,22 +34,25 @@ const RegistrationPage = () => {
     setNumberOfRegis(1);
   };
 
-  const previoushandler = () => {
-    setNumberOfRegis(0);
-  };
+  // const previoushandler = () => {
+  //   setNumberOfRegis(0);
+  // };
 
   const nameHandler = (event) => {
     event.preventDefault();
     setName(event.target.value);
   };
+
   const emailHandler = (event) => {
     event.preventDefault();
     setEmail(event.target.value);
   };
+
   const phoneNumberHandler = (event) => {
     event.preventDefault();
     setPhoneNumber(event.target.value);
   };
+
   const passwordHandler = (event) => {
     event.preventDefault();
     setPassword(event.target.value);
@@ -64,33 +66,40 @@ const RegistrationPage = () => {
     event.preventDefault();
     setCharity(event.target.value);
   };
+
   const charityAddressHandler = (event) => {
     event.preventDefault();
     setCharityAddress(event.target.value);
   };
+
   const charityPhoneHandler = (event) => {
     event.preventDefault();
     setCharityPhone(event.target.value);
   };
+
   const charityEmailHandler = (event) => {
     event.preventDefault();
     setCharityEmail(event.target.value);
   };
+
   const charityMottoHandler = (event) => {
     event.preventDefault();
     setCharityMotto(event.target.value);
   };
+
   const charityTargetHandler = (event) => {
     event.preventDefault();
     setCharityTarget(event.target.value);
   };
+
   const charityDescriptionHandler = (event) => {
     event.preventDefault();
     setCharityDescription(event.target.value);
   };
+
   const charityFileHandler = (event) => {
     event.preventDefault();
-    setCharityFile(event.target.value);
+    setCharityFile(event.target.files[0]);
   };
 
   const handlerUserSubmit = (event) => {
@@ -102,26 +111,34 @@ const RegistrationPage = () => {
       phoneNumber: phoneNumber,
       password: password,
       confirmPassword: repeatPassword,
+      roleId: 1,
     };
 
     const submit = async () => {
-      const response = await fetch("http://localhost:8080/Login/register", {
+      const response = await fetch("http://localhost:8080/Register", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
         body: JSON.stringify(submitData),
       });
 
-      if (!response.ok) {
+      const data = await response.json();
+
+      console.log(data);
+
+      if (!data.isSuccess) {
         return;
       }
 
-      navigate("..");
+      navigate("../login");
     };
 
     submit();
   };
 
-  const handlerOrganirationSubmit = (event) => {
+  const handlerOrganizationSubmit = (event) => {
     event.preventDefault();
 
     const submitData = {
@@ -130,28 +147,36 @@ const RegistrationPage = () => {
       phoneNumber: phoneNumber,
       password: password,
       confirmPassword: repeatPassword,
-      charity: charity,
+      charityName: charity,
       charityAddress: charityAddress,
       charityPhone: charityPhone,
       charityEmail: charityEmail,
       charityMotto: charityMotto,
       charityTarget: charityTarget,
       charityDescription: charityDescription,
-      charityFile: charityFile,
+      charityFile: "handle file",
+      roleId: 2,
     };
 
     const submit = async () => {
-      const response = await fetch("http://localhost:8080/Login/register", {
+      const response = await fetch("http://localhost:8080/Register", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
         body: JSON.stringify(submitData),
       });
 
-      if (!response.ok) {
+      const data = await response.json();
+
+      console.log(data)
+
+      if (!data.isSuccess) {
         return;
       }
 
-      navigate("..");
+      navigate("../login");
     };
 
     submit();
@@ -190,7 +215,9 @@ const RegistrationPage = () => {
               <input
                 type="text"
                 name="yourname"
-                placeholder="Tên của bạn"
+                value={name}
+                id="yourname"
+                placeholder="Username"
                 onChange={nameHandler}
               />
             </div>
@@ -202,6 +229,8 @@ const RegistrationPage = () => {
               <input
                 type="email"
                 name="email"
+                value={email}
+                id="email"
                 placeholder="Email"
                 onChange={emailHandler}
               />
@@ -214,6 +243,8 @@ const RegistrationPage = () => {
               <input
                 type="text"
                 name="phoneNumber"
+                value={phoneNumber}
+                id="phoneNumber"
                 placeholder="Số điện thoại"
                 onChange={phoneNumberHandler}
               />
@@ -226,6 +257,8 @@ const RegistrationPage = () => {
               <input
                 type="password"
                 name="password"
+                value={password}
+                id="password"
                 placeholder="Mật khẩu"
                 onChange={passwordHandler}
               />
@@ -238,6 +271,8 @@ const RegistrationPage = () => {
               <input
                 type="password"
                 name="repeatPassword"
+                value={repeatPassword}
+                id="repeatPassword"
                 placeholder="Nhập lại mật khẩu"
                 onChange={repeatPasswordHandler}
               />
@@ -262,7 +297,6 @@ const RegistrationPage = () => {
             ) : (
               <div className={classes["link-next"]} onClick={nextHandler}>
                 Tiếp theo
-                {/* <span className={classes["link-next-text"]}></span> */}
               </div>
             )}
           </form>
@@ -298,6 +332,8 @@ const RegistrationPage = () => {
               <input
                 type="text"
                 name="charity"
+                value={charity}
+                id="charity"
                 placeholder="Nhập tên tổ chức của bạn"
                 onChange={charityHandler}
               />
@@ -310,6 +346,8 @@ const RegistrationPage = () => {
               <input
                 type="text"
                 name="charityAddress"
+                value={charityAddress}
+                id="charityAddress"
                 placeholder="Địa chỉ của tổ chức"
                 onChange={charityAddressHandler}
               />
@@ -322,6 +360,8 @@ const RegistrationPage = () => {
               <input
                 type="text"
                 name="charityPhone"
+                value={charityPhone}
+                id="charityPhone"
                 placeholder="Số điện thoại của tổ chức"
                 onChange={charityPhoneHandler}
               />
@@ -334,6 +374,8 @@ const RegistrationPage = () => {
               <input
                 type="email"
                 name="charityEmail"
+                value={charityEmail}
+                id="charityEmail"
                 placeholder="Email của tổ chức"
                 onChange={charityEmailHandler}
               />
@@ -346,6 +388,8 @@ const RegistrationPage = () => {
               <input
                 type="text"
                 name="charityMotto"
+                value={charityMotto}
+                id="charityMotto"
                 placeholder="Phương châm của tổ chức"
                 onChange={charityMottoHandler}
               />
@@ -358,6 +402,8 @@ const RegistrationPage = () => {
               <input
                 type="text"
                 name="charityTarget"
+                value={charityTarget}
+                id="charityTarget"
                 placeholder="Mục tiêu của tổ chức"
                 onChange={charityTargetHandler}
               />
@@ -374,6 +420,8 @@ const RegistrationPage = () => {
                 style={{ width: "90%" }}
                 rows="4"
                 cols="36"
+                id="charityDescription"
+                value={charityDescription}
                 onChange={charityDescriptionHandler}
               />
             </div>
@@ -384,14 +432,15 @@ const RegistrationPage = () => {
               <input
                 type="file"
                 name="CharityFile"
-                placeholder="Nhập file xác minh"
+                id="charityFile"
                 onChange={charityFileHandler}
+                className={classes["type-small"]}
               />
             </div>
 
             <button
               className={classes["button-login"]}
-              onClick={handlerOrganirationSubmit}
+              onClick={handlerOrganizationSubmit}
             >
               Đăng ký
             </button>
