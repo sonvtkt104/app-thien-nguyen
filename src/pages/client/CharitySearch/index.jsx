@@ -9,6 +9,15 @@ import { useState } from "react";
 export default function CharitySearch() {
     const [totalSearch, setTotalSearch] = useState(12)
 
+    const charityTheBest = [
+        'https://cdn.topcv.vn/60/company_logos/cong-ty-tnhh-transcosmos-viet-nam-63f70af7037aa.jpg',
+        'https://cdn.topcv.vn/60/company_logos/cong-ty-co-phan-smartosc-61d50e76c4aec.jpg',
+        'https://crowdfunding.comicola.com/wp-content/uploads/2022/05/Anh-bia-1.jpg',
+        'https://cdn.topcv.vn/135/company_logos/d5b536ece7651788c2e034cd811aade4-62296d605176d.jpg',
+        'https://cdn.topcv.vn/60/company_logos/cong-ty-tnhh-transcosmos-viet-nam-63f70af7037aa.jpg',
+        'https://cdn.topcv.vn/60/company_logos/cong-ty-co-phan-smartosc-61d50e76c4aec.jpg',
+    ]
+
     return (
         <div className="charity-search-app"
             style={{minHeight: '100vh', background: 'var(--color-background-header)'}}
@@ -44,14 +53,14 @@ export default function CharitySearch() {
                                         }
                                     </div>
                                     {
-                                        [1,2,3,4,5,6,7,8,9].map((item, i) => (
+                                        charityTheBest.map((item, i) => (
                                             <Row
                                                 className="charity-search-item"
                                                 key={i}
                                                 style={{padding: 16, marginBottom: 20, borderRadius: 5, boxShadow: '-1px 1px 6px rgba(0,0,0,.05)', flexWrap: 'nowrap'}}
                                             >
                                                 <img 
-                                                    src="https://cdn.topcv.vn/60/company_logos/cong-ty-co-phan-smartosc-61d50e76c4aec.jpg" 
+                                                    src={item}
                                                     alt="charity-logo" 
                                                     style={{
                                                         width: 80, height: 80, 
@@ -111,7 +120,7 @@ export default function CharitySearch() {
                                         justify='center'
                                     >
                                         {
-                                            [1,2,3,4,5,6].map((item, i) => (
+                                            charityTheBest.map((item, i) => (
                                                 <div
                                                     style={{padding: 15, background: "#FFFF", borderRadius: '50%',
                                                         filter: 'drop-shadow(-1px 1px 6px rgba(0,0,0,.05))',
@@ -120,7 +129,7 @@ export default function CharitySearch() {
                                                     }}
                                                 >
                                                     <img 
-                                                        src="https://cdn.topcv.vn/60/company_logos/cong-ty-co-phan-smartosc-61d50e76c4aec.jpg" 
+                                                        src={item}
                                                         alt="charity-logo" 
                                                         style={{
                                                             width: 60, height: 60, 
