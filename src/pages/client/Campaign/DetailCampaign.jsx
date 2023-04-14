@@ -80,7 +80,7 @@ function DetailCampaign() {
           <div className="short-info">Chi tiết về cuộc vận động</div>
           <div className="d-c-l-description">
             <Row justify={"space-between"} align={"center"}>
-              <span style={{fontWeight: 600}}>Tên cuộc vận động: <span className="name-campaign">Quyên góp miền Trung</span></span>   
+              <span className="name-campaign">Quyên góp miền Trung</span>
               <div>
                 <Space>
                   <Button type="primary" style={{ fontWeight: 600 }}>
@@ -98,7 +98,7 @@ function DetailCampaign() {
             <div style={{margin: '8px 0'}}></div>
             <Row>
               <Space align={"center"}>
-                <span style={{fontWeight: 600}}>Tổ chức kêu gọi: <span style={{ fontSize: "16px", fontWeight: 600}}> Tổ chức thiện nguyện A{" "}</span></span>
+                <span style={{ fontSize: "16px", fontWeight: 600}}> Tổ chức thiện nguyện A{" "}</span>
                 <CheckCircleTwoTone
                   style={{ fontWeight: 600, fontSize: "20px" }}
                   twoToneColor="#52c41a"
@@ -156,7 +156,7 @@ function DetailCampaign() {
 
           <div className="link-youtube">
             <iframe
-              width="560"
+              width="100%"
               height="315"
               src="https://www.youtube.com/embed/Fkz57a72a_U"
               title="YouTube video player"
@@ -189,12 +189,15 @@ function DetailCampaign() {
                                 <div>Nhân dân miền Trung</div>
                                 <br />
                                 <div style={{fontWeight: 600}}>Ảnh & Video mô tả:</div>
-                                <div>
+                                <div className="img-info">
                                     <img src="/images/mien-trung-1.jpg" alt="bla bla"></img>
+                                    <img src="/images/mien-trung-2.jpg" alt="bla bla"></img>
                                     <img src="/images/mien-trung-2.jpg" alt="bla bla"></img>
                                 </div>
                                 <br />
-                                <Button className="" type="primary" style={{fontWeight: 600}}>Ủng hộ ngay</Button>
+                                <div style={{margin: '16px auto', display: 'flex', justifyContent: 'center'}}>
+                                  <Button size="large" type="primary" style={{fontWeight: 600}}>Ủng hộ ngay</Button>
+                                </div>
                             </div>
                         }
                         {
@@ -209,8 +212,8 @@ function DetailCampaign() {
                                     <div style={{fontSize: 16, fontWeight: 600}}>Mô tả - Giới thiệu:</div>
                                     <div>Trong thời gian vừa qua, thanh thiếu nhi và nhân dân nhiều địa phương trong cả nước, đặc biệt là các tỉnh duyên hải miền Trung, Tây Nguyên phải hứng chịu nhiều thiên tai gây thiệt hại nặng nề về người và của, đời sống của nhân dân gặp nhiều khó khăn; nhằm phát huy tinh thần “Tương thân tương ái”, “Lá lành đùm lá rách” của dân tộc. </div>
                                     <br />
-                                    <Row>
-                                        <Space>
+                                    <Row justify="center">
+                                        <Space wrap>
                                             <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="bla bla"></img>
                                             <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="bla bla"></img>
                                         </Space>
@@ -239,8 +242,8 @@ function DetailCampaign() {
                                     <div style={{fontSize: 16, fontWeight: 600}}>Mô tả - Giới thiệu:</div>
                                     <div>Trong thời gian vừa qua, thanh thiếu nhi và nhân dân nhiều địa phương trong cả nước, đặc biệt là các tỉnh duyên hải miền Trung, Tây Nguyên phải hứng chịu nhiều thiên tai gây thiệt hại nặng nề về người và của, đời sống của nhân dân gặp nhiều khó khăn; nhằm phát huy tinh thần “Tương thân tương ái”, “Lá lành đùm lá rách” của dân tộc. </div>
                                     <br />
-                                    <Row>
-                                        <Space>
+                                    <Row justify="center">
+                                        <Space wrap>
                                             <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="bla bla"></img>
                                             <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="bla bla"></img>
                                         </Space>
