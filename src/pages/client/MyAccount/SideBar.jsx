@@ -14,14 +14,21 @@ function SideBar({children,key})  {
             return ['1']
         } else if (selectedKey === '/my-account/donation-post'){
             return ['2']
-        }  else if (selectedKey === '/my-account/password'){
+        }  else if (selectedKey === '/my-account/organization-follow'){
             return ['3']
-        }  else if (selectedKey === '/my-account/request-confirmation'){
+        } else if (selectedKey === '/my-account/campaign-saved'){
             return ['4']
-        }  else if (selectedKey === '/'){
+        } else if (selectedKey === '/'){
             return ['5']
         }  
+        // else if (selectedKey === '/my-account/request-confirmation'){
+        //     return ['6']
+        // }  else if (selectedKey === '/my-account/password'){
+        //     return ['7']
+        // }  
     }
+    
+
   return (
     <div >
         <HomeHeader/>
@@ -34,9 +41,11 @@ function SideBar({children,key})  {
                     items={[
                         {label:"Tài khoản", key: '1', onClick: () => { navigate('/my-account')}},
                         {label:"Bài đăng ủng hộ", key: '2', onClick: () => { navigate('/my-account/donation-post')}},
-                        {label:"Mật khẩu", key: '3', onClick: () => { navigate('/my-account/password')}},
-                        {label:"Yêu cầu xác nhận", key: '4', onClick: () => { navigate('/my-account/request-confirmation')}},
-                        {label:"Thoát", key: '5', onClick: () => { navigate('/')}}
+                        {label:"Tổ chức đã theo dõi", key: '3', onClick: () => { navigate('/my-account/organization-follow')}},
+                        {label:"Cuộc vận động đã lưu", key: '4', onClick: () => { navigate('/my-account/campaign-saved')}},
+                        {label:"Thoát", key: '5', onClick: () => { navigate('/')}},
+                        // {label:"Yêu cầu xác nhận", key: '6', onClick: () => { navigate('/my-account/request-confirmation')}},
+                        // {label:"Mật khẩu", key: '7', onClick: () => { navigate('/my-account/password')}}
                     ]}
                     className="sb-menu"
                 >

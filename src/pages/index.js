@@ -21,6 +21,8 @@ import PassWord from "./client/MyAccount/PassWord";
 import CampaignStar from "./admin/CampaignStar";
 import CharityAll from './client/CharityAll'
 import CharitySearch from "./client/CharitySearch";
+import OrganizationFollow from "./client/MyAccount/OrganizationFollow";
+import CampaignSaved from "./client/MyAccount/CampaignSaved";
 
 export {
   Home,
@@ -45,5 +47,7 @@ export {
   RegistrationPage,
   PassWord,
   CharityAll,
-  CharitySearch
+  CharitySearch,
+  OrganizationFollow,
+  CampaignSaved
 };
