@@ -1,23 +1,31 @@
 import axios from "axios";
 
-const API = "http://localhost:5555/data"
-
+//api donation
 export const getDonations = async () => {
-    var url = API;
+    var url = "http://localhost:22222/data";
     return await axios.get(url)
 };
 
-export const  addDonation = async (data) => {
-    var url = API;
-    return await axios.post(url,data);
-  };
-
-export const updateDonation = async (id, data) => {
-    var url = API + "/" + id;
-    return await axios.put(url,data);
+export const postDonation = async (data) => {
+    var url = "http://localhost:22222/data";
+    return await axios.post(url,data)
 };
 
-export const  deleteDonation = async (id) => {
-    var url = API + "/" + id;
-    return await axios.delete(url);
+export const updateDonationByID = async (id,data) => {
+    var url = "http://localhost:22222/data" + "/" + id;
+    return await axios.put(url,data)
 };
+
+export const deleteDonationByID = async (id) => {
+    var url = "http://localhost:22222/data" + "/" + id;
+    return await axios.delete(url)
+};
+
+
+//api contact
+
+// export const postDonationContact = async (data) => {
+//     var url = "http://localhost:3333/data";
+//     return await axios.post(url,data)
+// };
+

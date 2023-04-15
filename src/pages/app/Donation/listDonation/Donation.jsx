@@ -1,16 +1,16 @@
-import { Button, Col, Input, Row, Modal, Image   } from 'antd'
+import { Button, Col, Input, Row, Modal, Image, Table   } from 'antd'
 import {EyeOutlined, PhoneOutlined, SearchOutlined} from '@ant-design/icons';
 
 import React, { useState, useEffect, useMemo} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getDonation } from '../../../../redux/donationSlice'
-import { getDonations } from './DonationService'
 
 import { TableApp } from "../../../../components/TableApp"
-import { DetailIcon } from '../../../../components/Icon/DetailIcon'
 import ModalDetail from '../ModalDetail';
 import { PageLayout } from '../../../../components';
 
+import { getDonation } from '../../../../redux/donationSlice'
+import { getDonations, updateDonationByID, postDonation } from './DonationService'
+import { updateDonationPostUser } from '../../../client/MyAccount/MyAccountService';
 
 
 function Donation() {
@@ -20,168 +20,18 @@ function Donation() {
     const [openModalDetail, setOpenModalDetail] = useState(false)
     const [dataDetail, setDataDetail] = useState({})
     const [searchedData, setSearcheddata] = useState([])
+    const [reloadData, setReloadData] = useState({})
     
+    const [requestList, setRequestList] = useState([])
+
+
     useEffect(()=> {
         // getDonations().then(res=> dispatch(getDonation(res.data)) )
-    },[])
-
-    // const listdonation = useSelector((state) => state.donation.donation)
-    // // console.log(listdonation)
-    
-    // useEffect(()=> {
-    //     setDonations(listdonation)
-    //     setSearcheddata(listdonation)
-    // },[listdonation])
-
-    const listdonationTest = useMemo(()=> {
-      return [
-        {
-          "id": "1",
-          "idDonor": "abcd12345",
-          "status": "Công khai",
-          "name": "Quần áo",
-          "donationAddress": "Nam Định",
-          "donationObject": "Gia đình hoàn cảnh",
-          "donorName": "Khuất Văn Hải",
-          "phone": "0123456789",
-          "address": "Cầu Giấy Hà Nội",
-          "date": "03/12/2023",
-          "description": "Quần áo cũ đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng",
-          "images": [
-            "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-            "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-            "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-            "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-            "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-          ]
-        },
-        {
-          "id": "2",
-          "idDonor": "abcd12345",
-          "status": "Công khai",
-          "name": "Máy tính",
-          "donationAddress": "Cao Bằng",
-          "donationObject": "Trường học",
-          "donorName": "Nguyễn Xuân Sơn",
-          "phone": "0123456789",
-          "address": "Cầu Giấy Hà Nội",
-          "date": "03/12/2023",
-          "description": "Máy tính cũ đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng",
-          "images": [
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500"
-          ]
-        },
-        {
-          "id": "3",
-          "idDonor": "abcd12345",
-          "status": "Công khai",
-          "name": "Sách vở",
-          "donationAddress": "Hà Nam",
-          "donationObject": "Trẻ em khó khăn",
-          "donorName": "Trịnh Hoàng",
-          "phone": "0123456789",
-          "address": "Cầu Giấy Hà Nội",
-          "date": "03/12/2023",
-          "description": "Sách vở cũ đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng",
-          "images": [
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500"
-          ]
-        },
-        {
-          "id": "4",
-          "idDonor": "abcd12345",
-          "status": "Công khai",
-          "name": "Quần áo 2",
-          "donationAddress": "Nghệ An",
-          "donationObject": "Người vùng cao",
-          "donorName": "Nguyễn Bá Tiên",
-          "phone": "0123456789",
-          "address": "Cầu Giấy Hà Nội",
-          "date": "03/12/2023",
-          "description": "Quần áo cũ đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng",
-          "images": [
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500"
-          ]
-        },
-        {
-          "id": "5",
-          "idDonor": "abcd12345",
-          "status": "Công khai",
-          "name": "Máy tính 2",
-          "donationAddress": "Hải Phòng",
-          "donationObject": "vùng lũ",
-          "donorName": "Lê Mạnh Linh",
-          "phone": "0123456789",
-          "address": "Cầu Giấy Hà Nội",
-          "date": "03/12/2023",
-          "description": "Máy tính cũ đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng",
-          "images": [
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500"
-          ]
-        },
-        {
-          "id": "6",
-          "idDonor": "abcd12345",
-          "status": "Công khai",
-          "name": "Sách vở 2",
-          "donationAddress": "Hà Nam",
-          "donationObject": "Trẻ em khó khăn",
-          "donorName": "Lê Văn Kiên",
-          "phone": "0123456789",
-          "address": "Cầu Giấy Hà Nội",
-          "date": "03/12/2023",
-          "description": "Sách vở cũ đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng",
-          "images": [
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500"
-          ]
-        },
-        {
-          "id": "7",
-          "idDonor": "abcd12345",
-          "status": "Công khai",
-          "name": "Quần áo 3",
-          "donationAddress": "Nam Định",
-          "donationObject": "Trẻ em vùng cao",
-          "donorName": "Khuất Văn Hải",
-          "phone": "0123456789",
-          "address": "Xuân Thủy Cầu Giấy Hà Nội",
-          "date": "03/12/2023",
-          "description": "Quần áo cũ đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng đã phân loại và gấp gon gàng",
-          "images": [
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-            "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500"
-          ]
-        }
-      ]
-    },[])
-
-    useEffect(()=> {
-        setDonations(listdonationTest)
-        setSearcheddata(listdonationTest)
-    },[listdonationTest])
+        getDonations().then(res=> {
+            console.log(res.data)
+            setDonations(res.data.filter(data => data.status === "public"))
+            setSearcheddata(res.data.filter(data => data.status === "public"))})
+    },[reloadData])
 
     // console.log(donations)
     const handleCloseModalDetail = () => {
@@ -220,9 +70,9 @@ function Donation() {
             title: "Thông tin liên hệ",
             // dataIndex: "contactInfo",
             render: (rowData) => {
-              console.log(rowData)
+              // console.log(rowData)
               return (
-                <>{rowData.phone}, {rowData.address}</>
+                <p key={rowData.id}>{rowData.phone}, {rowData.address}</p>
               )
             }
         },
@@ -231,23 +81,33 @@ function Donation() {
             title: "Hành động",
             align: 'center',
             render: (rowData) => {
+                // console.log(rowData)
                 return (
-                    <>
+                    <div key={rowData.id}>
                         <EyeOutlined
                             title='Xem chi tiet'
                             className='donation-detail'
                             onClick={()=> {
+                                console.log(rowData)
                                 setOpenModalDetail(true)
                                 setDataDetail(rowData)
                             }}
                         />
                         <PhoneOutlined 
                             className='donation-phone'
-                            onClick={()=> {
+                            style={rowData.listRequest?.reduce((arr,data) => [...arr, data.id], []).includes("abc123") ? {
+                              opacity:"0.4",
+                              // pointerEvents: "none",
+                              cursor:"no-drop",
+                            } : null
+                            }
+                            onClick={rowData.listRequest?.reduce((arr,data) => [...arr, data.id], []).includes("abc123") ? () => false : ()=> {
+                                setReloadData(rowData)
+                                console.log(rowData)
                                 onContact(rowData)
                             }}
                         />
-                    </>
+                    </div>
                 )
             }
         }
@@ -260,7 +120,85 @@ function Donation() {
             okText: "Có",
             okType: "danger",
             onOk: () => {
-                console.log("lien he")
+                //update trang thai phone
+                setReloadData({})
+                rowData.listRequest = [...rowData.listRequest, {status: "Đợi xác nhận", id: "abc123", name: "Áo ấm cho em" }]
+                console.log(rowData)
+                updateDonationByID(rowData.id, rowData)
+                    .then(res => {
+                        console.log(res)
+                        // const dataPostDonationContact = {...rowData, status:"Đợi xác nhận",idOrganization: "abc123", organizationReceived: "Áo ấm cho em"}
+                        // delete dataPostDonationContact.id
+                        // postDonation(dataPostDonationContact)
+                        // .then(res => console.log(res))
+                    })
+
+                
+                //update trang thai ben danh sach bai dang
+                // const dataUpdateDonationPostUser = {...rowData, listRequest: [...rowData.listRequest, {id: "abc123", name: "Áo ấm cho em" }]}
+                const dataUpdateDonationPostUser = {...rowData, status:"Chưa nhận" }
+                const idUpdateDonationPostUser = rowData.idPost
+                delete dataUpdateDonationPostUser.id
+                delete dataUpdateDonationPostUser.idPost
+                updateDonationPostUser(idUpdateDonationPostUser,dataUpdateDonationPostUser).then(res => console.log(res))
+
+
+                //them vao mydonation
+                // const dataPostDonationContact = {...rowData, status:"Đợi xác nhận",idOrganization: "abc123"}
+                // delete dataPostDonationContact.id
+                // postDonation(dataPostDonationContact)
+                //   .then(res => console.log(res))
+
+
+                // console.log("haha")
+                // console.log(idUpdateDonationPostUser)
+                // console.log(dataUpdateDonationPostUser)
+
+
+                
+                // rowData.idPost = rowData.id
+                // rowData.status = "Đợi xác nhận"
+                // delete rowData.id
+                // rowData.idOrganization = "abc123"
+
+                // console.log("lien he")
+                // console.log("rowData", rowData)
+                // console.log("dataPostDonationContact", dataPostDonationContact)
+
+
+                // them vao xac nhan
+                // const add = () => {
+                //   const data = {}
+                //   data.idDonor = rowData.idDonor
+                //   data.idPost = rowData.idPost
+                //   data.name = rowData.name
+                //   data.listRequest = [{id: "abc123", name: "Áo ấm cho em" }]
+                //   console.log("them moi", data)
+                //   postRequestList(data).then(res => console.log(res))
+                // }
+                // if (requestList.length === 0) {
+                //     add()
+                // } else {
+                //     let isFind = false
+                //     let dataUpdate = {}
+                //     requestList.map(request => {
+                //         if (request.idPost === rowData.idPost) {
+                //           // request.listRequest.push({id: "abc12345", name: "Áo ấm cho em" })
+                //           dataUpdate = request
+                //           isFind = true
+                //         }
+                //     })
+
+                //     if (!isFind) {
+                //       add()
+                //     } else {
+                //       // console.log("update", requestList)
+                //       dataUpdate.listRequest.push({id: "abc123", name: "Áo ấm cho em" })
+                //       console.log("update", dataUpdate)
+                //       updateRequestList(dataUpdate.id, dataUpdate).then(res => console.log(res))
+                //     }
+            
+                // }
             }
         });
     };
