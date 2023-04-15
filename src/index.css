@@ -84,6 +84,7 @@ a {
     border-radius: 4px;
     line-height: 18px;
     height: auto;
+    cursor: pointer;
 }
 .btn:hover {
     background: var(--color-blue) !important;
@@ -97,11 +98,13 @@ a {
     border-radius: 4px;
     line-height: 18px;
     height: auto;
+    cursor: pointer;
     background: var(--color-blue) !important;
     color: #ffffff !important;
 }
 .btn-primary:hover {
   opacity: 0.8;
+
 }
 .input-app,
 .textarea-app {
@@ -163,6 +166,10 @@ a {
 .box-shadow-app:hover {
   transition: all 0.2s;
   box-shadow: 4px 3px 19px 0 rgba(0,0,0,.14) !important;
+}
+
+.link-app:hover {
+  text-decoration: underline;
 }
 
 

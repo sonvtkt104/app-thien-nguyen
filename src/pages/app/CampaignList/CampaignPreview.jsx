@@ -5,7 +5,7 @@ import { Button, Divider, Modal } from "antd";
 import { Link } from "react-router-dom";
 import Chart from 'react-apexcharts';
 
-import './CampaignPreview.css';
+import './CampaignPreview.scss';
 
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';

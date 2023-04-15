@@ -19,6 +19,8 @@ import LoginPage from "./Authentication/Login";
 import RegistrationPage from "./Authentication/Registration";
 import PassWord from "./client/MyAccount/PassWord";
 import CampaignStar from "./admin/CampaignStar";
+import CharityAll from './client/CharityAll'
+import CharitySearch from "./client/CharitySearch";
 
 export {
   Home,
@@ -42,4 +44,6 @@ export {
   LoginPage,
   RegistrationPage,
   PassWord,
+  CharityAll,
+  CharitySearch
 };
