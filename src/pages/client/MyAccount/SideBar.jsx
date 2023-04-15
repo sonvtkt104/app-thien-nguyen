@@ -12,9 +12,9 @@ function SideBar({children,key})  {
         // console.log(selectedKey)
         if (selectedKey === '/my-account'){
             return ['1']
-        } else if (selectedKey === '/my-account/password'){
+        } else if (selectedKey === '/my-account/donation-post'){
             return ['2']
-        }  else if (selectedKey === '/my-account/donation-post'){
+        }  else if (selectedKey === '/my-account/password'){
             return ['3']
         }  else if (selectedKey === '/my-account/request-confirmation'){
             return ['4']
@@ -33,8 +33,8 @@ function SideBar({children,key})  {
                     mode="inline"
                     items={[
                         {label:"Tài khoản", key: '1', onClick: () => { navigate('/my-account')}},
-                        {label:"Mật khẩu", key: '2', onClick: () => { navigate('/my-account/password')}},
-                        {label:"Bài đăng ủng hộ", key: '3', onClick: () => { navigate('/my-account/donation-post')}},
+                        {label:"Bài đăng ủng hộ", key: '2', onClick: () => { navigate('/my-account/donation-post')}},
+                        {label:"Mật khẩu", key: '3', onClick: () => { navigate('/my-account/password')}},
                         {label:"Yêu cầu xác nhận", key: '4', onClick: () => { navigate('/my-account/request-confirmation')}},
                         {label:"Thoát", key: '5', onClick: () => { navigate('/')}}
                     ]}
