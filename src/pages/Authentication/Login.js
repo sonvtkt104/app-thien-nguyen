@@ -74,7 +74,7 @@ const LoginPage = () => {
         }
 
         dispatch(setToken(data.data.token));
-        dispatch(setUsernameAction(data.data.user.userName));
+        dispatch(setUsernameAction(data.data.user.username));
 
         const roleId = data.data.user.roleId;
 
