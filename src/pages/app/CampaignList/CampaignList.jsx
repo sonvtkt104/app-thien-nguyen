@@ -244,7 +244,7 @@ class CamPaignList extends Component {
 
         return (
             <>
-                <PageLayout>
+                <PageLayout keyActive='campaign'>
                     <div className="campaign-list-title">
                         <Button 
                             type="primary"

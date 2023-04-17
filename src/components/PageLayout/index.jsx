@@ -3,11 +3,22 @@ import { Link } from "react-router-dom"
 import Header from "./Header"
 import "./index.css"
 import { Menu, Row } from "antd"
+import { useMemo, useState } from "react"
 
 export function PageLayout({
     children,
-    key
+    keyActive=''
 }) {
+    console.log('page layout')
+    const [open, setOpen] = useState(false)
+
+    const keySubMenu = useMemo(() => {
+        return [
+            'donation',
+            'my-donation',
+            'donate'
+        ]
+    }, [])
 
     return (
         <div className="page-layout-app">
@@ -24,7 +35,11 @@ export function PageLayout({
                 </Row>
 
                 <Menu
-                    defaultSelectedKeys={['dashboard']}
+                    selectedKeys={[keyActive]}
+                    // openKeys={ keySubMenu.includes(keyActive) ? ['donate']: []}
+                    onClick={({key}) => {
+                        console.log('key', key)
+                    }}
                     mode="inline"
                 >
                     <Menu.Item icon={<HomeOutlined style={{fontSize: 24}} />} key='dashboard'>
@@ -52,8 +67,8 @@ export function PageLayout({
                                 <span style={{fontSize: 16}}>Danh sách</span>
                             </Link>
                         </Menu.Item>
-                        <Menu.Item icon={<DropboxOutlined style={{fontSize: 24}} />} key='mydonation'>
-                            <Link to="/mydonation">
+                        <Menu.Item icon={<DropboxOutlined style={{fontSize: 24}} />} key='my-donation'>
+                            <Link to="/my-donation">
                                 <span style={{fontSize: 16}}>Quyên góp của tôi</span>
                             </Link>
                         </Menu.Item>
