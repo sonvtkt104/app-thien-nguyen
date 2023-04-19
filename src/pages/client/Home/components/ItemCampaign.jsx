@@ -2,6 +2,7 @@ import { HeartOutlined } from "@ant-design/icons"
 import { Button, Col, Progress, Row } from "antd"
 import { memo, useMemo, useRef, useState } from "react"
 import { DownIcon } from "../../../../components"
+import { useNavigate } from "react-router-dom"
 
 
 function ItemCampaign({
@@ -15,6 +16,7 @@ function ItemCampaign({
     process= 135
 }) {
 
+    const navigate = useNavigate()
     return (
         <Col xs={7} sm={7} md={7} lg={7} xl={7}
             style={{padding: '0 10px', }}
@@ -25,7 +27,11 @@ function ItemCampaign({
                     borderRadius: 4,
                     background: '#ffffff',
                     border: 'solid 1px #ebebf1', transition :'all 0.3s',
-                    boxShadow: '0px 10px 40px rgba(56, 56, 58, 0.04)'
+                    boxShadow: '0px 10px 40px rgba(56, 56, 58, 0.04)',
+                    cursor: 'pointer'
+                }}
+                onClick={() => {
+                    navigate("/detail-campaign/1")
                 }}
             >
                 <div>

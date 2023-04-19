@@ -2,6 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import signIn from "./signIn.jpg";
 import classes from "./Login.module.css";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import {
+  setToken,
+  setUsername as setUsernameAction,
+} from "../../redux/appSlice";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -9,6 +14,8 @@ const LoginPage = () => {
   const [usernameIsValid, setUsernameIsValid] = useState(true);
   const [passwordIsValid, setPasswordIsValid] = useState(true);
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const usernameChangeHandler = (event) => {
     setUsername(event.target.value);
@@ -59,14 +66,25 @@ const LoginPage = () => {
 
         const data = await response.json();
 
-        console.log(data);
+        // console.log(data.data.token);
 
         if (!data.isSuccess) {
           console.log("Không đăng nhập được");
           return;
         }
 
-        navigate("..");
+        dispatch(setToken(data.data.token));
+        dispatch(setUsernameAction(data.data.user.username));
+
+        const roleId = data.data.user.roleId;
+
+        if (roleId === 1) {
+          navigate("..");
+        } else if (roleId === 2) {
+          navigate("../home-page-charity");
+        } else {
+          navigate("../admin");
+        }
       }
     };
 

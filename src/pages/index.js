@@ -23,6 +23,7 @@ import CharityAll from './client/CharityAll'
 import CharitySearch from "./client/CharitySearch";
 import OrganizationFollow from "./client/MyAccount/OrganizationFollow";
 import CampaignSaved from "./client/MyAccount/CampaignSaved";
+import Settings from "./app/Settings"
 
 export {
   Home,
@@ -49,5 +50,6 @@ export {
   CharityAll,
   CharitySearch,
   OrganizationFollow,
-  CampaignSaved
+  CampaignSaved,
+  Settings
 };

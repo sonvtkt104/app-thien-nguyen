@@ -1,11 +1,14 @@
 import { BellOutlined } from "@ant-design/icons"
 import { Col, Popover, Row } from "antd"
 import { memo, useMemo, useState } from "react"
-import { NotificationIcon } from "../Icon"
+import { NotificationIcon, SettingIcon } from "../Icon"
+import { Link, useNavigate } from "react-router-dom"
 
 function Header({
 
 }) {
+
+    const navigate = useNavigate()
 
     const [openNotice, setOpenNotice] = useState(false)
     const [openProfile, setOpenProfile] = useState(false)
@@ -35,7 +38,17 @@ function Header({
             <Row justify='end'
                 style={{ paddingRight: 30 }}
             >
-                <span style={{ marginRight: 30 }} className='flex-col-center'>
+                <Col className="flex-col-center" style={{marginRight: 20}}>
+                        <span className="icon-app-header" style={{ cursor: 'pointer', padding: '5px 5px 4px 5px', borderRadius: "50%", background: 'transparent' }}
+                            onClick={() => {
+                                navigate("/settings")
+                            }}
+                        >
+                            <SettingIcon color='var(--color-black)' fontSize='25'/>
+                        </span>
+                </Col>
+                
+                <span style={{ marginRight: 20 }} className='flex-col-center'>
                     <Popover
                         placement="bottomRight"
                         content={
@@ -82,7 +95,7 @@ function Header({
                         open={openNotice}
                         onOpenChange={() => setOpenNotice(!openNotice)}
                     >
-                        <span style={{ cursor: 'pointer', padding: 5, borderRadius: "50%", background: 'var(--color-background-icon)' }}>
+                        <span className="icon-app-header" style={{ cursor: 'pointer', padding: 5, borderRadius: "50%", background: 'transparent' }}>
                             <NotificationIcon fontSize={25} />
                         </span>
                     </Popover>

@@ -353,7 +353,7 @@ function MyDonation() {
   }
 
   return (
-    <PageLayout>
+    <PageLayout keyActive="my-donation">
       <div className="mdn-segmented">
         <SegmentedApp
           className="mdn-segmenttedApp"

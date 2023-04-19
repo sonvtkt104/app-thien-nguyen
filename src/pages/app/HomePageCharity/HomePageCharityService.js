@@ -11,3 +11,4 @@ export const updateCharity = async (id, data) => {
     var url = API + "/" + id;
     return await axios.put(url, data)
 };
+
