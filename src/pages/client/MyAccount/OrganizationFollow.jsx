@@ -1,3 +1,4 @@
+import "./css/OrganizationFollow.css"
 import SideBar from "./SideBar";
 import { Row, Col, Input } from "antd";
 import ItemCharity from "../CharityAll/components/ItemCharity";
@@ -42,7 +43,7 @@ function OrganizationFollow() {
                     className='cs-input-search'
                 />
             </div>
-            <Row justify='space-between'>
+            {/* <Row justify='space-between'>
                 {
                     [1, 2, 3, 4, 5, 6].map((item, index) => (
                         <Col xs={11} sm={11} md={11} lg={11} xl={11}
@@ -53,7 +54,20 @@ function OrganizationFollow() {
                         </Col>
                     ))
                 }
-            </Row>
+            </Row> */}
+            <div style={{ display: "flex", justifyContent: "space-between", flexWrap:"wrap" }} >
+                {
+                    [1, 2, 3, 4, 5, 6,7].map((item, index) => (
+                        <div style={{position:"none", width: "48%", marginBottom: 30 }}>
+                            <ItemCharity
+                                key={index}
+                                className="of-itemCharity"
+                            />
+                        </div>
+
+                    ))
+                }
+            </div>
         </SideBar>
     )
 }

@@ -6,6 +6,26 @@ import { createDonationPostUser, getListDistrictByID, getListProvince, getListWa
 import { postDonation, updateDonationByID } from "../../app/Donation/listDonation/DonationService";
 
 function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
+    const dataInfo = useRef({
+        name: "Khuất Văn Hải",
+        phone: "0123456789",
+        email: "hai@gmail.com",
+        address: "số 200, Đội Cấn, Ba Đình, Hà Nội",
+        // id: "abcd12345"
+      })
+    console.log(dataInfo.current)
+    useEffect(() => {
+        const arrAddress = dataInfo.current.address?.split(", ")
+        const data = {...dataInfo.current, donorName: dataInfo.current.name,address:arrAddress[0], ward: arrAddress[1], district: arrAddress[2], province: arrAddress[3]}
+        delete data.name
+        console.log(dataUpdate)
+        if(Object.keys(dataUpdate).length === 0) {
+            form.setFieldsValue(data);
+        }
+    },[])
+
+
+    const [form] = Form.useForm();
     // console.log(getListDonation)
     const valueImages = Object.keys(dataUpdate).length !== 0 ? dataUpdate.images.reduce((a, b) => {
         return [...a, { url: b }]
@@ -23,45 +43,44 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
         district: [],
         ward: []
     })
+    const [idProvince, setIdProvince] = useState(undefined)
+    const [idDistrict, setIdDistrict] = useState(undefined)
 
-    const listID = useRef({
-        idProvince: undefined,
-        idDistrict: undefined,
-    })
+   
+   
 
     // useEffect(() => {
     //     setOrganizationReceived()
     // },[])
 
 
-    // useEffect(() => {
-    //     getListProvince().then(res => {
-    //         console.log(res.data)
-    //         setListAddress({ ...listAddress, "province": res.data.data.filter(result => result.name !== null) })
-    //     })
+    useEffect(() => {
+        getListProvince().then(res => {
+            setListAddress({ ...listAddress, "province": res.data.data }) 
+        })
 
-    // }, [])
+    }, [])
 
-    // useEffect(() => {
-    //     // setEmployee({ ...employee, "district": null, "ward": null })
-    //     if (listID.current.idProvince !== undefined) {
-    //         getListDistrictByID(listID.current.idProvince).then(res => {
-    //             setListAddress({ ...listAddress, "district": res.data.data })
-    //         })
-    //     }
-    // }, [listID.current.idProvince])
+    useEffect(() => {
+        if (idProvince !== undefined) {
+            form.setFieldsValue({district: null, ward: null})
+            getListDistrictByID(idProvince).then(res => {
+                setListAddress({ ...listAddress, "district": res.data.data })
+            })
+        }
+    }, [idProvince])
 
-    // useEffect(() => {
-    //     // setEmployee({ ...employee, "ward": null })
-    //     if (listID.current.idDistrict !== undefined) {
-    //         getListWardByID({ "id": listID.current.idDistrict }).then(res => {
-    //             setListAddress({ ...listAddress, "ward": res.data.data.filter(result => result.district.id === listID.current.idDistrict) })
-    //         })
-    //     }
-    // }, [listID.current.idDistrict])
-    // console.log(listAddress)
+    useEffect(() => {
+        if (idDistrict !== undefined) {
+            form.setFieldsValue({ward: null})
+            getListWardByID(idDistrict).then(res => {
+                setListAddress({ ...listAddress, "ward": res.data.data})
+            })
+        }
+    }, [idDistrict])
 
-    console.log(dataUpdate)
+
+    // console.log(dataUpdate)
     const onClose = () => {
         setOpen(false);
         handleCloseModal()
@@ -71,6 +90,10 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
             return [...a, b.url]
         }, [])
         values.date = time.getDate() + "/" + (time.getMonth() + 1) + "/" + time.getFullYear()
+        values.address = `${values.address}, ${values.ward}, ${values.district}, ${values.province}` 
+        delete values.province
+        delete values.district
+        delete values.ward
         if (dataUpdate?.id) {
             console.log(idOrganization)
             const dataUpdateDonationPostUser = { ...dataUpdate, ...values }
@@ -283,6 +306,29 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
         setOrganizationReceived(value)
     };
 
+    const onChangeProvince = (value, value1) => {
+        setIdProvince(value1.id)
+    };
+    
+    const onSearchProvince = (value, value1) => {
+        console.log("search province")
+    };
+
+    const onChangeDistrict = (value, value1) => {
+        setIdDistrict(value1.id)
+    };
+    
+    const onSearchDistrict = (value, value1) => {
+    };
+
+    const onChangeWard = (value, value1) => {
+       
+    };
+    
+    const onSearchWard = (value, value1) => {
+    };
+    
+
     return (
         <div>
             <Modal
@@ -302,6 +348,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                 className="dpd-modal"
             >
                 <Form
+                    form={form}
                     layout={"vertical"}
                     name="basic"
                     style={{
@@ -312,11 +359,14 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                         // paddingRight: 16
                     }}
                     initialValues={{
+                        name: dataUpdate ? dataUpdate.name : dataInfo.current.name,
+                        phone: dataUpdate ? dataUpdate.phone : dataInfo.current.phone,
+                        address: dataUpdate ? dataUpdate.address?.split(", ")[0] : dataInfo.current.address?.split(", ")[0],
+                        ward: dataUpdate ? dataUpdate.address?.split(", ")[1] : dataInfo.current.address?.split(", ")[1],
+                        district: dataUpdate ? dataUpdate.address?.split(", ")[2] : dataInfo.current.address?.split(", ")[2],
+                        province: dataUpdate ? dataUpdate.address?.split(", ")[3] : dataInfo.current.address?.split(", ")[3],
                         donorName: dataUpdate ? dataUpdate.donorName : "",
-                        phone: dataUpdate ? dataUpdate.phone : "",
-                        address: dataUpdate ? dataUpdate.address : "",
                         id: dataUpdate ? dataUpdate.id : "",
-                        name: dataUpdate ? dataUpdate.name : "",
                         donationObject: dataUpdate ? dataUpdate.donationObject : "",
                         donationAddress: dataUpdate ? dataUpdate.donationAddress : "",
                         description: dataUpdate ? dataUpdate.description : "",
@@ -331,7 +381,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                         <h3 style={{ marginBottom: 6 }}>Thông tin liên hệ</h3>
                         <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                             <Form.Item
-                                style={{ width: "32%", marginBottom: 10 }}
+                                style={{ width: "66%", marginBottom: 10 }}
                                 label="Họ và tên"
                                 name="donorName"
                                 rules={[
@@ -356,22 +406,26 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                             >
                                 <Input />
                             </Form.Item>
-                            <Form.Item
+                            {/* <Form.Item
                                 style={{ width: "32%", marginBottom: 10 }}
-                                label="Mã bài đăng"
-                                name="id"
+                                label="Email"
+                                name="email"
                                 rules={[
                                     {
+                                        type: 'email',
+                                        message: 'Email không hợp lệ!',
+                                    },
+                                    {
                                         required: true,
-                                        message: 'Vui lòng nhập Code bài đăng!',
+                                        message: 'Vui lòng nhập Email!',
                                     },
                                 ]}
                             >
                                 <Input />
-                            </Form.Item>
+                            </Form.Item> */}
 
                         </div>
-                        {/* <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                             <Form.Item
                                 style={{ width: "32%", marginBottom: 10 }}
                                 label="Tỉnh/Thành Phố"
@@ -387,15 +441,13 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                                     showSearch
                                     placeholder="Chọn Tỉnh/Thành Phố"
                                     optionFilterProp="children"
-                                    onChange={onChange}
-                                    onSearch={onSearch}
+                                    onChange={onChangeProvince}
+                                    onSearch={onSearchProvince}
                                     onSelect={(value) => console.log(value)}
-                                    // disabled={dataUpdate.listRequest.length > 1 ? true : false}
-                                    // defaultValue={dataUpdate.organizationReceived === null ? "Tất cả" : "hai"}
                                     filterOption={(input, option) =>
-                                        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                        (option?.name ?? '').toLowerCase().includes(input.toLowerCase())
                                     }
-                                    // fieldNames={{ label: "organization", value: "value", options: "options" }}
+                                    fieldNames={{ label: "name", value: "name", options: "options" }}
                                     options={listAddress.province}
                                 />
                             </Form.Item>
@@ -410,7 +462,19 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                                     },
                                 ]}
                             >
-                                <Input />
+                                <Select
+                                    showSearch
+                                    placeholder="Chọn Huyện/Quận"
+                                    optionFilterProp="children"
+                                    onChange={onChangeDistrict}
+                                    onSearch={onSearchDistrict}
+                                    onSelect={(value) => console.log(value)}
+                                    filterOption={(input, option) =>
+                                        (option?.name ?? '').toLowerCase().includes(input.toLowerCase())
+                                    }
+                                    fieldNames={{ label: "name", value: "name", options: "options" }}
+                                    options={listAddress.district}
+                                />
                             </Form.Item>
                             <Form.Item
                                 style={{ width: "32%", marginBottom: 10 }}
@@ -423,10 +487,22 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                                     },
                                 ]}
                             >
-                                <Input />
+                                <Select
+                                    showSearch
+                                    placeholder="Chọn Phường/Xã"
+                                    optionFilterProp="children"
+                                    onChange={onChangeWard}
+                                    onSearch={onSearchWard}
+                                    onSelect={(value) => console.log(value)}
+                                    filterOption={(input, option) =>
+                                        (option?.name ?? '').toLowerCase().includes(input.toLowerCase())
+                                    }
+                                    fieldNames={{ label: "name", value: "name", options: "options" }}
+                                    options={listAddress.ward}
+                                />
                             </Form.Item>
 
-                        </div> */}
+                        </div>
                         <Form.Item
                             style={{ width: "100%", marginBottom: 10 }}
                             label="Địa chỉ cụ thể"
@@ -438,48 +514,10 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                                 },
                             ]}
                         >
-                            <Input
-                            // value={info}
-                            // onChange={(e) => { setInfo(e.target.value) }}
-
-                            />
+                            <Input/>
                         </Form.Item>
 
-                        {/* <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-                            <Form.Item
-                                style={{ width: "49%", marginBottom: 10 }}
-                                label="Địa chỉ cụ thể"
-                                name="address"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Vui lòng nhập Địa chỉ của bạn!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                // value={info}
-                                // onChange={(e) => { setInfo(e.target.value) }}
-
-                                />
-                            </Form.Item>
-                            <Form.Item
-                                style={{ width: "49%", marginBottom: 10 }}
-                                label="Mã bài đăng"
-                                name="id"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Vui lòng nhập Code bài đăng!',
-                                    },
-                                ]}
-                            >
-                                <Input />
-                            </Form.Item>
-
-                        </div> */}
-
-                        <h3 style={{ marginBottom: 6 }}>Thông tin đồ ủng hộ</h3>
+                        <h3 style={{ marginBottom: 6 }}>Thông tin ủng hộ</h3>
                         <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                             <Form.Item
                                 style={{ width: "49%", marginBottom: 16 }}
@@ -494,15 +532,14 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                             >
                                 <Input />
                             </Form.Item>
-
                             <Form.Item
-                                style={{ width: "49%", marginBottom: 16 }}
-                                label="Đối tượng muốn ủng hộ"
-                                name="donationObject"
+                                style={{ width: "49%", marginBottom: 10 }}
+                                label="Mã bài đăng"
+                                name="id"
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Vui lòng nhập Đối tượng muốn ủng hộ!',
+                                        message: 'Vui lòng nhập Code bài đăng!',
                                     },
                                 ]}
                             >
@@ -513,12 +550,12 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                         <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                             <Form.Item
                                 style={{ width: "49%", marginBottom: 16 }}
-                                label="Địa chỉ muốn ủng hộ"
-                                name="donationAddress"
+                                label="Đối tượng muốn ủng hộ"
+                                name="donationObject"
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Vui lòng nhập Địa chỉ muốn ủng hộ!',
+                                        message: 'Vui lòng nhập Đối tượng muốn ủng hộ!',
                                     },
                                 ]}
                             >
@@ -581,7 +618,19 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                                 />
                             </Form.Item>
                         </div>
-
+                        <Form.Item
+                            style={{ width: "100%", marginBottom: 16 }}
+                            label="Địa chỉ muốn ủng hộ"
+                            name="donationAddress"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng nhập Địa chỉ muốn ủng hộ!',
+                                },
+                            ]}
+                        >
+                            <Input />
+                        </Form.Item>
                         <Form.Item
                             style={{ width: "100%", marginBottom: 16 }}
                             label="Mô tả"

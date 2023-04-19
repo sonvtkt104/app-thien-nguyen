@@ -20,7 +20,7 @@ function CampaignSaved() {
         //   )
         // })
         // setSearcheddata(filteredData)
-      }
+    }
 
 
     return (
@@ -41,15 +41,16 @@ function CampaignSaved() {
                     className='cs-input-search'
                 />
             </div>
-            <Row justify='space-between'>
+            <div style={{ display: "flex", justifyContent: "space-between", flexWrap:"wrap" }} >
                 {
-                    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
-                        <Col xs={11} sm={11} md={11} lg={11} xl={11} key={index}>
-                            <ItemCampaign />
-                        </Col>
+                    [1, 2, 3, 4, 5, 6, 7].map((item, index) => (
+                        <ItemCampaign
+                            key={index}
+                            style={{ width: "48%", marginBottom: 30 }}
+                        />
                     ))
                 }
-            </Row>
+            </div>
         </SideBar>
     )
 }

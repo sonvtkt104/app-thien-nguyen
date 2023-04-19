@@ -75,7 +75,7 @@ function HomePageCharity() {
         })
       })
     },[])
-    
+    console.log("aaaaa")
     // const infoCharity = useSelector((state) => state.donation.infoCharity)
     // console.log(infoCharity)
   //   const infoCharity = {

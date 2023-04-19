@@ -73,19 +73,21 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation }) {
             key: "1",
             title: "Tổ chức muốn Xác nhận",
             align: 'center',
-            dataIndex: "name",
-            // render: (rowData) => {
-            //     console.log(rowData)
-            //     return (
-            //         <div
-            //             key={rowData.id}
-            //             className="cm-border-or"
-
-            //         >
-            //             {rowData.name}
-            //         </div>
-            //     )
-            // }
+            // dataIndex: "name",
+            render: (rowData) => {
+                console.log(rowData)
+                return (
+                    <a
+                        key={rowData.id}
+                        className="cm-border-or"
+                        // href= {`http://localhost:3000/profile-charity1/${rowData.id}`}
+                        href="http://localhost:3000/profile-charity"
+                        target="_blank"
+                    >
+                        {rowData.name}
+                    </a>
+                )
+            }
         },
         {
             key: "2",
