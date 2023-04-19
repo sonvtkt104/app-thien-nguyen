@@ -6,6 +6,7 @@ export const appSlice = createSlice({
     name: "Son",
     token: "",
     username: "",
+    openSubMenu: false,
   },
   reducers: {
     setName: (state, action) => {
@@ -17,8 +18,11 @@ export const appSlice = createSlice({
     setUsername: (state, action) => {
       state.username = action.payload;
     },
+    setOpenSubMenu: (state, action) => {
+      state.openSubMenu = action.payload;
+    }
   },
 });
 
-export const { setName, setToken, setUsername } = appSlice.actions;
+export const { setName, setToken, setUsername, setOpenSubMenu } = appSlice.actions;
 export default appSlice.reducer;

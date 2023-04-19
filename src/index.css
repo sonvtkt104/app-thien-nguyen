@@ -116,9 +116,12 @@ a {
 
 .input-app:hover,
 .input-app:focus,
+.input-app:focus-visible,
 .textarea-app:hover,
-.textarea-app:focus{
+.textarea-app:focus,
+.textarea-app:focus-visible{
   border-color: var(--color-blue) !important;
+  outline: 0 !important;
 }
 
 .modal-preview-image-app .ant-modal-content {
