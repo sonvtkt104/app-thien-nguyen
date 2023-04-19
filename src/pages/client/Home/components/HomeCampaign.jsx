@@ -2,11 +2,13 @@ import { Button, Col, Row } from "antd"
 import { memo, useMemo, useRef, useState } from "react"
 import { DownIcon } from "../../../../components"
 import ItemCampaign from "./ItemCampaign"
+import { useNavigate } from "react-router-dom"
 
 
 function HomeCampaign({
 
 }) {
+    const navigate = useNavigate()
 
     const campaigns = useMemo(() => {
         return [
@@ -65,7 +67,11 @@ function HomeCampaign({
                 }
             </Row>
             <Row style={{padding: '30px 0'}} justify='center'>
-                <Button className="btn">
+                <Button className="btn"
+                    onClick={() => {
+                        navigate('/campaign-all')
+                    }}
+                >
                     XEM TOÀN BỘ DỰ ÁN
                 </Button>
             </Row>

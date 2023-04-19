@@ -24,7 +24,9 @@
 .gi-link {
     margin: 4px 20px;
 }
-
+.gi-image {
+    object-fit: cover;
+}
 .gi-image, .gid-image {
     border-radius: 50%;
 }
@@ -37,9 +39,11 @@
     align-items: center;
     font-size: 25px;
     margin: 10px 0 20px 10px;
+    /* object-fit: cover; */
 }
 .gi-icon-check {
-    color: #43DA86;
+    /* color: #43DA86; */
+    color: #6DCCE3;
     margin-left: 10px;
     font-size: 20px;
 }

@@ -28,7 +28,11 @@ export function HeaderClient({
                             className='flex-col-center'
                         >
                             <Row justify={'left'}>
-                                <Row style={{fontSize: 18, fontWeight: 600, lineHeight: '50px', cursor: 'pointer'}}>
+                                <Row style={{fontSize: 18, fontWeight: 600, lineHeight: '50px', cursor: 'pointer'}}
+                                    onClick={() => {
+                                        navigate("/")
+                                    }}
+                                >
                                     <img src="/images/logo-app.png" alt="logo app"
                                         style={{width: 50, marginRight: 4}}
                                     />
@@ -80,14 +84,22 @@ export function HeaderClient({
                         >
                             <Row justify={'end'}>
                                 <Col className="flex-col-center">
-                                    <span style={{cursor: 'pointer'}}>
+                                    <span style={{cursor: 'pointer'}}
+                                        onClick={() => {
+                                            navigate("/campaign-all")
+                                        }}
+                                    >
                                         <SearchIcon fontSize={26} />
                                     </span>
                                 </Col>
                                 <Col
                                     className="flex-col-center"
                                 >
-                                    <span style={{fontWeight: '600', margin: '0 30px', cursor: 'pointer'}}>
+                                    <span style={{fontWeight: '600', margin: '0 30px', cursor: 'pointer'}}
+                                        onClick={() => {
+                                            navigate("/login")
+                                        }}
+                                    >
                                         Đăng nhập
                                     </span>
                                 </Col>
@@ -95,6 +107,9 @@ export function HeaderClient({
                                     className="btn-app app-hover"
                                     style={{
                                         fontWeight: '600',
+                                    }}
+                                    onClick={() => {
+                                        navigate("/sign-up")
                                     }}
                                 >
                                     Đăng ký

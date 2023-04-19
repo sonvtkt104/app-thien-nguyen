@@ -1,8 +1,12 @@
 import { FacebookOutlined, GithubOutlined, InstagramOutlined, TwitterOutlined, YoutubeOutlined } from "@ant-design/icons";
 import { Button, Col, Row } from "antd";
 import "./index.css"
+import { useNavigate } from "react-router-dom";
 
 export function FooterClient() {
+
+    const navigate = useNavigate()
+
     return (
         <Row className="landing-page-footer"
             style={{justifyContent: 'center'}}
@@ -21,7 +25,11 @@ export function FooterClient() {
                 xs={7} sm={7} md={7} lg={7} xl={7}
                 style={{padding: '0 20px', }}
                 className="landing-page-footer-middle">
-                <div style={{marginBottom: 20}}><Button className="btn-primary" >ĐĂNG KÝ</Button></div>
+                <div style={{marginBottom: 20}}><Button className="btn-primary" 
+                    onClick={() => {
+                        navigate("/sign-up")
+                    }}
+                >ĐĂNG KÝ</Button></div>
                 <div>
                     <span><FacebookOutlined /></span>
                     <span><InstagramOutlined /></span>

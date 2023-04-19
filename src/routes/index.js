@@ -23,11 +23,14 @@ import {
   PassWord,
   CharityAll,
   CharitySearch,
+  OrganizationFollow,
+  CampaignSaved
 } from "../pages";
 import CamPaignPreview from "../pages/app/CampaignList/CampaignPreview";
 import { action as loginAction } from "../pages/Authentication/Login";
 // import LoginPage from "../pages/Authentication/Login";
 // import RegistrationPage from "../pages/Authentication/Registration";
+
 
 export default function Router() {
   return (
@@ -64,6 +67,8 @@ export default function Router() {
         />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/sign-up" element={<RegistrationPage />} />
+        <Route path="/my-account/organization-follow" element={<OrganizationFollow />} />
+        <Route path="/my-account/campaign-saved" element={<CampaignSaved />} />
       </Routes>
     </BrowserRouter>
   );
