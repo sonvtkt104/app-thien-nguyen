@@ -88,7 +88,7 @@ function GeneralInformation() {
 
 
     return (
-        <PageLayout>
+        <PageLayout keyActive='info'>
             <div className="gi-header">
                 <h1>Thông tin chung</h1>
                 <Button

@@ -71,3 +71,8 @@
 .ant-menu-sub.ant-menu-inline {
     background: none !important;
 }
+
+.icon-app-header:hover {
+    transition: 0.15s linear;
+    background: var(--color-background-icon) !important;
+}

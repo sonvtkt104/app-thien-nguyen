@@ -3,11 +3,17 @@ import { Link } from "react-router-dom"
 import Header from "./Header"
 import "./index.css"
 import { Menu, Row } from "antd"
+import { useMemo, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { setOpenSubMenu } from "../../redux/appSlice"
 
 export function PageLayout({
     children,
-    key
+    keyActive=''
 }) {
+    console.log('page layout')
+    const dispatch = useDispatch()
+    const {openSubMenu} = useSelector(state => state.app)
 
     return (
         <div className="page-layout-app">
@@ -24,7 +30,20 @@ export function PageLayout({
                 </Row>
 
                 <Menu
-                    defaultSelectedKeys={['dashboard']}
+                    selectedKeys={[keyActive]}
+                    openKeys={ openSubMenu ? ['donate']: []}
+                    onOpenChange={(openKeys) => {
+                        console.log(openKeys)
+                        if(openKeys.length > 0) {
+                            dispatch(setOpenSubMenu(true))
+                        } else {
+                            dispatch(setOpenSubMenu(false))
+                        }
+
+                    }}
+                    onClick={({key}) => {
+                        console.log('key', key)
+                    }}
                     mode="inline"
                 >
                     <Menu.Item icon={<HomeOutlined style={{fontSize: 24}} />} key='dashboard'>
@@ -52,7 +71,7 @@ export function PageLayout({
                                 <span style={{fontSize: 16}}>Danh sách</span>
                             </Link>
                         </Menu.Item>
-                        <Menu.Item icon={<DropboxOutlined style={{fontSize: 24}} />} key='mydonation'>
+                        <Menu.Item icon={<DropboxOutlined style={{fontSize: 24}} />} key='my-donation'>
                             <Link to="/mydonation">
                                 <span style={{fontSize: 16}}>Quyên góp của tôi</span>
                             </Link>

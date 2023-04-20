@@ -2,7 +2,7 @@ import "./HomePageCharity.css"
 import { PageLayout } from "../../../components"
 import { Button, Col, Input, Row, Table, Modal, Image   } from 'antd'
 import {CheckCircleFilled} from '@ant-design/icons';
-import React, { useState, useEffect, useRef} from 'react'
+import React, { useState, useEffect, useRef, useMemo} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import ReactApexChart from "react-apexcharts";
 import { getInfoCharity } from "../../../redux/donationSlice";
@@ -11,6 +11,8 @@ import { getCharityByID } from "./HomePageCharityService";
 
 
 function HomePageCharity() {
+    console.log("HomePageCharity")
+
     const dispatch = useDispatch()
     const chartObj = {
           
@@ -75,7 +77,7 @@ function HomePageCharity() {
         })
       })
     },[])
-    
+    console.log("aaaaa")
     // const infoCharity = useSelector((state) => state.donation.infoCharity)
     // console.log(infoCharity)
   //   const infoCharity = {
@@ -136,7 +138,7 @@ function HomePageCharity() {
     }
 
     return (
-        <PageLayout>
+        <PageLayout keyActive="dashboard">
             <div className="hpc-modal">
                 <div className="hpc-modal-main">
                     <div className="hpc-title">

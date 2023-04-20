@@ -1,9 +1,12 @@
 import { Row } from "antd"
 import { memo } from "react"
+import { useNavigate } from "react-router-dom"
 
 function ItemCharity({
 
 }) {
+
+    const navigate = useNavigate()
     return (
         <div
             style={{position: 'relative',}}
@@ -14,6 +17,9 @@ function ItemCharity({
                     background:"#ffffff",
                     boxShadow: '-1px 1px 4px rgba(0,0,0,.051)',
                     cursor: 'pointer'
+                }}
+                onClick={() => {
+                    navigate("/profile-charity")
                 }}
             >
                 <div

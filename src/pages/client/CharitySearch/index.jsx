@@ -5,8 +5,10 @@ import CharitySearchHeader from "./components/CharitySearchHeader";
 
 import './css/index.css'
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function CharitySearch() {
+    const navigate = useNavigate()
     const [totalSearch, setTotalSearch] = useState(12)
 
     const charityTheBest = [
@@ -58,6 +60,9 @@ export default function CharitySearch() {
                                                 className="charity-search-item"
                                                 key={i}
                                                 style={{padding: 16, marginBottom: 20, borderRadius: 5, boxShadow: '-1px 1px 6px rgba(0,0,0,.05)', flexWrap: 'nowrap'}}
+                                                onClick={() => {
+                                                    navigate("/profile-charity")
+                                                }} 
                                             >
                                                 <img 
                                                     src={item}
@@ -125,7 +130,11 @@ export default function CharitySearch() {
                                                     style={{padding: 15, background: "#FFFF", borderRadius: '50%',
                                                         filter: 'drop-shadow(-1px 1px 6px rgba(0,0,0,.05))',
                                                         border: '1px solid #f7f7f7',
-                                                        margin: '0 10px 16px'
+                                                        margin: '0 10px 16px',
+                                                        cursor: 'pointer'
+                                                    }}
+                                                    onClick={() => {
+                                                        navigate("/profile-charity")
                                                     }}
                                                 >
                                                     <img 

@@ -1,6 +1,7 @@
 import { Col, Progress, Row } from "antd";
 import { useCallback } from "react";
 import { Tag } from "../Tag";
+import { useNavigate } from "react-router-dom";
 
 export function ItemCampaign({
     style,
@@ -17,6 +18,7 @@ export function ItemCampaign({
     status = 'active'
 }) {
 
+    const navigate = useNavigate()
     const FormatCurrency = useCallback((number) => {
         const currencyString = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
@@ -32,9 +34,13 @@ export function ItemCampaign({
                 marginBottom: '50px',
                 boxShadow: '0px 10px 40px rgba(56, 56, 58, 0.04)',
                 borderRadius: 6,
+                cursor: 'pointer',
                 ...style,
             }}
             className={className}
+            onClick={() => {
+                navigate("/detail-campaign/1")
+            }}
         >
             <Col xs={8} sm={8} md={8} lg={8} xl={8}
                 style={{backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundPosition: 'center center'}}

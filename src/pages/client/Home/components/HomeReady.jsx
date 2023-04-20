@@ -1,7 +1,11 @@
 import { Button, Col, Row } from "antd"
 import { memo } from "react"
+import { useNavigate } from "react-router-dom"
 
 function HomeReady() {
+
+    const navigate = useNavigate()
+
     return (
         <Row justify='center' style={{padding : '50px 0'}}>
             <Col xs={11} sm={11} md={11} lg={11} xl={11}
@@ -13,8 +17,16 @@ function HomeReady() {
                 </div>
                 <div>
                     <Row>
-                        <Button className="btn-primary" style={{marginRight: 30}}>TẠO MỘT DỰ ÁN MỚI</Button>
-                        <Button className="btn">QUYÊN GÓP NGAY</Button>
+                        <Button className="btn-primary" style={{marginRight: 30}}
+                            onClick={() => {
+                                navigate("/sign-up")
+                            }}
+                        >TẠO MỘT DỰ ÁN MỚI</Button>
+                        <Button className="btn"
+                            onClick={() => {
+                                navigate("/campaign-all")
+                            }}
+                        >QUYÊN GÓP NGAY</Button>
                     </Row>
                 </div>
             </Col>

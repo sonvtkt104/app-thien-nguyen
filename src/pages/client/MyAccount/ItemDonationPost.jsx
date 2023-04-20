@@ -2,7 +2,7 @@ import "./css/ItemDonationPost.css"
 import { Button, Image, Popover, Modal } from "antd"
 import React, { useState } from 'react';
 import ModalDetail from "../../app/Donation/ModalDetail";
-import { MoreOutlined, FrownOutlined, SmileOutlined, MehOutlined } from '@ant-design/icons';
+import { MoreOutlined, FrownOutlined, SmileOutlined, HeartFilled, WhatsAppOutlined, StarFilled } from '@ant-design/icons';
 import { deleteDonationPostUser } from "./MyAccountService";
 import { deleteDonationByID, updateDonationByID } from "../../app/Donation/listDonation/DonationService";
 
@@ -15,11 +15,7 @@ function ItemDonationPost({ data, handleOpenModal, getListDonation }) {
     // console.log(dataDetail)
     const [openPopover, setOpenPopover] = useState(true);
 
-    const handleCloseModalDetail = (reload) => {
-        console.log(reload)
-        // if(reload) {
-        // }
-        // getListDonation(reload)
+    const handleCloseModalDetail = () => {
         setOpenModalDetail(false)
         // setDataDetail({})
     }
@@ -128,17 +124,24 @@ function ItemDonationPost({ data, handleOpenModal, getListDonation }) {
                                     /> : data.status === "Từ chối nhận" ?
                                         <FrownOutlined
                                             style={{ fontSize: 24, color: "red", marginLeft: 10 }}
-                                        /> : <MehOutlined
-                                            style={{ fontSize: 24, color: "#FFCC00", marginLeft: 10 }}
-                                        />
+                                        /> : data.status === "Chờ xác nhận" ?
+                                            <WhatsAppOutlined style={{ fontSize: 24, color: "#44B3CF", marginLeft: 10 }} /> :
+
+                                            <StarFilled
+                                                style={{ fontSize: 20, color: "#F7CC04", marginLeft: 10 }}
+                                            />
                             }
+                            {/* <HeartFilled
+                                                    style={{ fontSize: 24, color: "#F60000", marginLeft: 10 }}
+                                                /> */}
+
                             {/* <FrownOutlined
                                 style={{ fontSize: 24, color: "red", marginLeft: 10 }}
                             />
                             <SmileOutlined
                                 style={{ fontSize: 24, color: "green", marginLeft: 10 }}
                             />
-                            <MehOutlined
+                            <HeartFilled
                                 style={{ fontSize: 24, color: "yellow", marginLeft: 10 }}
                             /> */}
 

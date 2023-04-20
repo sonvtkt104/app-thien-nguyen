@@ -22,3 +22,4 @@ export { SearchIcon } from './SearchIcon';
 export { PauseIcon } from "./PauseIcon";
 export { ArrowLeftIcon } from './ArrowLeftIcon';
 export { NotificationIcon } from "./NotificationIcon";
+export { SettingIcon } from "./SettingIcon";
