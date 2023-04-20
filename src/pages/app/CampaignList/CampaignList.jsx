@@ -8,6 +8,8 @@ import ModalCreateCampaign from "./ModalCreateCompaign";
 import ModalEditCompaign from "./ModalEditCompaign";
 import { toast } from "react-toastify";
 import Search from "antd/es/input/Search";
+import campaignService from "./CampaignService";
+import axios from "axios";
 
 
 
@@ -34,7 +36,7 @@ class CamPaignList extends Component {
                 },
                 {
                   key: "receive",
-                  title: "Nhận được",
+                  title: "Đã nhận được",
                   dataIndex: "receive",
                   align: 'center',
                 },
@@ -177,7 +179,7 @@ class CamPaignList extends Component {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.setState({
             dataSourceSearch: this.state.dataSource
         })
@@ -284,6 +286,7 @@ class CamPaignList extends Component {
                         handleCancel={this.handleCancel}
                         type={'edit'}
                     />
+                    
                     <ModalCreateCampaign 
                         isOpenModalCompaign={isOpenModalCompaign}
                         handleOk={this.handleOk}

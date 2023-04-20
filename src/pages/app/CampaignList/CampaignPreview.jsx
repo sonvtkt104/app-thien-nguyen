@@ -1,6 +1,5 @@
 import { Component } from "react";
 import { ArrowLeftIcon, PageLayout, SegmentedApp, TableApp } from "../../../components";
-import {EyeOutlined, EditOutlined, DeleteOutlined} from '@ant-design/icons';
 import { Button, Divider, Modal } from "antd";
 import { Link } from "react-router-dom";
 import Chart from 'react-apexcharts';
@@ -10,6 +9,11 @@ import './CampaignPreview.scss';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
+import { EditOutlined } from "@ant-design/icons";
+import ModalCreatePost from "./ModalCreatePost";
+import { toast } from "react-toastify";
+import ModalEditPost from "./ModalEditPost";
+
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 
 class CamPaignPreview extends Component {
@@ -17,12 +21,13 @@ class CamPaignPreview extends Component {
         super(props);
         
         this.state = {
+            isOpenModalCreatePost: false,
+            isOpenModalEditPost: false,
             options: [
                 {label: 'Thông tin chung', value: 1},
-                {label: 'Bài viết giới thiệu', value: 2}, 
-                {label: 'Hoạt động', value: 3}, 
-                {label: 'Sao kê', value: 4}, 
-                {label: 'Thống kê', value: 5}
+                {label: 'Bài viết', value: 2}, 
+                {label: 'Sao kê', value: 3}, 
+                {label: 'Thống kê', value: 4}
             ],
             valueOption: 1,
             contentHTML: '',
@@ -53,17 +58,27 @@ class CamPaignPreview extends Component {
                   align: 'center',
                 },
                 {
-                  key: "status",
-                  title: "Trạng thái",
+                  key: 5,
+                  title: "Hành động",
                   dataIndex: "action",
                   align: 'center',
+                  render: (text, record, index) => {
+                    return (
+                        <div className="campaign-list-actions">
+                            <EditOutlined
+                                className="actions-edit"
+                                onClick={()=> this.handleActions(record, 'edit')}
+                            />      
+                        </div>
+                    )
+                }
                 },
             ],
             dataSource: [
                 {
                     key: 1,
                     name: "Kêu gọi toàn dân vận động",
-                    postType: "Kêu gọi",
+                    postType: "Bài viết giới thiệu",
                     status: "Hoạt động",
                     date: '15/03/2023',
                     action: 'no'
@@ -223,6 +238,27 @@ class CamPaignPreview extends Component {
         })
     }
 
+    handleOk = () => {
+        toast.success('Chỉnh sửa thành công!');
+        this.setState({
+            isOpenModalCreatePost: false,
+            isOpenModalEditPost: false
+        })
+    }
+
+    handleCancel = () => {
+        this.setState({
+            isOpenModalCreatePost: false,
+            isOpenModalEditPost: false
+        })
+    }
+
+    handleActions = (record) => {
+        this.setState({
+            isOpenModalEditPost: true
+        })
+    }
+
     render() {
         let {options, valueOption} = this.state;
         return (
@@ -237,7 +273,7 @@ class CamPaignPreview extends Component {
                                 <div>Quyên góp miền Trung</div>
                             </div>
                             <div className="n-b-right">
-                                <Button type="primary">Preview</Button>
+                                <Button style={{pointerEvents: 'none'}} type="primary">Preview</Button>
                             </div>
                         </div>
                         <SegmentedApp 
@@ -250,37 +286,37 @@ class CamPaignPreview extends Component {
                             valueOption === 1 &&
                             <>
                                 <div className="c-p-c-content">
-                                    <button className="btn-preview-edit">Chỉnh sửa</button>
+                                    {/* <button className="btn-preview-edit">Chỉnh sửa</button> */}
                                     <div className="content-info">
                                         <div className="form-group">
-                                            <label>Tên cuộc vận động:</label>
-                                            <div>Quyên góp miền Trung</div>
+                                            <div className='description-name'>Tên cuộc vận động:</div>
+                                            <div className='description-info'>Quyên góp miền Trung</div>
                                         </div>
                                         <div className="form-group">
-                                            <label>Giới thiệu:</label>
-                                            <div>abc</div>
+                                            <div className='description-name'>Giới thiệu:</div>
+                                            <div className='description-info'>Mưa lũ đã đi qua để lại cho các tỉnh miền Trung sự hoang tàn, đổ nát, hàng nghìn ngôi nhà, công trình, cơ sở hạ tầng bị hư hỏng, nhiều tài sản, gia súc, hoa màu... bị lũ cuốn trôi. Sau những cơn bão, lũ lại là những cảnh con mất mẹ, vợ mất chồng, cha mẹ mất con... Cảnh người dân ngơ ngác, đau đáu nhìn về những ngôi nhà thân yêu của mình đang ngập trong biển nước mà nước mắt cứ mãi mãi dâng trào. Giờ đây, ở nơi đó, sau lũ lụt là bao nhọc nhằn vất vả để ổn định cuộc sống, là bao nhiêu nỗi lo canh cánh bên lòng nào là sách vở, quần áo cho con đến trường, lúa giống cho vụ mùa tới, thuốc men để phòng dịch bệnh, tiền đâu để sửa chữa nhà, mua sắm vật dụng sinh hoạt hàng ngày...</div>
                                         </div>
                                         <div className="form-group">
-                                            <label>Đối tượng:</label>
-                                            <div>Đồng bào miền Trung</div>
+                                            <div className='description-name'>Đối tượng:</div>
+                                            <div className='description-info'>Đồng bào miền Trung</div>
                                         </div>
                                         <div className="form-group">
-                                            <label>Thời gian bắt đầu:</label>
-                                            <div>15/3/2023</div>
+                                            <div className='description-name'>Thời gian bắt đầu:</div>
+                                            <div className='description-info'>15/3/2023</div>
                                         </div>
                                         <div className="form-group">
-                                            <label>Thời gian kết thúc:</label>
-                                            <div>Chưa rõ</div>
+                                            <div className='description-name'>Thời gian kết thúc:</div>
+                                            <div className='description-info'>Chưa rõ</div>
                                         </div>
                                         <div className="form-group">
-                                            <label>Mô tả:</label>
-                                            <div>abc</div>
+                                            <div className='description-name'>Khu vực kêu gọi:</div>
+                                            <div className='description-info'>Thành phố Hà Nội</div>
                                         </div>
                                     </div>
                                 </div>
                             </>
                         }
-                        {
+                        {/* {
                             valueOption === 2 &&
                             <div className="c-p-c-content">
                                 <MdEditor
@@ -291,21 +327,39 @@ class CamPaignPreview extends Component {
                                 />
                                 <button className="btn-preview-save">Lưu</button>
                             </div>
-                        }
+                        } */}
                         {
-                            valueOption === 3 &&
+                            valueOption === 2 &&
                             <div className="activity-container">
                                 <div className="header-title">
-                                    <div className="h-t-name">Danh sách hoạt động</div>
+                                    <div className="h-t-name">Danh sách các bài viết</div>
+                                    <button 
+                                        className="btn-create-post"
+                                        onClick={() => this.setState({
+                                            isOpenModalCreatePost: true
+                                        })}
+                                    >Thêm bài viết mới</button>
                                 </div>
                                 <Divider />
                                 <TableApp columns={this.state.columns} dataSource={this.state.dataSource}>
 
                                 </TableApp>
+                                <ModalCreatePost
+                                    isOpenModalCreatePost={this.state.isOpenModalCreatePost}
+                                    handleOk={this.handleOk}
+                                    handleCancel={this.handleCancel}
+                                    type="create"
+                                />
+                                <ModalEditPost
+                                    isOpenModalEditPost={this.state.isOpenModalEditPost}
+                                    handleOk={this.handleOk}
+                                    handleCancel={this.handleCancel}
+                                    type="edit"
+                                />
                             </div>
                         }
                         {
-                            valueOption === 4 &&
+                            valueOption === 3 &&
                             <div className="statement-container">
                                 <div className="s-c-up">
                                     <div className="total-donor">Tổng: 100 người ủng hộ</div>
@@ -328,7 +382,7 @@ class CamPaignPreview extends Component {
                             </div>
                         }
                         {
-                            valueOption === 5 &&
+                            valueOption === 4 &&
                             <div className="statistical-container">
                                 <div className="statistical-up">
                                     <div className="s-t-left">

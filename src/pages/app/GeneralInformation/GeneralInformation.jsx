@@ -30,7 +30,7 @@ function GeneralInformation() {
 
     // const infoCharity = useMemo(() => {
     //     let message1 = "https://www.google.com/maps/embed/v1/place&center=21.0368559,105.7801041&q="
-    //     let message = '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.883391940674!2d105.80691271473164!3d21.037351285993743!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab14f8420767%3A0x8e7487a3ba6b8764!2zMzQyIMSQ4buZaSBD4bqlbiwgQ-G7kW5nIFbhu4ssIEJhIMSQw6xuaCwgSMOgIE7hu5lpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1680325397474!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
+    //     let message = '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.883391940674!2d105.80691271473164!3d21.037351285993743!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab14f8420767%3A0x8e7487a3ba6b8764!2zMzQyIMSQ4buZaSBD4bqlbiwgQ-G7kW5nIFbhu4ssIEJhIMSQw6xuaCwgSMOgIE7hu5lpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1680325397474!5m2!1svi!2s" width="600" height="450" style="border:0;" allowFullScreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
     //     const test = message.split(" ")[1].slice(5,-1)
     //     return {
     //         "id": "abc123",

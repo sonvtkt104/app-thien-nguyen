@@ -22,6 +22,7 @@ import {
 import './DetailCampaign.scss';
 import { useEffect } from "react";
 import { useRef } from "react";
+import campaignService from "../../app/CampaignList/CampaignService";
 
 function DetailCampaign() {
 
@@ -38,13 +39,21 @@ function DetailCampaign() {
   useEffect(() => {
     window.addEventListener('scroll', () => {
       let btn = btnBackToTop.current;
-      console.log(btn)
       if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
         btn.style.display = "flex";
       } else {
         btn.style.display = "none";
       }
     })
+
+    ;(async () => {
+      try {
+        let res = await campaignService.getAllCampaign();
+        console.log(res);
+      } catch (err) {
+        console.log(err)
+      }
+    })()
   }, [])
 
   return (
@@ -130,7 +139,7 @@ function DetailCampaign() {
                                 <div>Nhân dân miền Trung</div>
                                 <div className="class-common">Video & Ảnh mô tả:</div>
                                 <div style={{display: 'flex', justifyContent: 'center'}}>
-                                  <iframe width="60%" height="315" src="https://www.youtube.com/embed/im08YRl3df4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                  <iframe width="60%" height="315" src="https://www.youtube.com/embed/im08YRl3df4" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                                 </div>
                                 <div className="img-info">
                                     <img src="/images/mien-trung-1.jpg" alt="bla bla"></img>

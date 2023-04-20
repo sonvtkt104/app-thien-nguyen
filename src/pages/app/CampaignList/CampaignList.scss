@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 .campaign-list-actions {
     display: flex;
     gap: 8px;
@@ -103,7 +107,7 @@
 }
 
 .modal-body{
-    margin: 32px 0;
+    margin: 16px 0;
 }
 
 

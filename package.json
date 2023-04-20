@@ -1,4 +1,5 @@
 {
+  "proxy": "http://localhost:8089/",
   "name": "quickstart",
   "version": "0.1.0",
   "private": true,

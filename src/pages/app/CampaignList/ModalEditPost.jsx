@@ -10,12 +10,13 @@ import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 
-function ModalCreateCampaign({
-    isOpenModalCompaign,
+function ModalEditPost({
+    isOpenModalEditPost,
     handleOk,
     handleCancel,
-    type
+    type="edit"
 }) {
+    console.log(type)
     const {TextArea} = Input;
     const [nameCampaign, setNameCampaign] = useState('')
     const [targetAudience, setTargetAudience] = useState('')
@@ -108,6 +109,17 @@ function ModalCreateCampaign({
         setContentHTML(html);
     }
 
+    let options = [
+        {
+            label: 'Bài viết giới thiệu',
+            value: 1
+        },
+        {
+            label: 'Hoạt động',
+            value: 2
+        }
+    ]
+
     return (
         <>
                  <Modal
@@ -116,16 +128,16 @@ function ModalCreateCampaign({
                      okText={type === 'create' ? "Đồng ý" : "Lưu thay đổi"}
                      cancelText={"Quay lại"}
                      centered 
-                     open={isOpenModalCompaign} 
+                     open={isOpenModalEditPost} 
                      onOk={handleOk} 
                      onCancel={handleCancel}
                      className="modal-create"
                  >
-                     <div className="modal-header">Tạo mới cuộc vận động</div>
+                     <div className="modal-header">Chỉnh sửa bài viết</div>
                      <div className="modal-body">
                          <Row gutter={[12, 12]}>
-                             <Col span={8}>
-                                 <label>Tên cuộc vận động</label>
+                             <Col span={12}>
+                                 <label>Tiêu đề bài viết</label>
                                  <br />
                                  <Input 
                                      placeholder=""
@@ -134,72 +146,30 @@ function ModalCreateCampaign({
                                      style={{width: '100%'}}
                                  />
                              </Col>
-                             <Col span={8}>
-                                 <label>Đối tượng hướng tới</label>
+                             <Col span={12}>
+                                 <label>Kiểu bài viết</label>
                                  <br />
-                                 <Input 
-                                     placeholder=""
-                                     value={targetAudience}
-                                     onChange={(e) => setTargetAudience(e.target.value)} 
-                                     style={{width: '100%'}}
-                                 />
-                             </Col>
-                             <Col span={8}>
-                                 <label>Mục tiêu</label>
-                                 <br />
-                                 <Input 
-                                     placeholder=""
-                                     value={targetCampaign}
-                                     onChange={(e) => setTargetCampaign(e.target.value)} 
-                                     style={{width: '100%'}}
-                                 />
-                             </Col>
-                         </Row>                       
-                         <div style={{margin: '12px 0'}}></div>
-                         <Row gutter={[12, 0]}>
-                            <Col span={8}>
-                                <label>Ngày bắt đầu</label>
-                                <Input
-                                    style={{width: '100%'}}
-                                    value={startDay}
-                                    onChange={(e) => setStartDay(e.target.value)}
-                                    placeholder="Ngày/Tháng/Năm"
-                                />    
-                            </Col>
-                            <Col span={8}>
-                                <label>Ngày kết thúc</label>
-                                <Input
-                                    style={{width: '100%'}}
-                                    value={endDay}
-                                    onChange={(e) => setEndDay(e.target.value)}
-                                    placeholder="Ngày/Tháng/Năm"
-                                />    
-                            </Col>
-                            <Col span={8}>
-                                <label>Khu vực kêu gọi</label>
-                                <Select
+                                 <Select
                                     showSearch
                                     allowClear
                                     style={{width: '100%'}}
-                                    placeholder='Vui lòng chọn khu vực'
-                                    options={regionOptions}
+                                    placeholder='Vui lòng chọn kiểu bài đăng'
+                                    options={options}
                                     placement={'bottomLeft'}
                                     filterOption={(input, option) => {
                                         return option.label.toLowerCase().includes(input.toLowerCase())
                                         }
                                     }
-                                    onChange={(value) => {setRegion(value)}}
-                                />                                    
-                            </Col>
-                            
-                         </Row>
+                                 />
+                             </Col>
+                         </Row>                                                
                          <div style={{margin: '12px 0'}}></div>
                          <Row>
-                             <label>Bài viết giới thiệu</label>
+                             <label>Nội dung bài viết</label>
                              <Col span={24}>
                                 <MdEditor
                                     value={contentMarkdown} 
-                                    style={{height: '180px'}} 
+                                    style={{height: '200px'}} 
                                     renderHTML={text => mdParser.render(text)}
                                     onChange={handleEditorChange}
                                 />
@@ -239,4 +209,4 @@ function ModalCreateCampaign({
     )
 }
 
-export default ModalCreateCampaign;
+export default ModalEditPost;
