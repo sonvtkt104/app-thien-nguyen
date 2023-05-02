@@ -1,90 +1,53 @@
 import { Link, useNavigate } from "react-router-dom";
-import signIn from "./signIn.jpg";
-import classes from "./Login.module.css";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import "./login.scss";
+import { Button, Checkbox, Form, Input } from "antd";
+
 import {
-  setToken,
-  setUsername as setUsernameAction,
-} from "../../redux/appSlice";
+  handleSaveOnCookies,
+  getTokenFromCookies,
+  getUserInfomationFromCookies,
+} from "./HandleUserInfomation";
+import { useState } from "react";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [usernameIsValid, setUsernameIsValid] = useState(true);
-  const [passwordIsValid, setPasswordIsValid] = useState(true);
+  const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
-  const dispatch = useDispatch();
-
-  const usernameChangeHandler = (event) => {
-    setUsername(event.target.value);
-  };
-
-  const passwordChangeHandler = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const usernameBlurHandler = (event) => {
-    if (event.target.value.length === 0) {
-      setUsernameIsValid(false);
-    } else {
-      setUsernameIsValid(true);
-    }
-  };
-
-  const passwordBlurHandler = (event) => {
-    if (event.target.value.length === 0) {
-      setPasswordIsValid(false);
-    } else {
-      setPasswordIsValid(true);
-    }
-  };
-
-  const submitHandler = (e) => {
-    e.preventDefault();
+  const onFinish = (values) => {
+    const submitData = {
+      UserName: values.username,
+      Password: values.password,
+    };
 
     const submit = async () => {
-      if (usernameIsValid && passwordIsValid) {
-        const submitData = {
-          username: username,
-          password: password,
-        };
+      const response = await fetch("http://localhost:8080/Login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(submitData),
+      });
 
-        const response = await fetch("http://localhost:8080/Login", {
-          // mode: "no-cors",
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            // "Sec-Fetch-Mode": "cors",
-            // "Sec-Fetch-Site": "same-origin",
-            // Origin: "http://localhost:8080",
-            "Access-Control-Allow-Origin": "*",
-          },
-          body: JSON.stringify(submitData),
-        });
+      const data = await response.json();
 
-        const data = await response.json();
+      if (!data.isSuccess) {
+        setError(data.messages[0]);
+        return;
+      }
 
-        // console.log(data.data.token);
+      handleSaveOnCookies(data.data);
+      console.log(getTokenFromCookies());
+      console.log(getUserInfomationFromCookies());
 
-        if (!data.isSuccess) {
-          console.log("Không đăng nhập được");
-          return;
-        }
-
-        dispatch(setToken(data.data.token));
-        dispatch(setUsernameAction(data.data.user.username));
-
-        const roleId = data.data.user.roleId;
-
-        if (roleId === 1) {
-          navigate("..");
-        } else if (roleId === 2) {
-          navigate("../home-page-charity");
-        } else {
-          navigate("../admin");
-        }
+      const roleId = data.data.user.roleId;
+      if (roleId === 1) {
+        navigate("..");
+      } else if (roleId === 2) {
+        navigate("../home-page-charity");
+      } else {
+        navigate("../admin");
       }
     };
 
@@ -92,100 +55,70 @@ const LoginPage = () => {
   };
 
   return (
-    <div className={classes["sign-in"]}>
-      <div className={classes.container}>
-        <div className={"signin-image"}>
-          <img
-            src={signIn}
-            alt="Hình ảnh đăng nhập"
-            className={classes["image-login"]}
-          />
-          <Link to="/sign-up" className={classes["switch-regis"]}>
-            Bạn chưa có tài khoản ?
-          </Link>
-        </div>
+    <div className="login">
+      <div className="login-container">
+        <h2 className="login-title">Đăng nhập</h2>
 
-        <div className={classes["sign-form"]}>
-          <header>
-            <h1 className={classes["form-title"]}>Đăng nhập</h1>
-          </header>
-
-          <form
-            onSubmit={submitHandler}
-            method="post"
-            className={classes["login-form"]}
+        <Form
+          name="basic"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 32 }}
+          style={{ maxWidth: 600 }}
+          // initialValues={{ remember: true }}
+          layout="vertical"
+          autoComplete="off"
+          className="form-login"
+          onFinish={onFinish}
+          // onFinishFailed={onFinishFailed}
+        >
+          <Form.Item
+            label="Tài khoản"
+            name="username"
+            rules={[{ required: true, message: "Vui lòng nhập tài khoản" }]}
+            className="form-item"
           >
-            <div className={classes["form-group"]}>
-              <label htmlFor="username">
-                {/* <i class="zmdi zmdi-account material-icons-name"></i> */}
-              </label>
-              <input
-                type="text"
-                name="username"
-                id="username"
-                placeholder="Tên đăng nhập"
-                value={username}
-                onChange={usernameChangeHandler}
-                onBlur={usernameBlurHandler}
-              />
-            </div>
+            <Input placeholder="Nhập tài khoản" />
+          </Form.Item>
 
-            <div className={classes["form-group"]}>
-              <label htmlFor="password">
-                {/* <i class="zmdi zmdi-l ock"></i> */}
-              </label>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                value={password}
-                placeholder="Mật khẩu"
-                onChange={passwordChangeHandler}
-                onBlur={passwordBlurHandler}
-              />
-            </div>
+          <Form.Item
+            label="Mật khẩu"
+            name="password"
+            rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
+            className="form-item"
+          >
+            <Input.Password placeholder="Nhập mật khẩu" />
+          </Form.Item>
 
-            <div className={classes["form-group-checkbox"]}>
-              <input
-                type="checkbox"
-                name="remember-me"
-                className={classes["agree-term"]}
-              />
-              <label
-                htmlFor="remember-me"
-                className={classes["label-agree-term"]}
-              >
-                Ghi nhớ tài khoản
-              </label>
-            </div>
+          <Form.Item
+            name="remember"
+            valuePropName="checked"
+            wrapperCol={{ span: 24 }}
+            className="form-item"
+          >
+            <Checkbox>Ghi nhớ tài khoản</Checkbox>
+          </Form.Item>
 
-            <button className={classes["button-login"]}>Đăng nhập</button>
-          </form>
-        </div>
+          <p className="error">{error}</p>
+
+          <Form.Item wrapperCol={{ span: 24 }}>
+            <Button type="primary" htmlType="submit" className="login-button">
+              Đăng nhập
+            </Button>
+          </Form.Item>
+
+          <div className="for-sign">
+            <a href="https://www.w3schools.com" className="forgot">
+              Quên mật khẩu
+            </a>
+            <span className="sign-up">
+              Tạo tài khoản mới? ---
+              <Link to="../sign-up">Đăng ký</Link>---
+            </span>
+          </div>
+        </Form>
       </div>
     </div>
   );
 };
-
-// export async function action({ param, request }) {
-//   const data = await request.formData();
-
-//   const submitData = {
-//     username: data.username,
-//     password: data.password,
-//   };
-
-//   const response = await fetch("http://localhost:8080/Login", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify(submitData),
-//   });
-
-//   if (!response.ok) {
-//     throw json({ message: "something went wrong" }, { status: 500 });
-//   }
-
-//   return redirect("/");
-// }
 
 export default LoginPage;

@@ -1,0 +1,84 @@
+.user-regis {
+  // display: flex;
+  // justify-content: center;
+  // min-height: 100vh;
+  background: linear-gradient(135deg, #22c1c3 0%, #fdbb2d 100%);
+  padding-top: 50px;
+  padding-bottom: 50px;
+
+  .user-container {
+    width: 1200px;
+    margin: auto;
+    border-radius: 12px;
+    background-color: white;
+    padding: 32px;
+    box-sizing: border-box;
+
+    .user-title {
+      font-weight: 600;
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    .options {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 20px;
+
+      button {
+        width: 110px;
+        border: none;
+        background-color: #e9ecef;
+        font-size: 14px;
+        height: 32px;
+        padding: 4px 15px;
+        cursor: pointer;
+      }
+
+      .active {
+        color: #fff;
+        background-color: #1677ff;
+        box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
+      }
+
+      .active:hover {
+        color: #fff;
+        background-color: #4096ff;
+      }
+    }
+
+    .form-regis {
+      .regis-footer {
+        .regis-button {
+          display: block;
+          width: 160px;
+          margin-left: auto;
+        }
+
+        .sign-up {
+          display: block;
+          text-align: center;
+          margin-top: 50px;
+
+          a {
+            color: rgba(0, 0, 0, 0.88);
+          }
+
+          a:hover {
+            color: #1677ff;
+          }
+        }
+      }
+    }
+
+    .charity-form {
+      .form-regis {
+        p {
+          font-size: 16px;
+          font-weight: 500;
+          // margin-top: 16px;
+        }
+      }
+    }
+  }
+}
