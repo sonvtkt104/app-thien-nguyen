@@ -121,7 +121,7 @@ function ModalCreateCampaign({
                      onCancel={handleCancel}
                      className="modal-create"
                  >
-                     <div className="modal-header">Tạo mới cuộc vận động</div>
+                     <div className="modal-header">Tạo cuộc vận động mới</div>
                      <div className="modal-body">
                          <Row gutter={[12, 12]}>
                              <Col span={8}>
@@ -216,6 +216,7 @@ function ModalCreateCampaign({
                                     onPreview={handlePreview}
                                     onChange={handleChange}
                                     beforeUpload={beforeUpload}
+                                    multiple
                                 >
                                     {
                                         fileList && fileList.length >= 1 ? null : uploadButton
