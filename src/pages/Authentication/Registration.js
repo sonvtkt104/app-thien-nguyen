@@ -19,12 +19,21 @@ const RegistrationPage = () => {
       Email: values.email,
       PhoneNumber: values.phoneNumber,
       Password: values.password,
-      Address:
-        values.fullOfAddress.length === 0
-          ? `${values.ward}, ${values.district}, ${values.province}`
-          : values.fullOfAddress,
+      ConfirmPassword: values.password,
+      // Address: `${values.numberOfAddress}, ${values.ward}, ${values.district}, ${values.province}`,
       RoleId: 1,
     };
+    // {
+    //   Username: "lemanhlinh",
+    //   Email: "lemanhlinh0808@gmail.com",
+    //   PhoneNumber: "03333333333",
+    //   Password: "1234567890",
+    //   Address: "số 55, Thạch Xá, Thạch Thât, Hà Nội",
+    //   RoleId: 1, // RoleId = 1 là tài khoản người dùng
+    //   // các trường mặc định và không truyền theo khi đăng ký
+    //   isLocked: false, // mặc định là tài khoản không bị khóa
+    //   star: false, // mặc định đây không phải là tài khoản nổi bật
+    // }
 
     console.log(submitData);
 
@@ -61,20 +70,21 @@ const RegistrationPage = () => {
       Password: values.charityPassword,
       Address: values.fullOfAddress,
       CharityName: values.charityName,
-      CharityAddress: `${values.charityWard}, ${values.charityDistrict}, ${values.charityProvince}`,
+      CharityAddress: `${values.numberOfCharityAddress}, ${values.charityWard}, ${values.charityDistrict}, ${values.charityProvince}`,
       CharityPhone: values.charityPhone,
       CharityEmail: values.charityEmail,
       CharityMotto: values.charityMotto,
       CharityTarget: values.charityTarget,
       CharityDescription: values.charityDescription,
-      CharityFacebook: values.charityFacebook,
-      CharityInstagram: values.charityInstagram,
-      CharityTwitter: values.charityTwitter,
-      CharityLinkedIn: values.charityLinkedIn,
-      CharityIntroVideo: values.charityIntroVideo,
-      CharityAccountNumber: values.charityAccountNumber,
       roleId: 2,
     };
+
+    // CharityFacebook: values.charityFacebook,
+    // CharityInstagram: values.charityInstagram,
+    // CharityTwitter: values.charityTwitter,
+    // CharityLinkedIn: values.charityLinkedIn,
+    // CharityIntroVideo: values.charityIntroVideo,
+    // CharityAccountNumber: values.charityAccountNumber,
 
     // {
     //   Username: "lemanhlinh", // của người đăng ký
@@ -83,19 +93,34 @@ const RegistrationPage = () => {
     //   Password: "12345678", // của người đăng ký
     //   Address: "Số 55, Thạch Xá, Thạch Thất, Hà Nội", // của người đăng ký
     //   CharityName: "Áo ấm cho em",
-    //   CharityAddress: "Xuân Thủy, Cầu Giấy, Hà Nội",
+    //   CharityAddress: "144, Xuân Thủy, Cầu Giấy, Hà Nội",
     //   CharityPhone: "0347373222",
     //   CharityEmail: "aoamchoem@gmail.com",
     //   CharityMotto: "Vì Mọi người",      // slogan của tổ chức/ châm ngôn
     //   CharityTarget: "Giúp nhiều người càng tốt", // mục tiêu của tổ chức
     //   CharityDescription: "description", // Mô tả về tổ chức
+    //   roleId: 2, // roleId = 2 là của tổ chức
     //   CharityFacebook: "facebook",
     //   CharityInstagram: "instagram",
     //   CharityTwitter: "twitter",
     //   CharityLinkedIn: "linkedIn",
     //   CharityIntroVideo: "Video", // video giới thiệu
     //   CharityAccountNumber: "Số tài khoản", // số tài khoản của tổ chức
-    //   roleId: 2,
+    //   //Các trường mặc định và không có trong api đăng ký của tổ chức
+    //   isLocked: false, // mặc định là tài khoản không bị khóa
+    //   star: false, // mặc định đây không phải là tài khoản nổi bật
+
+    //   // các trường sau sẽ không có trong api đăng ký của tổ chức
+    //   // nhung sẽ phải có và cập nhật sau
+    //   id: "abc123", // id tổ chức
+    //   avatar: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",// avatar của tổ chức
+    //   images: ["https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
+    //   "https://cdnimg.vietnamplus.vn/uploaded/fsmsy/2018_03_01/thuc_an_tet.jpg",], // list ảnh
+    //   googlemap: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.8610660551603!2d105.78048991492963!3d21.038244392830343!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab354920c233%3A0x5d0313a3bfdc4f37!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBDw7RuZyBuZ2jhu4csIMSQ4bqhaSBo4buNYyBRdeG7kWMgZ2lhIEjDoCBO4buZaQ!5e0!3m2!1svi!2s!4v1679246091627!5m2!1svi!2s", // google map
+    //   isVerification: true, // xác minh(tích xanh)
+    //   followers: 157422, // lượt theo dõi
+    //   numberCampaigns: 29,
+    //   reach: [3034, 1355, 5432, 4000, 7342, 3245, 8543, 5234, 6543, 12423, 8403, 13024]
     // };
 
     const submit = async () => {
@@ -201,7 +226,7 @@ const RegistrationPage = () => {
             </Row>
 
             <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-              <Col span={8}>
+              <Col span={6}>
                 <Form.Item
                   label="Tỉnh/Thành phố"
                   name="province"
@@ -217,7 +242,7 @@ const RegistrationPage = () => {
                 </Form.Item>
               </Col>
 
-              <Col span={8}>
+              <Col span={6}>
                 <Form.Item
                   label="Quận/Huyện"
                   name="district"
@@ -232,7 +257,7 @@ const RegistrationPage = () => {
                   <Input placeholder="Nhập Quận/Huyện của bạn" />
                 </Form.Item>
               </Col>
-              <Col span={8}>
+              <Col span={6}>
                 <Form.Item
                   label="Phường/Xã"
                   name="ward"
@@ -247,21 +272,23 @@ const RegistrationPage = () => {
                   <Input placeholder="Nhập Phường/Xã của bạn" />
                 </Form.Item>
               </Col>
-            </Row>
 
-            <Form.Item
-              label="Địa chỉ cụ thể"
-              name="fullOfAddress"
-              rules={[
-                {
-                  // required: true,
-                  message: "Vui lòng nhập địa chỉ cụ thể",
-                },
-              ]}
-              className="form-item"
-            >
-              <Input placeholder="Ví dụ: 144, Xuân Thủy, Cầu Giấy, Hà Nội" />
-            </Form.Item>
+              <Col span={6}>
+                <Form.Item
+                  label="Địa chỉ cụ thể"
+                  name="numberOfAddress"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng nhập địa chỉ cụ thể",
+                    },
+                  ]}
+                  className="form-item"
+                >
+                  <Input placeholder="Số đường ví dụ: 144" />
+                </Form.Item>
+              </Col>
+            </Row>
 
             <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
               <Col span={12}>
@@ -515,7 +542,7 @@ const RegistrationPage = () => {
               </Row>
 
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                <Col span={8}>
+                <Col span={6}>
                   <Form.Item
                     label="Tỉnh/Thành phố"
                     name="charityProvince"
@@ -531,7 +558,7 @@ const RegistrationPage = () => {
                   </Form.Item>
                 </Col>
 
-                <Col span={8}>
+                <Col span={6}>
                   <Form.Item
                     label="Quận/Huyện"
                     name="charityDistrict"
@@ -546,7 +573,7 @@ const RegistrationPage = () => {
                     <Input placeholder="Nhập Quận/Huyện của tổ chức" />
                   </Form.Item>
                 </Col>
-                <Col span={8}>
+                <Col span={6}>
                   <Form.Item
                     label="Phường/Xã"
                     name="charityWard"
@@ -561,23 +588,25 @@ const RegistrationPage = () => {
                     <Input placeholder="Nhập Phường/Xã của tổ chức" />
                   </Form.Item>
                 </Col>
+
+                <Col span={6}>
+                  <Form.Item
+                    label="Địa chỉ cụ thể"
+                    name="numberOfCharityAddress"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Vui lòng nhập địa chỉ cụ thể",
+                      },
+                    ]}
+                    className="form-item"
+                  >
+                    <Input placeholder="Số nhà, Ví dụ: 144" />
+                  </Form.Item>
+                </Col>
               </Row>
 
-              <Form.Item
-                label="Địa chỉ cụ thể"
-                name="fullOfCharityAddress"
-                rules={[
-                  {
-                    // required: true,
-                    message: "Vui lòng nhập địa chỉ cụ thể",
-                  },
-                ]}
-                className="form-item"
-              >
-                <Input placeholder="Ví dụ: 144, Xuân Thủy, Cầu Giấy, Hà Nội" />
-              </Form.Item>
-
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+              {/* <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
                 <Col span={6}>
                   <Form.Item
                     label="Facebook của tổ chức"
@@ -639,9 +668,9 @@ const RegistrationPage = () => {
                     <Input placeholder="Nhập LinkedIn của tổ chức" />
                   </Form.Item>
                 </Col>
-              </Row>
+              </Row> */}
 
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+              {/* <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
                 <Col span={6}>
                   <Form.Item
                     label="Video của tổ chức"
@@ -672,7 +701,7 @@ const RegistrationPage = () => {
                     <Input placeholder="0123456789 - Nguyen Van A - MB Bank - Ngân hàng Quân đội" />
                   </Form.Item>
                 </Col>
-              </Row>
+              </Row> */}
 
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
                 <Col span={12}>
