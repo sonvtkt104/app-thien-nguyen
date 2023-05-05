@@ -189,7 +189,7 @@ function ModalCreatePost({
                                     multiple
                                 >
                                     {
-                                        fileList && fileList.length >= 1 ? null : uploadButton
+                                        fileList && fileList.length >= 2 ? null : uploadButton
                                     }
                                     
                                 </Upload>

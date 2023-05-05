@@ -21,6 +21,7 @@ class CamPaignList extends Component {
             isOpenModalCompaign: false,
             isOpenModalEdit: false,
             valueSearch: '',
+            type: false,
             columns: [
                 {
                   key: "name",
@@ -78,7 +79,7 @@ class CamPaignList extends Component {
                                 <Link to="/campaign-list/preview">
                                     <EyeOutlined
                                         className="actions-hide"
-                                        onClick={()=> this.handleActions(record,'hide')}
+                                        onClick={()=> this.handleActions(record, 'delete')}
                                     />
                                 </Link> 
             
@@ -96,35 +97,7 @@ class CamPaignList extends Component {
                     }
                 },
             ],
-            dataSource: [
-                {
-                    key: "1",
-                    name: "Áo ấm cho em",
-                    target: '2.000.000.000 VNĐ',
-                    receive: '100.000.000 VNĐ',
-                    complete: '5%',
-                    status: 'Hoạt động',
-                    hide: false,
-                },
-                {
-                    key: "2",
-                    name: "Quyên góp miền Trung",
-                    target: '1.000.000.000 VNĐ',
-                    receive: '500.000.000 VNĐ',
-                    complete: '50%',
-                    status: 'Hoạt động',
-                    hide: false,
-                },
-                {
-                    key: "3",
-                    name: "Quyên góp mùa lũ",
-                    target: '500.000.000 VNĐ',
-                    receive: '40.000.000 VNĐ',
-                    complete: '80%',
-                    status: 'Hoạt động',
-                    hide: false,
-                }
-            ],
+            dataSource: [],
             columns2: [
                 {
                   key: 1,
@@ -180,30 +153,97 @@ class CamPaignList extends Component {
     }
 
     async componentDidMount() {
-        this.setState({
-            dataSourceSearch: this.state.dataSource
-        })
+        await axios({
+            method: 'post',
+            url: 'http://localhost:8089/charity/access/token',
+            headers: {}, 
+            data: {
+              user_id: 2,
+              token: 'abcd'
+            }
+          });
+
+        let res = await axios({
+            method: 'get',
+            url: 'http://localhost:8089/charity/campaign/get-all',
+            headers: {
+                token: 'abcd'
+            }
+        }).then(res => res.data);
+        if(res && res.length > 0) {
+            let dataAllCampaigns = [];
+            dataAllCampaigns = res.map((item, index) => ({
+                key: index,
+                name: item.campaignName,
+                receive: 0,
+                complete: '0%',
+                target: item.targetAmount,
+                status: item.status,
+                campaign_id: item.id
+            }))
+            this.setState({
+                dataSource: dataAllCampaigns,
+                dataSourceSearch: dataAllCampaigns
+            })
+        }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        
+    
     }
 
-    handleActions = (record, type) => {
+    handleActions = async (record, type) => {
         if(type === 'edit') {
             this.showModal();
         }
+        else if(type === 'delete') {
+            console.log(record)
+            await axios({
+                method: 'delete',
+                url: `http://localhost:8089/charity/campaign/delete-campaign?campaign-id=${record.campaign_id}`,
+                headers: {
+                    token: 'abcd'
+                },
+            });
+            toast.success('Đã xóa cuộc vận động này!');
+            
+            let res = await axios({
+            method: 'get',
+            url: 'http://localhost:8089/charity/campaign/get-all',
+            headers: {
+                token: 'abcd'
+            }
+            }).then(res => res.data);
+            if(res && res.length > 0) {
+                let dataAllCampaigns = [];
+                dataAllCampaigns = res.map((item, index) => ({
+                    key: index,
+                    name: item.campaignName,
+                    receive: 0,
+                    complete: '0%',
+                    target: item.targetAmount,
+                    status: item.status,
+                    campaign_id: item.id
+                }))
+                this.setState({
+                    dataSource: dataAllCampaigns,
+                    dataSourceSearch: dataAllCampaigns
+                })
+            }
+            }
     }
 
     handleClickCampaign = () => {
         this.setState({
-            isOpenModalCompaign: true
+            isOpenModalCompaign: true,
+            type: true
         })
     }
 
     showModal = () => {
         this.setState({
-            isOpenModalEdit: true
+            isOpenModalEdit: true,
+            type: false
         })
     }
 
@@ -282,16 +322,14 @@ class CamPaignList extends Component {
 
                     <ModalEditCompaign 
                         isOpenModalEdit={isOpenModalEdit} 
-                        handleOk={this.handleOk}
                         handleCancel={this.handleCancel}
-                        type={'edit'}
+                        type={this.state.type}
                     />
                     
                     <ModalCreateCampaign 
                         isOpenModalCompaign={isOpenModalCompaign}
-                        handleOk={this.handleOk}
                         handleCancel={this.handleCancel}
-                        type={'create'}
+                        type={this.state.type && this.state.type }
                     />
                 </PageLayout>
             </>
