@@ -8,11 +8,12 @@ import campaignService from "./CampaignService";
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
+import axios from "axios";
+import { toast } from "react-toastify";
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 
 function ModalCreateCampaign({
     isOpenModalCompaign,
-    handleOk,
     handleCancel,
     type
 }) {
@@ -20,7 +21,6 @@ function ModalCreateCampaign({
     const [nameCampaign, setNameCampaign] = useState('')
     const [targetAudience, setTargetAudience] = useState('')
     const [targetCampaign, setTargetCampaign] = useState('')
-    const [descriptionCampaign, setDescriptionCampaign] = useState('')
     const [startDay, setStartDay] = useState('')
     const [endDay, setEndDay] = useState('')
     const [imageCampaign, setImageCampaign] = useState('')
@@ -83,7 +83,13 @@ function ModalCreateCampaign({
     useEffect(() => {
         (async () => {
             try {
-                let res = await campaignService.getAllRegion();
+                let res = await axios({
+                    method: 'get',
+                    url: 'http://localhost:8089/charity/address/provinces',
+                    headers: {
+                        token: 'abcd'
+                    }
+                });
                 if(res.data && res.data.length > 0) {
                     regionOptions = res.data.map((region) => {
                         region.label = region.fullName;
@@ -108,20 +114,66 @@ function ModalCreateCampaign({
         setContentHTML(html);
     }
 
+    let options = [
+        {
+            label: 'Trẻ em',
+            value: 1
+        },
+        {
+            label: 'Người già',
+            value: 2
+        },
+        {
+            label: 'Tất cả mọi người',
+            value: 3
+        }
+    ]
+
+    const handlePressOk = async () => {
+        await axios({
+            method: 'post',
+            url: 'http://localhost:8089/charity/campaign/add-campaign',
+            headers: {
+                token: 'abcd'
+            },
+            data: {
+                campaign_name: nameCampaign,
+                introduction: 'tạm thời chưa có',
+                target_object: targetAudience,
+                region: region,
+                status: 'Đang vận động',
+                campaign_type: 'tạm thời',
+                target_amount: targetCampaign,
+                start_date: startDay,
+                stop_date: endDay,
+                start_active_date: '2024-05-05',
+                stop_active_date: '2024-05-05',
+                stop_receive_date: '2024-05-05'
+            }
+        })
+        toast.success('Tạo mới cuộc vận động thành công!');
+        setNameCampaign('');
+        setTargetCampaign('');
+        setTargetAudience(options);
+        setRegionOptions(regionOptions);
+        setStartDay('');
+        setEndDay(''); 
+    }
+
     return (
         <>
                  <Modal
                      width={1000}
                      bodyStyle={{height: '100%'}}
-                     okText={type === 'create' ? "Đồng ý" : "Lưu thay đổi"}
+                     okText={"Đồng ý"}
                      cancelText={"Quay lại"}
                      centered 
                      open={isOpenModalCompaign} 
-                     onOk={handleOk} 
+                     onOk={handlePressOk} 
                      onCancel={handleCancel}
                      className="modal-create"
                  >
-                     <div className="modal-header">Tạo mới cuộc vận động</div>
+                     <div className="modal-header">Tạo cuộc vận động mới</div>
                      <div className="modal-body">
                          <Row gutter={[12, 12]}>
                              <Col span={8}>
@@ -137,17 +189,24 @@ function ModalCreateCampaign({
                              <Col span={8}>
                                  <label>Đối tượng hướng tới</label>
                                  <br />
-                                 <Input 
-                                     placeholder=""
-                                     value={targetAudience}
-                                     onChange={(e) => setTargetAudience(e.target.value)} 
-                                     style={{width: '100%'}}
+                                 <Select
+                                    showSearch
+                                    allowClear
+                                    style={{width: '100%'}}
+                                    placeholder='Vui lòng đối tượng hướng tới'
+                                    options={options}
+                                    placement={'bottomLeft'}
+                                    filterOption={(input, option) => {
+                                        return option.label.toLowerCase().includes(input.toLowerCase())
+                                        }
+                                    }
+                                    onChange={(value) => {setTargetAudience(value)}}
                                  />
                              </Col>
                              <Col span={8}>
-                                 <label>Mục tiêu</label>
+                                 <label>Mục tiêu số tiền</label>
                                  <br />
-                                 <Input 
+                                 <Input
                                      placeholder=""
                                      value={targetCampaign}
                                      onChange={(e) => setTargetCampaign(e.target.value)} 
@@ -216,9 +275,10 @@ function ModalCreateCampaign({
                                     onPreview={handlePreview}
                                     onChange={handleChange}
                                     beforeUpload={beforeUpload}
+                                    multiple
                                 >
                                     {
-                                        fileList && fileList.length >= 1 ? null : uploadButton
+                                        fileList && fileList.length >= 3 ? null : uploadButton
                                     }
                                     
                                 </Upload>

@@ -12,7 +12,6 @@ const mdParser = new MarkdownIt(/* Markdown-it options */);
 
 function ModalEditCampaign({
     isOpenModalEdit,
-    handleOk,
     handleCancel,
     type
 }) {
@@ -108,6 +107,10 @@ function ModalEditCampaign({
         setContentHTML(html);
     }
 
+    const handlePressOk = () => {
+        console.log('ok nha')
+    }
+
     return (
         <>
                  <Modal
@@ -117,7 +120,7 @@ function ModalEditCampaign({
                      cancelText={"Quay lại"}
                      centered 
                      open={isOpenModalEdit} 
-                     onOk={handleOk} 
+                     onOk={handlePressOk} 
                      onCancel={handleCancel}
                      className="modal-create"
                  >
@@ -216,6 +219,7 @@ function ModalEditCampaign({
                                     onPreview={handlePreview}
                                     onChange={handleChange}
                                     beforeUpload={beforeUpload}
+                                    multiple
                                 >
                                     {
                                         fileList && fileList.length >= 1 ? null : uploadButton
