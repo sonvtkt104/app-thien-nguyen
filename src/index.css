@@ -24,6 +24,10 @@ body {
 
 }
 
+p, div, span, h1, h2, h3,h4, h6, input, select, textarea, button {
+  font-family: "Poppins", sans-serif !important;
+}
+
 h1,
 h2,
 h3,
@@ -131,6 +135,7 @@ a {
 
 .text-hover:hover {
   color: var(--color-blue) !important;
+  opacity: 0.8;
 }
 
 .h1-app {
@@ -175,4 +180,8 @@ a {
   text-decoration: underline;
 }
 
+.ant-checkbox-checked .ant-checkbox-inner {
+  background: var(--color-blue) !important;
+  border: 1px solid transparent !important;
+}
 

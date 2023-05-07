@@ -36,7 +36,7 @@ function ItemCampaign({
             >
                 <div>
                     <img src={image} alt="" 
-                        style={{width: '100%', borderRadius: '4px 4px 0 0'}}
+                        style={{width: '100%', borderRadius: '4px 4px 0 0', height: 242, objectFit: 'cover'}}
                     />
                 </div>
                 <div

@@ -1,11 +1,11 @@
 .login {
-  display: flex;
-  justify-content: center;
-  height: 100vh;
-  background: linear-gradient(135deg, #22c1c3 0%, #fdbb2d 100%);
+  // display: flex;
+  // justify-content: center;
+  // height: 100vh;
+  // background: linear-gradient(135deg, #22c1c3 0%, #fdbb2d 100%);
 
   .login-container {
-    width: 360px;
+    // width: 400px;
     margin: auto;
     border-radius: 12px;
     background-color: white;
@@ -43,7 +43,7 @@
       }
 
       .for-sign {
-        margin-top: 60px;
+        margin-top: 40px;
 
         .forgot {
           display: block;
