@@ -16,8 +16,8 @@ const LoginPage = () => {
 
   const onFinish = (values) => {
     const submitData = {
-      UserName: values.username,
-      Password: values.password,
+      userName: values.username,
+      password: values.password,
     };
 
     const submit = async () => {
@@ -43,11 +43,11 @@ const LoginPage = () => {
 
       const roleId = data.data.user.roleId;
       if (roleId === 1) {
-        navigate("..");
-      } else if (roleId === 2) {
+        navigate("../admin");
+      } else if (roleId === 3) {
         navigate("../home-page-charity");
       } else {
-        navigate("../admin");
+        navigate("..");
       }
     };
 
