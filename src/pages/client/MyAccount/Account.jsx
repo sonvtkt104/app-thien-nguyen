@@ -2,7 +2,7 @@ import SideBar from "./SideBar"
 import { Button, Checkbox, Form, Input, Table, Select } from 'antd';
 import { useEffect, useLayoutEffect, useReducer, useRef, useState } from "react";
 import { getUserByID, updateUser, getListProvince, getListDistrictByID, getListWardByID } from "./MyAccountService";
-
+import { getUserInfomationFromCookies } from "../../Authentication/HandleUserInfomation";
 
 
 function Account() {
@@ -19,7 +19,7 @@ function Account() {
     const [idProvince, setIdProvince] = useState(undefined)
     const [idDistrict, setIdDistrict] = useState(undefined)
 
-
+    
     useEffect(() => {
         getUserByID("abcd12345").then(res => {
             const arrAddress = res.data.address?.split(", ")
@@ -35,6 +35,18 @@ function Account() {
             // delete infoRef.current.id
         })
     }, [form])
+    // const dataInfo = getUserInfomationFromCookies()
+    // console.log(dataInfo)
+    // useEffect(() => {
+    //     const dataInfo = getUserInfomationFromCookies()
+    //     const arrAddress = dataInfo?.address?.split(", ")
+    //         const data = {...dataInfo, address:arrAddress[0], ward: arrAddress[1], district: arrAddress[2], province: arrAddress[3]}
+    //         console.log(data)
+    //         setInfo(data)
+    //         form.setFieldsValue(data);
+    //         infoRef.current = dataInfo
+    //         delete infoRef.current.id
+    // },[])
 
     // console.log(form)
     console.log(info)
@@ -420,6 +432,7 @@ function Account() {
                         <Form.Item
                             style={{ width: "100%", marginBottom: 10 }}
                             label="Mật khẩu mới"
+                            hasFeedback
                             name="newPassword"
                             rules={[
                                 {
@@ -436,6 +449,7 @@ function Account() {
                         <Form.Item
                             style={{ width: "100%", marginBottom: 16 }}
                             label="Xác nhận mật khẩu mới"
+                            hasFeedback
                             name="confirmNewPassword"
                             rules={[
                                 {

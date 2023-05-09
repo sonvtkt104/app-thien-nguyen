@@ -1,13 +1,76 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./Registration.scss";
-import { useState } from "react";
-import { Col, Row, Button, Form, Input } from "antd";
+import { useEffect, useState } from "react";
+import { Col, Row, Button, Form, Input, Select, Upload } from "antd";
+
+import { UploadOutlined } from "@ant-design/icons";
+import {
+  getListProvince,
+  getListWardByID,
+  getListDistrictByID,
+} from "../client/MyAccount/MyAccountService";
 
 const RegistrationPage = () => {
   const [isCreateUser, setIsCreateUser] = useState(true);
   const [error, setError] = useState("");
   const { TextArea } = Input;
   const navigate = useNavigate();
+  const [provinceId, setProvinceId] = useState(undefined);
+  const [listProvince, setListProvince] = useState([]);
+  const [districtId, setDistrictId] = useState(undefined);
+  const [listDistrict, setListDistrict] = useState([]);
+  const [wardId, setWardId] = useState(undefined);
+  const [listWard, setListWard] = useState([]);
+
+  useEffect(() => {
+    async function getProvinces() {
+      const req = await getListProvince();
+      const data = req.data;
+      setListProvince(
+        data.map((item, index) => ({
+          value: item.id,
+          label: item.fullName,
+        }))
+      );
+    }
+    getProvinces();
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    async function getDistricts() {
+      const req = await getListDistrictByID(provinceId);
+      const data = req.data;
+
+      setListDistrict(
+        data.map((item, index) => ({
+          value: item.id,
+          label: item.fullName,
+        }))
+      );
+    }
+
+    getDistricts();
+
+    return () => {};
+  }, [provinceId]);
+
+  useEffect(() => {
+    async function getWards() {
+      const req = await getListWardByID(districtId);
+      const data = req.data;
+      setListWard(
+        data.map((item, index) => ({
+          value: item.id,
+          label: item.fullName,
+        }))
+      );
+    }
+
+    getWards();
+
+    return () => {};
+  }, [districtId]);
 
   const toggleUserToCharity = () => {
     setIsCreateUser((prev) => !prev);
@@ -15,27 +78,40 @@ const RegistrationPage = () => {
 
   const userSubmit = (values) => {
     const submitData = {
-      Username: values.username,
-      Email: values.email,
-      PhoneNumber: values.phoneNumber,
-      Password: values.password,
-      ConfirmPassword: values.password,
-      // Address: `${values.numberOfAddress}, ${values.ward}, ${values.district}, ${values.province}`,
-      RoleId: 1,
+      username: values.username,
+      name: values.fullName,
+      email: values.email,
+      roleId: 2,
+      address: values.detailAddress,
+      phoneNumber: values.phoneNumber,
+      provinceId: values.province,
+      province: listProvince.find((item) => item.value === values.province)
+        .label,
+      districtId: values.district,
+      district: listDistrict.find((item) => item.value === values.district)
+        .label,
+      wardId: values.ward,
+      ward: listWard.find((item) => item.value === values.ward).label,
+      password: values.password,
+      confirmPassword: values.password,
     };
+
+    // console.log(submitData);
+
     // {
     //   Username: "lemanhlinh",
     //   Email: "lemanhlinh0808@gmail.com",
     //   PhoneNumber: "03333333333",
     //   Password: "1234567890",
-    //   Address: "số 55, Thạch Xá, Thạch Thât, Hà Nội",
+    //   DetailOfAddress: "số 55, Thạch Xá, Thạch Thât, Hà Nội",
+    //   Ward: "Thạch xá",
+    //   District: "Thạch Thất",
+    //   Province: "Hà Nội"
     //   RoleId: 1, // RoleId = 1 là tài khoản người dùng
     //   // các trường mặc định và không truyền theo khi đăng ký
     //   isLocked: false, // mặc định là tài khoản không bị khóa
     //   star: false, // mặc định đây không phải là tài khoản nổi bật
     // }
-
-    console.log(submitData);
 
     const submit = async () => {
       const response = await fetch("http://localhost:8080/Register", {
@@ -64,42 +140,54 @@ const RegistrationPage = () => {
 
   const charitySubmit = (values) => {
     const submitData = {
-      Username: values.username,
-      Email: values.email,
-      PhoneNumber: values.phoneNumber,
-      Password: values.charityPassword,
-      Address: values.fullOfAddress,
-      CharityName: values.charityName,
-      CharityAddress: `${values.numberOfCharityAddress}, ${values.charityWard}, ${values.charityDistrict}, ${values.charityProvince}`,
-      CharityPhone: values.charityPhone,
-      CharityEmail: values.charityEmail,
-      CharityMotto: values.charityMotto,
-      CharityTarget: values.charityTarget,
-      CharityDescription: values.charityDescription,
-      roleId: 2,
+      username: values.username,
+      name: values.charityName,
+      email: values.charityEmail,
+      roleId: 3,
+      address: values.detailAddress,
+      phoneNumber: values.charityPhone,
+      provinceId: values.province,
+      province: listProvince.find((item) => item.value === values.province)
+        .label,
+      districtId: values.district,
+      district: listDistrict.find((item) => item.value === values.district)
+        .label,
+      wardId: values.ward,
+      ward: listWard.find((item) => item.value === values.ward).label,
+      password: values.charityPassword,
+      confirmPassword: values.charityPassword,
+      infoCharity: {
+        charityMotto: values.charityMotto,
+        charityTarget: values.charityTarget,
+        charityDescription: values.charityDescription,
+        charityFile: "handle file",
+      },
     };
-
-    // CharityFacebook: values.charityFacebook,
-    // CharityInstagram: values.charityInstagram,
-    // CharityTwitter: values.charityTwitter,
-    // CharityLinkedIn: values.charityLinkedIn,
-    // CharityIntroVideo: values.charityIntroVideo,
-    // CharityAccountNumber: values.charityAccountNumber,
+    console.log(submitData);
 
     // {
+    //   // của người đăng ký cho tổ chức
     //   Username: "lemanhlinh", // của người đăng ký
     //   Email: "lemanhlinh0808@gmail.com", // của người đăng ký
     //   PhoneNumber: "0347373222", // của người đăng ký
     //   Password: "12345678", // của người đăng ký
-    //   Address: "Số 55, Thạch Xá, Thạch Thất, Hà Nội", // của người đăng ký
+    //   DetailOfAddress: "số 55, Thạch Xá, Thạch Thât, Hà Nội",
+    //   Ward: "Thạch xá",
+    //   District: "Thạch Thất",
+    //   Province: "Hà Nội" // của người đăng ký
+    //   roleId: 2, // roleId = 2 là của tổ chức
+
+    //   // của tổ chức
     //   CharityName: "Áo ấm cho em",
-    //   CharityAddress: "144, Xuân Thủy, Cầu Giấy, Hà Nội",
+    //   CharityDetailAddress: "144, Xuân Thủy, Cầu Giấy, Hà Nội",
+    //   CharityWard: "Thạch xá",
+    //   CharityDistrict: "Thạch Thất",
+    //   CharityProvince: "Hà Nội",
     //   CharityPhone: "0347373222",
     //   CharityEmail: "aoamchoem@gmail.com",
     //   CharityMotto: "Vì Mọi người",      // slogan của tổ chức/ châm ngôn
     //   CharityTarget: "Giúp nhiều người càng tốt", // mục tiêu của tổ chức
     //   CharityDescription: "description", // Mô tả về tổ chức
-    //   roleId: 2, // roleId = 2 là của tổ chức
     //   CharityFacebook: "facebook",
     //   CharityInstagram: "instagram",
     //   CharityTwitter: "twitter",
@@ -148,6 +236,22 @@ const RegistrationPage = () => {
     submit();
   };
 
+  const handleProvinceChange = (provinceId) => {
+    setProvinceId(provinceId);
+  };
+
+  const handleDistrictChange = (districtId) => {
+    setDistrictId(districtId);
+  };
+
+  const handleWardChange = (wardId) => {
+    setWardId(wardId);
+  };
+
+  const handleFile = (event) => {
+    console.log(event.target.files[0]);
+  };
+
   return (
     <div className="user-regis">
       <div className="user-container">
@@ -182,14 +286,14 @@ const RegistrationPage = () => {
             <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
               <Col span={8}>
                 <Form.Item
-                  label="Username"
-                  name="username"
+                  label="Tên đầy đủ của bạn"
+                  name="fullName"
                   rules={[
-                    { required: true, message: "Vui lòng nhập username!" },
+                    { required: true, message: "Vui lòng nhập tên của bạn!" },
                   ]}
                   className="form-item"
                 >
-                  <Input placeholder="Nhập username" />
+                  <Input placeholder="Nhập tên của bạn" />
                 </Form.Item>
               </Col>
               <Col span={8}>
@@ -237,8 +341,17 @@ const RegistrationPage = () => {
                     },
                   ]}
                   className="form-item"
+                  itialvalue={
+                    listProvince && listProvince[0] && listProvince[0].value
+                  }
                 >
-                  <Input placeholder="Nhập Tỉnh/Thành phố của bạn" />
+                  {/* <Input placeholder="Nhập Tỉnh/Thành phố của bạn" /> */}
+
+                  <Select
+                    placeholder="Chọn Tỉnh/Thành phố của bạn"
+                    onChange={handleProvinceChange}
+                    options={listProvince}
+                  />
                 </Form.Item>
               </Col>
 
@@ -254,7 +367,11 @@ const RegistrationPage = () => {
                   ]}
                   className="form-item"
                 >
-                  <Input placeholder="Nhập Quận/Huyện của bạn" />
+                  <Select
+                    placeholder="Chọn quận/huyện của bạn"
+                    onChange={handleDistrictChange}
+                    options={listDistrict}
+                  />
                 </Form.Item>
               </Col>
               <Col span={6}>
@@ -269,14 +386,18 @@ const RegistrationPage = () => {
                   ]}
                   className="form-item"
                 >
-                  <Input placeholder="Nhập Phường/Xã của bạn" />
+                  <Select
+                    placeholder="Chọn Phường/Xã của bạn"
+                    onChange={handleWardChange}
+                    options={listWard}
+                  />
                 </Form.Item>
               </Col>
 
               <Col span={6}>
                 <Form.Item
                   label="Địa chỉ cụ thể"
-                  name="numberOfAddress"
+                  name="detailAddress"
                   rules={[
                     {
                       required: true,
@@ -285,13 +406,26 @@ const RegistrationPage = () => {
                   ]}
                   className="form-item"
                 >
-                  <Input placeholder="Số đường ví dụ: 144" />
+                  <Input placeholder="144, Xuân Thủy, Cầu Giấy, Hà Nội" />
                 </Form.Item>
               </Col>
             </Row>
 
             <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-              <Col span={12}>
+              <Col span={8}>
+                <Form.Item
+                  label="Username"
+                  name="username"
+                  rules={[
+                    { required: true, message: "Vui lòng nhập username!" },
+                  ]}
+                  className="form-item"
+                >
+                  <Input placeholder="Nhập username" />
+                </Form.Item>
+              </Col>
+
+              <Col span={8}>
                 <Form.Item
                   name="password"
                   label="Password"
@@ -307,7 +441,7 @@ const RegistrationPage = () => {
                 </Form.Item>
               </Col>
 
-              <Col span={12}>
+              <Col span={8}>
                 <Form.Item
                   name="comfirmPassword"
                   label="Confirm Password"
@@ -367,7 +501,7 @@ const RegistrationPage = () => {
               onFinish={charitySubmit}
               // onFinishFailed={onFinishFailed}
             >
-              <p>Nhập thông tin người đăng ký tổ chức</p>
+              <p>Tài khoản và mật khẩu</p>
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
                 <Col span={8}>
                   <Form.Item
@@ -381,57 +515,8 @@ const RegistrationPage = () => {
                     <Input placeholder="Nhập username" />
                   </Form.Item>
                 </Col>
-                <Col span={8}>
-                  <Form.Item
-                    label="Số điện thoại"
-                    name="phoneNumber"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập số điện thoại của bạn",
-                      },
-                    ]}
-                    className="form-item"
-                  >
-                    <Input placeholder="Nhập số điện thoại của bạn" />
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
-                  <Form.Item
-                    label="Email"
-                    name="email"
-                    rules={[
-                      {
-                        required: true,
-                        type: "email",
-                        message: "Trường này không phải là email!",
-                      },
-                    ]}
-                    className="form-item"
-                  >
-                    <Input placeholder="Nhập email của bạn" />
-                  </Form.Item>
-                </Col>
-              </Row>
 
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                <Col span={12}>
-                  <Form.Item
-                    label="Địa chỉ cụ thể"
-                    name="fullOfAddress"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập địa chỉ cụ thể",
-                      },
-                    ]}
-                    className="form-item"
-                  >
-                    <Input placeholder="Ví dụ: 144, Xuân Thủy, Cầu Giấy, Hà Nội" />
-                  </Form.Item>
-                </Col>
-
-                <Col span={6}>
+                <Col span={8}>
                   <Form.Item
                     name="charityPassword"
                     label="Password"
@@ -446,7 +531,8 @@ const RegistrationPage = () => {
                     <Input.Password placeholder="Mật khẩu của bạn" />
                   </Form.Item>
                 </Col>
-                <Col span={6}>
+
+                <Col span={8}>
                   <Form.Item
                     name="confirmCharityPassword"
                     label="Confirm Password"
@@ -545,54 +631,71 @@ const RegistrationPage = () => {
                 <Col span={6}>
                   <Form.Item
                     label="Tỉnh/Thành phố"
-                    name="charityProvince"
+                    name="province"
                     rules={[
                       {
                         required: true,
-                        message: "Vui lòng nhập Tỉnh/Thành phố của tổ chức",
+                        message: "Vui lòng nhập Tỉnh/Thành phố của bạn",
                       },
                     ]}
                     className="form-item"
+                    itialvalue={
+                      listProvince && listProvince[0] && listProvince[0].value
+                    }
                   >
-                    <Input placeholder="Nhập Tỉnh/Thành phố của tổ chức" />
+                    {/* <Input placeholder="Nhập Tỉnh/Thành phố của bạn" /> */}
+
+                    <Select
+                      placeholder="Chọn Tỉnh/Thành phố của bạn"
+                      onChange={handleProvinceChange}
+                      options={listProvince}
+                    />
                   </Form.Item>
                 </Col>
 
                 <Col span={6}>
                   <Form.Item
                     label="Quận/Huyện"
-                    name="charityDistrict"
+                    name="district"
                     rules={[
                       {
                         required: true,
-                        message: "Vui lòng nhập Quận/Huyện của tổ chức",
+                        message: "Vui lòng nhập Quận/Huyện của bạn",
                       },
                     ]}
                     className="form-item"
                   >
-                    <Input placeholder="Nhập Quận/Huyện của tổ chức" />
+                    <Select
+                      placeholder="Chọn quận/huyện của bạn"
+                      onChange={handleDistrictChange}
+                      options={listDistrict}
+                    />
                   </Form.Item>
                 </Col>
                 <Col span={6}>
                   <Form.Item
                     label="Phường/Xã"
-                    name="charityWard"
+                    name="ward"
                     rules={[
                       {
                         required: true,
-                        message: "Vui lòng nhập Phường/Xã của tổ chức!",
+                        message: "Vui lòng nhập Phường/Xã của bạn!",
                       },
                     ]}
                     className="form-item"
                   >
-                    <Input placeholder="Nhập Phường/Xã của tổ chức" />
+                    <Select
+                      placeholder="Chọn Phường/Xã của bạn"
+                      onChange={handleWardChange}
+                      options={listWard}
+                    />
                   </Form.Item>
                 </Col>
 
                 <Col span={6}>
                   <Form.Item
                     label="Địa chỉ cụ thể"
-                    name="numberOfCharityAddress"
+                    name="detailAddress"
                     rules={[
                       {
                         required: true,
@@ -601,107 +704,10 @@ const RegistrationPage = () => {
                     ]}
                     className="form-item"
                   >
-                    <Input placeholder="Số nhà, Ví dụ: 144" />
+                    <Input placeholder="144, Xuân Thủy, Cầu Giấy, Hà Nội" />
                   </Form.Item>
                 </Col>
               </Row>
-
-              {/* <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                <Col span={6}>
-                  <Form.Item
-                    label="Facebook của tổ chức"
-                    name="charityFacebook"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập Facebook của tổ chức!",
-                      },
-                    ]}
-                    className="form-item"
-                  >
-                    <Input placeholder="Nhập Facebook tổ chức" />
-                  </Form.Item>
-                </Col>
-                <Col span={6}>
-                  <Form.Item
-                    label="Instagram của tổ chức"
-                    name="charityInstagram"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập Instagram của tổ chức",
-                      },
-                    ]}
-                    className="form-item"
-                  >
-                    <Input placeholder="Nhập Instagram của tổ chức" />
-                  </Form.Item>
-                </Col>
-                <Col span={6}>
-                  <Form.Item
-                    label="Twitter của tổ chức"
-                    name="charityTwitter"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập Twitter của tổ chức",
-                      },
-                    ]}
-                    className="form-item"
-                  >
-                    <Input placeholder="Nhập Twitter của tổ chức" />
-                  </Form.Item>
-                </Col>
-
-                <Col span={6}>
-                  <Form.Item
-                    label="LinkedIn của tổ chức"
-                    name="charityLinkedIn"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập LinkedIn của tổ chức",
-                      },
-                    ]}
-                    className="form-item"
-                  >
-                    <Input placeholder="Nhập LinkedIn của tổ chức" />
-                  </Form.Item>
-                </Col>
-              </Row> */}
-
-              {/* <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                <Col span={6}>
-                  <Form.Item
-                    label="Video của tổ chức"
-                    name="charityIntroVideo"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập Video của tổ chức!",
-                      },
-                    ]}
-                    className="form-item"
-                  >
-                    <Input placeholder="Nhập Video tổ chức" />
-                  </Form.Item>
-                </Col>
-                <Col span={18}>
-                  <Form.Item
-                    label="Số tài khoản của tổ chức"
-                    name="charityAccountNumber"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập số tài khoản của tổ chức",
-                      },
-                    ]}
-                    className="form-item"
-                  >
-                    <Input placeholder="0123456789 - Nguyen Van A - MB Bank - Ngân hàng Quân đội" />
-                  </Form.Item>
-                </Col>
-              </Row> */}
 
               <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
                 <Col span={12}>
@@ -732,6 +738,27 @@ const RegistrationPage = () => {
                     className="form-item"
                   >
                     <TextArea />
+                  </Form.Item>
+                </Col>
+              </Row>
+
+              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                <Col span={12}>
+                  <Form.Item
+                    label="Nhập file để xác minh tổ chức"
+                    name="charityFile"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Vui lòng nhập file của tổ chức!",
+                      },
+                    ]}
+                    className="form-item"
+                  >
+                    <Input type="file" onChange={handleFile} />
+                    {/* <Upload>
+                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                </Upload> */}
                   </Form.Item>
                 </Col>
               </Row>
