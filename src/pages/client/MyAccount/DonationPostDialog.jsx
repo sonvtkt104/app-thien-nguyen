@@ -2,30 +2,45 @@ import "./css/DonationPost.css"
 import { useEffect, useRef, useState } from 'react'
 import { Modal, Image, Button, Checkbox, Form, Input, Upload, Select } from 'antd'
 import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
-import { createDonationPostUser, getListDistrictByID, getListProvince, getListWardByID, updateDonationPostUser } from "./MyAccountService";
+import { createDonationPostUser, getCurrentUser, getListDistrictByID, getListProvince, getListWardByID, updateDonationPostUser } from "./MyAccountService";
 import { postDonation, updateDonationByID } from "../../app/Donation/listDonation/DonationService";
 
 function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
-    const dataInfo = useRef({
-        name: "Khuất Văn Hải",
-        phone: "0123456789",
-        email: "hai@gmail.com",
-        address: "số 200, Đội Cấn, Ba Đình, Hà Nội",
-        // id: "abcd12345"
-      })
-    console.log(dataInfo.current)
-    useEffect(() => {
-        const arrAddress = dataInfo.current.address?.split(", ")
-        const data = {...dataInfo.current, donorName: dataInfo.current.name,address:arrAddress[0], ward: arrAddress[1], district: arrAddress[2], province: arrAddress[3]}
-        delete data.name
-        console.log(dataUpdate)
-        if(Object.keys(dataUpdate).length === 0) {
-            form.setFieldsValue(data);
-        }
-    },[])
-
-
     const [form] = Form.useForm();
+    const dataInfo = useRef()
+
+    useEffect(()=> {
+        getCurrentUser().then(res => {
+            // dataInfo.current = res.data.data
+            const data = res.data.data
+            console.log(data)
+            if(Object.keys(dataUpdate).length === 0) {
+                form.setFieldsValue({
+                    donorName: data.name,
+                    phone: data.phoneNumber,
+                    province: data.province,
+                    district: data.district,
+                    ward: data.ward,
+                    address: data.address,
+                });
+            } else {
+                form.setFieldsValue(dataUpdate)
+            }
+        })
+    },[])
+    // console.log(dataInfo.current)
+
+    // useEffect(() => {
+    //     // const arrAddress = dataInfo.current.address?.split(", ")
+    //     // const data = {...dataInfo.current, donorName: dataInfo.current.name,address:arrAddress[0], ward: arrAddress[1], district: arrAddress[2], province: arrAddress[3]}
+    //     // delete data.name
+    //     // console.log(dataUpdate)
+    //     if(Object.keys(dataUpdate).length === 0) {
+    //         form.setFieldsValue(data);
+    //     }
+    // },[])
+
+
     // console.log(getListDonation)
     const valueImages = Object.keys(dataUpdate).length !== 0 ? dataUpdate.images.reduce((a, b) => {
         return [...a, { url: b }]
@@ -56,7 +71,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
 
     useEffect(() => {
         getListProvince().then(res => {
-            setListAddress({ ...listAddress, "province": res.data.data }) 
+            setListAddress({ ...listAddress, "province": res.data }) 
         })
 
     }, [])
@@ -65,7 +80,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
         if (idProvince !== undefined) {
             form.setFieldsValue({district: null, ward: null})
             getListDistrictByID(idProvince).then(res => {
-                setListAddress({ ...listAddress, "district": res.data.data })
+                setListAddress({ ...listAddress, "district": res.data })
             })
         }
     }, [idProvince])
@@ -74,7 +89,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
         if (idDistrict !== undefined) {
             form.setFieldsValue({ward: null})
             getListWardByID(idDistrict).then(res => {
-                setListAddress({ ...listAddress, "ward": res.data.data})
+                setListAddress({ ...listAddress, "ward": res.data})
             })
         }
     }, [idDistrict])
@@ -359,19 +374,23 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                         // paddingRight: 16
                     }}
                     initialValues={{
-                        name: dataUpdate ? dataUpdate.name : dataInfo.current.name,
-                        phone: dataUpdate ? dataUpdate.phone : dataInfo.current.phone,
-                        address: dataUpdate ? dataUpdate.address?.split(", ")[0] : dataInfo.current.address?.split(", ")[0],
-                        ward: dataUpdate ? dataUpdate.address?.split(", ")[1] : dataInfo.current.address?.split(", ")[1],
-                        district: dataUpdate ? dataUpdate.address?.split(", ")[2] : dataInfo.current.address?.split(", ")[2],
-                        province: dataUpdate ? dataUpdate.address?.split(", ")[3] : dataInfo.current.address?.split(", ")[3],
-                        donorName: dataUpdate ? dataUpdate.donorName : "",
-                        id: dataUpdate ? dataUpdate.id : "",
-                        donationObject: dataUpdate ? dataUpdate.donationObject : "",
-                        donationAddress: dataUpdate ? dataUpdate.donationAddress : "",
-                        description: dataUpdate ? dataUpdate.description : "",
-                        organizationReceived: dataUpdate ? (dataUpdate.organizationReceived === null ? "Tất cả" : dataUpdate.organizationReceived) : ""
-                        // images: dataUpdate ? dataUpdate.images : "",
+                        // name: dataUpdate ? dataUpdate.name : dataInfo.current.name,
+                        // phone: dataUpdate ? dataUpdate.phone : dataInfo.current.phoneNumber,
+                        // // address: dataUpdate ? dataUpdate.address?.split(", ")[0] : dataInfo.current.address?.split(", ")[0],
+                        // // ward: dataUpdate ? dataUpdate.address?.split(", ")[1] : dataInfo.current.address?.split(", ")[1],
+                        // // district: dataUpdate ? dataUpdate.address?.split(", ")[2] : dataInfo.current.address?.split(", ")[2],
+                        // // province: dataUpdate ? dataUpdate.address?.split(", ")[3] : dataInfo.current.address?.split(", ")[3],
+                        // address: dataUpdate ? dataUpdate.address : dataInfo.current.address,
+                        // ward: dataUpdate ? dataUpdate.ward : dataInfo.current.ward,
+                        // district: dataUpdate ? dataUpdate.district : dataInfo.current.district,
+                        // province: dataUpdate ? dataUpdate.province : dataInfo.current.province,
+                        // donorName: dataUpdate ? dataUpdate.donorName : "",
+                        // id: dataUpdate ? dataUpdate.id : "",
+                        // donationObject: dataUpdate ? dataUpdate.donationObject : "",
+                        // donationAddress: dataUpdate ? dataUpdate.donationAddress : "",
+                        // description: dataUpdate ? dataUpdate.description : "",
+                        // organizationReceived: dataUpdate ? (dataUpdate.organizationReceived === null ? "Tất cả" : dataUpdate.organizationReceived) : ""
+                        // // images: dataUpdate ? dataUpdate.images : "",
                     }}
                     autoComplete="off"
                     onFinish={onFinish}
@@ -445,9 +464,9 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                                     onSearch={onSearchProvince}
                                     onSelect={(value) => console.log(value)}
                                     filterOption={(input, option) =>
-                                        (option?.name ?? '').toLowerCase().includes(input.toLowerCase())
+                                        (option?.fullName ?? '').toLowerCase().includes(input.toLowerCase())
                                     }
-                                    fieldNames={{ label: "name", value: "name", options: "options" }}
+                                    fieldNames={{ label: "fullName", value: "fullName", options: "options" }}
                                     options={listAddress.province}
                                 />
                             </Form.Item>
@@ -470,9 +489,9 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                                     onSearch={onSearchDistrict}
                                     onSelect={(value) => console.log(value)}
                                     filterOption={(input, option) =>
-                                        (option?.name ?? '').toLowerCase().includes(input.toLowerCase())
+                                        (option?.fullName ?? '').toLowerCase().includes(input.toLowerCase())
                                     }
-                                    fieldNames={{ label: "name", value: "name", options: "options" }}
+                                    fieldNames={{ label: "fullName", value: "fullName", options: "options" }}
                                     options={listAddress.district}
                                 />
                             </Form.Item>
@@ -495,9 +514,9 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                                     onSearch={onSearchWard}
                                     onSelect={(value) => console.log(value)}
                                     filterOption={(input, option) =>
-                                        (option?.name ?? '').toLowerCase().includes(input.toLowerCase())
+                                        (option?.fullName ?? '').toLowerCase().includes(input.toLowerCase())
                                     }
-                                    fieldNames={{ label: "name", value: "name", options: "options" }}
+                                    fieldNames={{ label: "fullName", value: "fullName", options: "options" }}
                                     options={listAddress.ward}
                                 />
                             </Form.Item>

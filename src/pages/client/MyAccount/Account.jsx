@@ -1,123 +1,102 @@
 import SideBar from "./SideBar"
 import { Button, Checkbox, Form, Input, Table, Select } from 'antd';
 import { useEffect, useLayoutEffect, useReducer, useRef, useState } from "react";
-import { getUserByID, updateUser, getListProvince, getListDistrictByID, getListWardByID } from "./MyAccountService";
+import { getCurrentUser, updateUser, getListProvince, getListDistrictByID, getListWardByID, updatePassWord } from "./MyAccountService";
 import { getUserInfomationFromCookies } from "../../Authentication/HandleUserInfomation";
+import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
 
 
 function Account() {
     const [form] = Form.useForm();
+    const [formPassWord] = Form.useForm();
 
-    const [info, setInfo] = useState({})
-    const infoRef = useRef()
+    const [dataInfo, setDataInfo] = useState()
+    const [reload, setReload] = useState()
+    const reloadRef = useRef();
+
 
     const [listAddress, setListAddress] = useState({
         province: [],
         district: [],
         ward: []
     })
-    const [idProvince, setIdProvince] = useState(undefined)
-    const [idDistrict, setIdDistrict] = useState(undefined)
-
     
+    const [provinceId, setProvinceId] = useState(undefined)
+    const [districtId, setDistrictId] = useState(undefined)
+    const [wardId, setWardId] = useState(undefined)
+
+
     useEffect(() => {
-        getUserByID("abcd12345").then(res => {
-            const arrAddress = res.data.address?.split(", ")
-            const data = {...res.data, address:arrAddress[0], ward: arrAddress[1], district: arrAddress[2], province: arrAddress[3]}
-            console.log(data)
-            setInfo(data)
-            form.setFieldsValue(data);
-            infoRef.current = res.data
-            delete infoRef.current.id
-            // setInfo(res.data)
-            // form.setFieldsValue(res.data);
-            // infoRef.current = res.data
-            // delete infoRef.current.id
+        getCurrentUser().then(res=> {
+            form.setFieldsValue(res.data.data);
+            setDataInfo(res.data.data);
         })
-    }, [form])
-    // const dataInfo = getUserInfomationFromCookies()
-    // console.log(dataInfo)
-    // useEffect(() => {
-    //     const dataInfo = getUserInfomationFromCookies()
-    //     const arrAddress = dataInfo?.address?.split(", ")
-    //         const data = {...dataInfo, address:arrAddress[0], ward: arrAddress[1], district: arrAddress[2], province: arrAddress[3]}
-    //         console.log(data)
-    //         setInfo(data)
-    //         form.setFieldsValue(data);
-    //         infoRef.current = dataInfo
-    //         delete infoRef.current.id
-    // },[])
-
-    // console.log(form)
-    console.log(info)
-
-    // const info = {
-    //     "id": "abcd12345",
-    //     "name": "Khuất Văn Hải",
-    //     "phone": "0123456789",
-    //     "email": "hai@gmail.com",
-    //     "address": "144 Xuân Thủy Cầu Giấy Hà Nội",
-    // }
-
-
-
-
-
-
+    },[reload])
 
 
 
     useEffect(() => {
         getListProvince().then(res => {
-            setListAddress({ ...listAddress, "province": res.data.data })
+            setListAddress({ ...listAddress, "province": res.data })
         })
 
     }, [])
 
     useEffect(() => {
-        if (idProvince !== undefined) {
+        if (provinceId !== undefined) {
             form.setFieldsValue({ district: null, ward: null })
-            getListDistrictByID(idProvince).then(res => {
-                setListAddress({ ...listAddress, "district": res.data.data })
+            getListDistrictByID(provinceId).then(res => {
+                setListAddress({ ...listAddress, "district": res.data })
             })
         }
-    }, [idProvince])
+    }, [provinceId])
 
     useEffect(() => {
-        if (idDistrict !== undefined) {
+        if (districtId !== undefined) {
             form.setFieldsValue({ ward: null })
-            getListWardByID(idDistrict).then(res => {
-                setListAddress({ ...listAddress, "ward": res.data.data })
+            getListWardByID(districtId).then(res => {
+                setListAddress({ ...listAddress, "ward": res.data })
             })
         }
-    }, [idDistrict])
-
+    }, [districtId])
 
 
 
     const onFinish = (values) => {
         values.name = values.name.trim()
         values.email = values.email.trim()
-        values.phone = values.phone.trim()
+        values.phoneNumber = values.phoneNumber.trim()
         values.address = values.address.trim()
-        values.ward = values.ward.trim()
-        values.district = values.district.trim()
-        values.province = values.province.trim()
-        const dataUpdate = {...values, address: `${values.address}, ${values.ward}, ${values.district}, ${values.province}`}
-        delete dataUpdate.province
-        delete dataUpdate.district
-        delete dataUpdate.ward
-        const isCheck = JSON.stringify(infoRef.current) === JSON.stringify(dataUpdate)
-        console.log('Success:', dataUpdate);
-        console.log(infoRef.current);
-        console.log(isCheck)
-        if (isCheck === false) {
-            updateUser("abcd12345", dataUpdate).then(res => {
+        values.provinceId = provinceId  || dataInfo.provinceId
+        values.districtId = districtId || dataInfo.districtId
+        values.wardId = wardId || dataInfo.wardId
+
+        const compareObjects = (obj1, obj2) => {
+            for (let key in obj1) {
+              if (obj1.hasOwnProperty(key) && obj2.hasOwnProperty(key)) {
+                if (obj1[key] !== obj2[key]) {
+                  return false;
+                }
+              } else {
+                return false;
+              }
+            }
+            return true;
+          }
+
+        console.log(compareObjects(values,dataInfo))
+
+        if (!compareObjects(values,dataInfo)) {
+            updateUser(dataInfo?.id, values).then(res => {
                 console.log(res)
+                // reloadRef.current = Math.random().toString(36).slice(-5)
                 if (res.status === 200) {
                     form.setFieldsValue(values);
+                    setDataInfo(values)
+                    setReload(Math.random().toString(36).slice(-5))
                 } else {
-                    form.setFieldsValue(info);
+                    console.log("loii")
+                    // form.setFieldsValue(info);
                 }
                 // infoRef.current = {}
             })
@@ -125,25 +104,31 @@ function Account() {
 
     };
 
+    const onFinishFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+    };
+
 
     const onFinishPassword = (values) => {
         console.log('Success:', values);
         console.log(values.newPassword === values.confirmNewPassword)
+        if(values.newPassword === values.confirmNewPassword) {
+            updatePassWord(getUserInfomationFromCookies().id, values).then(res => {
+                // console.log(res)
+                // reloadRef.current = Math.random().toString(36).slice(-5)
+                if (res.status === 200) {
+                    formPassWord.resetFields()
+                }
+            })
+        }
     };
 
     const onFinishFailedPassword = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
 
-
-
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
-
-
     const onChangeProvince = (value, value1) => {
-        setIdProvince(value1.id)
+        setProvinceId(value1.id)
     };
 
     const onSearchProvince = (value, value1) => {
@@ -151,14 +136,14 @@ function Account() {
     };
 
     const onChangeDistrict = (value, value1) => {
-        setIdDistrict(value1.id)
+        setDistrictId(value1.id)
     };
 
     const onSearchDistrict = (value, value1) => {
     };
 
     const onChangeWard = (value, value1) => {
-
+        setWardId(value1.id)
     };
 
     const onSearchWard = (value, value1) => {
@@ -177,18 +162,8 @@ function Account() {
                         style={{
                             width: "100%",
                             padding: "10px 0 0 20px",
-                            // maxWidth: 850,
-                            // display: "flex",
                             flexWrap: "wrap"
                         }}
-                        // initialValues={{
-                        //     name: info?.name,
-                        //     phone: !info ? "" : info.phone,
-                        //     email: !info ? "" : info.email,
-                        //     address: !info ? "" : info.address,
-                        //     // remember: true,
-                        // }}
-                        setF
                         onFinish={onFinish}
                         onFinishFailed={onFinishFailed}
                         autoComplete="off"
@@ -210,7 +185,7 @@ function Account() {
                             <Form.Item
                                 style={{ width: "32%", marginBottom: 10 }}
                                 label="Số điện thoại"
-                                name="phone"
+                                name="phoneNumber"
                                 rules={[
                                     {
                                         required: true,
@@ -240,43 +215,7 @@ function Account() {
                                 <Input />
                             </Form.Item>
                         </div>
-
-                        {/* <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-                            <Form.Item
-                                style={{ width: "49%", marginBottom: 10 }}
-                                label="Số điện thoại"
-                                name="phone"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Vui lòng nhập Số điện thoại!',
-                                    },
-                                ]}
-
-                            >
-                                <Input />
-                            </Form.Item>
-
-                            <Form.Item
-                                style={{ width: "49%", marginBottom: 10 }}
-                                label="Email"
-                                name="email"
-                                rules={[
-                                    {
-                                        type: 'email',
-                                        message: 'Email không hợp lệ!',
-                                    },
-                                    {
-                                        required: true,
-                                        message: 'Vui lòng nhập Email!',
-                                    },
-                                ]}
-                            >
-                                <Input />
-                            </Form.Item>
-                        </div> */}
-
-
+                        
                         <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                             <Form.Item
                                 style={{ width: "32%", marginBottom: 10 }}
@@ -297,9 +236,9 @@ function Account() {
                                     onSearch={onSearchProvince}
                                     onSelect={(value) => console.log(value)}
                                     filterOption={(input, option) =>
-                                        (option?.name ?? '').toLowerCase().includes(input.toLowerCase())
+                                        (option?.fullName ?? '').toLowerCase().includes(input.toLowerCase())
                                     }
-                                    fieldNames={{ label: "name", value: "name", options: "options" }}
+                                    fieldNames={{ label: "fullName", value: "fullName", options: "options" }}
                                     options={listAddress.province}
                                 />
                             </Form.Item>
@@ -322,9 +261,9 @@ function Account() {
                                     onSearch={onSearchDistrict}
                                     onSelect={(value) => console.log(value)}
                                     filterOption={(input, option) =>
-                                        (option?.name ?? '').toLowerCase().includes(input.toLowerCase())
+                                        (option?.fullName ?? '').toLowerCase().includes(input.toLowerCase())
                                     }
-                                    fieldNames={{ label: "name", value: "name", options: "options" }}
+                                    fieldNames={{ label: "fullName", value: "fullName", options: "options" }}
                                     options={listAddress.district}
                                 />
                             </Form.Item>
@@ -347,9 +286,9 @@ function Account() {
                                     onSearch={onSearchWard}
                                     onSelect={(value) => console.log(value)}
                                     filterOption={(input, option) =>
-                                        (option?.name ?? '').toLowerCase().includes(input.toLowerCase())
+                                        (option?.fullName ?? '').toLowerCase().includes(input.toLowerCase())
                                     }
-                                    fieldNames={{ label: "name", value: "name", options: "options" }}
+                                    fieldNames={{ label: "fullName", value: "fullName", options: "options" }}
                                     options={listAddress.ward}
                                 />
                             </Form.Item>
@@ -369,22 +308,6 @@ function Account() {
                         >
                             <Input />
                         </Form.Item>
-
-
-                        {/* <Form.Item
-                            style={{ width: "100%", marginBottom: 16 }}
-                            label="Địa chỉ"
-                            name="address"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập Địa chỉ của bạn!',
-                                },
-                            ]}
-                        >
-                            <Input />
-                        </Form.Item> */}
-
                         <Form.Item
                             wrapperCol={{
                                 // offset: 8,
@@ -392,7 +315,7 @@ function Account() {
                             }}
                         >
                             <Button type="primary" htmlType="submit">
-                                Lưu thay đổi
+                                Lưu thay đổi thông tin
                             </Button>
                         </Form.Item>
                     </Form>
@@ -400,6 +323,7 @@ function Account() {
                 <div>
                     <h2>Thay đổi mật khẩu</h2>
                     <Form
+                        form={formPassWord}
                         layout={"vertical"}
                         name="basic"
                         style={{
@@ -418,7 +342,7 @@ function Account() {
                         <Form.Item
                             style={{ width: "100%", marginBottom: 10 }}
                             label="Mật khẩu hiện tại"
-                            name="currentPassword"
+                            name="oldPassword"
                             rules={[
                                 {
                                     required: true,
@@ -468,7 +392,7 @@ function Account() {
                             }}
                         >
                             <Button type="primary" htmlType="submit">
-                                Lưu thay đổi
+                                Lưu thay đổi mật khẩu
                             </Button>
                         </Form.Item>
                     </Form>

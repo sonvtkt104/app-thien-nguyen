@@ -7,11 +7,13 @@ import { getInfoCharity } from "../../../redux/donationSlice";
 import { getApp } from "../Donation/myDonation/MyDonationService";
 import GeneralInformationDialog from "./GeneralInformationDialog";
 import { CheckCircleFilled, CloseOutlined, EnvironmentOutlined, GlobalOutlined, MailOutlined, NotificationOutlined, PhoneOutlined } from "@ant-design/icons";
-import { getCharityByID } from "../HomePageCharity/HomePageCharityService"
+import { getCurrentCharity } from "../HomePageCharity/HomePageCharityService"
+import { useNavigate } from "react-router-dom"
 
 function GeneralInformation() {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const [charity, setCharity] = useState({})
     const [openDialog, setOpenDialog] = useState(false)
@@ -20,60 +22,12 @@ function GeneralInformation() {
 
 
     useEffect(()=> {
-        // getApp("abc123").then(res=> dispatch(getInfoCharity(res.data)))
-        getCharityByID("abc123").then(res=> setCharity(res.data))
+        getCurrentCharity().then(res=> {
+            setCharity(res.data.data)
+        })
     },[reloadData])
-    console.log(reloadData)
-
-    // const infoCharity = useSelector((state) => state.donation.infoCharity)
-    // console.log(infoCharity)
-
-    // const infoCharity = useMemo(() => {
-    //     let message1 = "https://www.google.com/maps/embed/v1/place&center=21.0368559,105.7801041&q="
-    //     let message = '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.883391940674!2d105.80691271473164!3d21.037351285993743!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab14f8420767%3A0x8e7487a3ba6b8764!2zMzQyIMSQ4buZaSBD4bqlbiwgQ-G7kW5nIFbhu4ssIEJhIMSQw6xuaCwgSMOgIE7hu5lpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1680325397474!5m2!1svi!2s" width="600" height="450" style="border:0;" allowFullScreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
-    //     const test = message.split(" ")[1].slice(5,-1)
-    //     return {
-    //         "id": "abc123",
-    //         "name": "Áo ấm cho em",
-    //         "avatar": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    //         "phone": "0369852147",
-    //         "email": "tuthien@gmail.com",
-    //         "address": "144 Xuân thủy Cầu giấy Hà Nội",
-    //         "targetOfOrganization": "Mục tiêu của tổ chức từ thiện 'Áo ấm trao em' là cung cấp áo ấm và quần áo miễn phí cho trẻ em và người lớn khó khăn trong cộng đồng, đặc biệt là trong mùa đông lạnh giá. Chúng tôi mong muốn giúp đỡ và mang lại sự ấm áp cho những người đang gặp khó khăn trong cuộc sống.",
-    //         "mottoOfOrganization": "Phương trâm của tổ chức từ thiện 'Áo ấm trao em' là giúp đỡ những trẻ em nghèo và vùng khó khăn trong cộng đồng bằng cách cung cấp các dịch vụ cơ bản như thức ăn, nước uống, quần áo và y tế. Chúng tôi cũng tập trung vào việc giúp đỡ trẻ em bị bỏ rơi, đưa họ đến trường và hỗ trợ họ trong việc học tập và phát triển bản thân.",
-    //         "socialNetwork": {
-    //             "facebook": "https://www.facebook.com/",
-    //             "instagram": "https://www.instagram.com/",
-    //             "twitter": "https://twitter.com/?lang=en",
-    //             "linkedIn": "https://www.linkedin.com/",
-    //         },
-    //         "introVideo": "https://www.youtube.com/embed/6h2fq03pJTk",
-    //         "images": [
-    //             "https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp",
-    //             "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    //             "https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-    //             "https://cdnimg.vietnamplus.vn/uploaded/fsmsy/2018_03_01/thuc_an_tet.jpg",
-    //             "https://photo-cms-baonghean.zadn.vn/w1000/Uploaded/2022/tfohiuh/2020_10_25/bna_image_6029069_25102020.jpeg"
-    //         ],
-    //         // "googlemap": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.8610660551603!2d105.78048991492963!3d21.038244392830343!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab354920c233%3A0x5d0313a3bfdc4f37!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBDw7RuZyBuZ2jhu4csIMSQ4bqhaSBo4buNYyBRdeG7kWMgZ2lhIEjDoCBO4buZaQ!5e0!3m2!1svi!2s!4v1679246091627!5m2!1svi!2s",
-            
-    //         "googlemap": test,
-    //         "isVerification": true,
-    //         "followers": 157422,
-    //         "introduction": "Xin chào và chào mừng đến với tổ chức từ thiện 'Áo ấm trao em'. Chúng tôi hoạt động với mục đích giúp đỡ những trẻ em khó khăn và gia đình nghèo trong cộng đồng. Chúng tôi cố gắng cung cấp cho các em cơ hội học tập và phát triển bản thân để họ có thể có một tương lai tốt đẹp hơn. Chân thành cảm ơn sự quan tâm và hỗ trợ của các bạn!",
-    //         "numberCampaigns": 4,
-    //         "accountNumber": "0123456789 - Nguyen Van A - MB Bank - Ngân hàng Quân đội",
-    //         "reach": [3034, 1355, 5432, 4000, 7342, 3245, 8543, 5234, 6543, 12423, 8403, 13024],
-    //     }
-    // }, [])
-
-
-    // useEffect(() => {
-    //     setCharity(infoCharity)
-    // }, [infoCharity])
-
-
-    // console.log(charity)
+    // console.log(reloadData)
+    console.log(charity)
 
 
     const handleCloseModal = () => {
@@ -91,18 +45,32 @@ function GeneralInformation() {
         <PageLayout keyActive='info'>
             <div className="gi-header">
                 <h1>Thông tin chung</h1>
-                <Button
-                    type="primary"
-                    size="large"
-                    onClick={() => {
-                        setOpenDialog(true)
-                        // setDataUpdate(infoCharity)
-                        setDataUpdate(charity)
-                        setReloadData("1")
-                    }}
-                >
-                    Chỉnh sửa
-                </Button>
+                <div>
+                    <Button
+                        type="primary"
+                        size="large"
+                        style={{marginRight: "8px"}}
+                        onClick={() => {
+                            // navigate("/profile-charity")
+                            window.open('/profile-charity', '_blank');
+                            // window.open(`/profile-charity/${charity.id}`, '_blank');
+                        }}
+                    >
+                        Xem chi tiết
+                    </Button>
+                    <Button
+                        type="primary"
+                        size="large"
+                        onClick={() => {
+                            setOpenDialog(true)
+                            // setDataUpdate(infoCharity)
+                            setDataUpdate(charity)
+                            setReloadData("1")
+                        }}
+                    >
+                        Chỉnh sửa
+                    </Button>
+                </div>
             </div>
             <div>
                 <Row>
@@ -114,7 +82,8 @@ function GeneralInformation() {
                                 <Row>
                                     <div className="gi-modal-header">
                                         <Image
-                                            src={charity.avatar}
+                                            src={charity?.avatar || 'error'}
+                                            fallback="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAI6AkEDASIAAhEBAxEB/8QAGQABAQEBAQEAAAAAAAAAAAAAAAEEAwIF/8QAJRABAAICAgICAwADAQAAAAAAAAECAxEEMSFBEjJRYXEUM4Ej/8QAFwEBAQEBAAAAAAAAAAAAAAAAAAECA//EABoRAQEBAQADAAAAAAAAAAAAAAABEQISMUH/2gAMAwEAAhEDEQA/APpAOrIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPVKWv1DvTje7JaM0RM9Q9xitPpsrjrX09xDPkrJHGtL1HF/LUJoz/AOLX9n+LX8tAbVZp4sfl5niz6lrDUYZ4946eJx2r3D6KTEe4XR82fA3Ww0t6cb8aY+q6M49Wpav2h5XUAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACImZ8QAe+3WvHtZ0jix7nyzozR5nXbRi48z5s648FaOsJaqVpFY8PQMqAAAoCKAgoCCoAADzakW7hnycb3VqJWUfNtWazqUb7463jpkyYppM/hqVK5gNIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEC1jc6go9Y8c5Lfprx4q1jpcdIrSNR5dGLVINAyoAAqAKAAAAAAAAAAioAKgDzekWjUvRIMOXFNZ36cn0b1i0alhy45pZuVHgBpAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB141d325NPEr4mWasagHNQBRQAAAAAAAAAAAAAAAAAQVAHLNji9evLqhEfOtGp1KNHJx6n5QzukABUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG3ixrGxfhvwxqkM9eljoA5qKiqAAAAAAAAAAAAAAAAAACKAgqA8Za/KrBaNWmH0mHkV1k2sqOXoB0QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAjuH0Mf0hgr9ofQp9YY6WPQDKiooAAAAAAAAAAAAAAAAAAAAAIAzcuviJhpc88bxz+gYIAdYyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtPvD6NeofPx/eH0I6hjpYoDKiooAAAAAAAAAAAAAAAAAACKgAAEvGTzSXt5v9QfOn2Lb7T/AFHWMgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPWL7w+jHT52L7w+jHTHSwAYVQFAAAAAAAAAAAAAAAAAABFQAAB4vaIrO5ec2T4QyXyzdZEebfaZQHSIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9YvvD6EdPn4vvD6EdMdLFAYVQFAAAAAAAAAAAAAAAAAABFQBFAZuX0ytPKZm4gA0gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD3i+8PoR0+fi+8PoR0x0oAwqgKAAAAAAAAAAAAAAAAAACKgAAMnK7Z3flfeHB0jIAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9Y/vD6EdPn4/vD6FemOlUBhVAUAAAAAAAAAAAAAAAAAAEVAAAYuV9/+OLryf8AZ/xydIyAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB7Gjj4onzKWkcqUt848N9frBFYj0OdrSqigAAAAAAAAAAAAAAAAAAAAAAiKm/IMeelpvuIcX0piJ8aY+Ti+M7hqUcexFbZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI7h9DFGqQ+fHcPoYvpDPSx7Ac1UBQAAAAAAAAAAAAAAAAAAAABAVFQBy5Ebxz/HVzz/67fwg+fEKDqyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAN+Cd44YGvi23VirGgPYyqgAAAAAAAAAAAAAAAAAAAAAAAIqAOPJnWN2ZuZbxELBl9gOkZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHfi21fTg9Y7fG8SlI+hCwkT7WHNpQAAAAAAAAAAAAAAAAAAAAAEVAAQFYORbeTTbefjXb5953eZWCAOjIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAdSHaUbsFvlR1hj419Tpr2xYr0IqKAAAAAAAAAAAAAAAAAAAAIqAIqTOvIOPJtqumN0z3+V9ObcQAVABQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJBUNzHlox8iYjUs5+GbFj6NLfKNvTngn/zdHOtCooAAAAAAAAAAAAAAAAAICp7AEmYiGTLmmZmGnLOqS+fPmWpEp+wG0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa+LbddNDFxravpsc6sVUVFAAAAAAAAAAAAAAAAAAQDYOHJnVGNo5dtzpnbjIA0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALSfjaJfQpPyrEvnNXGybj4s0jSJHhYYaUAAAAAAAAAAAAAAABFQBLTqNq55rfHHIMWWd5JeSZ35HSMgCgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA947fGzwJYPo1t8qxL0ycfL5+MtTFiqqCKoAAAAAAAAAAACKgAAIy8q+5075LfCu2G8/K0y1EqANoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAsTqYb8c7pD58dw+hj+kMVY9gMqoAAAAAAAAAAAAACKgMvLn0zNHL7hnbiUAaQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABa+bQ+hT6wwYvvD6EdQ59KoCKoAAAAAAAAAAACKgAAMvLjpma+VHhkbiUAaQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB0wRvJDex8SN3mWxzqgCKoAAAAAAAAAAACKgABRx5MbxsT6GWN45fPnxLXKUAbQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABq4ldRMtMOeGPjjh0cq0KigAAAAAAAAAAAAIqAASCWjdXz8ldXt/X0GPk01ff5WI4yA6RAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB7xV+V4eGni015mEo01jxpYIHNpQAAAAAAAAAAAAAAAEVAHDk03Xbulo3ExIPmj3lp8LvDrGQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOgCD9kRMzqPLRi43uzNo54sU3tE68NtY1GlrWK+IhWbVIVFRQAAAAAAAAAAAAAAABFAQVAcc+L513HbHNZrOn0XLLhi/XiWpUYh6vjtSfMbh5b3UAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAdceC1/XhLRyjvXbrjwWtO56aMeCtPTrEaZtXHjHirTqHSEVnVFRQAAAAAAAAAAAAAAAAAAAAEVAAAS1YtHmGfJx9/VpDUfOtjtTuHjT6VqRPcbcMnG91alMZeh6vS1e4eW9QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB7pitf14TR4e6YrX/AI04+PWvmfLtFYjpm9LjjTBWsefMu0RqF0M6oAACgAAAAAAAAAAAAAAAAAAAAAAAAAAIqAAA82pFu4Z8nG91ak0Sj51qTXuEfRtjrbtnycb3VqVGYW1Zr4lG4gAAAAAAAAAAAAAAAAAAAAAAAAD1WlrT4hLR5/j3XFa/p3x8eI82aIrEdM6uOGPj1r5l2isR6ehnVAAFRQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEUBBUBUkAeL4629M2TjTHmGwNR82YmPEwjffFW3plyYJr5huVHIJGgAAAAAAAAAAAAAAAABYiZ6BOlrWbT4h2x8eZ82aaY4r1DNo4Y+N7lorSK+noZ1oAQBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABFARJjfcKA45MFbdMt8dsfrb6DzasW7hZUx84acvH35qzTExPmG5UBFUAAAAAAAAAAAdMWKbz+ktEpjm8tePDWsft6pWKx4e4YtaRQQAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBUVAAATTxkxVtHToGj5+TFNJc30rVi0eWXLg15q3KlcA/UjSAAACgAgA9UrNrRCaLixze2/TbWsRGjFSKV8PbFqw0AigAAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAioBpJiJU0DLnw+6s0+H0tM2fD7hqdMswDYAKACB+mrjY/Hylww0+d26sajTFoqkDLQAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIqAJMRPaoDFnx/C246cn0MtPlWYYJiYtqfTcrKANACx2fBq41dRtoeMX0h7c1gAigAAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAioCSx8mvxtttlm5f1heUZQGx//2Q=="
                                             width={60}
                                             height={60}
                                             className="gi-image"
@@ -133,7 +102,7 @@ function GeneralInformation() {
                                     Giới thiệu tổ chức
                                 </Row>
                                 <div style={{ lineHeight: '21px', marginBottom: 10 }}>
-                                    {charity.introduction}
+                                    {charity?.charityDescription}
                                 </div>
                             </div>
                             <div style={{ marginBottom: 20 }}>
@@ -141,7 +110,7 @@ function GeneralInformation() {
                                     Phương châm
                                 </Row>
                                 <div style={{ lineHeight: '21px', marginBottom: 10 }}>
-                                {charity.mottoOfOrganization}
+                                {charity?.charityMotto}
                                 </div>
                             </div>
                             <div style={{ marginBottom: 20 }}>
@@ -149,7 +118,7 @@ function GeneralInformation() {
                                     Mục tiêu
                                 </Row>
                                 <div style={{ lineHeight: '21px', marginBottom: 10 }}>
-                                    {charity.targetOfOrganization}
+                                    {charity?.charityTarget}
                                 </div>
                             </div>
                         </div>
@@ -158,9 +127,12 @@ function GeneralInformation() {
                                 <div style={{ fontSize: 18, fontWeight: '600', marginBottom: 20 }}>
                                     Video Giới thiệu
                                 </div>
-                                <div>
-                                    <iframe width="100%" height="350" src="https://www.youtube.com/embed/6h2fq03pJTk" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
-                                </div>
+                                {
+                                    charity?.charityIntroVideo &&
+                                        <div>
+                                            <iframe width="100%" height="350" src={charity?.charityIntroVideo} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                                        </div>
+                                }
                             </div>
                             <div>
                                 <Row justify='space-between'
@@ -172,7 +144,7 @@ function GeneralInformation() {
                                 </Row>
                                 <div style={{ display: "flex", flexWrap: "wrap" }}>
                                     {
-                                        charity.images?.map((image, index) =>
+                                        charity?.charityImages?.split(",").map((image, index) =>
                                             <div key={index} style={{ margin: "4px", border: "1px solid #e7e5e5", display: "flex", alignItems: "center", height: 125, width: 125 }}>
                                                 <Image
                                                     className="modal-detail-image"
@@ -199,7 +171,7 @@ function GeneralInformation() {
                             <div style={{ paddingTop: 6}}>
                                 <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px', marginLeft: 10,}}>
                                     <PhoneOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
-                                    {charity.phone}
+                                    {charity?.phoneNumber}
                                 </Row>
                                 <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px', marginLeft: 10,}}>
                                     <GlobalOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
@@ -207,18 +179,19 @@ function GeneralInformation() {
                                 </Row>
                                 <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px', marginLeft: 10,}}>
                                     <MailOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
-                                    {charity.email}
+                                    {charity?.email}
                                 </Row>
                                 <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px', marginLeft: 10, flexWrap: 'nowrap' }}>
                                     <EnvironmentOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
-                                    {charity.address}
+                                    {`${charity?.address}, ${charity?.ward}, ${charity?.district}, ${charity?.province}`}
                                 </Row>
                                 <div style={{ margin: "0 10px 20px 10px", }}>
-                                    {/* <div style={{ fontSize: 16, fontWeight: '600', marginBottom: 20 }}>Địa chỉ trụ sở chính</div> */}
-                                    <div>
-                                        {/* {charity.googlemap} */}
-                                        <iframe title="Google map" src={charity.googlemap} style={{ border: 0, width: '100%' }} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
-                                    </div>
+                                    {
+                                        charity?.googleMap &&
+                                        <div>
+                                            <iframe title="Google map" src={charity?.googleMap} style={{ border: 0, width: '100%' }} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+                                        </div>
+                                    }
                                 </div>
                                 <div>
                                     <div style={{ fontSize: 16, fontWeight: '600', marginBottom: 20, borderLeft: '3px solid var(--color-blue)', paddingLeft:10 }}>Liên hệ qua mạng xã hội</div>
@@ -228,11 +201,11 @@ function GeneralInformation() {
                                                 style={{ width: 33, marginBottom: 8 }}
                                             />
                                             <a 
-                                                href={charity.socialNetwork?.facebook} 
+                                                href={charity?.charityFacebook}
                                                 target="_blank" 
                                                 className="gi-socialNetwork-link"
                                                 onClick={(e) => {
-                                                    if(charity.socialNetwork?.facebook === "") {
+                                                    if(charity?.charityFacebook === "") {
                                                         e.preventDefault()
                                                     }
                                                 }}
@@ -244,11 +217,11 @@ function GeneralInformation() {
                                                 style={{ width: 33, marginBottom: 8 }}
                                             />
                                             <a 
-                                                href={charity.socialNetwork?.instagram} 
+                                                href={charity?.charityInstagram} 
                                                 target="_blank" 
                                                 className="gi-socialNetwork-link"
                                                 onClick={(e) => {
-                                                    if(charity.socialNetwork?.instagram === "") {
+                                                    if(charity?.charityInstagram === "") {
                                                         e.preventDefault()
                                                     }
                                                 }}
@@ -260,11 +233,11 @@ function GeneralInformation() {
                                                 style={{ width: 33, marginBottom: 8 }}
                                             />
                                             <a 
-                                                href={charity.socialNetwork?.twitter} 
+                                                href={charity?.charityTwitter} 
                                                 target="_blank" 
                                                 className="gi-socialNetwork-link"
                                                 onClick={(e) => {
-                                                    if(charity.socialNetwork?.twitter === "") {
+                                                    if(charity?.charityTwitter === "") {
                                                         e.preventDefault()
                                                     }
                                                 }}
@@ -276,11 +249,11 @@ function GeneralInformation() {
                                                 style={{ width: 33, marginBottom: 8 }}
                                             />
                                             <a 
-                                                href={charity.socialNetwork?.linkedIn} 
+                                                href={charity?.charityLinkedIn} 
                                                 target="_blank" 
                                                 className="gi-socialNetwork-link" 
                                                 onClick={(e) => {
-                                                    if(charity.socialNetwork?.linkedIn === "") {
+                                                    if(charity?.charityLinkedIn === "") {
                                                         e.preventDefault()
                                                     }
                                                 }}
