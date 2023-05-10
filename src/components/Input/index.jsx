@@ -6,7 +6,8 @@ export function Input({
     placeholder='Enter a link to scan',
     onChange,
     value,
-    type='text'
+    type='text',
+    onSearch
 }) {
     return (
         <span style={{position: 'relative'}}>
@@ -27,7 +28,11 @@ export function Input({
             />
             {
                 type == 'search' ? (
-                    <span style={{position: 'absolute', top: 7, right: 20}}>
+                    <span style={{position: 'absolute', top: 0, right: 10, cursor: 'pointer'}}
+                        onClick={()=> {
+                            onSearch && onSearch()
+                        }}
+                    >
                         <SearchIcon />
                     </span>
                 ) : ""

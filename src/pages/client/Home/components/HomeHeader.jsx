@@ -7,7 +7,7 @@ function HomeHeader({
 
 }) {
     return (
-        <HeaderClient />
+        <HeaderClient page="home"/>
     )
 }
 

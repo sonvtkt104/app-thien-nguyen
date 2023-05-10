@@ -5,109 +5,22 @@ import { Col, message, Modal, Row, Select, Space, Upload } from "antd";
 import { Input } from 'antd';
 import campaignService from "./CampaignService";
 
-import MarkdownIt from 'markdown-it';
-import MdEditor from 'react-markdown-editor-lite';
-import 'react-markdown-editor-lite/lib/index.css';
-const mdParser = new MarkdownIt(/* Markdown-it options */);
+import { toast } from "react-toastify";
+import axios from "axios";
+
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 function ModalEditPost({
     isOpenModalEditPost,
     handleOk,
     handleCancel,
-    type="edit"
 }) {
-    console.log(type)
     const {TextArea} = Input;
-    const [nameCampaign, setNameCampaign] = useState('')
-    const [targetAudience, setTargetAudience] = useState('')
-    const [targetCampaign, setTargetCampaign] = useState('')
-    const [descriptionCampaign, setDescriptionCampaign] = useState('')
-    const [startDay, setStartDay] = useState('')
-    const [endDay, setEndDay] = useState('')
-    const [imageCampaign, setImageCampaign] = useState('')
-
-    const [fileList, setFileList] = useState([]);
-    const [previewImage, setPreviewImage] = useState(false);
-    const [previewTitle, setPreviewTitle] = useState('');
-    const [previewOpen, setPreviewOpen] = useState(false);
-
-
-        const getBase64 = (file) =>
-            new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = (error) => reject(error);
-        });
-
-    const handleChange = ({ fileList: newFileList }) => {
-        setFileList(newFileList);
-    };
-
-    const handlePreview = async (file) => {
-        if (!file.url && !file.preview) {
-        file.preview = await getBase64(file.originFileObj);
-        }
-        setPreviewImage(file.url || file.preview);
-        setPreviewOpen(true);
-        setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
-    };
-
-    const beforeUpload = (file) => {
-        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-        if (!isJpgOrPng) {
-          message.error('You can only upload JPG/PNG file!');
-        }
-        const isLt2M = file.size / 1024 / 1024 < 2;
-        if (!isLt2M) {
-          message.error('Image must smaller than 2MB!');
-        }
-        return isJpgOrPng && isLt2M;
-      };
-
-    const uploadButton = (
-        <div>
-        <PlusOutlined />
-        <div
-            style={{
-            marginTop: 8,
-            }}
-        >
-            Tải ảnh lên
-        </div>
-        </div>
-    );
-    
-    const [region, setRegion] = useState('')
-    let [regionOptions, setRegionOptions] = useState([])
-
-    useEffect(() => {
-        (async () => {
-            try {
-                let res = await campaignService.getAllRegion();
-                if(res.data && res.data.length > 0) {
-                    regionOptions = res.data.map((region) => {
-                        region.label = region.fullName;
-                        return {
-                            label: region.fullName,
-                            value: region.codeName
-                        };
-                    })
-                    setRegionOptions(regionOptions);
-                }
-            } catch (error) {
-                console.log(error)
-            }
-
-        })()
-    }, [])
-
-    const [contentHTML, setContentHTML] = useState('');
-    const [contentMarkdown, setContentMarkdown] = useState('');
-    const handleEditorChange = ({html, text}) => {
-        setContentMarkdown(text);
-        setContentHTML(html);
-    }
+    const [namePost, setNamePost] = useState('')
+    const [typePost, setTypePost] = useState(0)
+    const [statusPost, setStatusPost] = useState(1)
+    const [contentPost, setContentPost] = useState('')
 
     let options = [
         {
@@ -120,20 +33,47 @@ function ModalEditPost({
         }
     ]
 
+    let optionsStatus = [
+        {
+            label: 'Hoạt động',
+            value: 1
+        },
+        {
+            label: 'Ẩn',
+            value: 0
+        },
+    ]
+
+    const handlePressOk = async () => {
+
+        console.log(namePost, typePost, statusPost, contentPost);
+        return;
+        await axios({
+            method: 'post',
+            url: 'http://localhost:8089/charity/campaign/add-campaign',
+            headers: {
+                token: 'abcd'
+            },
+            
+        })
+        toast.success('Tạo mới bài viết thành công!');
+
+    }
+
     return (
         <>
                  <Modal
                      width={1000}
                      bodyStyle={{height: '100%'}}
-                     okText={type === 'create' ? "Đồng ý" : "Lưu thay đổi"}
+                     okText={"Đồng ý"}
                      cancelText={"Quay lại"}
                      centered 
                      open={isOpenModalEditPost} 
-                     onOk={handleOk} 
+                     onOk={handlePressOk} 
                      onCancel={handleCancel}
                      className="modal-create"
                  >
-                     <div className="modal-header">Chỉnh sửa bài viết</div>
+                     <div className="modal-header">Tạo bài viết mới</div>
                      <div className="modal-body">
                          <Row gutter={[12, 12]}>
                              <Col span={12}>
@@ -141,8 +81,8 @@ function ModalEditPost({
                                  <br />
                                  <Input 
                                      placeholder=""
-                                     value={nameCampaign}
-                                     onChange={(e) => setNameCampaign(e.target.value)} 
+                                     value={namePost}
+                                     onChange={(e) => setNamePost(e.target.value)} 
                                      style={{width: '100%'}}
                                  />
                              </Col>
@@ -160,23 +100,44 @@ function ModalEditPost({
                                         return option.label.toLowerCase().includes(input.toLowerCase())
                                         }
                                     }
+                                    onChange={(value) => setTypePost(value)}
                                  />
                              </Col>
-                         </Row>                                                
+                             {/* <Col span={6}>
+                                 <label>Trạng thái</label>
+                                 <br />
+                                 <Select
+                                    defaultValue={optionsStatus[0]}
+                                    showSearch
+                                    allowClear
+                                    style={{width: '100%'}}
+                                    placeholder='Trạng thái bài viết'
+                                    options={optionsStatus}
+                                    placement={'bottomLeft'}
+                                    filterOption={(input, option) => {
+                                        return option.label.toLowerCase().includes(input.toLowerCase())
+                                        }
+                                    }
+                                    onChange={(value) => setStatusPost(value)}
+                                 />
+                             </Col> */}
+                         </Row>                       
                          <div style={{margin: '12px 0'}}></div>
-                         <Row>
+                         <Row className='ck-editor-post'>
                              <label>Nội dung bài viết</label>
                              <Col span={24}>
-                                <MdEditor
-                                    value={contentMarkdown} 
-                                    style={{height: '200px'}} 
-                                    renderHTML={text => mdParser.render(text)}
-                                    onChange={handleEditorChange}
+                                <CKEditor
+                                    editor={ ClassicEditor }
+                                    data={contentPost}
+                                    onChange={ ( event, editor ) => {
+                                        const data = editor.getData();
+                                        setContentPost(data);
+                                    } }                                
                                 />
                              </Col>
                          </Row>
                          <div style={{margin: '12px 0'}}></div>
-                         <Row>
+                         {/* <Row>
                             <Col span={8}>
                             Chọn ảnh đăng tải
                                 <Upload
@@ -189,7 +150,7 @@ function ModalEditPost({
                                     multiple
                                 >
                                     {
-                                        fileList && fileList.length >= 1 ? null : uploadButton
+                                        fileList && fileList.length >= 2 ? null : uploadButton
                                     }
                                     
                                 </Upload>
@@ -203,7 +164,7 @@ function ModalEditPost({
                                     />
                                 </Modal>
                             </Col>
-                         </Row>
+                         </Row> */}
                      </div>
                  </Modal>
         </>

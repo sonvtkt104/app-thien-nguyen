@@ -3,26 +3,36 @@ import {PlusOutlined} from '@ant-design/icons';
 import './CampaignList.scss'
 import { Col, message, Modal, Row, Select, Space, Upload } from "antd";
 import { Input } from 'antd';
-import campaignService from "./CampaignService";
 
-import MarkdownIt from 'markdown-it';
-import MdEditor from 'react-markdown-editor-lite';
-import 'react-markdown-editor-lite/lib/index.css';
+import moment from "moment";
+
 import axios from "axios";
 import { toast } from "react-toastify";
-const mdParser = new MarkdownIt(/* Markdown-it options */);
+
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+
 
 function ModalCreateCampaign({
     isOpenModalCompaign,
     handleCancel,
-    type
+    getData,
+    handleOk
 }) {
+    let [selectDay, setSelectDay] = useState(new Date())
+    let [isCalendar, setIsCalendar] = useState(false)
+    let [isCalendar2, setIsCalendar2] = useState(false)
     const {TextArea} = Input;
     const [nameCampaign, setNameCampaign] = useState('')
     const [targetAudience, setTargetAudience] = useState('')
     const [targetCampaign, setTargetCampaign] = useState('')
     const [startDay, setStartDay] = useState('')
     const [endDay, setEndDay] = useState('')
+    const [introductoryPost, setIntroductoryPost] = useState('')
     const [imageCampaign, setImageCampaign] = useState('')
 
     const [fileList, setFileList] = useState([]);
@@ -107,13 +117,6 @@ function ModalCreateCampaign({
         })()
     }, [])
 
-    const [contentHTML, setContentHTML] = useState('');
-    const [contentMarkdown, setContentMarkdown] = useState('');
-    const handleEditorChange = ({html, text}) => {
-        setContentMarkdown(text);
-        setContentHTML(html);
-    }
-
     let options = [
         {
             label: 'Trẻ em',
@@ -130,34 +133,53 @@ function ModalCreateCampaign({
     ]
 
     const handlePressOk = async () => {
-        await axios({
-            method: 'post',
-            url: 'http://localhost:8089/charity/campaign/add-campaign',
-            headers: {
-                token: 'abcd'
-            },
-            data: {
-                campaign_name: nameCampaign,
-                introduction: 'tạm thời chưa có',
-                target_object: targetAudience,
-                region: region,
-                status: 'Đang vận động',
-                campaign_type: 'tạm thời',
-                target_amount: targetCampaign,
-                start_date: startDay,
-                stop_date: endDay,
-                start_active_date: '2024-05-05',
-                stop_active_date: '2024-05-05',
-                stop_receive_date: '2024-05-05'
-            }
-        })
-        toast.success('Tạo mới cuộc vận động thành công!');
-        setNameCampaign('');
-        setTargetCampaign('');
-        setTargetAudience(options);
-        setRegionOptions(regionOptions);
-        setStartDay('');
-        setEndDay(''); 
+        // console.log(nameCampaign)
+        // console.log(targetAudience)
+        // console.log(targetCampaign)
+        // console.log(startDay)
+        // console.log(endDay)
+        // console.log(region)
+        // console.log(introductoryPost)
+        // return;
+        if(!nameCampaign || !targetAudience || !targetCampaign || !startDay || !endDay || !region || !introductoryPost) {
+            toast.error('Vui lòng điền đầy đủ thông tin!')
+        }
+        else {
+            await axios({
+                method: 'post',
+                url: 'http://localhost:8089/charity/campaign/add-campaign',
+                headers: {
+                    token: 'abcd'
+                },
+                data: {
+                    campaign_name: nameCampaign,
+                    introduction: introductoryPost,
+                    target_object: targetAudience,
+                    region: region,
+                    status: 'Đang vận động',
+                    campaign_type: 'Tạm thời chưa biết',
+                    target_amount: targetCampaign,
+                    start_date: startDay,
+                    stop_date: endDay,
+                    start_active_date: startDay,
+                    stop_active_date: endDay,
+                    stop_receive_date: endDay
+                }
+            })
+            toast.success('Tạo mới cuộc vận động thành công!');
+    
+            setNameCampaign('')
+            setTargetAudience('')
+            setRegionOptions(null)
+            setTargetCampaign('')
+            setStartDay('')
+            setEndDay('')
+            setIntroductoryPost('')
+    
+            getData();
+            handleOk()
+        }
+
     }
 
     return (
@@ -189,7 +211,7 @@ function ModalCreateCampaign({
                              <Col span={8}>
                                  <label>Đối tượng hướng tới</label>
                                  <br />
-                                 <Select
+                                 {/* <Select
                                     showSearch
                                     allowClear
                                     style={{width: '100%'}}
@@ -201,6 +223,12 @@ function ModalCreateCampaign({
                                         }
                                     }
                                     onChange={(value) => {setTargetAudience(value)}}
+                                 /> */}
+                                 <Input 
+                                     placeholder=""
+                                     value={targetAudience}
+                                     onChange={(e) => setTargetAudience(e.target.value)} 
+                                     style={{width: '100%'}}
                                  />
                              </Col>
                              <Col span={8}>
@@ -222,8 +250,22 @@ function ModalCreateCampaign({
                                     style={{width: '100%'}}
                                     value={startDay}
                                     onChange={(e) => setStartDay(e.target.value)}
-                                    placeholder="Ngày/Tháng/Năm"
-                                />    
+                                    placeholder="Năm-Tháng-Ngày"
+                                    onClick={() => setIsCalendar(true)}
+                                />
+                                {
+                                    isCalendar &&
+                                    <Calendar 
+                                        value={selectDay} 
+                                        onChange={(value) => {
+                                            let valueFormat = moment(value).format('YYYY-MM-DD'); 
+                                            setSelectDay(valueFormat);
+                                            setIsCalendar(false)
+                                            setStartDay(valueFormat)
+                                        }}
+                                         
+                                    />
+                                }    
                             </Col>
                             <Col span={8}>
                                 <label>Ngày kết thúc</label>
@@ -231,12 +273,27 @@ function ModalCreateCampaign({
                                     style={{width: '100%'}}
                                     value={endDay}
                                     onChange={(e) => setEndDay(e.target.value)}
-                                    placeholder="Ngày/Tháng/Năm"
-                                />    
+                                    placeholder="Năm-Tháng-Ngày"
+                                    onClick={() => setIsCalendar2(true)}
+                                />
+                                {
+                                    isCalendar2 &&
+                                    <Calendar 
+                                        value={selectDay} 
+                                        onChange={(value) => {
+                                            let valueFormat = moment(value).format('YYYY-MM-DD'); 
+                                            setSelectDay(valueFormat)
+                                            setIsCalendar2(false)
+                                            setEndDay(valueFormat)
+                                        }}
+                                         
+                                    />
+                                }        
                             </Col>
                             <Col span={8}>
                                 <label>Khu vực kêu gọi</label>
                                 <Select
+                                    // mode="multiple"
                                     showSearch
                                     allowClear
                                     style={{width: '100%'}}
@@ -247,7 +304,14 @@ function ModalCreateCampaign({
                                         return option.label.toLowerCase().includes(input.toLowerCase())
                                         }
                                     }
-                                    onChange={(value) => {setRegion(value)}}
+                                    onChange={
+                                        (value) => {
+                                            setRegion(prev => {
+                                                let arrRegions = [...prev, value]
+                                                return arrRegions[arrRegions.length - 1]
+                                            })
+                                        }
+                                    }
                                 />                                    
                             </Col>
                             
@@ -256,11 +320,13 @@ function ModalCreateCampaign({
                          <Row>
                              <label>Bài viết giới thiệu</label>
                              <Col span={24}>
-                                <MdEditor
-                                    value={contentMarkdown} 
-                                    style={{height: '180px'}} 
-                                    renderHTML={text => mdParser.render(text)}
-                                    onChange={handleEditorChange}
+                                <CKEditor
+                                    editor={ ClassicEditor }
+                                    data={introductoryPost}
+                                    onChange={ ( event, editor ) => {
+                                        const data = editor.getData();
+                                        setIntroductoryPost(data);
+                                    } }                                
                                 />
                              </Col>
                          </Row>

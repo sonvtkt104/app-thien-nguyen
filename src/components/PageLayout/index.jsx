@@ -11,7 +11,6 @@ export function PageLayout({
     children,
     keyActive=''
 }) {
-    console.log('page layout')
     const dispatch = useDispatch()
     const {openSubMenu} = useSelector(state => state.app)
 

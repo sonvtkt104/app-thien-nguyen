@@ -5,6 +5,34 @@ import { memo, useState } from "react"
 function HomeNews() {
     const [checked, setChecked] = useState(0)
 
+    const data = [
+        {
+            image: 'https://baokhanhhoa.vn/file/e7837c02857c8ca30185a8c39b582c03/dataimages/201907/original/images5371356_IMG_5516.jpg',
+            des: 'Giáo hội Phật giáo Việt Nam tỉnh: Nhiều hoạt động từ thiện',
+            link: 'https://baokhanhhoa.vn/xa-hoi/201907/giao-hoi-phat-giao-viet-nam-tinh-nhieu-hoat-dong-tu-thien-8123639/'
+        },
+        {
+            image: 'https://impactthrift.org/wp-content/uploads/2019/11/quyen-gop-tu-thien.jpg',
+            des: 'Các hình thức làm từ thiện thiết thực và phổ biến ở Việt Nam',
+            link: "https://impactthrift.org/cac-hinh-thuc-lam-tu-thien-thiet-thuc-va-pho-bien-o-viet-nam/"
+        },
+        {
+            image: "https://vtv1.mediacdn.vn/thumb_w/650/2017/tu-thien-1508673633769.png",
+            des: 'Người Việt làm từ thiện dẫn đầu châu Á - Thái Bình Dương',
+            link: 'https://vtv.vn/trong-nuoc/nguoi-viet-lam-tu-thien-dan-dau-chau-a-thai-binh-duong-20171022190112232.htm'
+        },
+        {
+            image: "https://tapchicongthuong.vn/images/21/7/1/tu_thien_1.jpg",
+            des: 'Quy định pháp luật liên quan đến hoạt động từ thiện xã hội của các tổ chức tôn giáo ở Việt Nam hiện nay',
+            link: 'https://tapchicongthuong.vn/bai-viet/quy-dinh-phap-luat-lien-quan-den-hoat-dong-tu-thien-xa-hoi-cua-cac-to-chuc-ton-giao-o-viet-nam-hien-nay-74975.htm'
+        },
+        {
+            image: 'https://thanuyen.laichau.gov.vn/phamu/uploads/news/2021_07/img-5481-2_1625234493380.jpg',
+            des: 'Trao quà từ thiện cho các gia đình ở xã Pha Mu',
+            link: 'https://thanuyen.laichau.gov.vn/phamu/tin-trong-huyen/trao-qua-tu-thien-cho-cac-gia-dinh-o-xa-pha-mu-68.html'
+        }
+    ]
+
     return (
         <div style={{background: 'var(--color-background-website)',paddingBottom: 30}}>
             <div>
@@ -44,44 +72,27 @@ function HomeNews() {
                     >
                         <RightOutlined style={{fontSize:28}} />
                     </span>
-                    <label style={{width: 500, height: 500, borderRadius: 12}} for="s1" id="slide1"
-                        onClick={() => setChecked(0)}
-                    >
-                        <img src="/images/news.png" alt="news" 
-                            style={{width: 500, height: 500, borderRadius: 12}}
-                        />
-                    </label>
-                    <label style={{width: 500, height: 500, borderRadius: 12}} for="s2" id="slide2"
-                        onClick={() => setChecked(1)}
-                    >
-                        <img src="/images/news.png" alt="news" 
-                            style={{width: 500, height: 500, borderRadius: 12}}
-                        />
-                    </label>
-                    <label style={{width: 500, height: 500, borderRadius: 12}} for="s3" id="slide3"
-                        onClick={() => setChecked(2)}
-                    >
-                        <img src="/images/news.png" alt="news" 
-                            style={{width: 500, height: 500, borderRadius: 12}}
-                        />
-                    </label>
-                    <label style={{width: 500, height: 500, borderRadius: 12}} for="s4" id="slide4"
-                        onClick={() => setChecked(3)}
-                    >
-                        <img src="/images/news.png" alt="news" 
-                            style={{width: 500, height: 500, borderRadius: 12}}
-                        />
-                    </label>
-                    <label style={{width: 500, height: 500, borderRadius: 12}} for="s5" id="slide5"
-                        onClick={() => setChecked(4)}
-                    >
-                        <img src="/images/news.png" alt="news" 
-                            style={{width: 500, height: 500, borderRadius: 12}}
-                        />
-                    </label>
+                    {
+                        data.map((item, i) => (
+                            <label key={i} style={{width: 500, height: 500, borderRadius: 12,}} for={`s${i+1}`} id={`slide${i+1}`}
+                                onClick={() => setChecked(i)}
+                            >
+                                <img src={item.image} alt="news" 
+                                    style={{width: 500, height: 500, borderRadius: 12, objectFit: 'cover'}}
+                                />
+                                <span
+                                    style={{position: 'absolute', inset:0, background :'#5c5c5c', opacity: 0.5, borderRadius: 12,
+                                        display: checked == i ? 'none' : 'block'
+                                    }}
+                                >
+                                </span>
+                            </label>
+                        ))
+                    }
+                   
                 </Row>
                 <div style={{textAlign: 'center', color: 'var(--color-gray)', fontSize: 18, marginBottom: 30,fontWeight: '600'}}>
-                    Thỏ bảy màu gọi vốn 1,2 tỉ đồng làm phim hoạt hình dài tập
+                    {data[checked].des}
                 </div>
             </div>
         </div>

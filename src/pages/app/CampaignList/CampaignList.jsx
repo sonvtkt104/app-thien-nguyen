@@ -11,6 +11,11 @@ import Search from "antd/es/input/Search";
 import campaignService from "./CampaignService";
 import axios from "axios";
 
+import { ExclamationCircleFilled } from '@ant-design/icons';
+import { Modal, Space } from 'antd';
+import CamPaignPreview from "./CampaignPreview";
+const { confirm } = Modal;
+
 
 
 class CamPaignList extends Component {
@@ -22,6 +27,9 @@ class CamPaignList extends Component {
             isOpenModalEdit: false,
             valueSearch: '',
             type: false,
+            dataOrigin: {},
+            campaign_id: '',
+            organization_id: '',
             columns: [
                 {
                   key: "name",
@@ -64,7 +72,6 @@ class CamPaignList extends Component {
                                 to="/detail-campaign/14" 
                                 className="preview"
                                 target="_blank"
-                                // onClick={() => this.handleClickPreview()}
                             >Preview</Link>
                         )
                     }
@@ -75,11 +82,11 @@ class CamPaignList extends Component {
                     align: 'center',
                     render: (text, record, index) => {
                         return (
-                            <div className="campaign-list-actions">
-                                <Link to="/campaign-list/preview">
+                            <div className="campaign-list-actions">                              
+                                <Link to={`/campaign-list/preview/${record.campaign_id}`}>
                                     <EyeOutlined
                                         className="actions-hide"
-                                        onClick={()=> this.handleActions(record, 'delete')}
+                                        onClick={()=> this.handleActions(record, 'preview')}
                                     />
                                 </Link> 
             
@@ -90,7 +97,7 @@ class CamPaignList extends Component {
             
                                 <DeleteOutlined
                                     className="actions-delete"
-                                    onClick={()=> this.handleActions(record, 'delete')}
+                                    onClick={() => this.showDeleteConfirm(record)}
                                 />            
                             </div>
                         )
@@ -153,6 +160,14 @@ class CamPaignList extends Component {
     }
 
     async componentDidMount() {
+        this.getData();
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        
+    }
+
+    getData = async () => {
         await axios({
             method: 'post',
             url: 'http://localhost:8089/charity/access/token',
@@ -179,7 +194,8 @@ class CamPaignList extends Component {
                 complete: '0%',
                 target: item.targetAmount,
                 status: item.status,
-                campaign_id: item.id
+                campaign_id: item.id,
+                organization_id: item.organization && item.organization.id
             }))
             this.setState({
                 dataSource: dataAllCampaigns,
@@ -188,16 +204,54 @@ class CamPaignList extends Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-    
-    }
-
     handleActions = async (record, type) => {
         if(type === 'edit') {
             this.showModal();
+            // let res = await axios({
+            //     method: 'get',
+            //     url: `http://localhost:8089/charity/campaign/get-by-condition?campaign-id=${record.campaign_id}&organization-id=${record.organization_id}`,
+            //     headers: {
+            //         token: 'abcd'
+            //     }
+            // }).then(res => res.data)
+            // if(res && res.organization && res.organization.id) {
+            //     this.setState({
+            //         dataOrigin: res
+            //     })
+            // }
+            this.setState({
+                campaign_id: record.campaign_id,
+                organization_id: record.organization_id
+            })
         }
-        else if(type === 'delete') {
-            console.log(record)
+        // else if(type === 'delete') {
+
+        //     await axios({
+        //         method: 'delete',
+        //         url: `http://localhost:8089/charity/campaign/delete-campaign?campaign-id=${record.campaign_id}`,
+        //         headers: {
+        //             token: 'abcd'
+        //         },
+        //     });
+        //     toast.success('Đã xóa cuộc vận động này!');
+        //     this.getData(); 
+        // }
+        else if(type === 'preview') {
+
+        }
+    }
+
+    showDeleteConfirm = (record) => {
+        let _this = this;
+        confirm({
+          title: 'Bạn muốn xóa cuộc vận động này?',
+          icon: <ExclamationCircleFilled />,
+          content: 'Dữ liệu bị xóa sẽ không thể khôi phục, vẫn tiếp tục?',
+          okText: 'Đồng ý',
+          okType: 'danger',
+          cancelText: 'Hủy bỏ',
+          centered: true,
+          async onOk() {
             await axios({
                 method: 'delete',
                 url: `http://localhost:8089/charity/campaign/delete-campaign?campaign-id=${record.campaign_id}`,
@@ -206,32 +260,13 @@ class CamPaignList extends Component {
                 },
             });
             toast.success('Đã xóa cuộc vận động này!');
-            
-            let res = await axios({
-            method: 'get',
-            url: 'http://localhost:8089/charity/campaign/get-all',
-            headers: {
-                token: 'abcd'
-            }
-            }).then(res => res.data);
-            if(res && res.length > 0) {
-                let dataAllCampaigns = [];
-                dataAllCampaigns = res.map((item, index) => ({
-                    key: index,
-                    name: item.campaignName,
-                    receive: 0,
-                    complete: '0%',
-                    target: item.targetAmount,
-                    status: item.status,
-                    campaign_id: item.id
-                }))
-                this.setState({
-                    dataSource: dataAllCampaigns,
-                    dataSourceSearch: dataAllCampaigns
-                })
-            }
-            }
-    }
+            _this.getData();
+          },
+          onCancel() {
+            // console.log('Cancel');
+          },
+        });
+      };
 
     handleClickCampaign = () => {
         this.setState({
@@ -248,7 +283,6 @@ class CamPaignList extends Component {
     }
 
     handleOk = () => {
-        toast.success('Tạo mới thành công!');
         this.setState({
             isOpenModalEdit: false,
             isOpenModalCompaign: false
@@ -262,18 +296,14 @@ class CamPaignList extends Component {
         })
     }
     
-    handleClickPreview = () => {
-        console.log('aaa')
-    }
-
     globalSearch = (value) => {
         const filteredData = this.state.dataSource.filter((data) => {
             return (
-                data.name.toLowerCase().includes(value.toLowerCase()) ||
-                data.target.toLowerCase().includes(value.toLowerCase()) ||
-                data.receive.toLowerCase().includes(value.toLowerCase()) ||
-                data.complete.toLowerCase().includes(value.toLowerCase()) ||
-                data.status.toLowerCase().includes(value.toLowerCase())
+                data.name.toLowerCase().includes(value.toLowerCase())
+                // data.target.toLowerCase().includes(value.toLowerCase()) ||
+                // data.receive.toLowerCase().includes(value.toLowerCase()) ||
+                // data.complete.toLowerCase().includes(value.toLowerCase()) ||
+                // data.status.toLowerCase().includes(value.toLowerCase())
             )
         })
         this.setState({
@@ -320,17 +350,22 @@ class CamPaignList extends Component {
                         
                     </div>
 
-                    <ModalEditCompaign 
-                        isOpenModalEdit={isOpenModalEdit} 
-                        handleCancel={this.handleCancel}
-                        type={this.state.type}
-                    />
-                    
                     <ModalCreateCampaign 
                         isOpenModalCompaign={isOpenModalCompaign}
+                        handleOk={this.handleOk} 
                         handleCancel={this.handleCancel}
-                        type={this.state.type && this.state.type }
+                        getData={this.getData}
                     />
+
+                    <ModalEditCompaign 
+                        isOpenModalEdit={isOpenModalEdit}
+                        handleOk={this.handleOk} 
+                        handleCancel={this.handleCancel}
+                        getData={this.getData}
+                        campaign_id={this.state.campaign_id}
+                        organization_id={this.state.organization_id}
+                    />
+                    
                 </PageLayout>
             </>
         )

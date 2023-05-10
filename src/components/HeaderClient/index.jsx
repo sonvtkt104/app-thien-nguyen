@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom"
 import "./index.css"
 
 export function HeaderClient({
-    page=1
+    page
 }) {
     const navigate = useNavigate()
 
@@ -43,6 +43,9 @@ export function HeaderClient({
                                 >
                                     <Link to="/">
                                         <span
+                                            style={{
+                                                color: page == 'home' ? "var(--color-blue)" : "var(--color-black)"
+                                            }}
                                         >
                                             Trang chủ
                                         </span>
@@ -53,8 +56,11 @@ export function HeaderClient({
                                 >
                                     <Link to="/campaign-all">
                                         <span
+                                            style={{
+                                                color: page == 'campaign-all' ? "var(--color-blue)" : "var(--color-black)"
+                                            }}
                                         >
-                                            Toàn bộ các cuộc vận động
+                                            Cuộc vận động
                                         </span>
                                     </Link>
                                 </Col>
@@ -63,8 +69,11 @@ export function HeaderClient({
                                 >
                                     <Link to="/charity-all">
                                         <span
+                                            style={{
+                                                color: page == 'charity-all' ? "var(--color-blue)" : "var(--color-black)"
+                                            }}
                                         >
-                                            Toàn bộ các tổ chức từ thiện
+                                            Tổ chức từ thiện
                                         </span>
                                     </Link>
                                 </Col>
@@ -72,7 +81,11 @@ export function HeaderClient({
                                     className="home-item-header flex-col-center"
                                 >
                                     <Link to='/contact-us'>
-                                        <span>
+                                        <span
+                                            style={{
+                                                color: page == 'contact-us' ? "var(--color-blue)" : "var(--color-black)"
+                                            }}
+                                        >
                                             Liên hệ
                                         </span>
                                     </Link>
