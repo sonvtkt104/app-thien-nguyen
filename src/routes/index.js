@@ -42,7 +42,7 @@ export default function Router() {
         <Route path="/donation" element={<Donation />} />
         <Route path="/mydonation" element={<MyDonation />} />
         <Route path="/campaign-list" element={<CamPaignList />} />
-        <Route path="/campaign-list/preview" element={<CamPaignPreview />} />
+        <Route path="/campaign-list/preview/:campaignId" element={<CamPaignPreview />} />
         <Route path="/admin" element={<ManageUser />} />
         <Route path="/admin/cuocvandong" element={<ManageCVD />} />
         <Route path="/admin/cuocvandongnoibat" element={<CampaignStar />} />

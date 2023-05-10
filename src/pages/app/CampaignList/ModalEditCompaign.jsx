@@ -3,23 +3,35 @@ import {PlusOutlined} from '@ant-design/icons';
 import './CampaignList.scss'
 import { Col, message, Modal, Row, Select, Space, Upload } from "antd";
 import { Input } from 'antd';
-import campaignService from "./CampaignService";
 
-import MarkdownIt from 'markdown-it';
-import MdEditor from 'react-markdown-editor-lite';
-import 'react-markdown-editor-lite/lib/index.css';
-const mdParser = new MarkdownIt(/* Markdown-it options */);
+import moment from "moment";
+
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function ModalEditCampaign({
     isOpenModalEdit,
     handleCancel,
-    type
+    getData,
+    handleOk,
+    dataOrigin,
+    campaign_id,
+    organization_id
 }) {
+    let [selectDay, setSelectDay] = useState(new Date())
+    let [isCalendar, setIsCalendar] = useState(false)
+    let [isCalendar2, setIsCalendar2] = useState(false)
     const {TextArea} = Input;
     const [nameCampaign, setNameCampaign] = useState('')
     const [targetAudience, setTargetAudience] = useState('')
     const [targetCampaign, setTargetCampaign] = useState('')
-    const [descriptionCampaign, setDescriptionCampaign] = useState('')
+    const [region, setRegion] = useState('')
+    const [introductoryPost, setIntroductoryPost] = useState('')
     const [startDay, setStartDay] = useState('')
     const [endDay, setEndDay] = useState('')
     const [imageCampaign, setImageCampaign] = useState('')
@@ -76,13 +88,18 @@ function ModalEditCampaign({
         </div>
     );
     
-    const [region, setRegion] = useState('')
     let [regionOptions, setRegionOptions] = useState([])
 
     useEffect(() => {
         (async () => {
             try {
-                let res = await campaignService.getAllRegion();
+                let res = await axios({
+                    method: 'get',
+                    url: 'http://localhost:8089/charity/address/provinces',
+                    headers: {
+                        token: 'abcd'
+                    }
+                });
                 if(res.data && res.data.length > 0) {
                     regionOptions = res.data.map((region) => {
                         region.label = region.fullName;
@@ -98,25 +115,93 @@ function ModalEditCampaign({
             }
 
         })()
+
+        ;
     }, [])
 
-    const [contentHTML, setContentHTML] = useState('');
-    const [contentMarkdown, setContentMarkdown] = useState('');
-    const handleEditorChange = ({html, text}) => {
-        setContentMarkdown(text);
-        setContentHTML(html);
+    useEffect(() => {
+        (async () => {
+            try {
+                if(campaign_id && organization_id) {
+                    let res = await axios({
+                        method: 'get',
+                        url: `http://localhost:8089/charity/campaign/get-by-condition?campaign-id=${campaign_id}&organization-id=${organization_id}`,
+                        headers: {
+                            token: 'abcd'
+                        }
+                    }).then(res => res.data)
+                    if(res && res.organization && res.organization.id) {
+                        setNameCampaign(res.campaignName)
+                        setTargetAudience(res.targetObject)
+                        setTargetCampaign(res.targetAmount)
+                        setStartDay(res.startDate)
+                        setEndDay(res.stopDate)
+                        setRegion(res.region)
+                        setIntroductoryPost(res.introduction)
+                    }
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        })()
+    }, [campaign_id])
+
+
+    const handlePressOk = async () => {
+
+        // console.log(campaign_id)
+        // console.log(nameCampaign)
+        // console.log(targetAudience)
+        // console.log(targetCampaign)
+        // console.log(startDay)
+        // console.log(endDay)
+        // console.log(region)
+        // console.log(introductoryPost)
+        // return;
+
+        if(!nameCampaign || !targetAudience || !targetCampaign || !startDay || !endDay || !region || !introductoryPost) {
+            toast.error('Vui lòng điền đầy đủ thông tin!')
+        }
+        else {
+            await axios({
+                method: 'put',
+                url: `http://localhost:8089/charity/campaign/update-campaign`,
+                headers: {
+                    token: 'abcd'
+                },
+                data: {
+                    campaign_id: campaign_id,
+                    campaign_name: nameCampaign,
+                    introduction: introductoryPost,
+                    target_object: targetAudience,
+                    region: region,
+                    status: 'Đang vận động',
+                    campaign_type: 'Tạm thời chưa biết',
+                    target_amount: targetCampaign,
+                    receive_amount: 1000000,
+                    donor_amount: 0,
+                    spent_amount: 0,
+                    start_date: startDay,
+                    stop_date: endDay,
+                    start_active_date: startDay,
+                    stop_active_date: endDay,
+                    stop_receive_date: endDay
+                }
+            })
+            toast.success('Chỉnh sửa cuộc vận động thành công!')
+            handleOk()
+            getData()
+        }
     }
 
-    const handlePressOk = () => {
-        console.log('ok nha')
-    }
+
 
     return (
         <>
                  <Modal
                      width={1000}
                      bodyStyle={{height: '100%'}}
-                     okText={type === 'create' ? "Đồng ý" : "Lưu thay đổi"}
+                     okText={"Lưu thay đổi"}
                      cancelText={"Quay lại"}
                      centered 
                      open={isOpenModalEdit} 
@@ -166,8 +251,22 @@ function ModalEditCampaign({
                                     style={{width: '100%'}}
                                     value={startDay}
                                     onChange={(e) => setStartDay(e.target.value)}
-                                    placeholder="Ngày/Tháng/Năm"
-                                />    
+                                    placeholder="Năm-Tháng-Ngày"
+                                    onClick={() => setIsCalendar(true)}
+                                />
+                                {
+                                    isCalendar &&
+                                    <Calendar 
+                                        value={selectDay} 
+                                        onChange={(value) => {
+                                            let valueFormat = moment(value).format('YYYY-MM-DD'); 
+                                            setSelectDay(valueFormat);
+                                            setIsCalendar(false)
+                                            setStartDay(valueFormat)
+                                        }}
+                                         
+                                    />
+                                }       
                             </Col>
                             <Col span={8}>
                                 <label>Ngày kết thúc</label>
@@ -175,12 +274,27 @@ function ModalEditCampaign({
                                     style={{width: '100%'}}
                                     value={endDay}
                                     onChange={(e) => setEndDay(e.target.value)}
-                                    placeholder="Ngày/Tháng/Năm"
-                                />    
+                                    placeholder="Năm-Tháng-Ngày"
+                                    onClick={() => setIsCalendar2(true)}
+                                />
+                                {
+                                    isCalendar2 &&
+                                    <Calendar 
+                                        value={selectDay} 
+                                        onChange={(value) => {
+                                            let valueFormat = moment(value).format('YYYY-MM-DD'); 
+                                            setSelectDay(valueFormat)
+                                            setIsCalendar2(false)
+                                            setEndDay(valueFormat)
+                                        }}
+                                         
+                                    />
+                                }           
                             </Col>
                             <Col span={8}>
                                 <label>Khu vực kêu gọi</label>
                                 <Select
+                                    // mode="multiple"
                                     showSearch
                                     allowClear
                                     style={{width: '100%'}}
@@ -200,11 +314,13 @@ function ModalEditCampaign({
                          <Row>
                              <label>Bài viết giới thiệu</label>
                              <Col span={24}>
-                                <MdEditor
-                                    value={contentMarkdown} 
-                                    style={{height: '180px'}} 
-                                    renderHTML={text => mdParser.render(text)}
-                                    onChange={handleEditorChange}
+                                <CKEditor
+                                    editor={ ClassicEditor }
+                                    data={introductoryPost}
+                                    onChange={ ( event, editor ) => {
+                                        const data = editor.getData();
+                                        setIntroductoryPost(data);
+                                    } }                                
                                 />
                              </Col>
                          </Row>

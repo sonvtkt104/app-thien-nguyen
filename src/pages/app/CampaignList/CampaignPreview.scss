@@ -76,14 +76,15 @@
 
         .description-name {
             border-left: 4px solid var(--color-blue);
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
             padding: 0 8px;
             margin-bottom: 4px;
         }
 
         .description-info {
-            font-size: 14px;
+            font-size: 16px;
+            font-style: italic;
         }
     }
 }
