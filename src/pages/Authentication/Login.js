@@ -56,8 +56,8 @@ const LoginPage = () => {
 
   return (
     <div className="login">
-      <Row justify='center' style={{paddingTop: 80, position: 'relative'}}>
-        <span style={{position: 'absolute', cursor: 'pointer', fontSize: 16, top: 30, left: 70 }}
+      <Row justify='center' style={{ position: 'relative', minHeight: '100vh'}}>
+        <span style={{position: 'absolute', cursor: 'pointer', fontSize: 16, top: 30, left: 70, zIndex: 1 }}
           className="text-hover"
           onClick={() => {
             navigate(-1)
@@ -66,8 +66,10 @@ const LoginPage = () => {
           {"< Quay lại"}
         </span>
         <Col xs={20} sm={20} md={20} lg={20} xl={20}>
-          <Row>
-            <Col xs={8} sm={8} md={8} lg={8} xl={8}>
+          <Row style={{height: '100%'}}>
+            <Col xs={8} sm={8} md={8} lg={8} xl={8}
+              className="flex-col-center"
+            >
               <div className="login-container">
                 <Row style={{fontSize: 18, fontWeight: 600, lineHeight: '50px', cursor: 'pointer', marginBottom :20}}
                   justify='center'

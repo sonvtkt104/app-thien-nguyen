@@ -156,3 +156,6 @@
 .table-app-custom .ant-select-selector {
     border-radius: 2px !important;
 }
+.ant-pagination-item-link {
+    border-radius: 0 !important;
+}
