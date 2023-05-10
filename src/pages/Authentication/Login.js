@@ -65,7 +65,7 @@ const LoginPage = () => {
         >
           {"< Quay lại"}
         </span>
-        <Col xs={20} sm={20} md={20} lg={20} xl={20}>
+        <Col xs={21} sm={21} md={21} lg={21} xl={21}>
           <Row style={{height: '100%'}}>
             <Col xs={8} sm={8} md={8} lg={8} xl={8}
               className="flex-col-center"

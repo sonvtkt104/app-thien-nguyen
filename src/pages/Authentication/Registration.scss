@@ -7,11 +7,11 @@
   // padding-bottom: 50px;
 
   .user-container {
-    width: 1200px;
-    margin: auto;
+    // width: 1200px;
+    // margin: auto;
     border-radius: 12px;
     background-color: white;
-    padding: 32px;
+    padding: 70px 10px;
     box-sizing: border-box;
 
     .user-title {
@@ -26,24 +26,33 @@
       margin-bottom: 20px;
 
       button {
-        width: 110px;
-        border: none;
-        background-color: #e9ecef;
-        font-size: 14px;
-        height: 32px;
-        padding: 4px 15px;
+        font-weight: 600;
+        font-size: 12px;
+        padding: 9px 20px !important;
+        border: 1px solid #e9ecef !important;
+        border-radius: 4px;
+        line-height: 18px;
+        height: auto;
         cursor: pointer;
+        background: #e9ecef !important;
+        color: #7d7d7e;
       }
 
       .active {
-        color: #fff;
-        background-color: #1677ff;
-        box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
+        font-weight: 600;
+        font-size: 12px;
+        padding: 9px 20px !important;
+        border: 1px solid var(--color-blue) !important;
+        border-radius: 4px;
+        line-height: 18px;
+        height: auto;
+        cursor: pointer;
+        background: var(--color-blue) !important;
+        color: #ffffff !important;
       }
 
-      .active:hover {
-        color: #fff;
-        background-color: #4096ff;
+      button:hover {
+        opacity: 0.8;
       }
     }
 

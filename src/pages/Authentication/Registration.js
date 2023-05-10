@@ -254,537 +254,573 @@ const RegistrationPage = () => {
 
   return (
     <div className="user-regis">
-      <div className="user-container">
-        <h2 className="user-title">Đăng ký</h2>
-        <div className="options">
-          <button
-            onClick={toggleUserToCharity}
-            className={isCreateUser ? "active" : ""}
-          >
-            Người dùng
-          </button>
-          <button
-            onClick={toggleUserToCharity}
-            className={isCreateUser ? "" : "active"}
-          >
-            Tổ chức
-          </button>
-        </div>
-
-        {isCreateUser ? (
-          <Form
-            name="basic"
-            labelCol={{ span: 24 }}
-            wrapperCol={{ span: 24 }}
-            // initialValues={{ remember: true }}
-            layout="vertical"
-            autoComplete="off"
-            className="form-regis"
-            onFinish={userSubmit}
-            // onFinishFailed={onFinishFailed}
-          >
-            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-              <Col span={8}>
-                <Form.Item
-                  label="Tên đầy đủ của bạn"
-                  name="fullName"
-                  rules={[
-                    { required: true, message: "Vui lòng nhập tên của bạn!" },
-                  ]}
-                  className="form-item"
-                >
-                  <Input placeholder="Nhập tên của bạn" />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item
-                  label="Số điện thoại"
-                  name="phoneNumber"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng nhập số điện thoại của bạn",
-                    },
-                  ]}
-                  className="form-item"
-                >
-                  <Input placeholder="Nhập số điện thoại của bạn" />
-                </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item
-                  label="Email"
-                  name="email"
-                  rules={[
-                    {
-                      required: true,
-                      type: "email",
-                      message: "Trường này không phải là email!",
-                    },
-                  ]}
-                  className="form-item"
-                >
-                  <Input placeholder="Nhập email của bạn" />
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-              <Col span={6}>
-                <Form.Item
-                  label="Tỉnh/Thành phố"
-                  name="province"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng nhập Tỉnh/Thành phố của bạn",
-                    },
-                  ]}
-                  className="form-item"
-                  itialvalue={
-                    listProvince && listProvince[0] && listProvince[0].value
-                  }
-                >
-                  {/* <Input placeholder="Nhập Tỉnh/Thành phố của bạn" /> */}
-
-                  <Select
-                    placeholder="Chọn Tỉnh/Thành phố của bạn"
-                    onChange={handleProvinceChange}
-                    options={listProvince}
+      <Row justify='center' style={{ position: 'relative', minHeight: '100vh'}}>
+        <span style={{position: 'absolute', cursor: 'pointer', fontSize: 16, top: 30, left: 70, zIndex: 1 }}
+          className="text-hover"
+          onClick={() => {
+            navigate(-1)
+          }}
+        >
+          {"< Quay lại"}
+        </span>
+        <Col xs={21} sm={21} md={21} lg={21} xl={21}>
+          <Row style={{height: '100%'}} justify='center'>
+            <div className="user-container">
+              <Row style={{fontSize: 18, fontWeight: 600, lineHeight: '50px', cursor: 'pointer', marginBottom :10}}
+                justify='center'
+                  onClick={() => {
+                      navigate("/")
+                  }}
+              >
+                  <img src="/images/logo-app.png" alt="logo app"
+                      style={{width: 50, marginRight: 4}}
                   />
-                </Form.Item>
-              </Col>
-
-              <Col span={6}>
-                <Form.Item
-                  label="Quận/Huyện"
-                  name="district"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng nhập Quận/Huyện của bạn",
-                    },
-                  ]}
-                  className="form-item"
+                  Thiện Nguyện
+              </Row>
+              <h2 className="user-title h1-app"
+                style={{textAlign: "center"}}
+              >
+                Đăng ký
+              </h2>
+              <Row className="options" justify='center'>
+                <button
+                  onClick={toggleUserToCharity}
+                  className={isCreateUser ? "active" : ""}
                 >
-                  <Select
-                    placeholder="Chọn quận/huyện của bạn"
-                    onChange={handleDistrictChange}
-                    options={listDistrict}
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={6}>
-                <Form.Item
-                  label="Phường/Xã"
-                  name="ward"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng nhập Phường/Xã của bạn!",
-                    },
-                  ]}
-                  className="form-item"
+                  Người dùng
+                </button>
+                <button
+                  onClick={toggleUserToCharity}
+                  className={isCreateUser ? "" : "active"}
                 >
-                  <Select
-                    placeholder="Chọn Phường/Xã của bạn"
-                    onChange={handleWardChange}
-                    options={listWard}
-                  />
-                </Form.Item>
-              </Col>
+                  Tổ chức
+                </button>
+              </Row>
 
-              <Col span={6}>
-                <Form.Item
-                  label="Địa chỉ cụ thể"
-                  name="detailAddress"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng nhập địa chỉ cụ thể",
-                    },
-                  ]}
-                  className="form-item"
+              {isCreateUser ? (
+                <Form
+                  name="basic"
+                  labelCol={{ span: 24 }}
+                  wrapperCol={{ span: 24 }}
+                  // initialValues={{ remember: true }}
+                  layout="vertical"
+                  autoComplete="off"
+                  className="form-regis"
+                  onFinish={userSubmit}
+                  // onFinishFailed={onFinishFailed}
                 >
-                  <Input placeholder="144, Xuân Thủy, Cầu Giấy, Hà Nội" />
-                </Form.Item>
-              </Col>
-            </Row>
 
-            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-              <Col span={8}>
-                <Form.Item
-                  label="Username"
-                  name="username"
-                  rules={[
-                    { required: true, message: "Vui lòng nhập username!" },
-                  ]}
-                  className="form-item"
-                >
-                  <Input placeholder="Nhập username" />
-                </Form.Item>
-              </Col>
+                  <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                    <Col span={8}>
+                      <Form.Item
+                        label="Tài khoản"
+                        name="username"
+                        rules={[
+                          { required: true, message: "Vui lòng nhập username!" },
+                        ]}
+                        className="form-item"
+                      >
+                        <Input placeholder="Nhập tài khoản" className="input-app" />
+                      </Form.Item>
+                    </Col>
 
-              <Col span={8}>
-                <Form.Item
-                  name="password"
-                  label="Password"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng nhập mật khẩu của bạn!",
-                    },
-                  ]}
-                  hasFeedback
-                >
-                  <Input.Password placeholder="Mật khẩu của bạn" />
-                </Form.Item>
-              </Col>
+                    <Col span={8}>
+                      <Form.Item
+                        name="password"
+                        label="Mật khẩu"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Vui lòng nhập mật khẩu của bạn!",
+                          },
+                        ]}
+                        hasFeedback
+                      >
+                        <Input.Password placeholder="Mật khẩu của bạn" className="input-app" />
+                      </Form.Item>
+                    </Col>
 
-              <Col span={8}>
-                <Form.Item
-                  name="comfirmPassword"
-                  label="Confirm Password"
-                  dependencies={["password"]}
-                  hasFeedback
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng nhập lại mật khẩu của bạn!",
-                    },
-                    ({ getFieldValue }) => ({
-                      validator(_, value) {
-                        if (!value || getFieldValue("password") === value) {
-                          return Promise.resolve();
+                    <Col span={8}>
+                      <Form.Item
+                        name="comfirmPassword"
+                        label="Nhập lại mật khẩu"
+                        dependencies={["password"]}
+                        hasFeedback
+                        rules={[
+                          {
+                            required: true,
+                            message: "Vui lòng nhập lại mật khẩu của bạn!",
+                          },
+                          ({ getFieldValue }) => ({
+                            validator(_, value) {
+                              if (!value || getFieldValue("password") === value) {
+                                return Promise.resolve();
+                              }
+                              return Promise.reject(
+                                new Error("Hai mật khẩu bạn nhập không trùng nhau")
+                              );
+                            },
+                          }),
+                        ]}
+                      >
+                        <Input.Password placeholder="Nhập lại mật khẩu của bạn"  className="input-app" />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+
+                  <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                    <Col span={8}>
+                      <Form.Item
+                        label="Tên đầy đủ của bạn"
+                        name="fullName"
+                        rules={[
+                          { required: true, message: "Vui lòng nhập tên của bạn!" },
+                        ]}
+                        className="form-item"
+                      >
+                        <Input placeholder="Nhập tên của bạn" className="input-app" />
+                      </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                      <Form.Item
+                        label="Số điện thoại"
+                        name="phoneNumber"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Vui lòng nhập số điện thoại của bạn",
+                          },
+                        ]}
+                        className="form-item"
+                      >
+                        <Input placeholder="Nhập số điện thoại của bạn" className="input-app" />
+                      </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                      <Form.Item
+                        label="Email"
+                        name="email"
+                        rules={[
+                          {
+                            required: true,
+                            type: "email",
+                            message: "Trường này không phải là email!",
+                          },
+                        ]}
+                        className="form-item"
+                      >
+                        <Input placeholder="Nhập email của bạn" className="input-app" />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+
+                  <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                    <Col span={6}>
+                      <Form.Item
+                        label="Tỉnh/Thành phố"
+                        name="province"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Vui lòng nhập Tỉnh/Thành phố của bạn",
+                          },
+                        ]}
+                        className="form-item"
+                        itialvalue={
+                          listProvince && listProvince[0] && listProvince[0].value
                         }
-                        return Promise.reject(
-                          new Error("Hai mật khẩu bạn nhập không trùng nhau")
-                        );
-                      },
-                    }),
-                  ]}
-                >
-                  <Input.Password />
-                </Form.Item>
-              </Col>
-            </Row>
+                      >
+                        {/* <Input placeholder="Nhập Tỉnh/Thành phố của bạn" /> */}
 
-            <p className="error">{error}</p>
+                        <Select
+                          placeholder="Chọn Tỉnh/Thành phố của bạn"
+                          onChange={handleProvinceChange}
+                          options={listProvince}
+                          className="select-app"
+                        />
+                      </Form.Item>
+                    </Col>
 
-            <div className="regis-footer">
-              <Form.Item wrapperCol={{ span: 24 }}>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="regis-button"
-                >
-                  Đăng ký
-                </Button>
-              </Form.Item>
+                    <Col span={6}>
+                      <Form.Item
+                        label="Quận/Huyện"
+                        name="district"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Vui lòng nhập Quận/Huyện của bạn",
+                          },
+                        ]}
+                        className="form-item"
+                      >
+                        <Select
+                          placeholder="Chọn quận/huyện của bạn"
+                          onChange={handleDistrictChange}
+                          options={listDistrict}
+                          className="select-app"
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col span={6}>
+                      <Form.Item
+                        label="Phường/Xã"
+                        name="ward"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Vui lòng nhập Phường/Xã của bạn!",
+                          },
+                        ]}
+                        className="form-item"
+                      >
+                        <Select
+                          placeholder="Chọn Phường/Xã của bạn"
+                          onChange={handleWardChange}
+                          options={listWard}
+                          className="select-app"
+                        />
+                      </Form.Item>
+                    </Col>
 
-              <span className="sign-up">
-                Bạn đã có tài khoản? ---
-                <Link to="../login">Đăng nhập</Link>---
-              </span>
-            </div>
-          </Form>
-        ) : (
-          <div className="charity-form">
-            <Form
-              name="basic"
-              labelCol={{ span: 24 }}
-              wrapperCol={{ span: 24 }}
-              // initialValues={{ remember: true }}
-              layout="vertical"
-              autoComplete="off"
-              className="form-regis"
-              onFinish={charitySubmit}
-              // onFinishFailed={onFinishFailed}
-            >
-              <p>Tài khoản và mật khẩu</p>
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                <Col span={8}>
-                  <Form.Item
-                    label="Username"
-                    name="username"
-                    rules={[
-                      { required: true, message: "Vui lòng nhập username!" },
-                    ]}
-                    className="form-item"
+                    <Col span={6}>
+                      <Form.Item
+                        label="Địa chỉ cụ thể"
+                        name="detailAddress"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Vui lòng nhập địa chỉ cụ thể",
+                          },
+                        ]}
+                        className="form-item"
+                      >
+                        <Input placeholder="144, Xuân Thủy, Cầu Giấy, Hà Nội" className="input-app" />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+
+                  <p className="error">{error}</p>
+
+                  <div className="regis-footer">
+                    <Form.Item wrapperCol={{ span: 24 }}>
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        className="regis-button btn-primary"
+                        style={{margin: 'auto'}}
+                      >
+                        Đăng ký
+                      </Button>
+                    </Form.Item>
+
+                    <span className="sign-up">
+                      Bạn đã có tài khoản? ---
+                      <Link to="../login" className="text-hover" style={{color:"var(--color-blue)"}}>Đăng nhập</Link>---
+                    </span>
+                  </div>
+                </Form>
+              ) : (
+                <div className="charity-form">
+                  <Form
+                    name="basic"
+                    labelCol={{ span: 24 }}
+                    wrapperCol={{ span: 24 }}
+                    // initialValues={{ remember: true }}
+                    layout="vertical"
+                    autoComplete="off"
+                    className="form-regis"
+                    onFinish={charitySubmit}
+                    // onFinishFailed={onFinishFailed}
                   >
-                    <Input placeholder="Nhập username" />
-                  </Form.Item>
-                </Col>
+                    <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                      <Col span={8}>
+                        <Form.Item
+                          label="Tài khoản"
+                          name="username"
+                          rules={[
+                            { required: true, message: "Vui lòng nhập username!" },
+                          ]}
+                          className="form-item"
+                        >
+                          <Input placeholder="Nhập tài khoản" className="input-app" />
+                        </Form.Item>
+                      </Col>
 
-                <Col span={8}>
-                  <Form.Item
-                    name="charityPassword"
-                    label="Password"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập mật khẩu của bạn!",
-                      },
-                    ]}
-                    hasFeedback
-                  >
-                    <Input.Password placeholder="Mật khẩu của bạn" />
-                  </Form.Item>
-                </Col>
+                      <Col span={8}>
+                        <Form.Item
+                          name="charityPassword"
+                          label="Mật khẩu"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập mật khẩu của bạn!",
+                            },
+                          ]}
+                          hasFeedback
+                        >
+                          <Input.Password placeholder="Mật khẩu của bạn" className="input-app" />
+                        </Form.Item>
+                      </Col>
 
-                <Col span={8}>
-                  <Form.Item
-                    name="confirmCharityPassword"
-                    label="Confirm Password"
-                    dependencies={["charityPassword"]}
-                    hasFeedback
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập lại mật khẩu của bạn!",
-                      },
-                      ({ getFieldValue }) => ({
-                        validator(_, value) {
-                          if (
-                            !value ||
-                            getFieldValue("charityPassword") === value
-                          ) {
-                            return Promise.resolve();
+                      <Col span={8}>
+                        <Form.Item
+                          name="confirmCharityPassword"
+                          label="Nhập lại mật khẩu"
+                          dependencies={["charityPassword"]}
+                          hasFeedback
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập lại mật khẩu của bạn!",
+                            },
+                            ({ getFieldValue }) => ({
+                              validator(_, value) {
+                                if (
+                                  !value ||
+                                  getFieldValue("charityPassword") === value
+                                ) {
+                                  return Promise.resolve();
+                                }
+                                return Promise.reject(
+                                  new Error("Hai mật khẩu bạn nhập không trùng nhau")
+                                );
+                              },
+                            }),
+                          ]}
+                        >
+                          <Input.Password placeholder="Nhập lại mật khẩu của bạn" className="input-app" />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+
+
+                    <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                      <Col span={6}>
+                        <Form.Item
+                          label="Tên của tổ chức"
+                          name="charityName"
+                          rules={[
+                            { required: true, message: "Vui lòng nhập tên tổ chức!" },
+                          ]}
+                          className="form-item"
+                        >
+                          <Input placeholder="Nhập tên tổ chức" className="input-app"  />
+                        </Form.Item>
+                      </Col>
+                      <Col span={6}>
+                        <Form.Item
+                          label="Số điện thoại của tổ chức"
+                          name="charityPhone"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập số điện thoại của tổ chức",
+                            },
+                          ]}
+                          className="form-item"
+                        >
+                          <Input placeholder="Nhập số điện thoại của tổ chức" className="input-app"  />
+                        </Form.Item>
+                      </Col>
+                      <Col span={6}>
+                        <Form.Item
+                          label="Email của tổ chức"
+                          name="charityEmail"
+                          rules={[
+                            {
+                              required: true,
+                              type: "email",
+                              message: "Trường này không phải là email!",
+                            },
+                          ]}
+                          className="form-item"
+                        >
+                          <Input placeholder="Nhập email của tổ chức" className="input-app"  />
+                        </Form.Item>
+                      </Col>
+
+                      <Col span={6}>
+                        <Form.Item
+                          label="Phương châm của tổ chức"
+                          name="charityMotto"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập phương châm của tổ chức",
+                            },
+                          ]}
+                          className="form-item"
+                        >
+                          <Input placeholder="Nhập phương châm của tổ chức" className="input-app"  />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+
+                    <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                      <Col span={6}>
+                        <Form.Item
+                          label="Tỉnh/Thành phố"
+                          name="province"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập Tỉnh/Thành phố của bạn",
+                            },
+                          ]}
+                          className="form-item"
+                          itialvalue={
+                            listProvince && listProvince[0] && listProvince[0].value
                           }
-                          return Promise.reject(
-                            new Error("Hai mật khẩu bạn nhập không trùng nhau")
-                          );
-                        },
-                      }),
-                    ]}
-                  >
-                    <Input.Password />
-                  </Form.Item>
-                </Col>
-              </Row>
+                        >
+                          {/* <Input placeholder="Nhập Tỉnh/Thành phố của bạn" /> */}
 
-              <p>Nhập thông tin về tổ chức</p>
+                          <Select
+                            placeholder="Chọn Tỉnh/Thành phố của bạn"
+                            onChange={handleProvinceChange}
+                            options={listProvince}
+                            className="select-app"
+                          />
+                        </Form.Item>
+                      </Col>
 
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                <Col span={6}>
-                  <Form.Item
-                    label="Tên của tổ chức"
-                    name="charityName"
-                    rules={[
-                      { required: true, message: "Vui lòng nhập tên tổ chức!" },
-                    ]}
-                    className="form-item"
-                  >
-                    <Input placeholder="Nhập tên tổ chức" />
-                  </Form.Item>
-                </Col>
-                <Col span={6}>
-                  <Form.Item
-                    label="Số điện thoại của tổ chức"
-                    name="charityPhone"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập số điện thoại của tổ chức",
-                      },
-                    ]}
-                    className="form-item"
-                  >
-                    <Input placeholder="Nhập số điện thoại của tổ chức" />
-                  </Form.Item>
-                </Col>
-                <Col span={6}>
-                  <Form.Item
-                    label="Email của tổ chức"
-                    name="charityEmail"
-                    rules={[
-                      {
-                        required: true,
-                        type: "email",
-                        message: "Trường này không phải là email!",
-                      },
-                    ]}
-                    className="form-item"
-                  >
-                    <Input placeholder="Nhập email của tổ chức" />
-                  </Form.Item>
-                </Col>
+                      <Col span={6}>
+                        <Form.Item
+                          label="Quận/Huyện"
+                          name="district"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập Quận/Huyện của bạn",
+                            },
+                          ]}
+                          className="form-item"
+                        >
+                          <Select
+                            placeholder="Chọn quận/huyện của bạn"
+                            onChange={handleDistrictChange}
+                            options={listDistrict}
+                            className="select-app"
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col span={6}>
+                        <Form.Item
+                          label="Phường/Xã"
+                          name="ward"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập Phường/Xã của bạn!",
+                            },
+                          ]}
+                          className="form-item"
+                        >
+                          <Select
+                            placeholder="Chọn Phường/Xã của bạn"
+                            onChange={handleWardChange}
+                            options={listWard}
+                            className="select-app"
+                          />
+                        </Form.Item>
+                      </Col>
 
-                <Col span={6}>
-                  <Form.Item
-                    label="Phương châm của tổ chức"
-                    name="charityMotto"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập phương châm của tổ chức",
-                      },
-                    ]}
-                    className="form-item"
-                  >
-                    <Input placeholder="Nhập phương châm của tổ chức" />
-                  </Form.Item>
-                </Col>
-              </Row>
+                      <Col span={6}>
+                        <Form.Item
+                          label="Địa chỉ cụ thể"
+                          name="detailAddress"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập địa chỉ cụ thể",
+                            },
+                          ]}
+                          className="form-item"
+                        >
+                          <Input placeholder="144, Xuân Thủy, Cầu Giấy, Hà Nội" className="input-app" />
+                        </Form.Item>
+                      </Col>
+                    </Row>
 
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                <Col span={6}>
-                  <Form.Item
-                    label="Tỉnh/Thành phố"
-                    name="province"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập Tỉnh/Thành phố của bạn",
-                      },
-                    ]}
-                    className="form-item"
-                    itialvalue={
-                      listProvince && listProvince[0] && listProvince[0].value
-                    }
-                  >
-                    {/* <Input placeholder="Nhập Tỉnh/Thành phố của bạn" /> */}
+                    <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                      <Col span={12}>
+                        <Form.Item
+                          label="Mục tiêu của tổ chức"
+                          name="charityTarget"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập Mục tiêu của tổ chức!",
+                            },
+                          ]}
+                          className="form-item"
+                        >
+                          <TextArea className="textarea-app" />
+                        </Form.Item>
+                      </Col>
+                      <Col span={12}>
+                        <Form.Item
+                          label="Mô tả về tổ chức"
+                          name="charityDescription"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng mô tả về tổ chức",
+                            },
+                          ]}
+                          className="form-item"
+                        >
+                          <TextArea className="textarea-app" />
+                        </Form.Item>
+                      </Col>
+                    </Row>
 
-                    <Select
-                      placeholder="Chọn Tỉnh/Thành phố của bạn"
-                      onChange={handleProvinceChange}
-                      options={listProvince}
-                    />
-                  </Form.Item>
-                </Col>
+                    <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                      <Col span={12}>
+                        <Form.Item
+                          label="Nhập file để xác minh tổ chức"
+                          name="charityFile"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập file của tổ chức!",
+                            },
+                          ]}
+                          className="form-item"
+                        >
+                          <Input type="file" onChange={handleFile} className="input-app" />
+                          {/* <Upload>
+                        <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                      </Upload> */}
+                        </Form.Item>
+                      </Col>
+                    </Row>
 
-                <Col span={6}>
-                  <Form.Item
-                    label="Quận/Huyện"
-                    name="district"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập Quận/Huyện của bạn",
-                      },
-                    ]}
-                    className="form-item"
-                  >
-                    <Select
-                      placeholder="Chọn quận/huyện của bạn"
-                      onChange={handleDistrictChange}
-                      options={listDistrict}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={6}>
-                  <Form.Item
-                    label="Phường/Xã"
-                    name="ward"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập Phường/Xã của bạn!",
-                      },
-                    ]}
-                    className="form-item"
-                  >
-                    <Select
-                      placeholder="Chọn Phường/Xã của bạn"
-                      onChange={handleWardChange}
-                      options={listWard}
-                    />
-                  </Form.Item>
-                </Col>
+                    <p className="error">{error}</p>
 
-                <Col span={6}>
-                  <Form.Item
-                    label="Địa chỉ cụ thể"
-                    name="detailAddress"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập địa chỉ cụ thể",
-                      },
-                    ]}
-                    className="form-item"
-                  >
-                    <Input placeholder="144, Xuân Thủy, Cầu Giấy, Hà Nội" />
-                  </Form.Item>
-                </Col>
-              </Row>
+                    <div className="regis-footer">
+                      <Form.Item wrapperCol={{ span: 24 }}>
+                        <Button
+                          type="primary"
+                          htmlType="submit"
+                          className="regis-button btn-primary"
+                          style={{margin: 'auto'}}
+                        >
+                          Đăng ký
+                        </Button>
+                      </Form.Item>
 
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                <Col span={12}>
-                  <Form.Item
-                    label="Mục tiêu của tổ chức"
-                    name="charityTarget"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập Mục tiêu của tổ chức!",
-                      },
-                    ]}
-                    className="form-item"
-                  >
-                    <TextArea />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item
-                    label="Mô tả về tổ chức"
-                    name="charityDescription"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng mô tả về tổ chức",
-                      },
-                    ]}
-                    className="form-item"
-                  >
-                    <TextArea />
-                  </Form.Item>
-                </Col>
-              </Row>
-
-              <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                <Col span={12}>
-                  <Form.Item
-                    label="Nhập file để xác minh tổ chức"
-                    name="charityFile"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập file của tổ chức!",
-                      },
-                    ]}
-                    className="form-item"
-                  >
-                    <Input type="file" onChange={handleFile} />
-                    {/* <Upload>
-                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                </Upload> */}
-                  </Form.Item>
-                </Col>
-              </Row>
-
-              <p className="error">{error}</p>
-
-              <div className="regis-footer">
-                <Form.Item wrapperCol={{ span: 24 }}>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    className="regis-button"
-                  >
-                    Đăng ký
-                  </Button>
-                </Form.Item>
-
-                <span className="sign-up">
-                  Bạn đã có tài khoản? ---
-                  <Link to="../login">Đăng nhập</Link>---
-                </span>
-              </div>
-            </Form>
-          </div>
-        )}
-      </div>
+                      <span className="sign-up">
+                        Bạn đã có tài khoản? ---
+                        <Link to="../login" className="text-hover" style={{color:"var(--color-blue)"}}>Đăng nhập</Link>---
+                      </span>
+                    </div>
+                  </Form>
+                </div>
+              )}
+            </div>
+          </Row>
+        </Col>
+      </Row>
     </div>
   );
 };
