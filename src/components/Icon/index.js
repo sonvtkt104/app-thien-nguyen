@@ -23,3 +23,4 @@ export { PauseIcon } from "./PauseIcon";
 export { ArrowLeftIcon } from './ArrowLeftIcon';
 export { NotificationIcon } from "./NotificationIcon";
 export { SettingIcon } from "./SettingIcon";
+export { TickIcon } from "./TickIcon";

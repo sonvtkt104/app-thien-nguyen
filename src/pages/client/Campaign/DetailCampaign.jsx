@@ -12,9 +12,10 @@ import {
   MailOutlined,
   EnvironmentOutlined,
   UpOutlined,
+  TeamOutlined,
 } from "@ant-design/icons";
 import { Button, Col, Input, Progress, Row, Space } from "antd";
-import {Input as InputApp, TableApp} from '../../../components'
+import {Input as InputApp, TableApp, Tag, TickIcon} from '../../../components'
 import { useState } from "react";
 import {
   FooterClient,
@@ -139,58 +140,195 @@ function DetailCampaign() {
         <Col xs={20} sm={20} md={20} lg={20} xl={20}>
           <div className='wrapper'>
             
-                <header className="header">
-                    <div className="header-body">
-                        <div className="header-1">
-                          <div style={{ fontSize: 24, fontWeight: "600", marginBottom: 7 }}>
-                            Quyên góp miền Trung
-                          </div>
-                          <button className="btn-follow">Theo dõi</button>
-                        </div>
-                        <div className="header-2">
-                          <Space>
-                            <Button type="primary" style={{ fontWeight: 600 }}>
-                              Ủng hộ ngay
-                            </Button>
-                            <Button
-                              type="primary"
-                              style={{ backgroundColor: "#43DA86", fontWeight: 600 }}
-                            >
-                              Chia sẻ
-                            </Button>
-                          </Space>
-                        </div>
+            <Row 
+              style={{marginTop: 20, background: "#ffffff", borderRadius :6, flexWrap :'nowrap'}}
+            >
+                <Col
+                  style={{borderRadius: 6,width: 450, position: 'relative'}}
+                >
+                  <img src="https://givenow.vn/wp-content/uploads/2023/03/Cover-2-800x600.png" alt="a" 
+                    style={{
+                      width: 450,
+                      height: 350,
+                      objectFit: 'cover',
+                      borderRadius: '6px 0 0 6px'
+                    }}
+                  />
+                  <span
+                    style={{position: 'absolute', top: 20, left: 10, opacity: '0.9'}}
+                  >
+                    <Tag 
+                      title="Tre em"
+                      color="#FFFFFF"
+                      background="var(--color-blue)"
+                      style={{fontSize: 14, fontWeight: '600', padding: 10}}
+                    />
+                  </span>
+                </Col>
+                <Col
+                  style={{
+                    padding: '20px 30px',
+                    width: 'calc(100% - 450px)',
+                    position: 'relative'
+                  }}
+                >
+                  <span
+                    style={{
+                      position: 'absolute',
+                      right: 30,
+                      top: 28,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <HeartOutlined style={{fontSize: 20, fontWeight: '600', color: 'var(--color-gray)', color: 'var(--color-gray)', transform: 'translateY(-3px)'}} />
+                  </span>
+                  <div 
+                    className="h1-app"
+                    style={{fontSize: 20, paddingRight: 30}}
+                  >
+                    Chung tay chăm sóc sức khỏe cho 200 trẻ nhập cư tại Trường tình thương Ái Linh
+                  </div>
+                  <Row
+                    style={{lineHeight: '60px', fontWeight: '600', fontSize: 16, marginTop: 10}}
+                  >
+                    <img src="https://givenow.vn/wp-content/uploads/2023/02/NhaCuaVui-scaled.jpeg" alt="" 
+                      style={{width: 60, height: 60, borderRadius: '50%', marginRight: 12}}
+                    />
+                    Xuan Son
+                    <div
+                      style={{marginLeft: 12}}
+                    >
+                      <TickIcon />
                     </div>
-                    <span>
-                            <GlobalOutlined style={{ color: "var(--color-gray)" }} />
-                            <span style={{ marginLeft: 5, color: "var(--color-gray)" }}>
-                              http://www.thiennguyen.com/
-                            </span>
-                    </span>           
-                </header>
-
-                <div className='tab'>
-                  <Row style={{borderTop: '1px solid var(--color-border)'}}>
-                      <Col style={{padding: '20px 30px', fontSize: '18px', fontWeight: '600', cursor: 'pointer', borderBottom: '1.5px solid #fff'}}
-                            className={tab == 0 ? 'profile-charity-menu-item active' : 'profile-charity-menu-item'}
-                            onClick={() => setTab(0)}
-                      >
-                        Giới thiệu
-                      </Col>
-                      <Col style={{padding: '20px 30px', fontSize: '18px', fontWeight: '600', cursor: 'pointer', borderBottom: '1.5px solid #fff'}}
-                            className={tab == 1 ? 'profile-charity-menu-item active' : 'profile-charity-menu-item'}
-                            onClick={() => setTab(1)}
-                      >
-                        Hoạt động
-                      </Col>
-                      <Col style={{padding: '20px 30px', fontSize: '18px', fontWeight: '600', cursor: 'pointer', borderBottom: '1.5px solid #fff'}}
-                            className={tab == 2 ? 'profile-charity-menu-item active' : 'profile-charity-menu-item'}
-                            onClick={() => setTab(2)}
-                      >
-                        Thống kê
-                      </Col>
                   </Row>
-                </div>
+                  <Row justify='space-between'
+                    style={{marginTop: 15}}
+                  >
+                    <span style={{fontSize: 16, fontWeight: '600', color: 'var(--color-gray)'}}>
+                      Mục tiêu cuộc vận động
+                    </span>
+                    <span style={{fontSize: 16, fontWeight: '600', color: '#666d7a'}}>
+                      50.000.000đ
+                    </span>
+                  </Row>  
+                  <Row
+                    style={{margin: '10px 0'}}
+                  >
+                    <Progress strokeColor={'#6DCCE3'} percent={50} showInfo={false} />
+                  </Row>
+                  <Row justify='space-between'
+                    
+                  >
+                    <Col>
+                      <span style={{marginRight: 10, }}>
+                        <TeamOutlined style={{fontSize: 20, fontWeight: '600', color: 'var(--color-gray)', transform: 'translateY(-3px)'}} />
+                      </span>
+                      <span style={{fontSize: 16, fontWeight: '600', color: 'var(--color-gray)'}}>
+                        12 lượt ủng hộ
+                      </span>
+
+                      <span style={{marginRight: 10, marginLeft: 24, }}>
+                        <HeartOutlined style={{fontSize: 20, fontWeight: '600', color: 'var(--color-gray)', color: 'var(--color-gray)', transform: 'translateY(-3px)'}} />
+                      </span>
+                      <span style={{fontSize: 16, fontWeight: '600', color: 'var(--color-gray)'}}>
+                        10 lượt yêu thích
+                      </span>
+
+                    </Col>
+                    <Col>
+                      <span style={{fontSize: 16, fontWeight: '600', color: 'var(--color-gray)'}}>
+                        Đã đạt được : {"  "}
+                      </span>
+                      <span style={{fontSize: 18, fontWeight: '600', color: 'var(--color-blue)'}}>
+                        22.000.000đ
+                      </span>
+                    </Col>
+                  </Row> 
+                  <Row
+                    justify='end'
+                    style={{marginTop: 20}}
+                  >
+                    <button
+                      className="btn"
+                      style={{fontSize: 16, fontWeight: '600', background: "#ffffff", marginRight: 20}}
+                    >
+                      Chia sẻ
+                    </button>
+                    <button
+                      className="btn-primary"
+                      style={{fontSize: 16, fontWeight: '600'}}
+                    >
+                      Ủng hộ ngay
+                    </button>
+                  </Row>
+                  {/* <header className="header">
+                      <div className="header-body">
+                          <div className="header-1">
+                            <div style={{ fontSize: 24, fontWeight: "600", marginBottom: 7 }}>
+                              Quyên góp miền Trung
+                            </div>
+                            <button className="btn-follow">Theo dõi</button>
+                          </div>
+                          <div className="header-2">
+                            <Space>
+                              <Button type="primary" style={{ fontWeight: 600 }}>
+                                Ủng hộ ngay
+                              </Button>
+                              <Button
+                                type="primary"
+                                style={{ backgroundColor: "#43DA86", fontWeight: 600 }}
+                              >
+                                Chia sẻ
+                              </Button>
+                            </Space>
+                          </div>
+                      </div>
+                      <span>
+                              <GlobalOutlined style={{ color: "var(--color-gray)" }} />
+                              <span style={{ marginLeft: 5, color: "var(--color-gray)" }}>
+                                http://www.thiennguyen.com/
+                              </span>
+                      </span>           
+                  </header> */}
+                </Col>
+            </Row>
+
+            <div className='tab'
+              style={{ background: 'transparent'}}
+            >
+              <Row >
+                  <Col 
+                    style={{
+                      padding: '25px 30px 15px 30px', fontSize: '18px', fontWeight: '600', cursor: 'pointer', borderBottom: '1.5px solid trans',
+                      color: tab == 0 ? "var(--color-blue)" : "var(--color-gray)"
+                    }}
+                    className={tab == 0 ? 'profile-charity-menu-item active' : 'profile-charity-menu-item'}
+                    onClick={() => setTab(0)}
+                  >
+                    Giới thiệu
+                  </Col>
+                  <Col 
+                    style={{
+                      padding: '25px 30px 15px 30px', fontSize: '18px', fontWeight: '600', cursor: 'pointer', borderBottom: '1.5px solid trans',
+                      color: tab == 1 ? "var(--color-blue)" : "var(--color-gray)"
+                    }}
+                    className={tab == 1 ? 'profile-charity-menu-item active' : 'profile-charity-menu-item'}
+                    onClick={() => setTab(1)}
+                  >
+                    Hoạt động
+                  </Col>
+                  <Col 
+                    style={{
+                      padding: '25px 30px 15px 30px', fontSize: '18px', fontWeight: '600', cursor: 'pointer', borderBottom: '1.5px solid trans',
+                      color: tab == 2 ? "var(--color-blue)" : "var(--color-gray)"
+                    }}
+                    className={tab == 2 ? 'profile-charity-menu-item active' : 'profile-charity-menu-item'}
+                    onClick={() => setTab(2)}
+                  >
+                    Thống kê
+                  </Col>
+              </Row>
+            </div>
               
           </div>
 
@@ -227,42 +365,14 @@ function DetailCampaign() {
                                             <img src="/images/mien-trung-2.jpg" alt="bla bla"></img>
                                             <img src="/images/mien-trung-2.jpg" alt="bla bla"></img>
                                         </div>
-                                        <div className="class-common">Quá trình quyên góp:</div>
-                                        <div className="detail-campaign-block">
-                      <Row justify={"space-between"}>
-                        <div>
-                          <SmileTwoTone /> 400 Người đã ủng hộ{" "}
-                          <span style={{ marginLeft: "24px" }}>
-                            <HeartTwoTone twoToneColor="#eb2f96" /> 99
-                          </span>
-                        </div>
-                        <div>
-                          <StarOutlined style={{ color: "green" }} /> 0 Nhận xét
-                        </div>
-                      </Row>
-                      <div style={{ margin: "20px 0" }}></div>
-                      <Row justify={"space-between"}>
-                        <div>150.000.000 đ Đã ủng hộ</div>
-                        <div>200.000.000 đ Mục tiêu</div>
-                      </Row>
-                      <div style={{ margin: "0 0 4px 0" }}></div>
-                      <Row>
-                        <Progress percent={75} status="active" />
-                      </Row>
-                      <div style={{ margin: "4px 0" }}></div>
-                      <Row justify={"space-between"}>
-                        <div>5 ngày còn lại</div>
-                        <div>75% Thành công</div>
-                      </Row>
-                      <div style={{ margin: "12px 0" }}></div>
-                      <Row>
-                        <div style={{ fontWeight: 600 }}>
-                          Dự án còn 5 ngày nữa sẽ kết thúc.
-                        </div>
-                      </Row>
-                                        </div>
+                                      
                                         <div style={{margin: '16px auto', display: 'flex', justifyContent: 'center'}}>
-                                          <Button size="large" type="primary" style={{fontWeight: 600}}>Ủng hộ ngay</Button>
+                                          <button
+                                            className="btn-primary"
+                                            style={{fontSize: 16, fontWeight: '600'}}
+                                          >
+                                            Ủng hộ ngay
+                                          </button>
                                         </div>
                                         
                   </div>          
@@ -357,9 +467,9 @@ function DetailCampaign() {
                       key={i}
                       className="detail-campaign-activity"
                       style={{
-                        borderRadius: 8,
+                        borderRadius: 6,
                         background :'#ffffff', 
-                        marginTop :10,
+                        marginTop :20,
                         marginBottom : 20,
                         padding: "24px 30px"
                       }}
