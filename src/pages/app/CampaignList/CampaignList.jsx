@@ -13,7 +13,6 @@ import axios from "axios";
 
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { Modal, Space } from 'antd';
-import CamPaignPreview from "./CampaignPreview";
 const { confirm } = Modal;
 
 
@@ -207,18 +206,6 @@ class CamPaignList extends Component {
     handleActions = async (record, type) => {
         if(type === 'edit') {
             this.showModal();
-            // let res = await axios({
-            //     method: 'get',
-            //     url: `http://localhost:8089/charity/campaign/get-by-condition?campaign-id=${record.campaign_id}&organization-id=${record.organization_id}`,
-            //     headers: {
-            //         token: 'abcd'
-            //     }
-            // }).then(res => res.data)
-            // if(res && res.organization && res.organization.id) {
-            //     this.setState({
-            //         dataOrigin: res
-            //     })
-            // }
             this.setState({
                 campaign_id: record.campaign_id,
                 organization_id: record.organization_id

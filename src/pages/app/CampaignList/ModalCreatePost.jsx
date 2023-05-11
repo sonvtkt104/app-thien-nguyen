@@ -10,27 +10,30 @@ import axios from "axios";
 
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { useParams } from "react-router-dom";
 
 function ModalCreatePost({
     isOpenModalCreatePost,
     handleOk,
     handleCancel,
-    dataOrigin,
-    postId
+    postId,
+    getDataPosts
 }) {
     const {TextArea} = Input;
     const [namePost, setNamePost] = useState('')
     const [typePost, setTypePost] = useState(0)
     const [contentPost, setContentPost] = useState('')
 
+    const {campaignId} = useParams();
+
     let options = [
         {
             label: 'Bài viết giới thiệu',
-            value: 1
+            value: 'Bài viết giới thiệu'
         },
         {
             label: 'Bài viết hoạt động',
-            value: 2
+            value: 'Bài viết hoạt động'
         }
     ]
 
@@ -47,21 +50,33 @@ function ModalCreatePost({
 
     const handlePressOk = async () => {
 
-        console.log(namePost, typePost, contentPost);
-        return;
-        await axios({
-            method: 'post',
-            url: 'http://localhost:8089/charity/campaign/add-campaign',
-            headers: {
-                token: 'abcd'
-            },
-            data: {
-                
-            }
-            
-        })
-        toast.success('Tạo mới bài viết thành công!');
+        // console.log(campaignId, namePost, typePost, contentPost);
+        // return;
 
+        if(!campaignId || !namePost || !typePost || !contentPost) {
+            toast.error('Vui lòng điền đầy đủ thông tin!')
+        }
+        else {
+            await axios({
+                method: 'post',
+                url: 'http://localhost:8089/charity/post/add-post',
+                headers: {
+                    token: 'abcd'
+                },
+                data: {
+                    campaign_id: campaignId,
+                    content: contentPost,
+                    type: typePost
+                }
+                
+            })
+            toast.success('Tạo mới bài viết thành công!');
+            setNamePost('')
+            setTypePost(options[0])
+            setContentPost('')
+            handleOk()
+            getDataPosts()
+        }
     }
 
     return (
@@ -132,7 +147,7 @@ function ModalCreatePost({
                              <Col span={24}>
                                 <CKEditor
                                     editor={ ClassicEditor }
-                                    data={dataOrigin.content}
+                                    data={contentPost}
                                     onChange={ ( event, editor ) => {
                                         const data = editor.getData();
                                         setContentPost(data);
