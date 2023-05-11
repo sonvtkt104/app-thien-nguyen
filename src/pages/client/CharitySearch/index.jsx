@@ -24,7 +24,7 @@ export default function CharitySearch() {
         <div className="charity-search-app"
             style={{minHeight: '100vh', background: 'var(--color-background-header)'}}
         >
-            <HeaderClient />
+            <HeaderClient page="charity-all" />
             <CharitySearchHeader />
             <div 
                 style={{padding:'16px 0 40px'}}

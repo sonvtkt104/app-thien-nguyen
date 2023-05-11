@@ -7,7 +7,7 @@ const {TextArea} = Input
 export default function ContactUs() {
     return (
         <div>
-            <HeaderClient />
+            <HeaderClient page="contact-us" />
             <Row
                 style={{ background: 'var(--color-background-header)', height: '300px' }}
                 className='flex-col-center'

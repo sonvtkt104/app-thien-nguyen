@@ -6,7 +6,7 @@ import './css/index.css'
 export default function CampaignAll() {
     return (
         <div>
-            <HeaderClient />
+            <HeaderClient page="campaign-all" />
             <CampaignSearch />
             <CampaignList />
             <FooterClient />

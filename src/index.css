@@ -18,10 +18,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #38383a;
-  scroll-behavior: smooth;
+  scroll-behavior: smooth !important;
   font-size: 14px;
   /* overflow-y: scroll; */
 
+}
+
+p, div, span, h1, h2, h3,h4, h6, input, select, textarea, button {
+  font-family: "Poppins", sans-serif !important;
 }
 
 h1,
@@ -124,6 +128,21 @@ a {
   outline: 0 !important;
 }
 
+.select-app .ant-select-selector {
+  border: 1px solid var(--color-border) !important;
+  border-radius: 3px;
+  padding: 7px 10px !important;
+  text-align: left;
+  min-height: 48px;
+}
+
+.select-app .ant-select-selector:hover,
+.select-app .ant-select-selector:focus,
+.select-app .ant-select-selector:focus-visible{
+  border-color: var(--color-blue) !important;
+  outline: 0 !important;
+}
+
 .modal-preview-image-app .ant-modal-content {
   padding: 0;
   background-color: transparent;
@@ -131,6 +150,7 @@ a {
 
 .text-hover:hover {
   color: var(--color-blue) !important;
+  opacity: 0.8;
 }
 
 .h1-app {
@@ -175,4 +195,8 @@ a {
   text-decoration: underline;
 }
 
+.ant-checkbox-checked .ant-checkbox-inner {
+  background: var(--color-blue) !important;
+  border: 1px solid transparent !important;
+}
 

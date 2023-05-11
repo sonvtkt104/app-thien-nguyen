@@ -7,7 +7,7 @@ import './css/index.css'
 export default function CharityAll() {
     return (
         <div className="charity-all-app">
-            <HeaderClient />
+            <HeaderClient page="charity-all" />
             <CharityBanner />
             <CharityList />
             <FooterClient />
