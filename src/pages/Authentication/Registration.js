@@ -437,6 +437,7 @@ const RegistrationPage = () => {
                           onChange={handleProvinceChange}
                           options={listProvince}
                           className="select-app"
+                          style={{width: 220}}
                         />
                       </Form.Item>
                     </Col>
@@ -458,6 +459,7 @@ const RegistrationPage = () => {
                           onChange={handleDistrictChange}
                           options={listDistrict}
                           className="select-app"
+                          style={{width: 220}}
                         />
                       </Form.Item>
                     </Col>
@@ -478,6 +480,7 @@ const RegistrationPage = () => {
                           onChange={handleWardChange}
                           options={listWard}
                           className="select-app"
+                          style={{width: 220}}
                         />
                       </Form.Item>
                     </Col>
@@ -679,6 +682,7 @@ const RegistrationPage = () => {
                             onChange={handleProvinceChange}
                             options={listProvince}
                             className="select-app"
+                            style={{width: 220}}
                           />
                         </Form.Item>
                       </Col>
@@ -700,6 +704,7 @@ const RegistrationPage = () => {
                             onChange={handleDistrictChange}
                             options={listDistrict}
                             className="select-app"
+                            style={{width: 220}}
                           />
                         </Form.Item>
                       </Col>
@@ -720,6 +725,7 @@ const RegistrationPage = () => {
                             onChange={handleWardChange}
                             options={listWard}
                             className="select-app"
+                            style={{width: 220}}
                           />
                         </Form.Item>
                       </Col>
