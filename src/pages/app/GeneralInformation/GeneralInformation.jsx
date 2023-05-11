@@ -20,9 +20,7 @@ function GeneralInformation() {
     const [dataUpdate, setDataUpdate] = useState({})
     const [reloadData, setReloadData] = useState()
 
-    console.log(reloadData)
     useEffect(()=> {
-        console.log("reload laiiiii")
         getCurrentCharity().then(res=> {
             setCharity(res.data.data)
         })
@@ -37,7 +35,6 @@ function GeneralInformation() {
         // setDataUpdate({})
     }
     const handleReloadData = (data) => {
-        console.log(data)
         setReloadData(data)
     }
 
