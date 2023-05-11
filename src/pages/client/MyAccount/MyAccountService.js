@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
 //api xac nhan
 // export const getRequestList = async () => {
 //     var url = "http://localhost:7777/data";
@@ -16,16 +16,22 @@ import axios from "axios";
 //     return await axios.put(url, data)
 // };
 
+const token = getTokenFromCookies()
+const headers = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
 
 //api tai khoan
-export const getUserByID = async (id) => {
-    var url = "http://localhost:4444/data" + "/" + id;
-    return await axios.get(url)
+export const getCurrentUser = async () => {
+    var url = "http://localhost:8080/user/current-user";
+    return await axios.get(url, headers)
 }
 
 export const updateUser = async (id, data) => {
-    var url = "http://localhost:4444/data" + "/" + id;
-    return await axios.put(url, data)
+    var url = "http://localhost:8080/setting/user-normal/edit-info" + "/" + id;
+    return await axios.put(url, data, headers)
 }
 
 
@@ -72,3 +78,9 @@ export const getListWardByID = async (id) => {
 };
 
 
+//updatepassword
+
+export const updatePassWord = async (id, data) => {
+    var url = "http://localhost:8080/setting/user/edit-password" + "/" + id;
+    return await axios.put(url, data, headers)
+} 

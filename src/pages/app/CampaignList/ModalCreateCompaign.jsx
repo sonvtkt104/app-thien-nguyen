@@ -170,7 +170,7 @@ function ModalCreateCampaign({
     
             setNameCampaign('')
             setTargetAudience('')
-            setRegionOptions(null)
+            setRegionOptions(regionOptions)
             setTargetCampaign('')
             setStartDay('')
             setEndDay('')
@@ -206,6 +206,7 @@ function ModalCreateCampaign({
                                      value={nameCampaign}
                                      onChange={(e) => setNameCampaign(e.target.value)} 
                                      style={{width: '100%'}}
+                                     autoFocus
                                  />
                              </Col>
                              <Col span={8}>

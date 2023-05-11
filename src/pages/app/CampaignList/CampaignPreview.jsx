@@ -474,9 +474,10 @@ function CamPaignPreview() {
     ]
 
     const showDeleteConfirm = (record) => {
-        // console.log(dataOrigin);
-        // console.log(record)
+        // console.log(typeof campaignId);
+        // console.log(typeof record.postId.toString());
         // return;
+        setPostId(record.postId.toString())
         confirm({
           title: 'Bạn muốn xóa bài viết này?',
           icon: <ExclamationCircleFilled />,
@@ -488,13 +489,13 @@ function CamPaignPreview() {
           async onOk() {
             await axios({
                 method: 'delete',
-                // url: `http://localhost:8089/charity/post/delete-post?campaign-id=${campaignId}&post-id=${postId}`,
+                url: `http://localhost:8089/charity/post/delete-post?campaign-id=${campaignId}&post-id=${postId}`,
                 headers: {
                     token: 'abcd'
                 },
             });
             toast.success('Đã xóa bài viết này!');
-            // _this.getData();
+            getDataPosts();
           },
           onCancel() {
             // console.log('Cancel');
@@ -504,8 +505,9 @@ function CamPaignPreview() {
     let dataSource = dataOrigin.map((item, index) => ({
         key: index,
         name: 'Mặc định',
+        status: 'Đang hoạt động',
         postType: item.type,
-        date: item.submitTime,
+        date: moment(item.submitTime).format("DD/MM/YYYY"),
         postId: item.id
     }))
     // let dataSource = [
@@ -654,12 +656,13 @@ function CamPaignPreview() {
     const [endDay, setEndDay] = useState('')
     const [region, setRegion] = useState('')
     const [postId, setPostId] = useState('')
+    let [provinces, setProvinces] = useState([])
 
     useEffect(() => {
         (async () => {
             let res = await axios({
                 method: 'get',
-                url: `http://localhost:8089/charity/campaign/get-by-condition?campaign-id=${campaignId}`,
+                url: `http://localhost:8089/charity/campaign/get-by-id?campaign-id=${campaignId}`,
                 headers: {
                     token: 'abcd'
                 }
@@ -689,10 +692,45 @@ function CamPaignPreview() {
             }
         })()
     }, [])
+
+    useEffect(() => {
+        ;(async () => {
+            try {
+                let res = await axios({
+                    method: 'get',
+                    url: 'http://localhost:8089/charity/address/provinces',
+                    headers: {
+                        token: 'abcd'
+                    }
+                }).then(res => res.data)
+                setProvinces(res)
+                
+            } catch (error) {
+                console.log(error)
+            }
+
+        })()
+    }, [])
+
+    // console.log(provinces)
+    let dataRegion = provinces.filter(item => (item.codeName === region))
+    // console.log(dataRegion)
+
+    const getDataPosts = async () => {
+        let res = await axios({
+            method: 'get',
+            url: `http://localhost:8089/charity/post/get-post?campaign-id=${campaignId}`,
+            headers: {
+                token: 'abcd'
+            }
+        }).then(res => res.data)
+        if(res) {
+            setDataOrigin(res);
+        }
+    }
         
 
     const handleOk = () => {
-        // toast.success('Chỉnh sửa bài viết thành công!');
         setIsOpenModalCreatePost(false)
         setIsOpenModalEditPost(false)           
     }
@@ -704,9 +742,8 @@ function CamPaignPreview() {
         
     const handleActions = (record, type) => {
         if(type === 'edit') {
-            console.log(record)
-            setIsOpenModalEditPost(true)
-            setPostId(record)
+            setIsOpenModalEditPost(true);
+            setPostId(record.postId)
         }
     }
 
@@ -759,7 +796,7 @@ function CamPaignPreview() {
                                         </div>
                                         <div className="form-group">
                                             <div className='description-name'>Khu vực kêu gọi:</div>
-                                            <div className='description-info'>{region}</div>
+                                            <div className='description-info'>{dataRegion[0]?.fullName}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -783,15 +820,17 @@ function CamPaignPreview() {
                                     isOpenModalCreatePost={isOpenModalCreatePost}
                                     handleOk={handleOk}
                                     handleCancel={handleCancel}
-                                    dataOrigin={dataOrigin}
+                                    // dataOrigin={dataOrigin}
                                     postId={postId}
+                                    getDataPosts={getDataPosts}
                                 />
                                 <ModalEditPost
                                     isOpenModalEditPost={isOpenModalEditPost}
                                     handleOk={handleOk}
                                     handleCancel={handleCancel}
-                                    dataOrigin={dataOrigin}
+                                    // dataOrigin={dataOrigin}
                                     postId={postId}
+                                    getDataPosts={getDataPosts}
                                 />
                             </div>
                         }

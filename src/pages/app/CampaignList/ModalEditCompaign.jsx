@@ -125,7 +125,7 @@ function ModalEditCampaign({
                 if(campaign_id && organization_id) {
                     let res = await axios({
                         method: 'get',
-                        url: `http://localhost:8089/charity/campaign/get-by-condition?campaign-id=${campaign_id}&organization-id=${organization_id}`,
+                        url: `http://localhost:8089/charity/campaign/get-by-id?campaign-id=${campaign_id}`,
                         headers: {
                             token: 'abcd'
                         }
