@@ -470,7 +470,7 @@ function DetailCampaign() {
                         borderRadius: 6,
                         background :'#ffffff', 
                         marginTop :20,
-                        marginBottom : 20,
+                        marginBottom : 30,
                         padding: "24px 30px"
                       }}
                     >
@@ -487,19 +487,6 @@ function DetailCampaign() {
                                 <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="bla bla"></img>
                                 <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="bla bla"></img>
                             </Space>
-                        </Row>
-                        <div className="see-detail">Xem thêm</div>
-                        <div style={{margin: '12px 0', height: '1px', background: 'gray'}}></div>
-                        <Row justify={"space-around"}>
-                            <Col>
-                                <button className='btn-actions' style={{fontWeight: 600}}><HeartOutlined /> Thích</button>
-                            </Col>
-                            <Col>
-                                <button className='btn-actions' style={{fontWeight: 600}}><CommentOutlined /> Bình luận</button>
-                            </Col>
-                            <Col>
-                                <button className='btn-actions' style={{fontWeight: 600}}><ShareAltOutlined /> Chia sẻ</button>                              
-                            </Col>
                         </Row>
                     </div>
                   ))
