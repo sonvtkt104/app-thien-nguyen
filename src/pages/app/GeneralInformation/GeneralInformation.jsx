@@ -18,21 +18,22 @@ function GeneralInformation() {
     const [charity, setCharity] = useState({})
     const [openDialog, setOpenDialog] = useState(false)
     const [dataUpdate, setDataUpdate] = useState({})
-    const [reloadData, setReloadData] = useState("1")
+    const [reloadData, setReloadData] = useState()
 
-
+    console.log(reloadData)
     useEffect(()=> {
+        console.log("reload laiiiii")
         getCurrentCharity().then(res=> {
             setCharity(res.data.data)
         })
     },[reloadData])
     // console.log(reloadData)
-    console.log(charity)
+    // console.log(charity)
 
 
     const handleCloseModal = () => {
         setOpenDialog(false)
-        setReloadData("1")
+        // setReloadData("1")
         // setDataUpdate({})
     }
     const handleReloadData = (data) => {

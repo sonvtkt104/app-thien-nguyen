@@ -1,10 +1,13 @@
 import "./GeneralInformation.css"
 import { memo, useState, useEffect } from 'react'
 import { Modal, Image, Button, Checkbox, Form, Input, Upload, Select } from 'antd'
-import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
+import { PlusOutlined, CloseOutlined, UploadOutlined } from '@ant-design/icons';
 import { updateCharity } from "../HomePageCharity/HomePageCharityService";
 import { getListProvince, getListDistrictByID, getListWardByID } from "../../client/MyAccount/MyAccountService";
-
+import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
+import axios from "axios";
+import { uploadImage } from "../HomePageCharity/HomePageCharityService";
+import { useRef } from "react";
 
 function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadData }) {
     const [form] = Form.useForm();
@@ -31,6 +34,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
     const [provinceId, setProvinceId] = useState(undefined)
     const [districtId, setDistrictId] = useState(undefined)
     const [wardId, setWardId] = useState(undefined)
+
 
     useEffect(() => {
         form.setFieldsValue(dataUpdate);
@@ -90,35 +94,69 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
         handleCloseModal()
     }
     const onFinish = (values) => {
-        values.avatar = fileImage
-        values.images = images?.reduce((a, b) => {
-            return [...a, b.url]
-        }, []).join(",")
-        values.googleMap = values.googleMap.includes("iframe") ? values.googleMap?.split('"')[1] : values.googleMap
-        values.provinceId = provinceId  || dataUpdate?.provinceId
+        console.log(fileImage)
+        const formData = new FormData();
+        // https://www.youtube.com/embed/6h2fq03pJTk
+        // https://youtu.be/02ODKglDVQs
+        // https://www.youtube.com/watch?v=niPkap1ozUA
+        // values.avatar = fileImage
+        // console.log(values.images)
+        // values.images?.fileList.forEach((file) => {
+        //     formData.append('files', file);
+        //   });
+        // uploadImage(formData).then(res =>{
+        //     console.log(res)
+        //     // setFileImage(res.data.data)
+        // })
+        // values.images = images?.reduce((a, b) => {
+        //     return [...a, b.url]
+        // }, []).join(",")
+        values.charityIntroVideo = values.charityIntroVideo?.replace("youtu.be", "www.youtube.com/embed");
+        values.googleMap = values?.googleMap?.includes("iframe") ? values.googleMap?.split('"')[1] : values.googleMap
+        values.provinceId = provinceId || dataUpdate?.provinceId
         values.districtId = districtId || dataUpdate?.districtId
         values.wardId = wardId || dataUpdate?.wardId
 
-        // values.socialNetwork = {
-        //     "charityFacebook": values.charityFacebook,
-        //     "charityInstagram": values.charityInstagram,
-        //     "charityTwitter": values.charityTwitter,
-        //     "charityLinkedIn": values.charityLinkedIn
-        // }
-        // // delete values.photoUrl
-        // const dataUpdateCharity = {...dataUpdate, ...values}
-        // delete dataUpdateCharity.charityFacebook
-        // delete dataUpdateCharity.charityInstagram
-        // delete dataUpdateCharity.charityTwitter
-        // delete dataUpdateCharity.charityLinkedIn
-        console.log(values.googleMap.length);
-        console.log('Success:', values);
-        // console.log('dataUpdateCharity:', dataUpdateCharity);
-        // updateCharity(dataUpdateCharity.id, dataUpdateCharity).then(res => {
-        //     console.log(res)
-        //     onClose()
-        //     handleReloadData("2")
-        // })
+        // console.log('Success:', values);
+
+        const dataUpdateSend = {
+            name: values.name,
+            avatar: values.avatar || "",
+            email: values.email,
+            address: values.address,
+            phoneNumber: values.phoneNumber,
+            provinceId: values.provinceId,
+            province: values.province,
+            districtId: values.districtId,
+            district: values.district,
+            wardId: values.wardId,
+            ward: values.ward,
+            charityId: dataUpdate?.charityId,
+            charityInfo: {
+                charityMotto: values.charityMotto || "",
+                charityTarget: values.charityTarget || "",
+                charityDescription: values.charityDescription || "",
+                charityFile: values.charityFile || "",
+                charityFacebook: values.charityFacebook || "",
+                charityInstagram: values.charityInstagram || "",
+                charityTwitter: values.charityTwitter || "",
+                charityLinkedIn: values.charityLinkedIn || "",
+                charityIntroVideo: values.charityIntroVideo || "",
+                charityAccountNumber: values.charityAccountNumber || "",
+                charityImages: values.charityImages || "",
+                googleMap: values.googleMap || ""
+            }
+        }
+
+        // console.log(dataUpdateSend)
+
+        updateCharity(dataUpdate?.id, dataUpdateSend).then(res => {
+            console.log(res)
+            handleReloadData(Math.random().toString(36).slice(-5))
+            // handleReloadData("2")
+
+            onClose()
+        })
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -135,22 +173,46 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
         });
 
     const handleChange = async ({ file }) => {
-        const fileUrl = await getBase64(file.originFileObj);
-        setFileImage(fileUrl)
+        // const fileUrl = await getBase64(file.originFileObj);
+        // setFileImage(fileUrl)
+        console.log(file.originFileObj)
+        const formData = new FormData();
+        formData.append('file', file.originFileObj);
+        uploadImage(formData).then(res => {
+            console.log(res)
+            setFileImage(res.data.data)
+        })
+        // const token = getTokenFromCookies()
+        // try {
+        //     const response = await axios.post('http://localhost:8080/upload', formData, {
+        //         headers: {
+        //             'Content-Type': 'multipart/form-data',
+        //             "Authorization": `Bearer ${token}`,
+        //         },
+        //     });
+        //     console.log(response.data);
+        // } catch (error) {
+        //     console.error(error);
+        // }
     };
 
 
 
     const handleChangeImage = (event) => {
-        const selectedImage = event.target.files[0];
-        const imageUrl = URL.createObjectURL(selectedImage);
-        setFileImage(imageUrl);
+        // const selectedImage = event.target.files[0];
+        // const imageUrl = URL.createObjectURL(selectedImage);
+        // setFileImage(imageUrl);
     };
-
     const handleChangeListImages = async ({ file }) => {
-        const fileUrl = await getBase64(file.originFileObj);
         // console.log(fileUrl)
-        setImages((images) => images.includes(fileUrl) ? images : [...images, { url: fileUrl }])
+        // const fileUrl = await getBase64(file.originFileObj);
+        // setImages((images) => images.includes(fileUrl) ? images : [...images, { url: fileUrl }])
+        const fileUrl = file.originFileObj;
+        console.log(fileUrl)
+        setImages((images) => !images ? images : [...images, fileUrl])
+        // setImages((images) => images?.includes(fileUrl) ? images : [...images, fileUrl])
+
+        // setImages((images) => [...images, fileUrl ])
     };
 
     const onRemoveImage = (value) => {
@@ -169,7 +231,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                 open={open}
                 maskClosable={false}
                 footer={null}
-                onCancel={() => { onClose() }}
+                onCancel={onClose}
                 className="gid-modal"
             >
                 <Form
@@ -397,6 +459,19 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                             </Form.Item>
                             <Form.Item
                                 style={{ width: "100%", marginBottom: 16 }}
+                                label="Video Giới thiệu"
+                                name="charityIntroVideo"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Vui lòng nhập Video Giới thiệu!',
+                                    },
+                                ]}
+                            >
+                                <Input placeholder="Nhập link video Youtube" />
+                            </Form.Item>    
+                            <Form.Item
+                                style={{ width: "100%", marginBottom: 16 }}
                                 label="Mục tiêu"
                                 name="charityTarget"
                                 rules={[
@@ -422,32 +497,20 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                             >
                                 <Input.TextArea rows={4} />
                             </Form.Item>
-                            <Form.Item
-                                style={{ width: "100%", marginBottom: 16 }}
-                                label="Video Giới thiệu"
-                                name="charityIntroVideo"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Vui lòng nhập Video Giới thiệu!',
-                                    },
-                                ]}
-                            >
-                                <Input placeholder= "Nhập link video Youtube"/>
-                            </Form.Item>
+            
                             <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                                 <Form.Item
                                     style={{ width: "32%", marginBottom: 16 }}
                                     label="Tài khoản ngân hàng"
                                     name="charityAccountNumber"
-                                    // rules={[
-                                    //     {
-                                    //         required: true,
-                                    //         message: 'Vui lòng nhập Thông tin Tài khoản ngân hàng!',
-                                    //     },
-                                    // ]}
+                                // rules={[
+                                //     {
+                                //         required: true,
+                                //         message: 'Vui lòng nhập Thông tin Tài khoản ngân hàng!',
+                                //     },
+                                // ]}
                                 >
-                                    <Input placeholder= "Nhập thông tin Tài khoản ngân hàng"/>
+                                    <Input placeholder="Nhập thông tin Tài khoản ngân hàng" />
                                 </Form.Item>
                                 {/* <Form.Item
                                     style={{ width: "32%", marginBottom: 16 }}
@@ -474,7 +537,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                 //     },
                                 // ]}
                                 >
-                                    <Input placeholder= "Nhập iframe nhúng bản đồ"/>
+                                    <Input placeholder="Nhập iframe nhúng bản đồ" />
                                 </Form.Item>
                             </div>
                             <p style={{ marginBottom: 10 }}>Mạng xã hội khác</p>
@@ -485,34 +548,34 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                     label="Facebook"
                                     name="charityFacebook"
                                 >
-                                    <Input placeholder= "Nhập link Facebook"/>
+                                    <Input placeholder="Nhập link Facebook" />
                                 </Form.Item>
                                 <Form.Item
                                     style={{ width: "49%", marginBottom: 16 }}
                                     label="Instagram"
                                     name="charityInstagram"
                                 >
-                                    <Input placeholder= "Nhập link Instagram"/>
+                                    <Input placeholder="Nhập link Instagram" />
                                 </Form.Item>
                                 <Form.Item
                                     style={{ width: "48%", marginBottom: 16, marginLeft: 10 }}
                                     label="Twitter"
                                     name="charityTwitter"
                                 >
-                                    <Input placeholder= "Nhập link Twitter"/>
+                                    <Input placeholder="Nhập link Twitter" />
                                 </Form.Item>
                                 <Form.Item
                                     style={{ width: "49%", marginBottom: 16 }}
                                     label="LinkedIn"
                                     name="charityLinkedIn"
                                 >
-                                    <Input placeholder= "Nhập link LinkedIn"/>
+                                    <Input placeholder="Nhập link LinkedIn" />
                                 </Form.Item>
                             </div>
-                            <Form.Item label="Ảnh" name="images">
+                            <Form.Item label="Ảnh" name="charityImages">
                                 <Upload
                                     listType="picture-card"
-                                    name="images"
+                                    name="charityImages"
                                     onChange={handleChangeListImages}
                                     fileList={images}
                                     onRemove={onRemoveImage}
