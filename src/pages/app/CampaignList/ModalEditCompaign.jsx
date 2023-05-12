@@ -40,6 +40,8 @@ function ModalEditCampaign({
     const [previewImage, setPreviewImage] = useState(false);
     const [previewTitle, setPreviewTitle] = useState('');
     const [previewOpen, setPreviewOpen] = useState(false);
+    const [provinces, setProvinces] = useState([])
+    let [optionSelect, setOptionSelect] = useState({})
 
 
         const getBase64 = (file) =>
@@ -101,6 +103,7 @@ function ModalEditCampaign({
                     }
                 });
                 if(res.data && res.data.length > 0) {
+                    setProvinces(res.data)
                     regionOptions = res.data.map((region) => {
                         region.label = region.fullName;
                         return {
@@ -137,6 +140,8 @@ function ModalEditCampaign({
                         setStartDay(res.startDate)
                         setEndDay(res.stopDate)
                         setRegion(res.region)
+                        let optionRegion = provinces.filter(item => (item.codeName === res.region))
+                        setOptionSelect(optionRegion[0])
                         setIntroductoryPost(res.introduction)
                     }
                 }
@@ -146,6 +151,7 @@ function ModalEditCampaign({
         })()
     }, [campaign_id])
 
+    
 
     const handlePressOk = async () => {
 
@@ -294,7 +300,8 @@ function ModalEditCampaign({
                             <Col span={8}>
                                 <label>Khu vực kêu gọi</label>
                                 <Select
-                                    // mode="multiple"
+                                    mode="multiple"
+                                    value={optionSelect}
                                     showSearch
                                     allowClear
                                     style={{width: '100%'}}
@@ -305,7 +312,7 @@ function ModalEditCampaign({
                                         return option.label.toLowerCase().includes(input.toLowerCase())
                                         }
                                     }
-                                    onChange={(value) => {setRegion(value)}}
+                                    onChange={(value) => {setOptionSelect(value); setRegion(value)}}
                                 />                                    
                             </Col>
                             

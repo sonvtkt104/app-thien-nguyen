@@ -35,11 +35,11 @@ function ModalCreateCampaign({
     const [introductoryPost, setIntroductoryPost] = useState('')
     const [imageCampaign, setImageCampaign] = useState('')
 
+
     const [fileList, setFileList] = useState([]);
     const [previewImage, setPreviewImage] = useState(false);
     const [previewTitle, setPreviewTitle] = useState('');
     const [previewOpen, setPreviewOpen] = useState(false);
-
 
         const getBase64 = (file) =>
             new Promise((resolve, reject) => {
@@ -294,7 +294,7 @@ function ModalCreateCampaign({
                             <Col span={8}>
                                 <label>Khu vực kêu gọi</label>
                                 <Select
-                                    // mode="multiple"
+                                    mode="multiple"
                                     showSearch
                                     allowClear
                                     style={{width: '100%'}}
@@ -309,6 +309,7 @@ function ModalCreateCampaign({
                                         (value) => {
                                             setRegion(prev => {
                                                 let arrRegions = [...prev, value]
+                                                console.log(arrRegions[arrRegions.length - 1])
                                                 return arrRegions[arrRegions.length - 1]
                                             })
                                         }
