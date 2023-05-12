@@ -41,7 +41,7 @@ export function ItemCampaign({
 
     const navigate = useNavigate()
     const FormatCurrency = useCallback((number) => {
-        const currencyString = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        const currencyString = number?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
         // Thêm ký tự VND vào cuối chuỗi
         return currencyString + " ₫";
