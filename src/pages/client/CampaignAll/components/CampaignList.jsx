@@ -3,7 +3,9 @@ import { Col, Row, Tag } from "antd"
 import { memo } from "react"
 import { ItemCampaign } from "../../../../components"
 
-function CampaignList() {
+function CampaignList({
+    listCampaign
+}) {
     return (
         <Row justify='center'
             style={{padding :'50px 0'}}
@@ -17,7 +19,7 @@ function CampaignList() {
                     <Col>
                         <Row>
                             <span style={{fontSize: 18, lineHeight: '36px', fontWeight: '600', marginRight: 30}}>
-                                10 Dự án
+                                {listCampaign?.length || 0} Dự án
                             </span>
                             <span style={{ padding: '10px 12px 10px 12px', borderRadius: 8, fontSize: 16, fontWeight: '600', background :'rgba(13,12,34,0.05)', marginRight: 12 }}>
                                 <Row>
@@ -59,9 +61,9 @@ function CampaignList() {
                 </Row>
                 <Row justify='space-between'>
                     {
-                        [1,2,3,4,5,6,7,8,9,10].map((item, i) => (
-                            <Col xs={11} sm={11} md={11} lg={11} xl={11}>
-                                <ItemCampaign /> 
+                        listCampaign?.map((item, i) => (
+                            <Col xs={11} sm={11} md={11} lg={11} xl={11} key={i}>
+                                <ItemCampaign data={item} /> 
                             </Col>
                         ))
                     }

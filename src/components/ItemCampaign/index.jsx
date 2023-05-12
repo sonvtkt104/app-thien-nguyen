@@ -2,6 +2,7 @@ import { Col, Progress, Row } from "antd";
 import { useCallback } from "react";
 import { Tag } from "../Tag";
 import { useNavigate } from "react-router-dom";
+import { TickIcon } from "../Icon";
 
 export function ItemCampaign({
     style,
@@ -15,8 +16,28 @@ export function ItemCampaign({
     charity_name = 'Xuân Sơn',
     target_object = 'Tổ chức',
     area = 'Hà Nội',
-    status = 'active'
+    status = 'active',
+    data
 }) {
+
+    /**
+     * data = {
+     *      campaignId,
+     *      campaignName,
+     *      campaignImage,
+     *      campaignTargetAmount,
+     *      campaignReceiveAmount,
+     *      campaignRegion,
+     *      campaignStatus,
+     *      campaignStartDate,
+     *      campaignStopDate,
+     *      campaignTargeObject,
+     *      charityId,
+     *      charityName,
+     *      charityAvatar,
+     *      charityIsVerified
+     * }
+     */
 
     const navigate = useNavigate()
     const FormatCurrency = useCallback((number) => {
@@ -43,27 +64,43 @@ export function ItemCampaign({
             }}
         >
             <Col xs={8} sm={8} md={8} lg={8} xl={8}
-                style={{backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundPosition: 'center center'}}
+                style={
+                    data?.campaignImage ? {
+                        backgroundImage: `url(${data?.campaignImage})`, 
+                        backgroundSize: 'cover', 
+                        backgroundPosition: 'center center',
+                    } :{
+                        background:'rgba(13, 12, 34, 0.05)'
+                    }
+                }
+                className="flex-col-center"
             >
+                {
+                    !data?.campaignImage ? (
+                        <div style={{color: 'rgba(13, 12, 34, 0.5)', fontWeight: '600', fontSize: 16, textAlign: 'center'}}>
+                            CHƯA THÊM ẢNH
+                        </div>
+                    ) : ""
+                }
             </Col>
             <Col xs={16} sm={16} md={16} lg={16} xl={16}
                 style={{ padding: 20 }}
             >
                 <div className="text-hover"
                     style={{ fontSize: 18, fontWeight: '600' }}
-                >{name}</div>
+                >{data?.campaignName}</div>
                 <Row style={{margin: '10px 0'}}>
-                    <span><Tag title={type} color='var(--color-blue)' background="#e4faff" /></span>
+                    <span><Tag title={data?.campaignTargeObject} color='var(--color-blue)' background="#e4faff" /></span>
                     <span
                         style={{margin: '0 7px'}}
-                    ><Tag title={target_object} color='var(--color-red)' background="#ff3c001a"/></span>
-                    <span><Tag title={area} /></span>
+                    ><Tag title={data?.campaignRegion} color='var(--color-red)' background="#ff3c001a"/></span>
+                    {/* <span><Tag title={data?.campaignRegion} /></span> */}
                 </Row>
                 <Row>
                     <span>Mục tiêu: </span>
-                    <span style={{fontWeight: '600', marginLeft: 5}}>{FormatCurrency(target_amount)}</span>
+                    <span style={{fontWeight: '600', marginLeft: 5}}>{FormatCurrency(data?.campaignTargetAmount)}</span>
                 </Row>
-                <Progress strokeColor={'#6DCCE3'} percent={parseInt(amount_receive * 100 / target_amount)} showInfo={false} 
+                <Progress strokeColor={'#6DCCE3'} percent={parseInt(data?.campaignReceiveAmount * 100 / data?.campaignTargetAmount)} showInfo={false} 
                     style={{marginBottom: 20}}
                 />
                 <Row justify='space-between'
@@ -72,17 +109,24 @@ export function ItemCampaign({
                     <Col>
                         <Row>
                             <Col>
-                                <img src={charity_img} alt="charity_img" 
+                                <img src={data?.charityAvatar} alt="charity_img" 
                                     style={{width: 40, height: 40, borderRadius: '50%', marginRight: 10}}
                                 />
                             </Col>
                             <Col className="flex-col-center">
-                                {charity_name}
+                                {data?.charityName}
                             </Col>
+                            {
+                                data?.charityIsVerified ? (
+                                    <Col className="flex-col-center" style={{marginLeft: 7}}>
+                                        <TickIcon />
+                                    </Col>
+                                ) : ""
+                            }
                         </Row>
                     </Col>
                     <Col style={{textAlign: 'center'}}>
-                        <div style={{fontWeight: '600'}}>{`${parseInt(amount_receive * 100 / target_amount)}%`}</div>
+                        <div style={{fontWeight: '600'}}>{`${parseInt(data?.campaignReceiveAmount * 100 / data?.campaignTargetAmount)}%`}</div>
                         <div style={{color: 'var(--color-gray)'}}>Thành công</div>
                     </Col>
                 </Row>
