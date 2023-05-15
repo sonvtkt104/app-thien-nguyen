@@ -6,7 +6,7 @@ export const getAllCampaignsClient = async () =>  {
         method: 'GET',
         url: URL_API_HOANG + '/charity/campaign/get-all',
         headers: {
-            Token: 'abcd'
+            Token: ''
         }
     });
 
