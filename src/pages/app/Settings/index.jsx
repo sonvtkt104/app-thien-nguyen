@@ -2,6 +2,7 @@ import { Col, Row } from "antd";
 import { Card, Header, PageLayout } from "../../../components";
 import SettingVerification from "./components/SettingVerification";
 import SettingPassword from "./components/SettingPassword";
+import FeedbackSupport from "./components/FeedbackSupport";
 
 export default function Settings() {
     return (
@@ -22,7 +23,10 @@ export default function Settings() {
                         >
                             <SettingPassword />
                         </div>
-                        <Card
+                        <div>
+                            <FeedbackSupport/>
+                        </div>
+                        {/* <Card
                             title="Trợ giúp"
                         >
                             <div
@@ -47,7 +51,7 @@ export default function Settings() {
                                     Gửi
                     </button> 
                             </div>
-                        </Card>
+                        </Card> */}
                     </Col>
                 </Row>
             </div>
