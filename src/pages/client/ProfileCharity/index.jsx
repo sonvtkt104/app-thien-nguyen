@@ -3,14 +3,14 @@ import { Button, Col, Input, Modal, Row } from "antd";
 import { useEffect, useState } from "react";
 import { FooterClient, HeaderClient, ItemCampaign, SearchIcon } from "../../../components";
 import "./css/index.css"
-import { getInfoCharityCurrent } from "../../../api/charities";
+import { getInfoCharity } from "../../../api/charities";
 
 export default function ProfileCharity() {
     const [tab, setTab] = useState(0)
     const [previewImage, setPreviewImage] = useState(false)
 
     useEffect(() => {
-        getInfoCharityCurrent()
+        getInfoCharity()
     }, [])
 
     return (

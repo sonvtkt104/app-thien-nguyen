@@ -59,7 +59,7 @@ export default function CampaignAll() {
     useEffect(() => {
         getAllCampaignsClient().then(res=> {
             let arr = [];
-            res.data.forEach(item => {
+            res?.data?.forEach(item => {
                 console.log(item)
                 let obj = {
                     campaignId: item.id,

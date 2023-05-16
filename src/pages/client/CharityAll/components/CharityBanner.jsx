@@ -7,7 +7,7 @@ function CharityBanner() {
 
     const navigate = useNavigate()
 
-    const [openFilter, setOpenFilter] = useState(false)
+    const [search, setSearch] = useState("")
 
     return (
         <Row
@@ -39,6 +39,10 @@ function CharityBanner() {
                                     className="input-app"
                                     style={{ width: '100%', margin: 'auto', height: 56, background: '#fff', boxShadow: '0px 10px 40px rgba(56, 56, 58, 0.04)', padding: '28px 60px 28px 55px', borderRadius: '50px' }}
                                     placeholder='Nhập tên tổ chức'
+                                    value={search}
+                                    onChange={(e) => {
+                                        setSearch(e.target.value)
+                                    }}
                                 />
                                 <SearchIcon
                                     fontSize={26}
@@ -54,7 +58,10 @@ function CharityBanner() {
                                         className="btn-primary"
                                         style={{borderRadius: 50}}
                                         onClick={() => {
-                                            navigate('/charity-search')
+                                            let url ='/charity-search?s=' + search
+                                            url = url.replaceAll("  ", "-").replaceAll(" ", "-")
+                                            console.log(url)
+                                            navigate(url)
                                         }}
                                     >
                                         Tìm kiếm

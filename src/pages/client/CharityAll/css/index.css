@@ -4,3 +4,11 @@
     bottom: 25px;
     right: 20px;
 }
+.btn-primary.charity-un-follow{
+    padding: 3px 13px !important;
+    position: absolute;
+    bottom: 25px;
+    right: 20px;
+    background:  #a8a8a8 !important;
+    border: 1px solid #a8a8a8 !important;
+}
