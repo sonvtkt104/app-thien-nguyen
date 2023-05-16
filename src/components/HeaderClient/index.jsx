@@ -3,11 +3,15 @@ import { memo } from "react"
 import { SearchIcon } from "../Icon"
 import { Link, useNavigate } from "react-router-dom"
 import "./index.css"
+import { useSelector } from "react-redux"
 
 export function HeaderClient({
     page
 }) {
     const navigate = useNavigate()
+
+    const { infoUser } = useSelector(state => state?.app)
+    console.log("user", infoUser)
 
     return (
         <Affix offsetTop={0}>
@@ -105,28 +109,48 @@ export function HeaderClient({
                                         <SearchIcon fontSize={26} />
                                     </span>
                                 </Col>
-                                <Col
-                                    className="flex-col-center"
-                                >
-                                    <span style={{fontWeight: '600', margin: '0 30px', cursor: 'pointer'}}
-                                        onClick={() => {
-                                            navigate("/login")
-                                        }}
-                                    >
-                                        Đăng nhập
-                                    </span>
-                                </Col>
-                                <Button type='primary'
-                                    className="btn-app app-hover"
-                                    style={{
-                                        fontWeight: '600',
-                                    }}
-                                    onClick={() => {
-                                        navigate("/sign-up")
-                                    }}
-                                >
-                                    Đăng ký
-                                </Button>
+                                {
+                                    infoUser && infoUser.roleId == 2 ? (
+                                        <Col
+                                            className="flex-col-center"
+                                        >
+                                            <Row>
+                                                <span style={{fontWeight: '600', margin: '0 30px', cursor: 'pointer'}}
+                                                    onClick={() => {
+                                                        navigate("/my-account")
+                                                    }}
+                                                >
+                                                    Tài khoản
+                                                </span>
+                                            </Row>
+                                        </Col>
+                                    ) : (
+                                        <>
+                                            <Col
+                                                className="flex-col-center"
+                                            >
+                                                <span style={{fontWeight: '600', margin: '0 30px', cursor: 'pointer'}}
+                                                    onClick={() => {
+                                                        navigate("/login")
+                                                    }}
+                                                >
+                                                    Đăng nhập
+                                                </span>
+                                            </Col>
+                                            <Button type='primary'
+                                                className="btn-app app-hover"
+                                                style={{
+                                                    fontWeight: '600',
+                                                }}
+                                                onClick={() => {
+                                                    navigate("/sign-up")
+                                                }}
+                                            >
+                                                Đăng ký
+                                            </Button>
+                                        </>
+                                    )
+                                }
                             </Row>
                         </Col>
                     </Row>

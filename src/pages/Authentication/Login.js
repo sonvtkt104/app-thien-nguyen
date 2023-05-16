@@ -8,11 +8,14 @@ import {
   getUserInfomationFromCookies,
 } from "./HandleUserInfomation";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setInfoUser, setUserType } from "../../redux/appSlice";
 
 const LoginPage = () => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onFinish = (values) => {
     const submitData = {
@@ -41,12 +44,17 @@ const LoginPage = () => {
       console.log(getTokenFromCookies());
       console.log(getUserInfomationFromCookies());
 
+      dispatch(setInfoUser(data?.data?.user))
+
       const roleId = data.data.user.roleId;
       if (roleId === 1) {
+        dispatch(setUserType('admin'))
         navigate("../admin");
       } else if (roleId === 3) {
+        dispatch(setUserType('charity'))
         navigate("../home-page-charity");
       } else {
+        dispatch(setUserType('normal_user'))
         navigate("..");
       }
     };

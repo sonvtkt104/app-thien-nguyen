@@ -3,6 +3,8 @@ import { useCallback } from "react";
 import { Tag } from "../Tag";
 import { useNavigate } from "react-router-dom";
 import { TickIcon } from "../Icon";
+import { HeartFilled, HeartOutlined, StarFilled, StarTwoTone } from "@ant-design/icons";
+import { setUserFollowCampaign, setUserUnFollowCampaign } from "../../api/campaigns";
 
 export function ItemCampaign({
     style,
@@ -17,7 +19,10 @@ export function ItemCampaign({
     target_object = 'Tổ chức',
     area = 'Hà Nội',
     status = 'active',
-    data
+    data,
+    isFollow,
+    listCampaignFollow, // [campaignId, ....]
+    setListCampaignFollow,
 }) {
 
     /**
@@ -55,13 +60,13 @@ export function ItemCampaign({
                 marginBottom: '50px',
                 boxShadow: '0px 10px 40px rgba(56, 56, 58, 0.04)',
                 borderRadius: 6,
-                cursor: 'pointer',
+                // cursor: 'pointer',
                 ...style,
             }}
             className={className}
-            onClick={() => {
-                navigate("/detail-campaign/1")
-            }}
+            // onClick={() => {
+            //     navigate("/detail-campaign/1")
+            // }}
         >
             <Col xs={8} sm={8} md={8} lg={8} xl={8}
                 style={
@@ -84,11 +89,54 @@ export function ItemCampaign({
                 }
             </Col>
             <Col xs={16} sm={16} md={16} lg={16} xl={16}
-                style={{ padding: 20 }}
+                style={{ padding: 20, position: 'relative' }}
             >
+                <span
+                    style={{
+                      position: 'absolute',
+                      right: 10,
+                      top: 10,
+                      cursor: 'pointer',
+                      zIndex: 1
+                    }}
+                    onClick={() => {
+                        console.log('like campaign')
+                        if(isFollow) { // click to un follow
+                            setUserUnFollowCampaign(data?.campaignId).then(res => {
+                                console.log(res)
+                                let arr = listCampaignFollow?.filter(item => {
+                                    return item != data?.campaignId
+                                }) 
+                                setListCampaignFollow(JSON.parse(JSON.stringify(arr)))
+                            }) 
+                        } else { // click to follow
+                            setUserFollowCampaign(data?.campaignId).then(res => {
+                                console.log(res.data)
+                                setListCampaignFollow([...listCampaignFollow, data?.campaignId])
+                            }) 
+                        }
+                    }}
+                  >
+                    {
+                        isFollow ? (
+                            <HeartFilled style={{fontSize: 20, fontWeight: '600', color: 'var(--color-red)', transform: 'translateY(-3px)'}} />
+                        ) : (
+                            <HeartOutlined style={{fontSize: 20, fontWeight: '600', color: 'var(--color-gray)', transform: 'translateY(-3px)'}} />
+                        )
+                    }
+                  </span>
                 <div className="text-hover"
-                    style={{ fontSize: 18, fontWeight: '600' }}
-                >{data?.campaignName}</div>
+                    style={{ fontSize: 18, fontWeight: '600', paddingRight: 20, WebkitLineClamp: 1,
+                    overflow: 'hidden',
+                    display: '-webkit-box',
+                    WebkitBoxOrient: 'vertical', cursor: 'pointer' }}
+
+                    onClick={() => {
+                        navigate("/detail-campaign/1")
+                    }}
+                >
+                    {data?.campaignName}
+                </div>
                 <Row style={{margin: '10px 0'}}>
                     <span><Tag title={data?.campaignTargeObject} color='var(--color-blue)' background="#e4faff" /></span>
                     <span
@@ -110,10 +158,17 @@ export function ItemCampaign({
                         <Row>
                             <Col>
                                 <img src={data?.charityAvatar} alt="charity_img" 
-                                    style={{width: 40, height: 40, borderRadius: '50%', marginRight: 10}}
+                                    style={{width: 40, height: 40, borderRadius: '50%', marginRight: 10, cursor: 'pointer'}}
+                                    onClick={() => {
+                                        navigate("/profile-charity")
+                                    }}
                                 />
                             </Col>
-                            <Col className="flex-col-center">
+                            <Col className="flex-col-center" style={{cursor: 'pointer'}}
+                                onClick={() => {
+                                    navigate("/profile-charity")
+                                }}
+                            >
                                 {data?.charityName}
                             </Col>
                             {
