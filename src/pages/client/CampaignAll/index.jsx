@@ -3,7 +3,7 @@ import { FooterClient, HeaderClient } from "../../../components";
 import CampaignList from "./components/CampaignList";
 import CampaignSearch from "./components/CampaignSearch";
 import './css/index.css'
-import { getAllCampaignsClient } from "../../../api/campaigns";
+import { getAllCampaignsClient, setUserFollowCampaign } from "../../../api/campaigns";
 
 export default function CampaignAll() {
 
@@ -64,7 +64,7 @@ export default function CampaignAll() {
                 let obj = {
                     campaignId: item.id,
                     campaignName: item.campaignName,
-                    campaignImage: item.campaignImage,
+                    campaignImage: item.campaignImage,  // ???
                     campaignTargetAmount: Number(item.targetAmount),
                     campaignReceiveAmount: Number(item.receiveAmount),
                     campaignRegion: item.region,

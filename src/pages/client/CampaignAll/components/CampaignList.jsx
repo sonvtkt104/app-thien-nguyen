@@ -1,7 +1,8 @@
 import { CloseOutlined } from "@ant-design/icons"
 import { Col, Row, Tag } from "antd"
-import { memo, useState } from "react"
+import { memo, useEffect, useState } from "react"
 import { ItemCampaign } from "../../../../components"
+import { getCampaignFollow } from "../../../../api/campaigns"
 
 function CampaignList({
     listCampaign,
@@ -30,6 +31,20 @@ function CampaignList({
     setCampaignTargetAmountTo,
 }) {
 
+    const [listCampaignFollow, setListCampaignFollow] = useState([])
+
+    useEffect(() => {
+        console.log('list campaign')
+        getCampaignFollow().then(res => {
+            console.log('campaign follow', res.data)
+            let arr = []
+            res.data.forEach(item => {
+                arr.push(item.id)
+            })
+            console.log('arrr list campaign follow', arr)
+            setListCampaignFollow(arr)
+        })
+    }, [])
 
 
     return (
@@ -156,7 +171,12 @@ function CampaignList({
                     {
                         (listCampaign && listCampaign.length > 0) ? listCampaign?.map((item, i) => (
                             <Col xs={11} sm={11} md={11} lg={11} xl={11} key={i}>
-                                <ItemCampaign data={item} /> 
+                                <ItemCampaign 
+                                    data={item}  
+                                    isFollow={listCampaignFollow?.includes(item?.campaignId)}  
+                                    listCampaignFollow={listCampaignFollow}
+                                    setListCampaignFollow={setListCampaignFollow}
+                                /> 
                             </Col>
                         ))
                         : (
