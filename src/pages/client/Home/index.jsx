@@ -12,6 +12,7 @@ import HomeSlider from './components/HomeSlider'
 import HomeTarget from './components/HomeTarget'
 import HomeTestimonial from './components/HomeTestimonial'
 import "./css/index.css"
+import { getTokenFromCookies } from '../../Authentication/HandleUserInfomation'
 
 
 export default function Home () {

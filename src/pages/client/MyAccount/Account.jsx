@@ -4,6 +4,8 @@ import { useEffect, useLayoutEffect, useReducer, useRef, useState } from "react"
 import { getCurrentUser, updateUser, getListProvince, getListDistrictByID, getListWardByID, updatePassWord } from "./MyAccountService";
 import { getUserInfomationFromCookies } from "../../Authentication/HandleUserInfomation";
 import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
+import { toast } from "react-toastify";
+
 
 
 function Account() {
@@ -20,18 +22,18 @@ function Account() {
         district: [],
         ward: []
     })
-    
+
     const [provinceId, setProvinceId] = useState(undefined)
     const [districtId, setDistrictId] = useState(undefined)
     const [wardId, setWardId] = useState(undefined)
 
 
     useEffect(() => {
-        getCurrentUser().then(res=> {
+        getCurrentUser().then(res => {
             form.setFieldsValue(res.data.data);
             setDataInfo(res.data.data);
         })
-    },[reload])
+    }, [reload])
 
 
 
@@ -67,39 +69,42 @@ function Account() {
         values.email = values.email.trim()
         values.phoneNumber = values.phoneNumber.trim()
         values.address = values.address.trim()
-        values.provinceId = provinceId  || dataInfo.provinceId
+        values.provinceId = provinceId || dataInfo.provinceId
         values.districtId = districtId || dataInfo.districtId
         values.wardId = wardId || dataInfo.wardId
 
         const compareObjects = (obj1, obj2) => {
             for (let key in obj1) {
-              if (obj1.hasOwnProperty(key) && obj2.hasOwnProperty(key)) {
-                if (obj1[key] !== obj2[key]) {
-                  return false;
+                if (obj1.hasOwnProperty(key) && obj2.hasOwnProperty(key)) {
+                    if (obj1[key] !== obj2[key]) {
+                        return false;
+                    }
+                } else {
+                    return false;
                 }
-              } else {
-                return false;
-              }
             }
             return true;
-          }
+        }
 
-        console.log(compareObjects(values,dataInfo))
+        // console.log(compareObjects(values, dataInfo))
 
-        if (!compareObjects(values,dataInfo)) {
+        if (!compareObjects(values, dataInfo)) {
             updateUser(dataInfo?.id, values).then(res => {
                 console.log(res)
-                // reloadRef.current = Math.random().toString(36).slice(-5)
-                if (res.status === 200) {
+                if (res?.status === 200) {
                     form.setFieldsValue(values);
                     setDataInfo(values)
-                    setReload(Math.random().toString(36).slice(-5))
+                    setReload({})
+                    toast.success("Chỉnh sửa thành công.")
                 } else {
                     console.log("loii")
+                    toast.error("Hệ thống lỗi, xin thử lại sau!")
                     // form.setFieldsValue(info);
                 }
-                // infoRef.current = {}
             })
+        } else {
+            toast.warning("Chưa có thay đổi gì!")
+
         }
 
     };
@@ -112,14 +117,27 @@ function Account() {
     const onFinishPassword = (values) => {
         console.log('Success:', values);
         console.log(values.newPassword === values.confirmNewPassword)
-        if(values.newPassword === values.confirmNewPassword) {
+        if (values.newPassword === values.confirmNewPassword) {
             updatePassWord(getUserInfomationFromCookies().id, values).then(res => {
-                // console.log(res)
+                console.log(res)
                 // reloadRef.current = Math.random().toString(36).slice(-5)
                 if (res.status === 200) {
                     formPassWord.resetFields()
+                    toast.success("Đổi mật khẩu thành công.")
+                } else {
+                    toast.error("Hệ thống lỗi, xin thử lại sau!")
                 }
             })
+                .catch(error => {
+                    console.log(error)
+                    if (error?.response?.status === 400) {
+                        error?.response?.data?.message ? toast.warning("Mật khẩu mới không được trùng với mật khẩu cũ") :
+                            toast.error("Mật khẩu hiện tại chưa chính xác!")
+                    } else {
+                        // toast.error("Hệ thống lỗi, xin thử lại sau!")
+                    }
+
+                })
         }
     };
 
@@ -215,7 +233,7 @@ function Account() {
                                 <Input />
                             </Form.Item>
                         </div>
-                        
+
                         <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                             <Form.Item
                                 style={{ width: "32%", marginBottom: 10 }}
@@ -375,11 +393,22 @@ function Account() {
                             label="Xác nhận mật khẩu mới"
                             hasFeedback
                             name="confirmNewPassword"
+
                             rules={[
                                 {
                                     required: true,
                                     message: 'Vui lòng nhập Xác nhận mật khẩu mới!',
                                 },
+                                ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                        if (!value || getFieldValue("newPassword") === value) {
+                                            return Promise.resolve();
+                                        }
+                                        return Promise.reject(
+                                            new Error("Mật khẩu xác nhận không xhính xác")
+                                        );
+                                    },
+                                }),
                             ]}
                         >
                             <Input.Password />

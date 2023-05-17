@@ -1,15 +1,14 @@
 import "./donation.css"
 import { Modal, Image, Table, Button } from 'antd'
 import { useState } from 'react'
-import Confirmation from "../../client/MyAccount/Confirmation"
 import { updateDonationPostUser } from "../../client/MyAccount/MyAccountService";
-import { updateDonationByID } from "../../app/Donation/listDonation/DonationService";
+import { toast } from "react-toastify";
 
-
-function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation }) {
+function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handleReload, status }) {
     const [open, setOpen] = useState(true)
     const [dataRow, setDataRow] = useState({})
     console.log(dataDetail)
+    console.log(handleReload)
 
 
     const handleConfirmation = (rowData) => {
@@ -21,37 +20,40 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation }) {
             centered: "true",
             onCancel: () => {
                 console.log("quay lai")
-                setDataRow({})
+                // setDataRow({})
             },
             onOk: async () => {
-                handleCloseModalDetail()
-                setDataRow({})
+                // setDataRow({})
                 console.log(rowData)
                 console.log(dataDetail)
                 const idUpdateDonationPostUser = dataDetail.id
-                const dataUpdateDonationPostUser = { ...dataDetail, idOrganization: rowData.id, organizationReceived: rowData.name, listRequest: [], status: "Đã nhận" }
-                console.log(idUpdateDonationPostUser)
-                console.log(dataUpdateDonationPostUser)
-                // console.log("update bai dang", rowData)
-                updateDonationPostUser(idUpdateDonationPostUser, dataUpdateDonationPostUser)
-                  .then(res => console.log(res))
-
-                const dataUpdateDonationByID = { ...dataDetail }
-                const idUpdateDonationByID = dataDetail.id + "or"
-                dataUpdateDonationByID.idPost = dataDetail.id
-                dataUpdateDonationByID.status = "private"
-                dataUpdateDonationByID.listRequest = dataDetail?.listRequest?.map(data => {
+                const dataUpdateDonationPostUser = { ...dataDetail, idOrganization: rowData.id, organizationReceived: rowData.name, status: "Đã nhận" }
+                dataUpdateDonationPostUser.listRequest = dataDetail?.listRequest?.map(data => {
                     return data.id === rowData.id ? { ...data, status: "Đã xác nhận" } : { ...data, status: "Bị hủy" }
                 })
-                dataUpdateDonationByID.idOrganization = rowData.id
-                dataUpdateDonationByID.organizationReceived = rowData.name
-                delete dataUpdateDonationByID.id
+                delete dataUpdateDonationPostUser.organizationReceived
+                delete dataUpdateDonationPostUser.donorName
+                delete dataUpdateDonationPostUser.phone
+                delete dataUpdateDonationPostUser.province
+                delete dataUpdateDonationPostUser.ward
+                delete dataUpdateDonationPostUser.district
+                delete dataUpdateDonationPostUser.address
+                console.log(dataUpdateDonationPostUser)
+                // console.log("update bai dang", rowData)
+                updateDonationPostUser(dataUpdateDonationPostUser)
+                .then(res => {
+                    if(res?.status === 200) {
+                        // getListDonation();
+                        // onClose()
+                        handleReload({})
+                        toast.success("Đã xóa thành công!")
+                    } else {
+                        toast.error("Hệ thống lỗi, xin thử lại sau!")
+                    }
+                })
+                handleCloseModalDetail()
 
-                console.log(idUpdateDonationByID)
-                console.log(dataUpdateDonationByID)
-
-                updateDonationByID(idUpdateDonationByID, dataUpdateDonationByID).then(res => console.log(res))
-                getListDonation()
+                // getListDonation()
                 
 
             }
@@ -133,10 +135,10 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation }) {
             <p><b>Thông tin đồ ủng hộ:</b> "{dataDetail.name}", mong muốn ủng hộ cho "{dataDetail.donationObject}", ở "{dataDetail.donationAddress}"</p>
             <p><b>Ngày đăng:</b> {dataDetail.date}</p>
             <p><b>Mô tả:</b> {dataDetail.description}</p>
-            <p><b>Ảnh:</b></p>
+            <p><b>Ảnh:</b>{ dataDetail.images === "" ? " Không có ảnh nào!" : ""}</p>
             <div style={{ display: "flex", flexWrap: "wrap" }}>
                 {
-                    dataDetail.images?.map((image, index) =>
+                    dataDetail.images !== "" ? dataDetail.images?.split(", ").map((image, index) =>
                         <div key={index} style={{ margin: "2px", border: "1px solid #e7e5e5", display: "flex", alignItems: "center", height: 100, width: 100 }}>
                             <Image
                                 className="modal-detail-image"
@@ -146,11 +148,11 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation }) {
                                 src={image}>
                             </Image>
                         </div>
-                    )
+                    ) : ""
                 }
             </div>
             {
-                dataDetail.status !== "public" && dataDetail.status !== "private" &&
+                status &&
                 (
                     <div>
                         {

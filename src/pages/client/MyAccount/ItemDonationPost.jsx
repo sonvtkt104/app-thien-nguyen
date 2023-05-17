@@ -1,13 +1,12 @@
 import "./css/ItemDonationPost.css"
 import { Button, Image, Popover, Modal } from "antd"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ModalDetail from "../../app/Donation/ModalDetail";
 import { MoreOutlined, FrownOutlined, SmileOutlined, HeartFilled, WhatsAppOutlined, StarFilled } from '@ant-design/icons';
-import { deleteDonationPostUser } from "./MyAccountService";
-import { deleteDonationByID, updateDonationByID } from "../../app/Donation/listDonation/DonationService";
+import { deleteDonationPostUser, deleteDonationPostUserDonor, getAllCharity, updateDonationPostUser } from "./MyAccountService";
+import { toast } from "react-toastify";
 
-
-function ItemDonationPost({ data, handleOpenModal, getListDonation }) {
+function ItemDonationPost({ data, handleOpenModal, getListDonation, handleReload }) {
     // console.log(getListDonation)
     const [visible, setVisible] = useState(false);
     const [openModalDetail, setOpenModalDetail] = useState(false)
@@ -28,62 +27,67 @@ function ItemDonationPost({ data, handleOpenModal, getListDonation }) {
             cancelText: "Quay lại",
             okType: "danger",
             onOk: () => {
-                console.log(data)
-                console.log("xoa xoa")
-                const idUpdateDonationByID = data.id + "or"
-                const dataUpdateDonationByID = { ...data, idOrganization: null, organizationReceived: null, status: "private" }
-                dataUpdateDonationByID.idPost = data.id
-                delete dataUpdateDonationByID.id
+                // console.log(data)
                 if (data.status === "Chờ xác nhận") {
-                    dataUpdateDonationByID.listRequest = data.listRequest.filter(data => data.status !== "Yêu cầu xác nhận")
-                    updateDonationByID(idUpdateDonationByID, dataUpdateDonationByID).then(res => console.log(res))
                     deleteDonationPostUser(data.id).then(res => {
-                        getListDonation()
-                        console.log(res)
+                        if(res?.status === 200) {
+                            getListDonation();
+                            toast.success("Xóa bài đăng ủng hộ thành công!")
+                        } else {
+                            toast.error("Hệ thống lỗi, xin thử lại sau!")
+                        }
+                    })
+                    .catch(error => {
+                        toast.error("Hệ thống lỗi, xin thử lại sau!")
                     })
                 } else if (data.status === "Chưa nhận") {
                     if (data.listRequest.length === 0) {
+                        // updateDonationPostUser(data.id, {...data, idDonor: null}).then(res => {
+                        //     getListDonation()
+                        //     console.log(res)
+                        // })
                         deleteDonationPostUser(data.id).then(res => {
-                            getListDonation()
-                            console.log(res)
+                            if(res?.status === 200) {
+                                getListDonation();
+                                toast.success("Xóa bài đăng ủng hộ thành công!")
+                            } else {
+                                toast.error("Hệ thống lỗi, xin thử lại sau!")
+                            }
                         })
-                        deleteDonationByID(idUpdateDonationByID).then(res => console.log(res))
                     } else {
-                        dataUpdateDonationByID.listRequest = data.listRequest.map(data => {
+                        const newListRequest = data.listRequest = data.listRequest.map(data => {
                             return { ...data, status: "Bị hủy" }
                         })
-                        updateDonationByID(idUpdateDonationByID, dataUpdateDonationByID).then(res => console.log(res))
-                        deleteDonationPostUser(data.id).then(res => {
-                            getListDonation()
-                            console.log(res)
+                        updateDonationPostUser(data.id, {...data, idDonor: null, listRequest: newListRequest}).then(res => {
+                            if(res?.status === 200) {
+                                getListDonation();
+                                toast.success("Xóa bài đăng ủng hộ thành công!")
+                            } else {
+                                toast.error("Hệ thống lỗi, xin thử lại sau!")
+                            }
                         })
                     }
 
                 } else {
-                    deleteDonationPostUser(data.id).then(res => {
-                        getListDonation()
-                        console.log(res)
-                    })
+                    // updateDonationPostUser(data.id, {...data, idDonor: null}).then(res => {
+                    //     if(res?.status === 200) {
+                    //         getListDonation();
+                    //         toast.success("Xóa bài đăng ủng hộ thành công!")
+                    //     } else {
+                    //         toast.error("Hệ thống lỗi, xin thử lại sau!")
+                    //     }
+                    //     })
+
+                    deleteDonationPostUserDonor(data.id).then(res => {
+                        if(res?.status === 200) {
+                            getListDonation();
+                            toast.success("Xóa bài đăng ủng hộ thành công!")
+                        } else {
+                            toast.error("Hệ thống lỗi, xin thử lại sau!")
+                        }
+                        })
 
                 }
-                // else {
-                //     deleteDonationPostUser(data.id).then(res => {
-                //         getListDonation()
-                //         console.log(res)
-                //     })
-
-                // }
-
-
-                console.log(dataUpdateDonationByID)
-
-
-
-                // updateDonationByID(idUpdateDonationByID, dataUpdateDonationByID).then(res => console.log(res))
-                // deleteDonationPostUser(data.id).then(res => {
-                //     getListDonation()
-                //     console.log(res)
-                // })
             }
         });
     };
@@ -99,15 +103,17 @@ function ItemDonationPost({ data, handleOpenModal, getListDonation }) {
                             // style={{width:"100%"}}
                             width={"100%"}
                             height={200}
-                            src={data.images[0]}
+                            // src={data?.images !== "" ? data?.images?.split(", ")[0] : "https://firebasestorage.googleapis.com/v0/b/charityapp-b5d6f.appspot.com/o/avatar%2FnoImage.png?alt=media&token=89c8c1e0-7114-456b-ae67-37a648fc605b"}  
+                            src={data?.images?.split(", ")[0]}
                             onClick={() => setVisible(true)}
+                            alt="Không có ảnh nào!"
                         />
                         <div style={{ display: 'none' }}>
                             <Image.PreviewGroup preview={{ visible, onVisibleChange: (vis) => setVisible(vis) }}>
                                 {
-                                    data.images.map((image, index) => {
+                                    data?.images !== "" ? data?.images?.split(", ").map((image, index) => {
                                         return <Image key={index} src={image} />
-                                    })
+                                    }) : ""
                                 }
                             </Image.PreviewGroup>
                         </div>
@@ -131,19 +137,6 @@ function ItemDonationPost({ data, handleOpenModal, getListDonation }) {
                                                 style={{ fontSize: 20, color: "#F7CC04", marginLeft: 10 }}
                                             />
                             }
-                            {/* <HeartFilled
-                                                    style={{ fontSize: 24, color: "#F60000", marginLeft: 10 }}
-                                                /> */}
-
-                            {/* <FrownOutlined
-                                style={{ fontSize: 24, color: "red", marginLeft: 10 }}
-                            />
-                            <SmileOutlined
-                                style={{ fontSize: 24, color: "green", marginLeft: 10 }}
-                            />
-                            <HeartFilled
-                                style={{ fontSize: 24, color: "yellow", marginLeft: 10 }}
-                            /> */}
 
                         </div>
                         <p className="idp-organization">{data.status === "Chờ xác nhận" ? "Tổ chức yêu cầu" : data.status === "Chưa nhận" ? "Yêu cầu xác nhận" : data.status === "Từ chối nhận" ? "Tổ chức từ chối" : "Tổ chức đã nhận"}: {data.organizationReceived ? `"${data.organizationReceived}"` : `${data.listRequest?.filter(data => data.status === "Đợi xác nhận").length} tổ chức`}</p>
@@ -166,7 +159,7 @@ function ItemDonationPost({ data, handleOpenModal, getListDonation }) {
                                         <Button
                                             type="primary"
                                             style={{ margin: "5px 0" }}
-                                            disabled={data.status === "Đã nhận" ? true : false}
+                                            disabled={data.status === "Đã nhận" || (data?.status === "Chưa nhận" && data?.listRequest?.length !== 0) ? true : false}
                                             onClick={() => {
                                                 handleOpenModal()
                                             }}
@@ -184,28 +177,16 @@ function ItemDonationPost({ data, handleOpenModal, getListDonation }) {
                                         </Button>
                                     </div>
                                 }
-                                // title="Title"
                                 trigger="hover"
                                 placement="left"
                                 zIndex={9}
                             >
-                                {/* <Button type="primary">Hover me</Button> */}
                                 <MoreOutlined
                                     className="idp-more"
                                 />
                             </Popover>
                         </div>
 
-                        {/* <Button
-                            className="idp-detail"
-                            type="primary"
-                            onClick={() => {
-                                handleOpenModal()
-                            }}
-                        // size="middle"
-                        >
-                            Sua
-                        </Button> */}
                     </div>
                 </div>
             </div>
@@ -214,6 +195,8 @@ function ItemDonationPost({ data, handleOpenModal, getListDonation }) {
                     dataDetail={dataDetail}
                     handleCloseModalDetail={handleCloseModalDetail}
                     getListDonation={getListDonation}
+                    handleReload={handleReload}
+                    status={true}
                 />
             }
         </>

@@ -1,19 +1,4 @@
-// import axios from "axios";
 
-// const API = "http://localhost:5555/data"
-
-// export const getCharityByID = async (id) => {
-//     var url = API + "/" + id;
-//     return await axios.get(url)
-// };
-
-// export const updateCharity = async (id, data) => {
-//     var url = API + "/" + id;
-//     return await axios.put(url, data)
-// };
-
-
-// import axios from "axios";
 import axios from "../../../CustomAxios"
 import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
 
@@ -47,7 +32,7 @@ const headers = {
 // }
 
 export const getCurrentCharity = async () => {
-  var url = "http://localhost:8080/user/current-user";
+  var url = "http://localhost:8080/account/current-user";
   return await axios.get(url)
 }
 
