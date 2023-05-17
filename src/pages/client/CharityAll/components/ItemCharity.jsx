@@ -3,6 +3,7 @@ import { memo } from "react"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { setFollowCharity } from "../../../../api/charities"
+import { TickIcon } from "../../../../components"
 
 function ItemCharity({
     data,
@@ -70,6 +71,13 @@ function ItemCharity({
                         }}
                     >
                         {data?.charityName}
+                        {
+                            data?.isVerified ? (
+                                <span style={{marginLeft: 10}}>
+                                    <TickIcon  />
+                                </span>
+                            ) : ""
+                        }
                     </div>
                     <div
                         style={{marginTop: 15, lineHeight: '21px',
