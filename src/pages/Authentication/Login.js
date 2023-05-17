@@ -52,7 +52,8 @@ const LoginPage = () => {
         navigate("../admin");
       } else if (roleId === 3) {
         dispatch(setUserType('charity'))
-        navigate("../home-page-charity");
+        // navigate("../home-page-charity");
+        window.location.replace("/home-page-charity")
       } else {
         dispatch(setUserType('normal_user'))
         navigate("..");

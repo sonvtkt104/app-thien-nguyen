@@ -93,6 +93,12 @@ export const deleteDonationPostUserDonor = async (id) => {
     return await axios.delete(url, headers2)
 }
 
+export const deleteDonationPostUserRequest = async (id, data) => {
+    const url = "http://localhost:8089/charity/donation/donor-delete-donation-update-request?id=" + id;
+    return await axios.put(url, data, headers2)
+}
+
+
 
 
 //api address

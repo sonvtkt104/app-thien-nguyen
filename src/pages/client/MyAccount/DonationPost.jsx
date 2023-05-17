@@ -97,18 +97,8 @@ function DonationPost() {
         </div>
       </div>
       <div className="dp-container">
-        {/* {
-          donationPosts.map((post, index) => {
-            return <ItemDonationPost
-              handleOpenModal={() => { handleOpenModalEdit(post) }}
-              getListDonation={() => { getListDonation() }}
-              key={index}
-              data={post}
-            />
-          })
-        } */}
         {
-          searchedData.map((post, index) => {
+          searchedData?.length !== 0 ? searchedData.map((post, index) => {
             return <ItemDonationPost
               handleOpenModal={() => { handleOpenModalEdit(post) }}
               getListDonation={() => { 
@@ -118,7 +108,7 @@ function DonationPost() {
               key={index}
               data={post}
             />
-          })
+          }) : (<p style={{fontSize: 17, margin:"8px 4px"}}>Bạn chưa có bài đăng quyến góp nào</p>)
         }
       </div>
       {

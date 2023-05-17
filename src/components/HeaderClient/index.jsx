@@ -117,7 +117,8 @@ export function HeaderClient({
                                             <Row>
                                                 <span style={{fontWeight: '600', margin: '0 30px', cursor: 'pointer'}}
                                                     onClick={() => {
-                                                        navigate("/my-account")
+                                                        // navigate("/my-account")
+                                                        window.location.replace("/my-account")
                                                     }}
                                                 >
                                                     Tài khoản
