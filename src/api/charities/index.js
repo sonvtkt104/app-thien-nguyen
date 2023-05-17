@@ -44,3 +44,15 @@ export const setFollowCharity = async (userId, charityId, isFollow) => {
 
     return res
 }
+
+export const getCharityFollow = async (userId) => {
+    const res = await axios({
+        method: 'GET',
+        url: URL_API_KIEN + '/user/charity-follow/' + userId,
+        headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+        },
+    });
+
+    return res
+}
