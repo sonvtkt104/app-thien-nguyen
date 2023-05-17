@@ -8,6 +8,7 @@ import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
 import axios from "axios";
 import { uploadImage } from "../HomePageCharity/HomePageCharityService";
 import { useRef } from "react";
+import { toast } from "react-toastify";
 
 function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadData }) {
     const [form] = Form.useForm();
@@ -23,9 +24,11 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
 
     const [loading, setLoading] = useState(false);
     const [loadingAvatar, setLoadingAvatar] = useState(false);
+    const [loadingBanner, setLoadingBanner] = useState(false);
 
     const [open, setOpen] = useState(true)
     const [fileImage, setFileImage] = useState(dataUpdate?.avatar)
+    const [imageBanner, setImageBanner] = useState(dataUpdate?.charityBanner)
 
     const [images, setImages] = useState(valueImages)
     const [previewImage, setPreviewImage] = useState()
@@ -102,6 +105,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
     }
     const onFinish = (values) => {
         values.avatar = fileImage
+        values.charityBanner = imageBanner
         values.charityImages = images?.reduce((a, b) => {
             return [...a, b.url]
         }, []).join(",")
@@ -115,7 +119,6 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
 
         const dataUpdateSend = {
             name: values.name,
-            avatar: values.avatar || "",
             email: values.email,
             address: values.address,
             phoneNumber: values.phoneNumber,
@@ -127,9 +130,12 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
             ward: values.ward,
             charityId: dataUpdate?.charityId,
             charityInfo: {
+                avatar: values.avatar || "",
                 charityMotto: values.charityMotto || "",
                 charityTarget: values.charityTarget || "",
                 charityDescription: values.charityDescription || "",
+                charityWebsite: values.charityWebsite || "",
+                charityBanner: values.charityBanner || "",
                 charityFile: values.charityFile || "",
                 charityFacebook: values.charityFacebook || "",
                 charityInstagram: values.charityInstagram || "",
@@ -145,11 +151,14 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
         console.log(dataUpdateSend)
 
         updateCharity(dataUpdate?.id, dataUpdateSend).then(res => {
-            // console.log(res)
-            handleReloadData(Math.random().toString(36).slice(-5))
-            // handleReloadData("2")
-
-            onClose()
+            if(res?.status === 200) {
+                // handleReloadData("2")
+                onClose()
+                toast.success("Chỉnh sửa thành công")
+                handleReloadData({})
+            } else {
+                toast.error("Hệ thống lỗi, xin thử lại sau!")
+            }
         })
     };
 
@@ -166,7 +175,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
             reader.onerror = (error) => reject(error);
         });
 
-    const handleChange = async ({ file }) => {
+    const handleChange = ({ file }) => {
         // const fileUrl = await getBase64(file.originFileObj);
         // setFileImage(fileUrl)
         console.log(file.originFileObj)
@@ -179,6 +188,20 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
         })
     };
 
+    const handleChangeBanner = ({ file }) => {
+        // const fileUrl = await getBase64(file.originFileObj);
+        // setFileImage(fileUrl)
+        console.log(file.originFileObj)
+        const formData = new FormData();
+        formData.append('file', file.originFileObj);
+        uploadImage(formData).then(res => {
+            console.log(res)
+            setLoadingBanner(false)
+            setImageBanner(res.data.data)
+        })
+    };
+
+
 
 
     const handleChangeImage = (event) => {
@@ -186,7 +209,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
         // const imageUrl = URL.createObjectURL(selectedImage);
         // setFileImage(imageUrl);
     };
-    const handleChangeListImages = async ({ file }) => {
+    const handleChangeListImages = ({ file }) => {
         // console.log(fileUrl)
         // const fileUrl = await getBase64(file.originFileObj);
         // setImages((images) => images.includes(fileUrl) ? images : [...images, { url: fileUrl }])
@@ -198,8 +221,8 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
         uploadImage(formData).then(res => {
             console.log(res)
             setLoading(false)
-            if(res.data.statusCode === 200) {
-                setImages((images) => [...images, { url: res.data.data }])
+            if (res.data.statusCode === 200) {
+                setImages((images) => images ? [...images, { url: res.data.data }] : [{ url: res.data.data }])
 
             }
         })
@@ -263,22 +286,22 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                         >
                             <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexWrap: "wrap", height: 260, marginTop: 10 }}>
                                 <div>
-                                    <div className="avatar" style={{width:200, height: 200, border: "1px solid #E5E5E5",borderRadius: '50%',display: "flex", justifyContent: "center", alignItems: "center"}}>
-                                        
-                                    {
-                                        loadingAvatar ? <div>
-                                            <LoadingOutlined style={{fontSize: 24}}/>
-                                        </div> :
-                                        <Image
-                                            src={fileImage?.toString() || 'error'}
-                                            fallback="data:image/png;base64,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"
-                                            className="gid-image"
-                                            width={200}
-                                            height={200}
-                                            onChange={handleChangeImage}
-                                            
-                                        />
-                                    }
+                                    <div className="avatar" style={{ width: 200, height: 200, border: "1px solid #E5E5E5", borderRadius: '50%', display: "flex", justifyContent: "center", alignItems: "center" }}>
+
+                                        {
+                                            loadingAvatar ? <div>
+                                                <LoadingOutlined style={{ fontSize: 24 }} />
+                                            </div> :
+                                                <Image
+                                                    src={fileImage?.toString() || 'error'}
+                                                    fallback="data:image/png;base64,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"
+                                                    className="gid-image"
+                                                    width={200}
+                                                    height={200}
+                                                    onChange={handleChangeImage}
+
+                                                />
+                                        }
                                     </div>
                                 </div>
                                 <div >
@@ -289,10 +312,10 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                             onChange={handleChange}
                                             customRequest={() => false}
 
-                                            beforeUpload={()=> {
+                                            beforeUpload={() => {
                                                 setLoadingAvatar(true)
                                             }}
-                                            onSuccess={()=> {
+                                            onSuccess={() => {
                                                 setLoadingAvatar(false)
                                             }}
                                         >
@@ -472,7 +495,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                 ]}
                             >
                                 <Input placeholder="Nhập link video Youtube" />
-                            </Form.Item>    
+                            </Form.Item>
                             <Form.Item
                                 style={{ width: "100%", marginBottom: 16 }}
                                 label="Mục tiêu"
@@ -500,7 +523,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                             >
                                 <Input.TextArea rows={4} />
                             </Form.Item>
-            
+
                             <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                                 <Form.Item
                                     style={{ width: "32%", marginBottom: 16 }}
@@ -515,10 +538,10 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                 >
                                     <Input placeholder="Nhập thông tin Tài khoản ngân hàng" />
                                 </Form.Item>
-                                {/* <Form.Item
+                                <Form.Item
                                     style={{ width: "32%", marginBottom: 16 }}
                                     label="WebSite"
-                                    name="webSite"
+                                    name="charityWebsite"
                                 // rules={[
                                 //     {
                                 //         required: true,
@@ -526,8 +549,8 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                 //     },
                                 // ]}
                                 >
-                                    <Input placeholder= "Nhập link website"/>
-                                </Form.Item> */}
+                                    <Input placeholder="Nhập link website" />
+                                </Form.Item>
 
                                 <Form.Item
                                     style={{ width: "32%", marginBottom: 16 }}
@@ -575,6 +598,28 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                     <Input placeholder="Nhập link LinkedIn" />
                                 </Form.Item>
                             </div>
+                            <Form.Item label="Ảnh Banner" name="charityBanner">
+                                <Upload
+                                    name="charityBanner"
+                                    listType="picture-card"
+                                    showUploadList={false}
+                                    customRequest={() => false}
+                                    onChange={handleChangeBanner}
+                                    beforeUpload={() => {
+                                        setLoadingBanner(true)
+                                    }}
+                                    onSuccess={() => {
+                                        setLoadingBanner(false)
+                                    }}
+                                >
+                                    {imageBanner ? <img src={imageBanner} alt="avatar" style={{ width: '100%' }} /> :
+                                        <div>
+                                            {loadingBanner ? <LoadingOutlined /> : <PlusOutlined />}
+                                            <div style={{ marginTop: 8 }}>Tải ảnh Banner</div>
+                                        </div>
+                                    }
+                                </Upload>
+                            </Form.Item>
                             <Form.Item label="Ảnh" name="charityImages">
                                 <Upload
                                     listType="picture-card"
@@ -585,40 +630,27 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                     onPreview={(file) => { setPreviewOpen(true); setPreviewImage(file.url) }}
                                     customRequest={() => false}
 
-                                    beforeUpload={()=> {
+                                    beforeUpload={() => {
                                         setLoading(true)
                                     }}
-                                    onSuccess={()=> {
+                                    onSuccess={() => {
                                         setLoading(false)
                                     }}
                                 >
-                                    {
-                                        loading ? <LoadingOutlined/> :
-                                        <div>
-                                            <PlusOutlined />
-                                            <div
-                                                style={{
-                                                    marginTop: 8,
-                                                }}
-                                            >
-                                                Ảnh
-                                            </div>
-                                        </div>
-                                    }
+                                    <div>
+                                        {loading ? <LoadingOutlined /> : <PlusOutlined />}
+                                        <div style={{ marginTop: 8 }}>Tải ảnh</div>
+                                    </div>
                                 </Upload>
                             </Form.Item>
 
 
                         </div>
                     </div>
-
-
-
                     <Form.Item
                         wrapperCol={{
                             span: 0,
                             offset: 0,
-                            // span: 8,
                         }}
                     >
                         <div style={{ textAlign: "right" }}>
@@ -631,17 +663,11 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                             <Button
                                 type="primary"
                                 htmlType="submit"
-                                // onClick={() => {
-                                //     console.log("haikhuat")
-                                // }}
                             >
                                 Lưu
                             </Button>
                         </div>
                     </Form.Item>
-
-
-
                 </Form>
             </Modal>
             <Modal
