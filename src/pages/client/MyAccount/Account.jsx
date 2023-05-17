@@ -27,9 +27,12 @@ function Account() {
     const [districtId, setDistrictId] = useState(undefined)
     const [wardId, setWardId] = useState(undefined)
 
+    console.log("account haikhuat");
 
     useEffect(() => {
+        console.log("useEffect");
         getCurrentUser().then(res => {
+            console.log(res);
             form.setFieldsValue(res.data.data);
             setDataInfo(res.data.data);
         })
@@ -116,7 +119,7 @@ function Account() {
 
     const onFinishPassword = (values) => {
         console.log('Success:', values);
-        console.log(values.newPassword === values.confirmNewPassword)
+        // console.log(values.newPassword === values.confirmNewPassword)
         if (values.newPassword === values.confirmNewPassword) {
             updatePassWord(getUserInfomationFromCookies().id, values).then(res => {
                 console.log(res)

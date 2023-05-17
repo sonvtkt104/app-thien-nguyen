@@ -58,7 +58,15 @@ function ItemDonationPost({ data, handleOpenModal, getListDonation, handleReload
                         const newListRequest = data.listRequest = data.listRequest.map(data => {
                             return { ...data, status: "Bị hủy" }
                         })
-                        updateDonationPostUser(data.id, {...data, idDonor: null, listRequest: newListRequest}).then(res => {
+                        const dataUpdateDonationPostUser = {...data}
+                        delete dataUpdateDonationPostUser.organizationReceived
+                        delete dataUpdateDonationPostUser.donorName
+                        delete dataUpdateDonationPostUser.phone
+                        delete dataUpdateDonationPostUser.province
+                        delete dataUpdateDonationPostUser.ward
+                        delete dataUpdateDonationPostUser.district
+                        delete dataUpdateDonationPostUser.address
+                        updateDonationPostUser({...dataUpdateDonationPostUser, idDonor: null, listRequest: newListRequest}).then(res => {
                             if(res?.status === 200) {
                                 getListDonation();
                                 toast.success("Xóa bài đăng ủng hộ thành công!")

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { updatePassWord } from '../../../client/MyAccount/MyAccountService';
 import { getUserInfomationFromCookies } from '../../../Authentication/HandleUserInfomation';
 import { toast } from "react-toastify";
+import { forgetPassword, resetCode, resetPassword } from '../SettingsService';
 
 export default function ItemPassword({
     style,
@@ -12,6 +13,7 @@ export default function ItemPassword({
     const [formPassWord] = Form.useForm();
 
     const [openDialogChangePassword, setOpenDialogChangePassword] = useState(false)
+    const [openDialogForgotpassword, setOpenDialogForgotpassword] = useState(false)
 
     const onFinishPassword = (values) => {
         console.log('Success:', values);
@@ -45,6 +47,66 @@ export default function ItemPassword({
         console.log('Failed:', errorInfo);
     };
 
+    const onFinishForgotpassword = (values) => {
+        console.log('Success:', values);
+        console.log(values.newPassword === values.confirmNewPassword)
+        if (values.newPassword === values.confirmNewPassword) {
+            const dataResetCode = {
+                id: getUserInfomationFromCookies().id.toString(),
+                code: values.code
+            }
+            resetCode(dataResetCode).then(res => {
+                if (res?.status === 200) {
+                    const dataResetPassword = {
+                        id: getUserInfomationFromCookies().id.toString(),
+                        password: values.newPassword,
+                        confirmPassword: values.confirmNewPassword,
+                    }
+                    console.log(dataResetPassword);
+                    resetPassword(dataResetPassword).then(res => {
+                        if (res?.status === 200) {
+
+                            toast.success("Đổi mật khẩu thành công.")
+                        } else {
+                            toast.error("Hệ thống lỗi, xin thử lại sau!")
+                        }
+                    })
+                } else {
+                    toast.error("Hệ thống lỗi, xin thử lại sau!")
+                }
+            })
+                // .catch(error => {
+                //     console.log(error)
+                //     if (error?.response?.status === 400) {
+                //         error?.response?.data?.message ? toast.warning("Mật khẩu mới không được trùng với mật khẩu cũ") :
+                //             toast.error("Mật khẩu hiện tại chưa chính xác!")
+                //     } else {
+                //         // toast.error("Hệ thống lỗi, xin thử lại sau!")
+                //     }
+
+                // })
+        }
+    };
+
+    const onFinishFailedForgotpassword = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+    };
+
+    // console.log(getUserInfomationFromCookies());
+    const confirmForgotpassword =() => {
+        Modal.confirm({
+            title: `Bạn có chắc chắn, bạn quên mật khẩu?`,
+            okText: "Có",
+            cancelText: "Quay lại",
+            okType: "danger",
+            onOk: () => {
+                forgetPassword(getUserInfomationFromCookies().userName).then(res => console.log(res))
+                setOpenDialogForgotpassword(true)
+            }
+        });
+    
+    }
+
 
 
 
@@ -71,6 +133,8 @@ export default function ItemPassword({
 
                 } else {
                     console.log("Quên mật khẩu")
+                    confirmForgotpassword()
+
 
                 }
             }}
@@ -194,6 +258,126 @@ export default function ItemPassword({
                                         );
                                     },
                                 }),
+                            ]}
+                        >
+                            <Input.Password />
+                        </Form.Item>
+
+                        <Form.Item
+                            wrapperCol={{
+                                span: 0,
+                                offset: 0,
+                            }}
+                            
+                        >
+                            <div style={{ textAlign: "right" }}>
+                                <Button
+                                    style={{ marginRight: 10 }}
+                                    onClick={() => {
+                                        setOpenDialogChangePassword(false)
+                                    }}
+                                >
+                                    Quay lại
+                                </Button>
+                                <Button type="primary" htmlType="submit">
+                                    Lưu thay đổi mật khẩu
+                                </Button>
+                            </div>
+                        </Form.Item>
+                    </Form>
+                </Modal>
+                
+            )
+
+        }
+
+        {
+            openDialogForgotpassword && (
+                <Modal
+                    title={"Quên mật khẩu"}
+                    cancelText="Quay lại"
+                    okText="Tạo"
+                    centered
+                    width={650}
+                    open={openDialogForgotpassword}
+                    maskClosable={false}
+                    footer={null}
+                    // onOk={() => {
+
+                    //     // onClose() 
+                    // }}
+                    onCancel={() => { setOpenDialogForgotpassword(false) }}
+                    className="dpd-modal"
+                >
+                    <Form
+                        form={formPassWord}
+                        layout={"vertical"}
+                        name="basic"
+                        style={{
+                            width: "100%",
+                            padding: "10px 0 10px 20px",
+                            flexWrap: "wrap"
+                        }}
+                        initialValues={{
+                            // remember: true,
+                        }}
+                        onFinish={onFinishForgotpassword}
+                        onFinishFailed={onFinishFailedForgotpassword}
+                        autoComplete="off"
+                    >
+
+                        <Form.Item
+                            style={{ width: "100%", marginBottom: 10 }}
+                            label="Mật khẩu mới"
+                            hasFeedback
+                            name="newPassword"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng nhập Mật khẩu mới!',
+                                },
+                            ]}
+                        >
+                            <Input.Password />
+                        </Form.Item>
+
+
+
+                        <Form.Item
+                            style={{ width: "100%", marginBottom: 16 }}
+                            label="Xác nhận mật khẩu mới"
+                            hasFeedback
+                            name="confirmNewPassword"
+
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng nhập Xác nhận mật khẩu mới!',
+                                },
+                                ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                        if (!value || getFieldValue("newPassword") === value) {
+                                            return Promise.resolve();
+                                        }
+                                        return Promise.reject(
+                                            new Error("Mật khẩu xác nhận không xhính xác")
+                                        );
+                                    },
+                                }),
+                            ]}
+                        >
+                            <Input.Password />
+                        </Form.Item>
+                        <Form.Item
+                            style={{ width: "100%", marginBottom: 10 }}
+                            label="Nhập code"
+                            hasFeedback
+                            name="code"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng nhập code!',
+                                },
                             ]}
                         >
                             <Input.Password />
