@@ -1,28 +1,18 @@
 import { Col, Progress, Row } from "antd";
 import { useCallback } from "react";
-import { Tag } from "../Tag";
 import { useNavigate } from "react-router-dom";
-import { TickIcon } from "../Icon";
 import { HeartFilled, HeartOutlined, StarFilled, StarTwoTone } from "@ant-design/icons";
-import { setUserFollowCampaign, setUserUnFollowCampaign } from "../../api/campaigns";
+import { setUserFollowCampaign, setUserUnFollowCampaign } from "../../../../api/campaigns";
+import { Tag, TickIcon } from "../../../../components";
 
 export function ItemCampaign({
     style,
     className,
-    image = 'https://crowdfunding.comicola.com/wp-content/uploads/2022/11/banner3.png',
-    name = 'Dự án hoạt hình con thỏ',
-    type = 'Hoạt hình',
-    target_amount = 1200000000,
-    amount_receive = 1697116725,
-    charity_img = 'https://secure.gravatar.com/avatar/4aa5c6c6edd6bd67ab5404e369b1c19c?s=80&d=mm&r=g',
-    charity_name = 'Xuân Sơn',
-    target_object = 'Tổ chức',
-    area = 'Hà Nội',
-    status = 'active',
     data,
-    isFollow,
     listCampaignFollow, // [campaignId, ....]
     setListCampaignFollow,
+    listCampaignFollowOrigin,
+    setListCampaignFollowOrigin
 }) {
 
     /**
@@ -40,7 +30,8 @@ export function ItemCampaign({
      *      charityId,
      *      charityName,
      *      charityAvatar,
-     *      charityIsVerified
+     *      charityIsVerified,
+     *      isFollow
      * }
      */
 
@@ -101,24 +92,49 @@ export function ItemCampaign({
                     }}
                     onClick={() => {
                         console.log('like campaign')
-                        if(isFollow) { // click to un follow
+                        if(data?.isFollow) { // click to un follow
                             setUserUnFollowCampaign(data?.campaignId).then(res => {
                                 console.log(res)
-                                let arr = listCampaignFollow?.filter(item => {
-                                    return item != data?.campaignId
-                                }) 
-                                setListCampaignFollow(JSON.parse(JSON.stringify(arr)))
+                                let arr = listCampaignFollow?.map(campaign => {
+                                    if(campaign?.campaignId == data.campaignId) {
+                                        campaign.isFollow = 0
+                                    }
+                                    return campaign
+                                })
+                                setListCampaignFollow && setListCampaignFollow(JSON.parse(JSON.stringify(arr)))
+
+                                let arr1 = listCampaignFollowOrigin?.map(campaign => {
+                                    if(campaign?.campaignId == data.campaignId) {
+                                        campaign.isFollow = 0
+                                    }
+                                    return campaign
+                                })
+                                setListCampaignFollowOrigin && setListCampaignFollowOrigin(JSON.parse(JSON.stringify(arr1)))
                             }) 
                         } else { // click to follow
                             setUserFollowCampaign(data?.campaignId).then(res => {
                                 console.log(res.data)
-                                setListCampaignFollow([...listCampaignFollow, data?.campaignId])
+                                let arr = listCampaignFollow?.map(campaign => {
+                                    if(campaign?.campaignId == data.campaignId) {
+                                        campaign.isFollow = 1
+                                    }
+                                    return campaign
+                                })
+                                setListCampaignFollow && setListCampaignFollow(JSON.parse(JSON.stringify(arr)))
+
+                                let arr1 = listCampaignFollowOrigin?.map(campaign => {
+                                    if(campaign?.campaignId == data.campaignId) {
+                                        campaign.isFollow = 1
+                                    }
+                                    return campaign
+                                })
+                                setListCampaignFollowOrigin && setListCampaignFollowOrigin(JSON.parse(JSON.stringify(arr1)))
                             }) 
                         }
                     }}
                   >
                     {
-                        isFollow ? (
+                        data?.isFollow ? (
                             <HeartFilled style={{fontSize: 20, fontWeight: '600', color: 'var(--color-red)', transform: 'translateY(-3px)'}} />
                         ) : (
                             <HeartOutlined style={{fontSize: 20, fontWeight: '600', color: 'var(--color-gray)', transform: 'translateY(-3px)'}} />
