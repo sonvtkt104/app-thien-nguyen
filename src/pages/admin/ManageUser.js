@@ -1,256 +1,119 @@
-import { useState } from "react";
-
-import InputSearch from "./InputSearch";
 import Manage from "./Manage";
 import classes from "./ManageUser.module.css";
-import TrUser from "./TrUser";
-const DUMMY_DATA = [
-  {
-    id: "1",
-    userName: "Lê Mạnh Linh",
-    email: "19020346@vnu.edu.vn",
-    role: "User",
-    status: 1,
-  },
-  {
-    id: "2",
-    userName: "Lê Văn Kiên",
-    email: "19020341@vnu.edu.vn",
-    role: "Organization",
-    status: 1,
-  },
-  {
-    id: "3",
-    userName: "Nguyễn Bá Tiên",
-    email: "19020999@vnu.edu.vn",
-    role: "User",
-    status: 0,
-  },
-  {
-    id: "4",
-    userName: "Nguyễn Xuân Sơn",
-    email: "19020333@vnu.edu.vn",
-    role: "User",
-    status: 1,
-  },
-  {
-    id: "5",
-    userName: "Trịnh Hoàng",
-    email: "19000000@vnu.edu.vn",
-    role: "User",
-    status: 0,
-  },
-  {
-    id: "6",
-    userName: "Khuất xuân Hải",
-    email: "19022222@vnu.edu.vn",
-    role: "User",
-    status: 0,
-  },
-  {
-    id: "7",
-    userName: "Lê Mạnh Linh",
-    email: "lemanhlinh0808@gmail.com",
-    role: "Organization",
-    status: 1,
-  },
-  {
-    id: "8",
-    userName: "Lê Mạnh Linh",
-    email: "lemanhlinh0808@gmail.com",
-    role: "Organization",
-    status: 0,
-  },
-  {
-    id: "9",
-    userName: "Lê Mạnh Linh",
-    email: "lemanhlinh0808@gmail.com",
-    role: "User",
-    status: 0,
-  },
-  {
-    id: "10",
-    userName: "Lê Mạnh Linh",
-    email: "lemanhlinh0808@gmail.com",
-    role: "Organization",
-    status: 1,
-  },
-  {
-    id: "11",
-    userName: "Lê Mạnh Linh",
-    email: "19020346@vnu.edu.vn",
-    role: "User",
-    status: 1,
-  },
-  {
-    id: "12",
-    userName: "Lê Văn Kiên",
-    email: "19020341@vnu.edu.vn",
-    role: "Organization",
-    status: 1,
-  },
-  {
-    id: "13",
-    userName: "Nguyễn Bá Tiên",
-    email: "19020999@vnu.edu.vn",
-    role: "User",
-    status: 0,
-  },
-  {
-    id: "14",
-    userName: "Nguyễn Xuân Sơn",
-    email: "19020333@vnu.edu.vn",
-    role: "User",
-    status: 1,
-  },
-  {
-    id: "15",
-    userName: "Trịnh Hoàng",
-    email: "19000000@vnu.edu.vn",
-    role: "User",
-    status: 0,
-  },
-  {
-    id: "16",
-    userName: "Khuất xuân Hải",
-    email: "19022222@vnu.edu.vn",
-    role: "User",
-    status: 0,
-  },
-  {
-    id: "17",
-    userName: "Lê Mạnh Linh",
-    email: "lemanhlinh0808@gmail.com",
-    role: "Organization",
-    status: 1,
-  },
-  {
-    id: "18",
-    userName: "Lê Mạnh Linh",
-    email: "lemanhlinh0808@gmail.com",
-    role: "Organization",
-    status: 0,
-  },
-  {
-    id: "19",
-    userName: "Lê Mạnh Linh",
-    email: "lemanhlinh0808@gmail.com",
-    role: "User",
-    status: 0,
-  },
-  {
-    id: "20",
-    userName: "Lê Mạnh Linh",
-    email: "lemanhlinh0808@gmail.com",
-    role: "Organization",
-    status: 1,
-  },
-];
+import { useDispatch, useSelector } from "react-redux";
+import { Space, Table } from "antd";
+import { changeUserStatus, getAllUsers } from "./AdminService";
+import { setUsers } from "../../redux/adminSlice";
+import { useEffect } from "react";
 
 const ManageUser = () => {
-  const [numberOfPages, setNumberOfPages] = useState(0);
-  const [users, setUsers] = useState(DUMMY_DATA);
+  const users = useSelector((state) => state.admin.users);
+  const dispatch = useDispatch();
 
-  const lockUserHandler = (id) => {
-    setUsers((prev) => {
-      const listItems = prev;
-      const item = listItems.find((user) => user.id === id);
-      item.status = item.status === 1 ? 0 : 1;
+  useEffect(() => {
+    (async () => {
+      const resData = await getAllUsers();
+      dispatch(setUsers(resData.data));
+    })();
+    return () => {};
+  }, []);
 
-      return listItems;
+  const handleBanUser = async (value) => {
+    const data = await changeUserStatus({
+      id: value,
+      status: false,
+      updateStatusUser: false,
     });
+
+    console.log(data);
   };
 
-  const unLockUserHandler = (id) => {
-    setUsers((prev) => {
-      const listItems = prev;
-      const item = listItems.find((user) => user.id === id);
-      item.status = item.status === 1 ? 0 : 1;
-      console.log(listItems);
-
-      return listItems;
+  const handleUnBanUser = async (value) => {
+    const data = await changeUserStatus({
+      id: value,
+      status: true,
+      updateStatusUser: true,
     });
+
+    console.log(data);
   };
 
-  const prevHandler = () => {
-    setNumberOfPages((prev) => {
-      if (prev === 0) return prev;
-
-      return prev - 1;
-    });
-  };
-
-  const nextHandler = () => {
-    setNumberOfPages((prev) => {
-      const numberOfUsers = users.length;
-
-      if ((numberOfPages + 1) * 6 > numberOfUsers) return prev;
-
-      return prev + 1;
-    });
-  };
+  const columns = [
+    {
+      title: "Username",
+      dataIndex: "userName",
+      key: "userName",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
+    },
+    {
+      title: "Phường/Xã",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "Quận/Huyện",
+      dataIndex: "ward",
+      key: "ward",
+    },
+    {
+      title: "Tỉnh/Thành phố",
+      dataIndex: "province",
+      key: "province",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <button
+            className={classes["user-button"]}
+            onClick={() => handleBanUser(record.id)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              className={classes["user-icon-ban"]}
+              fill={record.isLocked === false ? "#f03e3e" : "#ffe3e3"}
+            >
+              <path d="M367.2 412.5L99.5 144.8C77.1 176.1 64 214.5 64 256c0 106 86 192 192 192c41.5 0 79.9-13.1 111.2-35.5zm45.3-45.3C434.9 335.9 448 297.5 448 256c0-106-86-192-192-192c-41.5 0-79.9 13.1-111.2 35.5L412.5 367.2zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z" />
+            </svg>
+          </button>
+          <button
+            className={classes["user-button"]}
+            onClick={() => handleUnBanUser(record.id)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 448 512"
+              className={classes["user-icon-un-ban"]}
+              fill={record.isLocked === true ? "#4263eb" : "#bac8ff"}
+            >
+              <path d="M224 64c-44.2 0-80 35.8-80 80v48H384c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80V144C80 64.5 144.5 0 224 0c57.5 0 107 33.7 130.1 82.3c7.6 16 .8 35.1-15.2 42.6s-35.1 .8-42.6-15.2C283.4 82.6 255.9 64 224 64zm32 320c17.7 0 32-14.3 32-32s-14.3-32-32-32H192c-17.7 0-32 14.3-32 32s14.3 32 32 32h64z" />
+            </svg>
+          </button>
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <Manage>
       <div className={classes.main}>
+        <h2 className={classes.titleCharity}>Người dùng</h2>
+
         <div className={classes.list}>
           <div className={classes["user-list"]}>
-            <p>Danh sách tài khoản</p>
-            <InputSearch placeHolder="Tìm kiếm tài khoản" />
+            <Table dataSource={users} columns={columns} pagination={false} />
           </div>
-
-          <table className={classes["table-user"]}>
-            <thead>
-              <tr className={classes["first-column"]}>
-                <th className={classes.stt}>STT</th>
-                <th className={classes.userName}>Tên tài khoản</th>
-                <th className={classes.status}>Trạng thái</th>
-                <th className={classes.email}>Email</th>
-                <th className={classes.role}>Vai trò</th>
-                <th className={classes.editHeader}></th>
-              </tr>
-            </thead>
-            <tbody>
-              {users
-                .filter(
-                  (user, index) =>
-                    index >= numberOfPages * 6 &&
-                    index < (numberOfPages + 1) * 6
-                )
-                .map((user, index) => {
-                  return (
-                    <tr key={index}>
-                      <TrUser
-                        userData={user}
-                        index={index + numberOfPages * 6}
-                        onLock={lockUserHandler}
-                        onUnLock={unLockUserHandler}
-                      />
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </table>
-          <footer>
-            <p>
-              <span className={classes["footer-text"]}>
-                Số tài khoản trên 1 trang :
-              </span>
-              <span> 6</span>
-            </p>
-            <p className={classes["footer-control"]}>
-              <span className={classes["footer-text"]}>
-                {numberOfPages * 6 + "-" + (numberOfPages + 1) * 6} trong{" "}
-                {users.length}
-              </span>
-              <button className={classes["icon-left"]} onClick={prevHandler}>
-                &lt;
-              </button>
-              <button className={classes["icon-right"]} onClick={nextHandler}>
-                &gt;
-              </button>
-            </p>
-          </footer>
         </div>
       </div>
     </Manage>

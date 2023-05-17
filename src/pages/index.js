@@ -19,11 +19,12 @@ import LoginPage from "./Authentication/Login";
 import RegistrationPage from "./Authentication/Registration";
 import PassWord from "./client/MyAccount/PassWord";
 import CampaignStar from "./admin/CampaignStar";
-import CharityAll from './client/CharityAll'
+import CharityAll from "./client/CharityAll";
 import CharitySearch from "./client/CharitySearch";
 import OrganizationFollow from "./client/MyAccount/OrganizationFollow";
 import CampaignSaved from "./client/MyAccount/CampaignSaved";
-import Settings from "./app/Settings"
+import Settings from "./app/Settings";
+import ForgotYourPassword from "./Authentication/ForgotYourPassword";
 
 export {
   Home,
@@ -51,5 +52,6 @@ export {
   CharitySearch,
   OrganizationFollow,
   CampaignSaved,
-  Settings
+  Settings,
+  ForgotYourPassword,
 };

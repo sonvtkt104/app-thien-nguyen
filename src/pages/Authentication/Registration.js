@@ -254,35 +254,53 @@ const RegistrationPage = () => {
 
   return (
     <div className="user-regis">
-      <Row justify='center' style={{ position: 'relative', minHeight: '100vh'}}>
-        <span style={{position: 'absolute', cursor: 'pointer', fontSize: 16, top: 30, left: 70, zIndex: 1 }}
+      <Row
+        justify="center"
+        style={{ position: "relative", minHeight: "100vh" }}
+      >
+        <span
+          style={{
+            position: "absolute",
+            cursor: "pointer",
+            fontSize: 16,
+            top: 30,
+            left: 70,
+            zIndex: 1,
+          }}
           className="text-hover"
           onClick={() => {
-            navigate(-1)
+            navigate(-1);
           }}
         >
           {"< Quay lại"}
         </span>
         <Col xs={21} sm={21} md={21} lg={21} xl={21}>
-          <Row style={{height: '100%'}} justify='center'>
+          <Row style={{ height: "100%" }} justify="center">
             <div className="user-container">
-              <Row style={{fontSize: 18, fontWeight: 600, lineHeight: '50px', cursor: 'pointer', marginBottom :10}}
-                justify='center'
-                  onClick={() => {
-                      navigate("/")
-                  }}
+              <Row
+                style={{
+                  fontSize: 18,
+                  fontWeight: 600,
+                  lineHeight: "50px",
+                  cursor: "pointer",
+                  marginBottom: 10,
+                }}
+                justify="center"
+                onClick={() => {
+                  navigate("/");
+                }}
               >
-                  <img src="/images/logo-app.png" alt="logo app"
-                      style={{width: 50, marginRight: 4}}
-                  />
-                  Thiện Nguyện
+                <img
+                  src="/images/logo-app.png"
+                  alt="logo app"
+                  style={{ width: 50, marginRight: 4 }}
+                />
+                Thiện Nguyện
               </Row>
-              <h2 className="user-title h1-app"
-                style={{textAlign: "center"}}
-              >
+              <h2 className="user-title h1-app" style={{ textAlign: "center" }}>
                 Đăng ký
               </h2>
-              <Row className="options" justify='center'>
+              <Row className="options" justify="center">
                 <button
                   onClick={toggleUserToCharity}
                   className={isCreateUser ? "active" : ""}
@@ -309,18 +327,23 @@ const RegistrationPage = () => {
                   onFinish={userSubmit}
                   // onFinishFailed={onFinishFailed}
                 >
-
                   <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
                     <Col span={8}>
                       <Form.Item
                         label="Tài khoản"
                         name="username"
                         rules={[
-                          { required: true, message: "Vui lòng nhập username!" },
+                          {
+                            required: true,
+                            message: "Vui lòng nhập username!",
+                          },
                         ]}
                         className="form-item"
                       >
-                        <Input placeholder="Nhập tài khoản" className="input-app" />
+                        <Input
+                          placeholder="Nhập tài khoản"
+                          className="input-app"
+                        />
                       </Form.Item>
                     </Col>
 
@@ -336,7 +359,10 @@ const RegistrationPage = () => {
                         ]}
                         hasFeedback
                       >
-                        <Input.Password placeholder="Mật khẩu của bạn" className="input-app" />
+                        <Input.Password
+                          placeholder="Mật khẩu của bạn"
+                          className="input-app"
+                        />
                       </Form.Item>
                     </Col>
 
@@ -353,17 +379,25 @@ const RegistrationPage = () => {
                           },
                           ({ getFieldValue }) => ({
                             validator(_, value) {
-                              if (!value || getFieldValue("password") === value) {
+                              if (
+                                !value ||
+                                getFieldValue("password") === value
+                              ) {
                                 return Promise.resolve();
                               }
                               return Promise.reject(
-                                new Error("Hai mật khẩu bạn nhập không trùng nhau")
+                                new Error(
+                                  "Hai mật khẩu bạn nhập không trùng nhau"
+                                )
                               );
                             },
                           }),
                         ]}
                       >
-                        <Input.Password placeholder="Nhập lại mật khẩu của bạn"  className="input-app" />
+                        <Input.Password
+                          placeholder="Nhập lại mật khẩu của bạn"
+                          className="input-app"
+                        />
                       </Form.Item>
                     </Col>
                   </Row>
@@ -374,11 +408,17 @@ const RegistrationPage = () => {
                         label="Tên đầy đủ của bạn"
                         name="fullName"
                         rules={[
-                          { required: true, message: "Vui lòng nhập tên của bạn!" },
+                          {
+                            required: true,
+                            message: "Vui lòng nhập tên của bạn!",
+                          },
                         ]}
                         className="form-item"
                       >
-                        <Input placeholder="Nhập tên của bạn" className="input-app" />
+                        <Input
+                          placeholder="Nhập tên của bạn"
+                          className="input-app"
+                        />
                       </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -393,7 +433,10 @@ const RegistrationPage = () => {
                         ]}
                         className="form-item"
                       >
-                        <Input placeholder="Nhập số điện thoại của bạn" className="input-app" />
+                        <Input
+                          placeholder="Nhập số điện thoại của bạn"
+                          className="input-app"
+                        />
                       </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -409,7 +452,10 @@ const RegistrationPage = () => {
                         ]}
                         className="form-item"
                       >
-                        <Input placeholder="Nhập email của bạn" className="input-app" />
+                        <Input
+                          placeholder="Nhập email của bạn"
+                          className="input-app"
+                        />
                       </Form.Item>
                     </Col>
                   </Row>
@@ -427,7 +473,9 @@ const RegistrationPage = () => {
                         ]}
                         className="form-item"
                         itialvalue={
-                          listProvince && listProvince[0] && listProvince[0].value
+                          listProvince &&
+                          listProvince[0] &&
+                          listProvince[0].value
                         }
                       >
                         {/* <Input placeholder="Nhập Tỉnh/Thành phố của bạn" /> */}
@@ -497,7 +545,10 @@ const RegistrationPage = () => {
                         ]}
                         className="form-item"
                       >
-                        <Input placeholder="144, Xuân Thủy, Cầu Giấy, Hà Nội" className="input-app" />
+                        <Input
+                          placeholder="144, Xuân Thủy, Cầu Giấy, Hà Nội"
+                          className="input-app"
+                        />
                       </Form.Item>
                     </Col>
                   </Row>
@@ -510,7 +561,7 @@ const RegistrationPage = () => {
                         type="primary"
                         htmlType="submit"
                         className="regis-button btn-primary"
-                        style={{margin: 'auto'}}
+                        style={{ margin: "auto" }}
                       >
                         Đăng ký
                       </Button>
@@ -518,7 +569,14 @@ const RegistrationPage = () => {
 
                     <span className="sign-up">
                       Bạn đã có tài khoản? ---
-                      <Link to="../login" className="text-hover" style={{color:"var(--color-blue)"}}>Đăng nhập</Link>---
+                      <Link
+                        to="../login"
+                        className="text-hover"
+                        style={{ color: "var(--color-blue)" }}
+                      >
+                        Đăng nhập
+                      </Link>
+                      ---
                     </span>
                   </div>
                 </Form>
@@ -541,11 +599,17 @@ const RegistrationPage = () => {
                           label="Tài khoản"
                           name="username"
                           rules={[
-                            { required: true, message: "Vui lòng nhập username!" },
+                            {
+                              required: true,
+                              message: "Vui lòng nhập username!",
+                            },
                           ]}
                           className="form-item"
                         >
-                          <Input placeholder="Nhập tài khoản" className="input-app" />
+                          <Input
+                            placeholder="Nhập tài khoản"
+                            className="input-app"
+                          />
                         </Form.Item>
                       </Col>
 
@@ -561,7 +625,10 @@ const RegistrationPage = () => {
                           ]}
                           hasFeedback
                         >
-                          <Input.Password placeholder="Mật khẩu của bạn" className="input-app" />
+                          <Input.Password
+                            placeholder="Mật khẩu của bạn"
+                            className="input-app"
+                          />
                         </Form.Item>
                       </Col>
 
@@ -585,17 +652,21 @@ const RegistrationPage = () => {
                                   return Promise.resolve();
                                 }
                                 return Promise.reject(
-                                  new Error("Hai mật khẩu bạn nhập không trùng nhau")
+                                  new Error(
+                                    "Hai mật khẩu bạn nhập không trùng nhau"
+                                  )
                                 );
                               },
                             }),
                           ]}
                         >
-                          <Input.Password placeholder="Nhập lại mật khẩu của bạn" className="input-app" />
+                          <Input.Password
+                            placeholder="Nhập lại mật khẩu của bạn"
+                            className="input-app"
+                          />
                         </Form.Item>
                       </Col>
                     </Row>
-
 
                     <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
                       <Col span={6}>
@@ -603,11 +674,17 @@ const RegistrationPage = () => {
                           label="Tên của tổ chức"
                           name="charityName"
                           rules={[
-                            { required: true, message: "Vui lòng nhập tên tổ chức!" },
+                            {
+                              required: true,
+                              message: "Vui lòng nhập tên tổ chức!",
+                            },
                           ]}
                           className="form-item"
                         >
-                          <Input placeholder="Nhập tên tổ chức" className="input-app"  />
+                          <Input
+                            placeholder="Nhập tên tổ chức"
+                            className="input-app"
+                          />
                         </Form.Item>
                       </Col>
                       <Col span={6}>
@@ -617,12 +694,16 @@ const RegistrationPage = () => {
                           rules={[
                             {
                               required: true,
-                              message: "Vui lòng nhập số điện thoại của tổ chức",
+                              message:
+                                "Vui lòng nhập số điện thoại của tổ chức",
                             },
                           ]}
                           className="form-item"
                         >
-                          <Input placeholder="Nhập số điện thoại của tổ chức" className="input-app"  />
+                          <Input
+                            placeholder="Nhập số điện thoại của tổ chức"
+                            className="input-app"
+                          />
                         </Form.Item>
                       </Col>
                       <Col span={6}>
@@ -638,7 +719,10 @@ const RegistrationPage = () => {
                           ]}
                           className="form-item"
                         >
-                          <Input placeholder="Nhập email của tổ chức" className="input-app"  />
+                          <Input
+                            placeholder="Nhập email của tổ chức"
+                            className="input-app"
+                          />
                         </Form.Item>
                       </Col>
 
@@ -654,7 +738,10 @@ const RegistrationPage = () => {
                           ]}
                           className="form-item"
                         >
-                          <Input placeholder="Nhập phương châm của tổ chức" className="input-app"  />
+                          <Input
+                            placeholder="Nhập phương châm của tổ chức"
+                            className="input-app"
+                          />
                         </Form.Item>
                       </Col>
                     </Row>
@@ -672,7 +759,9 @@ const RegistrationPage = () => {
                           ]}
                           className="form-item"
                           itialvalue={
-                            listProvince && listProvince[0] && listProvince[0].value
+                            listProvince &&
+                            listProvince[0] &&
+                            listProvince[0].value
                           }
                         >
                           {/* <Input placeholder="Nhập Tỉnh/Thành phố của bạn" /> */}
@@ -742,7 +831,10 @@ const RegistrationPage = () => {
                           ]}
                           className="form-item"
                         >
-                          <Input placeholder="144, Xuân Thủy, Cầu Giấy, Hà Nội" className="input-app" />
+                          <Input
+                            placeholder="144, Xuân Thủy, Cầu Giấy, Hà Nội"
+                            className="input-app"
+                          />
                         </Form.Item>
                       </Col>
                     </Row>
@@ -780,27 +872,6 @@ const RegistrationPage = () => {
                       </Col>
                     </Row>
 
-                    <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                      <Col span={12}>
-                        <Form.Item
-                          label="Nhập file để xác minh tổ chức"
-                          name="charityFile"
-                          rules={[
-                            {
-                              required: true,
-                              message: "Vui lòng nhập file của tổ chức!",
-                            },
-                          ]}
-                          className="form-item"
-                        >
-                          <Input type="file" onChange={handleFile} className="input-app" />
-                          {/* <Upload>
-                        <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                      </Upload> */}
-                        </Form.Item>
-                      </Col>
-                    </Row>
-
                     <p className="error">{error}</p>
 
                     <div className="regis-footer">
@@ -809,7 +880,7 @@ const RegistrationPage = () => {
                           type="primary"
                           htmlType="submit"
                           className="regis-button btn-primary"
-                          style={{margin: 'auto'}}
+                          style={{ margin: "auto" }}
                         >
                           Đăng ký
                         </Button>
@@ -817,7 +888,14 @@ const RegistrationPage = () => {
 
                       <span className="sign-up">
                         Bạn đã có tài khoản? ---
-                        <Link to="../login" className="text-hover" style={{color:"var(--color-blue)"}}>Đăng nhập</Link>---
+                        <Link
+                          to="../login"
+                          className="text-hover"
+                          style={{ color: "var(--color-blue)" }}
+                        >
+                          Đăng nhập
+                        </Link>
+                        ---
                       </span>
                     </div>
                   </Form>

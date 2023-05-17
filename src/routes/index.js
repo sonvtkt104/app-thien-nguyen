@@ -25,13 +25,11 @@ import {
   CharitySearch,
   OrganizationFollow,
   CampaignSaved,
-  Settings
+  Settings,
+  ForgotYourPassword,
 } from "../pages";
 import CamPaignPreview from "../pages/app/CampaignList/CampaignPreview";
 import { action as loginAction } from "../pages/Authentication/Login";
-// import LoginPage from "../pages/Authentication/Login";
-// import RegistrationPage from "../pages/Authentication/Registration";
-
 
 export default function Router() {
   return (
@@ -42,7 +40,10 @@ export default function Router() {
         <Route path="/donation" element={<Donation />} />
         <Route path="/mydonation" element={<MyDonation />} />
         <Route path="/campaign-list" element={<CamPaignList />} />
-        <Route path="/campaign-list/preview/:campaignId" element={<CamPaignPreview />} />
+        <Route
+          path="/campaign-list/preview/:campaignId"
+          element={<CamPaignPreview />}
+        />
         <Route path="/admin" element={<ManageUser />} />
         <Route path="/admin/cuocvandong" element={<ManageCVD />} />
         <Route path="/admin/cuocvandongnoibat" element={<CampaignStar />} />
@@ -68,7 +69,11 @@ export default function Router() {
         />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/sign-up" element={<RegistrationPage />} />
-        <Route path="/my-account/organization-follow" element={<OrganizationFollow />} />
+        <Route path="/forgot-password" element={<ForgotYourPassword />} />
+        <Route
+          path="/my-account/organization-follow"
+          element={<OrganizationFollow />}
+        />
         <Route path="/my-account/campaign-saved" element={<CampaignSaved />} />
         <Route path="/settings" element={<Settings />} />
       </Routes>
