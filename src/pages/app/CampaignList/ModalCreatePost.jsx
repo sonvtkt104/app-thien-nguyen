@@ -65,6 +65,7 @@ function ModalCreatePost({
                 },
                 data: {
                     campaign_id: campaignId,
+                    title: namePost,
                     content: contentPost,
                     type: typePost
                 }

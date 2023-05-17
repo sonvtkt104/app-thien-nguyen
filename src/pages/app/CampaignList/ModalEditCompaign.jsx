@@ -191,7 +191,8 @@ function ModalEditCampaign({
                     stop_date: endDay,
                     start_active_date: startDay,
                     stop_active_date: endDay,
-                    stop_receive_date: endDay
+                    stop_receive_date: endDay,
+                    isStar: true
                 }
             })
             toast.success('Chỉnh sửa cuộc vận động thành công!')
