@@ -62,7 +62,8 @@ function ModalEditPost({
                             token: 'abcd'
                         }
                     }).then(res => res.data)
-                    setNamePost('Tiêu đề bài viết')
+                    // console.log(res)
+                    setNamePost(res.title)
                     options = options.filter(item => (item.value === res.type))
                     setTypePost(options[0].value)
                     setOptionSelect(options[0])
@@ -76,7 +77,7 @@ function ModalEditPost({
 
     const handlePressOk = async () => {
 
-        // console.log(postId, +campaignId, contentPost, typePost);
+        // console.log(postId, +campaignId, namePost, contentPost, typePost);
         // return;
         if(!campaignId || !namePost || !typePost || !contentPost) {
             toast.error('Vui lòng điền đầy đủ thông tin!')
@@ -91,6 +92,7 @@ function ModalEditPost({
                 data: {
                     post_id: postId,
                     campaign_id: +campaignId,
+                    title: namePost,
                     content: contentPost,
                     type: typePost
                 }

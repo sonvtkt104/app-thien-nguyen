@@ -1,4 +1,4 @@
-import { Col, Input, Popover, Row } from "antd"
+import { Col, Form, Input, Popover, Row } from "antd"
 import { memo, useState } from "react"
 import { FilterIcon, SearchIcon, Tag } from "../../../../components"
 import { useNavigate } from "react-router-dom"
@@ -7,7 +7,7 @@ function CharityBanner() {
 
     const navigate = useNavigate()
 
-    const [openFilter, setOpenFilter] = useState(false)
+    const [search, setSearch] = useState("")
 
     return (
         <Row
@@ -33,36 +33,51 @@ function CharityBanner() {
                                 </div>
                             </Col>
                         </Row>
-                        <Row>
-                            <span style={{ width: '60%', position: 'relative' }}>
-                                <Input
-                                    className="input-app"
-                                    style={{ width: '100%', margin: 'auto', height: 56, background: '#fff', boxShadow: '0px 10px 40px rgba(56, 56, 58, 0.04)', padding: '28px 60px 28px 55px', borderRadius: '50px' }}
-                                    placeholder='Nhập tên tổ chức'
-                                />
-                                <SearchIcon
-                                    fontSize={26}
-                                    style={{ position: 'absolute', left: 20, top: 15 }}
-                                />
-                                <span
-                                    style={{ position: 'absolute', right: 15, top: 10, cursor: 'pointer' }}
-                                    onClick={() => {
-
-                                    }}
-                                >
-                                    <button
-                                        className="btn-primary"
-                                        style={{borderRadius: 50}}
+                        <Form
+                            name="basic"
+                            onFinish={() => {
+                                console.log("finish")
+                            }}
+                        >
+                            <Row>
+                                <span style={{ width: '60%', position: 'relative' }}>
+                                    <Input
+                                        className="input-app"
+                                        style={{ width: '100%', margin: 'auto', height: 56, background: '#fff', boxShadow: '0px 10px 40px rgba(56, 56, 58, 0.04)', padding: '28px 60px 28px 55px', borderRadius: '50px' }}
+                                        placeholder='Nhập tên tổ chức'
+                                        value={search}
+                                        onChange={(e) => {
+                                            setSearch(e.target.value)
+                                        }}
+                                    />
+                                    <SearchIcon
+                                        fontSize={26}
+                                        style={{ position: 'absolute', left: 20, top: 15 }}
+                                    />
+                                    <span
+                                        style={{ position: 'absolute', right: 15, top: 10, cursor: 'pointer' }}
                                         onClick={() => {
-                                            navigate('/charity-search')
+
                                         }}
                                     >
-                                        Tìm kiếm
-                                    </button>
+                                        <button
+                                            className="btn-primary"
+                                            style={{borderRadius: 50}}
+                                            onClick={() => {
+                                                console.log("finish")
+                                                let url ='/charity-search?s=' + search
+                                                url = url?.trim()?.replaceAll("  ", "-")?.replaceAll(" ", "-")
+                                                console.log(url)
+                                                navigate(url)
+                                            }}
+                                        >
+                                            Tìm kiếm
+                                        </button>
+                                    </span>
+                                    
                                 </span>
-                                
-                            </span>
-                        </Row>
+                            </Row>
+                        </Form>
                     </Col>
                     <Col xs={8} sm={8} md={8} lg={8} xl={8} 
                         style={{height:'100%'}}

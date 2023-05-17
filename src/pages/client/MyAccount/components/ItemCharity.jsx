@@ -7,8 +7,10 @@ import { TickIcon } from "../../../../components"
 
 function ItemCharity({
     data,
-    listCharities,
-    setListCharities
+    listCharityFollow,
+    setListCharityFollow,
+    listCharityFollowOrigin,
+    setListCharityFollowOrigin,
 }) {
 
     /**
@@ -112,27 +114,41 @@ function ItemCharity({
                         if(data.isFollow) { // un follow
                             setFollowCharity(infoUser.id, data.charityId, false).then(res => {
                                 if(res && res.data && res.data.data == 1) {
-                                    let arr = listCharities?.map(charity => {
+                                    let arr = listCharityFollow?.map(charity => {
                                         if(charity?.charityId == data.charityId) {
                                             charity.isFollow = 0
                                         }
                                         return charity
                                     })
+                                    setListCharityFollow && setListCharityFollow(JSON.parse(JSON.stringify(arr)))
 
-                                    setListCharities && setListCharities(JSON.parse(JSON.stringify(arr)))
+                                    let arr1 = listCharityFollowOrigin?.map(charity => {
+                                        if(charity?.charityId == data.charityId) {
+                                            charity.isFollow = 0
+                                        }
+                                        return charity
+                                    })
+                                    setListCharityFollowOrigin && setListCharityFollowOrigin(JSON.parse(JSON.stringify(arr1)))
                                 }
                             })
                         } else { // follow
                             setFollowCharity(infoUser.id, data.charityId, true).then(res => {
                                 if(res && res.data && res.data.data == 1) {
-                                    let arr = listCharities?.map(charity => {
+                                    let arr = listCharityFollow?.map(charity => {
                                         if(charity?.charityId == data.charityId) {
                                             charity.isFollow = 1
                                         }
                                         return charity
                                     })
+                                    setListCharityFollow && setListCharityFollow(JSON.parse(JSON.stringify(arr)))
 
-                                    setListCharities && setListCharities(JSON.parse(JSON.stringify(arr)))
+                                    let arr1 = listCharityFollowOrigin?.map(charity => {
+                                        if(charity?.charityId == data.charityId) {
+                                            charity.isFollow = 1
+                                        }
+                                        return charity
+                                    })
+                                    setListCharityFollowOrigin && setListCharityFollowOrigin(JSON.parse(JSON.stringify(arr1)))
                                 }
                             })
                         }

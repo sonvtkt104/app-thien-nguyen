@@ -1,15 +1,74 @@
 import { Col, Row } from "antd";
-import { FooterClient, HeaderClient } from "../../../components";
+import { FooterClient, HeaderClient, TickIcon } from "../../../components";
 import CharitySearchHeader from "./components/CharitySearchHeader";
 
 
 import './css/index.css'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getAllCharities, setFollowCharity } from "../../../api/charities";
+import { useSelector } from "react-redux";
 
 export default function CharitySearch() {
     const navigate = useNavigate()
-    const [totalSearch, setTotalSearch] = useState(12)
+    const {userType, infoUser} = useSelector(state => state?.app)
+    const [search, setSearch] = useState(new URLSearchParams(window.location.search).get("s") ? (new URLSearchParams(window.location.search).get("s"))?.replaceAll("-", " ")  : "")
+    console.log('search', search)
+
+    const [listCharities, setListCharities] = useState([])
+    const [listCharitiesOrigin, setListCharitiesOrigin] = useState([])
+    /**
+     * data = {
+     *  charityId,
+        charityName,
+        charityImage,
+        charityDescription,
+        isVerified,
+        isFollow, 
+        charityBanner,
+     * }
+     */
+
+    useEffect(() => {
+        getAllCharities().then(res => {
+            let arr = []
+            res?.data?.data?.forEach(item => {
+                console.log("charity", item)
+                let obj =  {
+                    charityId : Number(item.charityId),
+                    charityName : item.charityName,
+                    charityImage : item.charityImage,  
+                    charityDescription: item.charityDescription ,
+                    isVerified: item.isVerified,   
+                    isFollow : Number(item.isFollow),   
+                    charityBanner : item.charityBanner,  
+               }
+
+               arr.push(obj)
+            })
+            setListCharitiesOrigin(JSON.parse(JSON.stringify(arr)))
+
+            if(search) {
+                let result = arr?.filter(charity => {
+                    return charity?.charityName?.replaceAll("-"," ")?.toLowerCase()?.includes(search?.toLowerCase())
+                })
+                setListCharities(JSON.parse(JSON.stringify(result)))
+            } else {
+                setListCharities(JSON.parse(JSON.stringify(arr)))
+            }
+        }) 
+    }, [])
+
+    const handleSearch = () => {
+        if(search) {
+            let result = listCharitiesOrigin?.filter(charity => {
+                return charity?.charityName?.replaceAll("-"," ")?.toLowerCase()?.includes(search?.replaceAll("-"," ")?.toLowerCase())
+            })
+            setListCharities(JSON.parse(JSON.stringify(result)))
+        } else {
+            setListCharities(JSON.parse(JSON.stringify(listCharitiesOrigin)))
+        }
+    }
 
     const charityTheBest = [
         'https://cdn.topcv.vn/60/company_logos/cong-ty-tnhh-transcosmos-viet-nam-63f70af7037aa.jpg',
@@ -20,12 +79,17 @@ export default function CharitySearch() {
         'https://cdn.topcv.vn/60/company_logos/cong-ty-co-phan-smartosc-61d50e76c4aec.jpg',
     ]
 
+    console.log("charity search", {
+        listCharities,
+        listCharitiesOrigin
+    })
+
     return (
         <div className="charity-search-app"
             style={{minHeight: '100vh', background: 'var(--color-background-header)'}}
         >
             <HeaderClient page="charity-all" />
-            <CharitySearchHeader />
+            <CharitySearchHeader search={search} setSearch={setSearch} handleSearch={handleSearch} />
             <div 
                 style={{padding:'16px 0 40px'}}
             >
@@ -47,65 +111,120 @@ export default function CharitySearch() {
                                 >
                                     <div style={{marginBottom: 24}}>
                                         {
-                                            totalSearch > 0 
+                                            (listCharities && listCharities?.length > 0) 
                                             ? (
-                                                <>Tìm thấy <span style={{fontWeight: 600, color: 'var(--color-blue)', fontSize: 16}}>{totalSearch}</span> tổ chức từ thiện</>
+                                                <>Tìm thấy <span style={{fontWeight: 600, color: 'var(--color-blue)', fontSize: 16}}>{listCharities?.length}</span> tổ chức từ thiện</>
                                             )
                                             : "Không tìm thấy tổ chức từ thiện nào phù hợp với yêu cầu của bạn. Xem thêm các tổ chức từ thiện nổi bật khác."
                                         }
                                     </div>
                                     {
-                                        charityTheBest.map((item, i) => (
-                                            <Row
-                                                className="charity-search-item"
-                                                key={i}
-                                                style={{padding: 16, marginBottom: 20, borderRadius: 5, boxShadow: '-1px 1px 6px rgba(0,0,0,.05)', flexWrap: 'nowrap'}}
-                                                onClick={() => {
-                                                    navigate("/profile-charity")
-                                                }} 
-                                            >
-                                                <img 
-                                                    src={item}
-                                                    alt="charity-logo" 
-                                                    style={{
-                                                        width: 80, height: 80, 
-                                                        borderRadius: 4,
-                                                        background: "#FFFF",
-                                                        objectFit: "contain",
-                                                        filter: 'drop-shadow(-1px 1px 6px rgba(0,0,0,.05))',
-                                                        border: '1px solid #f7f7f7',
-                                                        marginRight: 16
+                                        (listCharities && listCharities.length > 0) ? listCharities?.map((item, i) => (
+                                            <div style={{position: 'relative'}}>
+                                                <span style={{color: item?.isFollow ? "var(--color-gray)" : "var(--color-blue)", cursor: 'pointer',
+                                                    position: 'absolute',
+                                                    top: 16,
+                                                    right: 16,
+                                                    zIndex: 1
+                                                }}
+                                                    onClick={() => {
+                                                        console.log('theo doi')
+                                                        if(userType == 'normal_user') { // follow or un follow
+                                                            if(item.isFollow) { // un follow
+                                                                setFollowCharity(infoUser.id, item.charityId, false).then(res => {
+                                                                    if(res && res.data && res.data.data == 1) {
+                                                                        let arr = listCharities?.map(charity => {
+                                                                            if(charity?.charityId == item.charityId) {
+                                                                                charity.isFollow = 0
+                                                                            }
+                                                                            return charity
+                                                                        })
+                                    
+                                                                        setListCharities(JSON.parse(JSON.stringify(arr)))
+                                                                    }
+                                                                })
+                                                            } else { // follow
+                                                                setFollowCharity(infoUser.id, item.charityId, true).then(res => {
+                                                                    if(res && res.data && res.data.data == 1) {
+                                                                        let arr = listCharities?.map(charity => {
+                                                                            if(charity?.charityId == item.charityId) {
+                                                                                charity.isFollow = 1
+                                                                            }
+                                                                            return charity
+                                                                        })
+                                    
+                                                                        setListCharities(JSON.parse(JSON.stringify(arr)))
+                                                                    }
+                                                                })
+                                                            }
+                                                        } else { // login
+                                                            navigate("/login")
+                                                        }
                                                     }}
-                                                />
-                                                <Col
-                                                    style={{padding: '7px 0'}}
+                                                > 
+                                                    {
+                                                        item?.isFollow ? "Hủy theo dõi" : "Theo dõi"
+                                                    }
+                                                </span>
+                                                <Row
+                                                    className="charity-search-item"
+                                                    key={i}
+                                                    style={{padding: 16, marginBottom: 20, borderRadius: 5, boxShadow: '-1px 1px 6px rgba(0,0,0,.05)', flexWrap: 'nowrap', position: 'relative'}}
+                                                    onClick={() => {
+                                                        navigate("/profile-charity")
+                                                    }} 
                                                 >
-                                                    <div style={{fontWeight: '600', fontSize: 16}}>
-                                                        Tổ chức Áo ấm trao em 
-                                                        <span style={{margin: '0 10px', position:'relative', bottom: 4}}>.</span>
-                                                        <span style={{color: "var(--color-blue)", cursor: 'pointer'}}
-                                                            onClick={() => {
-
-                                                            }}
-                                                        > 
-                                                            Theo dõi 
-                                                        </span>
-                                                    </div>
-                                                    <div
+                                                    <img 
+                                                        src={item?.charityImage || "https://scontent.fhan5-9.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-7&_nc_sid=7206a8&_nc_ohc=Y9NY4mwYloEAX9JF1oy&_nc_ht=scontent.fhan5-9.fna&oh=00_AfCL5aPIZO0VHpt0yPVvVv9k1b-71ZSxgskEDgpJsYX8ow&oe=648AEE38"}
+                                                        alt="charity-logo" 
                                                         style={{
-                                                            marginTop: 5,
-                                                            lineHeight: '20px',
-                                                            WebkitLineClamp: 2,
-                                                            overflow: 'hidden',
-                                                            display: '-webkit-box',
-                                                            WebkitBoxOrient: 'vertical'
+                                                            width: 80, height: 80, 
+                                                            borderRadius: 4,
+                                                            background: "#FFFF",
+                                                            objectFit: "contain",
+                                                            filter: 'drop-shadow(-1px 1px 6px rgba(0,0,0,.05))',
+                                                            border: '1px solid #f7f7f7',
+                                                            marginRight: 16
                                                         }}
+                                                    />
+                                                    <Col
+                                                        style={{padding: '7px 0'}}
                                                     >
-                                                        Chúng tôi hoạt động với mục đích giúp đỡ những trẻ em khó khăn và gia đình nghèo trong cộng đồng. Chúng tôi cố gắng cung cấp cho các em cơ hội học tập và phát triển bản thân để họ có thể có một tương lai tốt đẹp hơn. Chân thành cảm ơn sự quan tâm và hỗ trợ của các bạn!
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        ))
+                                                        <Row style={{fontWeight: '600', fontSize: 16}}
+                                                            // justify='space-between'
+                                                        >
+                                                            {item?.charityName}
+                                                            {
+                                                                item?.isVerified ? (
+                                                                    <span style={{marginLeft: 10}}>
+                                                                        <TickIcon  />
+                                                                    </span>
+                                                                ) : ""
+                                                            }
+                                                            {/* <span style={{color: "var(--color-blue)", cursor: 'pointer'}}
+                                                                onClick={() => {
+
+                                                                }}
+                                                            > 
+                                                                Theo dõi 
+                                                            </span> */}
+                                                        </Row>
+                                                        <div
+                                                            style={{
+                                                                marginTop: 5,
+                                                                lineHeight: '20px',
+                                                                WebkitLineClamp: 2,
+                                                                overflow: 'hidden',
+                                                                display: '-webkit-box',
+                                                                WebkitBoxOrient: 'vertical'
+                                                            }}
+                                                        >
+                                                            {item?.charityDescription}
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                            </div>
+                                        )) : ""
                                     }
                                 </div>
                             </Col>
@@ -127,6 +246,7 @@ export default function CharitySearch() {
                                         {
                                             charityTheBest.map((item, i) => (
                                                 <div
+                                                    key={i}
                                                     style={{padding: 15, background: "#FFFF", borderRadius: '50%',
                                                         filter: 'drop-shadow(-1px 1px 6px rgba(0,0,0,.05))',
                                                         border: '1px solid #f7f7f7',

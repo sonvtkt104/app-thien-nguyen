@@ -1,8 +1,62 @@
 import SideBar from "./SideBar";
-import { Row, Col, Input } from "antd";
-import { ItemCampaign } from "../../../components";
+import { Row, Col, Input, Space, Form } from "antd";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getCampaignFollow } from "../../../api/campaigns";
+import { ItemCampaign } from "./components/ItemCampaign";
 
 function CampaignSaved() {
+
+    const {userType, infoUser} = useSelector(state => state?.app)
+    const navigate = useNavigate()
+
+    const [listCampaignFollow, setListCampaignFollow] = useState([])
+    const [listCampaignFollowOrigin, setListCampaignFollowOrigin] = useState([])
+    const [search, setSearch] = useState("")
+
+    useEffect(() => {
+        console.log("campaign follow", userType, infoUser)
+        getCampaignFollow().then(res => {
+            console.log('campaign follow', res.data)
+            let arr = [];
+            res?.data?.forEach(item => {
+                console.log(item)
+                let obj = {
+                    campaignId: item.id,
+                    campaignName: item.campaignName,
+                    campaignImage: item.campaignImage,  // ???
+                    campaignTargetAmount: Number(item.targetAmount),
+                    campaignReceiveAmount: Number(item.receiveAmount),
+                    campaignRegion: item.region,
+                    campaignStatus: item.status,
+                    campaignStartDate: item.startDate,
+                    campaignStopDate: item.stopDate,
+                    campaignTargeObject: item.targetObject,
+                    charityId: item?.organization.id,
+                    charityName: item?.organization.charityName,
+                    charityAvatar: item?.organization.avatar,
+                    charityIsVerified: item?.organization.isVerificated,
+                    isFollow: 1
+                }
+                arr.push(obj)
+            })
+            console.log('arrr list campaign follow', arr)
+            setListCampaignFollow(arr)
+            setListCampaignFollowOrigin(arr)
+        })
+    }, [])
+
+    const handleSearch = () => {
+        if(search) {
+            let result = listCampaignFollowOrigin?.filter(campaign => {
+                return campaign?.campaignName?.toLowerCase()?.includes(search?.toLowerCase())
+            })
+            setListCampaignFollow(JSON.parse(JSON.stringify(result)))
+        } else {
+            setListCampaignFollow(JSON.parse(JSON.stringify(listCampaignFollowOrigin)))
+        }
+    }
 
 
     const globalSearch = (value) => {
@@ -27,28 +81,52 @@ function CampaignSaved() {
         <SideBar>
             <div className="cs-title">
                 <h2>Danh sách các Cuộc vận động</h2>
-                <Input.Search
-                    placeholder="Tìm kiếm..."
-                    allowClear
-                    enterButton="Search"
-                    // size="large"
-                    onSearch={(value) => {
-                        globalSearch(value)
+                <Form
+                    name="basic"
+                    onFinish={() => {
+                        console.log("finish")
+                        handleSearch()
                     }}
-                    onChange={(e) => {
-                        globalSearch(e.target.value)
-                    }}
-                    className='cs-input-search'
-                />
+                >
+                    <Row justify={"end"}>
+                      <Space>
+                          <input
+                            className="input-app"
+                            placeholder="Nhập tên cuộc vận động"
+                            type="search"
+                            value={search}
+                            onChange={(e) => {
+                                setSearch(e.target.value)
+                            }}
+                            style={{
+                              minWidth: 300,
+                              height: 40
+                            }}
+                          />
+                          <button className="btn-primary">
+                              Tìm kiếm
+                          </button>
+                      </Space>
+                  </Row>
+                </Form>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", flexWrap:"wrap" }} >
                 {
-                    [1, 2, 3, 4, 5, 6, 7].map((item, index) => (
+                    (listCampaignFollow && listCampaignFollow.length > 0) ? listCampaignFollow?.map((item, index) => (
                         <ItemCampaign
                             key={index}
                             style={{ width: "48%", marginBottom: 30 }}
+                            data={item}
+                            listCampaignFollow={listCampaignFollow}
+                            setListCampaignFollow={setListCampaignFollow}
+                            listCampaignFollowOrigin={listCampaignFollowOrigin}
+                            setListCampaignFollowOrigin={setListCampaignFollowOrigin}
                         />
-                    ))
+                    )): (
+                        <div>
+                            Không tìm thấy cuộc vận động nào. Hãy theo dõi các <span className="link-app" style={{color: 'var(--color-blue)', fontWeight: '600', cursor: 'pointer'}} onClick={() => {navigate('/campaign-all')}}>Cuộc vận động</span> ngay bây giờ
+                        </div>
+                    )
                 }
             </div>
         </SideBar>
