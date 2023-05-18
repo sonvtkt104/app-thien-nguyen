@@ -3,12 +3,13 @@ import { Link, useNavigate, useLocation } from "react-router-dom"
 import { Menu, Modal } from "antd"
 import HomeHeader from "../Home/components/HomeHeader";
 import { logOutApp } from "./MyAccountService";
+import { handleLogout } from "../../Authentication/HandleUserInfomation";
 
 function SideBar({children,key})  {
     const navigate = useNavigate()
     const selectedKey = useLocation().pathname
 
-    const handleLogOut = () => {
+    const handleLogOutApp = () => {
         Modal.confirm({
             title: `Bạn có chắc chắn, bạn muốn Đăng xuất?`,
             okText: "Có",
@@ -17,6 +18,7 @@ function SideBar({children,key})  {
             onOk: () => {
                 logOutApp().then(res => {
                     if(res?.status === 200) {
+                        handleLogout()
                         navigate('/')
                     }
                 })
@@ -60,7 +62,7 @@ function SideBar({children,key})  {
                         {label:"Tổ chức đã theo dõi", key: '3', onClick: () => { navigate('/my-account/organization-follow')}},
                         {label:"Cuộc vận động đã lưu", key: '4', onClick: () => { navigate('/my-account/campaign-saved')}},
                         // {label:"Thoát", key: '5', onClick: () => { navigate('/')}},
-                        {label:"Đăng xuất", key: '5', onClick: () => { handleLogOut()}},
+                        {label:"Đăng xuất", key: '5', onClick: () => { handleLogOutApp()}},
                         // {label:"Yêu cầu xác nhận", key: '6', onClick: () => { navigate('/my-account/request-confirmation')}},
                         // {label:"Mật khẩu", key: '7', onClick: () => { navigate('/my-account/password')}}
                     ]}
