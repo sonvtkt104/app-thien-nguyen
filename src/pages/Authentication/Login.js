@@ -53,13 +53,9 @@ const LoginPage = () => {
       );
       console.log(accessToken);
 
-<<<<<<< Updated upstream
       dispatch(setInfoUser(data?.data?.user))
 
-      const roleId = data.data.user.roleId;
-=======
-      const roleId = data.data.user.RoleId;
->>>>>>> Stashed changes
+      const roleId = data?.data?.user?.roleId || data?.data?.user?.RoleId;
       if (roleId === 1) {
         dispatch(setUserType('admin'))
         navigate("../admin");
