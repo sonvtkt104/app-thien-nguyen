@@ -55,7 +55,7 @@ const LoginPage = () => {
 
       dispatch(setInfoUser(data?.data?.user))
       const roleId = data.data.user.roleId;
-      
+
       if (roleId === 1) {
         dispatch(setUserType('admin'))
         navigate("../admin");

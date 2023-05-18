@@ -13,6 +13,7 @@ import axios from "axios";
 
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { Modal, Space } from 'antd';
+import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
 const { confirm } = Modal;
 
 
@@ -62,16 +63,16 @@ class CamPaignList extends Component {
                 },
                 {
                     key: "preview",
-                    title: "Xem",
+                    title: "Chế độ xem",
                     dataIndex: "preview",
                     align: 'center',
-                    render: () => {
+                    render: (text, record, index) => {
                         return (
                             <Link
-                                to="/detail-campaign/14" 
+                                to={`/detail-campaign/${record.campaign_id}`} 
                                 className="preview"
                                 target="_blank"
-                            >Preview</Link>
+                            >Xem trước</Link>
                         )
                     }
                 },
@@ -167,21 +168,12 @@ class CamPaignList extends Component {
     }
 
     getData = async () => {
-        await axios({
-            method: 'post',
-            url: 'http://localhost:8089/charity/access/token',
-            headers: {}, 
-            data: {
-              user_id: 2,
-              token: 'abcd'
-            }
-          });
-
         let res = await axios({
             method: 'get',
             url: 'http://localhost:8089/charity/campaign/get-all',
             headers: {
-                token: 'abcd'
+                Authorization: `Bearer ${getTokenFromCookies()}`,
+                Token: getTokenFromCookies()
             }
         }).then(res => res.data);
         if(res && res.length > 0) {
@@ -189,8 +181,8 @@ class CamPaignList extends Component {
             dataAllCampaigns = res.map((item, index) => ({
                 key: index,
                 name: item.campaignName,
-                receive: 0,
-                complete: '0%',
+                receive: item.receiveAmount,
+                complete: `${(item.receiveAmount/item.targetAmount * 100).toFixed(2)}%`,
                 target: item.targetAmount,
                 status: item.status,
                 campaign_id: item.id,
@@ -243,7 +235,8 @@ class CamPaignList extends Component {
                 method: 'delete',
                 url: `http://localhost:8089/charity/campaign/delete-campaign?campaign-id=${record.campaign_id}`,
                 headers: {
-                    token: 'abcd'
+                    Authorization: `Bearer ${getTokenFromCookies()}`,
+                    Token: getTokenFromCookies()
                 },
             });
             toast.success('Đã xóa cuộc vận động này!');
