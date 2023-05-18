@@ -190,10 +190,7 @@ function ModalCreateCampaign({
     
             getData();
             handleOk()
-            setTimeout(() => {
-                window.location.reload()
-            }, 1000)
-
+            
         }
 
     }
