@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component, useMemo } from "react";
 import { ArrowLeftIcon, PageLayout, SegmentedApp, TableApp } from "../../../components";
 import { Button, Divider, Modal } from "antd";
 import { Link } from "react-router-dom";
@@ -18,9 +18,13 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 
+import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
+
 const { confirm } = Modal;
 
 function CamPaignPreview() {
+
+    let { campaignId } = useParams();
 
     let [isOpenModalCreatePost, setIsOpenModalCreatePost] = useState(false)
     let [isOpenModalEditPost, setIsOpenModalEditPost] = useState(false)
@@ -85,10 +89,11 @@ function CamPaignPreview() {
     ]
 
     const showDeleteConfirm = (record) => {
-        // console.log(typeof campaignId);
-        // console.log(typeof record.postId.toString());
-        // return;
-        setPostId(record.postId.toString())
+        // console.log(campaignId);
+        // console.log(record)
+        // setPostId(record.postId)
+        // console.log(postId)
+        // return;     
         confirm({
           title: 'Bạn muốn xóa bài viết này?',
           icon: <ExclamationCircleFilled />,
@@ -100,9 +105,10 @@ function CamPaignPreview() {
           async onOk() {
             await axios({
                 method: 'delete',
-                url: `http://localhost:8089/charity/post/delete-post?campaign-id=${campaignId}&post-id=${postId}`,
+                url: `http://localhost:8089/charity/post/delete-post?campaign-id=${campaignId}&post-id=${record.postId}`,
                 headers: {
-                    token: 'abcd'
+                    Authorization: `Bearer ${getTokenFromCookies()}`,
+                    Token: getTokenFromCookies()
                 },
             });
             toast.success('Đã xóa bài viết này!');
@@ -249,7 +255,6 @@ function CamPaignPreview() {
                         
     }
 
-    let { campaignId } = useParams();
 
     const [nameCampaign, setNameCampaign] = useState('')
     const [targetAudience, setTargetAudience] = useState('')
@@ -267,9 +272,11 @@ function CamPaignPreview() {
                 method: 'get',
                 url: `http://localhost:8089/charity/campaign/get-by-id?campaign-id=${campaignId}`,
                 headers: {
-                    token: 'abcd'
+                    Authorization: `Bearer ${getTokenFromCookies()}`,
+                    Token: getTokenFromCookies()
                 }
             }).then(res => res.data)
+            
             if(res && res.organization && res.organization.id) {
                 setNameCampaign(res.campaignName)
                 setTargetAudience(res.targetObject)
@@ -286,7 +293,8 @@ function CamPaignPreview() {
                 method: 'get',
                 url: `http://localhost:8089/charity/post/get-post?campaign-id=${campaignId}`,
                 headers: {
-                    token: 'abcd'
+                    Authorization: `Bearer ${getTokenFromCookies()}`,
+                    Token: getTokenFromCookies()
                 }
             }).then(res => res.data)
             if(res) {
@@ -302,7 +310,8 @@ function CamPaignPreview() {
                     method: 'get',
                     url: 'http://localhost:8089/charity/address/provinces',
                     headers: {
-                        token: 'abcd'
+                        Authorization: `Bearer ${getTokenFromCookies()}`,
+                        Token: getTokenFromCookies()
                     }
                 }).then(res => res.data)
                 setProvinces(res)
@@ -315,13 +324,14 @@ function CamPaignPreview() {
     }, [])
 
     useEffect(() => {
-        (async () => {
+        ;(async () => {
             try {
                 let res = await axios({
                     method: 'get',
                     url: `http://localhost:8089/charity/campaign/get-statement-campaign?campaign-id=${campaignId}`,
                     headers: {
-                        token: 'abcd'
+                        Authorization: `Bearer ${getTokenFromCookies()}`,
+                        Token: getTokenFromCookies()
                     }
                 }).then(res => res.data)
                 if(res && res.length > 0) {
@@ -335,16 +345,23 @@ function CamPaignPreview() {
         })()
     }, [])
 
-    // console.log(provinces)
-    let dataRegion = provinces.filter(item => (item.codeName === region))
-    // console.log(dataRegion)
+    let splitRegion = region.split(', ')
+    let dataRegion = provinces.filter((item) => {
+        let temp = splitRegion.filter((split) => {
+            return (split === item.codeName)
+        })
+        return temp.length > 0;
+    })
+
+    let resultRegion = dataRegion.map(data => data.fullName).join(', ')    
 
     const getDataPosts = async () => {
         let res = await axios({
             method: 'get',
             url: `http://localhost:8089/charity/post/get-post?campaign-id=${campaignId}`,
             headers: {
-                token: 'abcd'
+                Authorization: `Bearer ${getTokenFromCookies()}`,
+                    Token: getTokenFromCookies()
             }
         }).then(res => res.data)
         if(res) {
@@ -406,7 +423,7 @@ function CamPaignPreview() {
                                             <div className='description-info'>Mưa lũ đã đi qua để lại cho các tỉnh miền Trung sự hoang tàn, đổ nát, hàng nghìn ngôi nhà, công trình, cơ sở hạ tầng bị hư hỏng, nhiều tài sản, gia súc, hoa màu... bị lũ cuốn trôi. Sau những cơn bão, lũ lại là những cảnh con mất mẹ, vợ mất chồng, cha mẹ mất con... Cảnh người dân ngơ ngác, đau đáu nhìn về những ngôi nhà thân yêu của mình đang ngập trong biển nước mà nước mắt cứ mãi mãi dâng trào. Giờ đây, ở nơi đó, sau lũ lụt là bao nhọc nhằn vất vả để ổn định cuộc sống, là bao nhiêu nỗi lo canh cánh bên lòng nào là sách vở, quần áo cho con đến trường, lúa giống cho vụ mùa tới, thuốc men để phòng dịch bệnh, tiền đâu để sửa chữa nhà, mua sắm vật dụng sinh hoạt hàng ngày...</div>
                                         </div> */}
                                         <div className="form-group">
-                                            <div className='description-name'>Đối tượng:</div>
+                                            <div className='description-name'>Đối tượng hướng tới:</div>
                                             <div className='description-info'>{targetAudience}</div>
                                         </div>
                                         <div className="form-group">
@@ -419,7 +436,8 @@ function CamPaignPreview() {
                                         </div>
                                         <div className="form-group">
                                             <div className='description-name'>Khu vực kêu gọi:</div>
-                                            <div className='description-info'>{dataRegion[0]?.fullName}</div>
+                                            {/* <div className='description-info'>{dataRegion[0]?.fullName}</div> */}
+                                            <div className='description-info'>{resultRegion}</div>
                                         </div>
                                     </div>
                                 </div>

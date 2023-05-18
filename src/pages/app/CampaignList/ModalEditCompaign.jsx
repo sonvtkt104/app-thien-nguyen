@@ -13,6 +13,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import axios from "axios";
 import { toast } from "react-toastify";
+import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
 
 function ModalEditCampaign({
     isOpenModalEdit,
@@ -41,7 +42,7 @@ function ModalEditCampaign({
     const [previewTitle, setPreviewTitle] = useState('');
     const [previewOpen, setPreviewOpen] = useState(false);
     const [provinces, setProvinces] = useState([])
-    let [optionSelect, setOptionSelect] = useState({})
+    let [optionSelect, setOptionSelect] = useState([])
 
 
         const getBase64 = (file) =>
@@ -99,7 +100,7 @@ function ModalEditCampaign({
                     method: 'get',
                     url: 'http://localhost:8089/charity/address/provinces',
                     headers: {
-                        token: 'abcd'
+                        token: getTokenFromCookies()
                     }
                 });
                 if(res.data && res.data.length > 0) {
@@ -130,9 +131,10 @@ function ModalEditCampaign({
                         method: 'get',
                         url: `http://localhost:8089/charity/campaign/get-by-id?campaign-id=${campaign_id}`,
                         headers: {
-                            token: 'abcd'
+                            token: getTokenFromCookies()
                         }
                     }).then(res => res.data)
+                    
                     if(res && res.organization && res.organization.id) {
                         setNameCampaign(res.campaignName)
                         setTargetAudience(res.targetObject)
@@ -140,8 +142,18 @@ function ModalEditCampaign({
                         setStartDay(res.startDate)
                         setEndDay(res.stopDate)
                         setRegion(res.region)
-                        let optionRegion = provinces.filter(item => (item.codeName === res.region))
-                        setOptionSelect(optionRegion[0])
+                        
+                        let splitRegion = res.region.split(', ')
+                        let dataRegion = provinces.filter((item) => {
+                            let temp = splitRegion.filter((split) => {
+                                return (split === item.codeName)
+                            })
+                            return temp.length > 0;
+                        })
+                        dataRegion = dataRegion.map(item => ({label: item.fullName, value: item.codeName}))
+    
+                        setOptionSelect(dataRegion)
+
                         setIntroductoryPost(res.introduction)
                     }
                 }
@@ -173,7 +185,7 @@ function ModalEditCampaign({
                 method: 'put',
                 url: `http://localhost:8089/charity/campaign/update-campaign`,
                 headers: {
-                    token: 'abcd'
+                    token: getTokenFromCookies()
                 },
                 data: {
                     campaign_id: campaign_id,
@@ -201,6 +213,10 @@ function ModalEditCampaign({
         }
     }
 
+    const handleOnChangeRegion = (value) => {
+        setOptionSelect(value)
+        setRegion(value.join(', '))
+    }
 
 
     return (
@@ -313,7 +329,7 @@ function ModalEditCampaign({
                                         return option.label.toLowerCase().includes(input.toLowerCase())
                                         }
                                     }
-                                    onChange={(value) => {setOptionSelect(value); setRegion(value)}}
+                                    onChange={(value) => handleOnChangeRegion(value)}
                                 />                                    
                             </Col>
                             

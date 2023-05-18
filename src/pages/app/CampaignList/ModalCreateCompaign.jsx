@@ -14,6 +14,7 @@ import 'react-calendar/dist/Calendar.css';
 
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
 
 
 
@@ -97,7 +98,8 @@ function ModalCreateCampaign({
                     method: 'get',
                     url: 'http://localhost:8089/charity/address/provinces',
                     headers: {
-                        token: 'abcd'
+                        Authorization: `Bearer ${getTokenFromCookies()}`,
+                        Token: getTokenFromCookies()
                     }
                 });
                 if(res.data && res.data.length > 0) {
@@ -132,6 +134,14 @@ function ModalCreateCampaign({
         }
     ]
 
+    let optionStatus = [
+        {
+            label: 'Đang vận động',
+            value: 'Đang vận động',
+        },
+    ]
+
+
     const handlePressOk = async () => {
         // console.log(nameCampaign)
         // console.log(targetAudience)
@@ -139,6 +149,7 @@ function ModalCreateCampaign({
         // console.log(startDay)
         // console.log(endDay)
         // console.log(region)
+        // console.log(region.join(', '))
         // console.log(introductoryPost)
         // return;
         if(!nameCampaign || !targetAudience || !targetCampaign || !startDay || !endDay || !region || !introductoryPost) {
@@ -149,13 +160,14 @@ function ModalCreateCampaign({
                 method: 'post',
                 url: 'http://localhost:8089/charity/campaign/add-campaign',
                 headers: {
-                    token: 'abcd'
+                    Authorization: `Bearer ${getTokenFromCookies()}`,
+                    Token: getTokenFromCookies()
                 },
                 data: {
                     campaign_name: nameCampaign,
                     introduction: introductoryPost,
                     target_object: targetAudience,
-                    region: region,
+                    region: region.join(', '),
                     status: 'Đang vận động',
                     campaign_type: 'Tạm thời chưa biết',
                     target_amount: targetCampaign,
@@ -170,7 +182,7 @@ function ModalCreateCampaign({
     
             setNameCampaign('')
             setTargetAudience('')
-            setRegionOptions(regionOptions)
+            setRegion('')
             setTargetCampaign('')
             setStartDay('')
             setEndDay('')
@@ -178,6 +190,10 @@ function ModalCreateCampaign({
     
             getData();
             handleOk()
+            setTimeout(() => {
+                window.location.reload()
+            }, 1000)
+
         }
 
     }
@@ -306,10 +322,9 @@ function ModalCreateCampaign({
                                         }
                                     }
                                     onChange={
-                                        (value) => {
+                                        (value) => {                                                                                     
                                             setRegion(prev => {
                                                 let arrRegions = [...prev, value]
-                                                console.log(arrRegions[arrRegions.length - 1])
                                                 return arrRegions[arrRegions.length - 1]
                                             })
                                         }
