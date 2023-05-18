@@ -30,7 +30,7 @@ function MyDonation() {
     getDonationPostUser().then(res => {
       setDonations(res.data.filter(data => {
         return data.listRequest.some(value =>
-          value.id === getUserInfomationFromCookies().charityId
+          value.id === getUserInfomationFromCookies()?.charityId
         )
       }))
     })
@@ -45,7 +45,7 @@ function MyDonation() {
   useEffect(() => {
     setDonations(donations)
     setSearcheddata(() => donations?.filter(data => {
-      return data.listRequest.some(value => value.id === getUserInfomationFromCookies().charityId && value.status === segment)
+      return data.listRequest.some(value => value.id === getUserInfomationFromCookies()?.charityId && value.status === segment)
     }))
   }, [segment, dataDetail])
 
@@ -56,7 +56,7 @@ function MyDonation() {
   useEffect(() => {
     setDonations(donations)
     setSearcheddata(() => donations?.filter(data => {
-      return data.listRequest.some(value => value.id === getUserInfomationFromCookies().charityId && value.status === segment)
+      return data.listRequest.some(value => value.id === getUserInfomationFromCookies()?.charityId && value.status === segment)
     }))
   }, [donations])
 
@@ -209,7 +209,7 @@ function MyDonation() {
       onOk: () => {
         setReloadData({})
         const dataUpdateDonationPostUser = { ...rowData }
-        dataUpdateDonationPostUser.listRequest = rowData.listRequest.filter(data => data.id !== getUserInfomationFromCookies().charityId)
+        dataUpdateDonationPostUser.listRequest = rowData.listRequest.filter(data => data.id !== getUserInfomationFromCookies()?.charityId)
         
         delete dataUpdateDonationPostUser.organizationReceived
         delete dataUpdateDonationPostUser.donorName
@@ -259,7 +259,7 @@ function MyDonation() {
 
   const globalSearch = (value) => {
     const filteredData = donations.filter(data => {
-      return data.listRequest.some(value => value.id === getUserInfomationFromCookies().charityId && value.status === segment)
+      return data.listRequest.some(value => value.id === getUserInfomationFromCookies()?.charityId && value.status === segment)
     }).filter((donation) => {
       return (
         donation.name.toLowerCase().includes(value.toLowerCase()) ||

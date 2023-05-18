@@ -614,8 +614,14 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                 >
                                     {imageBanner ? <img src={imageBanner} alt="avatar" style={{ width: '100%' }} /> :
                                         <div>
-                                            {loadingBanner ? <LoadingOutlined /> : <PlusOutlined />}
-                                            <div style={{ marginTop: 8 }}>Tải ảnh Banner</div>
+                                            {loadingBanner ? <LoadingOutlined /> : (
+                                                <>
+                                                    <PlusOutlined />
+                                                    <div style={{ marginTop: 8 }}>Tải ảnh Banner</div>
+                                                </>
+                                            )
+                                            }
+                                            
                                         </div>
                                     }
                                 </Upload>
