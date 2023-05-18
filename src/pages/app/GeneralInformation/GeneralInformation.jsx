@@ -48,8 +48,8 @@ function GeneralInformation() {
                         style={{marginRight: "8px"}}
                         onClick={() => {
                             // navigate("/profile-charity")
-                            window.open('/profile-charity', '_blank');
-                            // window.open(`/profile-charity/${charity.id}`, '_blank');
+                            // window.open('/profile-charity', '_blank');
+                            window.open(`/profile-charity/${charity?.charityId}`, '_blank');
                         }}
                     >
                         Xem chi tiết

@@ -82,8 +82,8 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
                     <a
                         key={rowData.id}
                         className="cm-border-or"
-                        // href= {`http://localhost:3000/profile-charity1/${rowData.id}`}
-                        href="http://localhost:3000/profile-charity"
+                        href= {`http://localhost:3000/profile-charity1/${rowData.id}`}
+                        // href="http://localhost:3000/profile-charity"
                         target="_blank"
                     >
                         {rowData.name}
@@ -161,32 +161,25 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
                                     <p><b>Tổ chức yêu cầu:</b> {dataDetail.organizationReceived}</p> : dataDetail.status === "Từ chối nhận" ?
                                         <p><b>Tổ chức đã từ chối:</b> {dataDetail.organizationReceived}</p> : 
                                            <div>
-                                                <p><b>Danh sách tổ chức yêu cầu xác nhận:</b> {dataDetail.organizationReceived}</p>
-                                                <div>
-                                                    <Table
-                                                        className="cm-table"
-                                                        bordered
-                                                        rowKey={(rowdata) =>  rowdata.id}
-                                                        columns={columns}
-                                                        dataSource={dataDetail?.listRequest.filter(data => data.status === "Đợi xác nhận")}
-                                                        pagination={false}
-                                                        width={200}
-                                                    />
-                                                </div>
+                                                <p><b>Danh sách tổ chức yêu cầu xác nhận:</b> {dataDetail?.listRequest.length === 0 ? "Chưa có tổ chức nào" : ""}</p>
+                                                {
+                                                    dataDetail?.listRequest.length !== 0 ? (
+                                                        <div>
+                                                            <Table
+                                                                className="cm-table"
+                                                                bordered
+                                                                rowKey={(rowdata) =>  rowdata.id}
+                                                                columns={columns}
+                                                                dataSource={dataDetail?.listRequest.filter(data => data.status === "Đợi xác nhận")}
+                                                                pagination={false}
+                                                                width={200}
+                                                            />
+                                                        </div>
+                                                    ) : ""
+                                                }
                                            </div>
                         }
 
-                        {/* <p><b>{dataDetail.status === "Chưa nhận" ? "Yêu cầu xác nhận" : dataDetail.status === "Đã nhận" ? "Tổ chức đã nhận" : dataDetail.status === "Đã nhận"}</b></p>
-                        <div>
-                            <Table
-                                className="cm-table"
-                                bordered
-                                rowKey={(rowdata) => rowdata.id}
-                                columns={columns}
-                                dataSource={dataDetail?.listRequest}
-                                pagination={false}
-                            />
-                        </div> */}
                     </div>
                 )
             }

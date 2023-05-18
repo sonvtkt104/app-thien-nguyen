@@ -1,7 +1,7 @@
 import "./css/DonationPost.css"
 import { useEffect, useRef, useState } from 'react'
 import { Modal, Image, Button, Checkbox, Form, Input, Upload, Select } from 'antd'
-import { PlusOutlined, CloseOutlined, LoadingOutlined } from '@ant-design/icons';
+import { PlusOutlined, CloseOutlined, LoadingOutlined, UploadOutlined } from '@ant-design/icons';
 import { createDonationPostUser, getCurrentUser, getListDistrictByID, getListProvince, getListWardByID, updateDonationPostUser, getAllCharity } from "./MyAccountService";
 import { uploadImage } from "../../app/HomePageCharity/HomePageCharityService";
 import { toast } from "react-toastify";
@@ -12,48 +12,24 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
     const [listCharity, setListCharity] = useState([]);
     const [dataInfo, setDataInfo] = useState();
 
-    useEffect(()=> {
+    useEffect(() => {
         getCurrentUser().then(res => {
             setDataInfo(res?.data?.data)
             form.setFieldsValue(dataUpdate)
-            // dataInfo.current = res.data.data
-            // console.log(typeof res?.data?.data.id)
-            // const data = res?.data?.data
-            // if(Object.keys(dataUpdate).length === 0) {
-            //     form.setFieldsValue({
-            //         donorName: data?.name,
-            //         phone: data?.phoneNumber,
-            //         province: data?.province,
-            //         district: data?.district,
-            //         ward: data?.ward,
-            //         address: data?.address,
-            //     });
-            // } else {
-            //     form.setFieldsValue(dataUpdate)
-            // }
         })
-    },[])
-    console.log(listCharity)
+    }, [])
+    // console.log(listCharity)
 
     useEffect(() => {
         getAllCharity().then(res => {
-            console.log(res)
-            setListCharity([{charityId: "Tất cả", charityName: "Tất cả"}, ...res?.data?.data])
-            // let data = [{id: "Tất cả", name: "Tất cả"}, ...res?.data?.data]
-            // let data = [{id: "Tất cả", name: "Tất cả"}, ...res?.data?.data]
-            // setListCharity(() => {
-            //     let data = res?.data?.data?.map(item => {
-            //         return {...item, id: parseInt(item.id)}
-            //     })
-            //     data = [{charityId: "Tất cả", charityName: "Tất cả"},...data]
-            //     return data
-            // })
+            // console.log(res)
+            setListCharity([{ charityId: "Tất cả", charityName: "Tất cả" }, ...res?.data?.data])
         })
-    },[])
+    }, [])
 
     // console.log(dataInfo.current)
 
-    console.log(dataUpdate)
+    // console.log(dataUpdate)
     const valueImages = dataUpdate?.images !== "" ? dataUpdate?.images?.split(", ").reduce((a, b) => {
         return [...a, { url: b }]
     }, []) : []
@@ -77,14 +53,14 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
 
     useEffect(() => {
         getListProvince().then(res => {
-            setListAddress({ ...listAddress, "province": res.data }) 
+            setListAddress({ ...listAddress, "province": res.data })
         })
 
     }, [])
 
     useEffect(() => {
         if (idProvince !== undefined) {
-            form.setFieldsValue({district: null, ward: null})
+            form.setFieldsValue({ district: null, ward: null })
             getListDistrictByID(idProvince).then(res => {
                 setListAddress({ ...listAddress, "district": res.data })
             })
@@ -93,15 +69,14 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
 
     useEffect(() => {
         if (idDistrict !== undefined) {
-            form.setFieldsValue({ward: null})
+            form.setFieldsValue({ ward: null })
             getListWardByID(idDistrict).then(res => {
-                setListAddress({ ...listAddress, "ward": res.data})
+                setListAddress({ ...listAddress, "ward": res.data })
             })
         }
     }, [idDistrict])
 
 
-    // console.log(dataUpdate)
     const onClose = () => {
         setOpen(false);
         handleCloseModal()
@@ -121,7 +96,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
             dataUpdateDonationPostUser.organizationReceived = organizationReceived === "Tất cả" ? null : organizationReceived
             dataUpdateDonationPostUser.idOrganization = idOrganization === "Tất cả" || idOrganization === null ? null : idOrganization
             dataUpdateDonationPostUser.status = idOrganization === "Tất cả" || idOrganization === null ? "Chưa nhận" : "Chờ xác nhận"
-            
+
             if (dataUpdate.status === "Chưa nhận") {
                 if (dataUpdate.listRequest.length === 0) {
                     console.log("chua nhan bang 0")
@@ -203,12 +178,12 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
             delete dataUpdateDonationPostUser.ward
             delete dataUpdateDonationPostUser.district
             delete dataUpdateDonationPostUser.address
-            
+
             console.log(dataUpdateDonationPostUser);
 
             updateDonationPostUser(dataUpdateDonationPostUser).then(res => {
                 console.log(res)
-                if(res?.status === 200) {
+                if (res?.status === 200) {
                     getListDonation();
                     onClose()
                     toast.success("Chỉnh sửa bài đăng ủng hộ thành công!")
@@ -216,15 +191,15 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                     toast.error("Hệ thống lỗi, xin thử lại sau!")
                 }
             })
-            .catch(error => {
-                toast.error("Hệ thống lỗi, xin thử lại sau!")
-            })
+                .catch(error => {
+                    toast.error("Hệ thống lỗi, xin thử lại sau!")
+                })
 
         } else {
             console.log(images)
-            values.images = images?.reduce((a, b) => {
+            values.images = images ? images?.reduce((a, b) => {
                 return [...a, b.url]
-            }, []).join(", ")
+            }, []).join(", ") : ""
             values.idDonor = dataInfo.id
             values.organizationReceived = organizationReceived === "Tất cả" ? null : organizationReceived
             values.idOrganization = idOrganization === "Tất cả" ? null : idOrganization
@@ -233,7 +208,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
             delete values.organizationReceived
             console.log("tao data", values)
             createDonationPostUser(values).then(res => {
-                if(res?.status === 200) {
+                if (res?.status === 200) {
                     getListDonation();
                     onClose()
                     console.log(res)
@@ -242,10 +217,10 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                     toast.error("Hệ thống lỗi, xin thử lại sau!")
                 }
             })
-            .catch(error => {
-                toast.error("Hệ thống lỗi, xin thử lại sau!")
-            })
-           
+                .catch(error => {
+                    toast.error("Hệ thống lỗi, xin thử lại sau!")
+                })
+
         }
     };
 
@@ -303,7 +278,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
     const onChangeProvince = (value, value1) => {
         setIdProvince(value1.id)
     };
-    
+
     const onSearchProvince = (value, value1) => {
         console.log("search province")
     };
@@ -311,17 +286,17 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
     const onChangeDistrict = (value, value1) => {
         setIdDistrict(value1.id)
     };
-    
+
     const onSearchDistrict = (value, value1) => {
     };
 
     const onChangeWard = (value, value1) => {
-       
+
     };
-    
+
     const onSearchWard = (value, value1) => {
     };
-    
+
 
     return (
         <div>
@@ -358,7 +333,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                     onFinishFailed={onFinishFailed}
                 >
                     <div style={{ height: 500, overflowY: "scroll", paddingRight: 8, marginBottom: 15 }}>
-                        
+
                         <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                             <Form.Item
                                 style={{ width: "49%", marginBottom: 16 }}
@@ -399,49 +374,8 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                                     }
                                     fieldNames={{ label: "charityName", value: "charityId", options: "options" }}
                                     options={listCharity}
-                                    // options={[
-                                    //     {
-                                    //         value: "Tất cả",
-                                    //         label: "Tất cả",
-                                    //         organization: "hai"
-                                    //     },
-                                    //     {
-                                    //         value: "abc123",
-                                    //         label: "Áo ấm cho em",
-                                    //         organization: "hai1"
-                                    //     },
-                                    //     {
-                                    //         value: "abc123456789",
-                                    //         label: "tu thien ha noi",
-                                    //         organization: "hai2"
-                                    //     },
-                                    //     {
-                                    //         value: "abc12345678910",
-                                    //         label: "toi yeu nam dinh",
-                                    //         organization: "hai3"
-                                    //     },
-                                    //     {
-                                    //         value: "hai123",
-                                    //         label: "to chuc hai khuat",
-                                    //         organization: "hai4"
-                                    //     },
-
-                                    // ]}
                                 />
                             </Form.Item>
-                            {/* <Form.Item
-                                style={{ width: "49%", marginBottom: 10 }}
-                                label="Mã bài đăng"
-                                name="id"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Vui lòng nhập Code bài đăng!',
-                                    },
-                                ]}
-                            >
-                                <Input />
-                            </Form.Item> */}
                         </div>
 
                         <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
@@ -460,20 +394,20 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                             </Form.Item>
 
                             <Form.Item
-                            style={{ width: "49%", marginBottom: 16 }}
-                            label="Địa chỉ muốn ủng hộ"
-                            name="donationAddress"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập Địa chỉ muốn ủng hộ!',
-                                },
-                            ]}
-                        >
-                            <Input />
-                        </Form.Item>
+                                style={{ width: "49%", marginBottom: 16 }}
+                                label="Địa chỉ muốn ủng hộ"
+                                name="donationAddress"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Vui lòng nhập Địa chỉ muốn ủng hộ!',
+                                    },
+                                ]}
+                            >
+                                <Input />
+                            </Form.Item>
                         </div>
-                        
+
                         <Form.Item
                             style={{ width: "100%", marginBottom: 16 }}
                             label="Mô tả"
@@ -494,7 +428,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                                 listType="picture-card"
                                 name="images"
                                 onChange={handleChange}
-                                fileList={images}
+                                fileList={images || []}
                                 onRemove={onRemoveImage}
                                 onPreview={(file) => { setPreviewOpen(true); setPreviewImage(file.url) }}
                                 customRequest={() => false}
@@ -505,10 +439,15 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                                     setLoading(false)
                                 }}
                             >
+                                
                                 <div>
-                                        {loading ? <LoadingOutlined /> : <PlusOutlined />}
-                                        <div style={{ marginTop: 8 }}>Tải ảnh</div>
-                                    </div>
+                                    {loading ? <LoadingOutlined /> : (
+                                        <>
+                                            <PlusOutlined />
+                                            <div style={{ marginTop: 8 }}>Tải ảnh</div>
+                                        </>
+                                    )}
+                                </div>
                             </Upload>
                         </Form.Item>
                     </div>
@@ -559,145 +498,3 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
 export default DonationPostDialog
 
 
-
-
-// <h3 style={{ marginBottom: 6 }}>Thông tin liên hệ</h3>
-//                         <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-//                             <Form.Item
-//                                 style={{ width: "66%", marginBottom: 10 }}
-//                                 label="Họ và tên"
-//                                 name="donorName"
-//                                 rules={[
-//                                     {
-//                                         required: true,
-//                                         message: 'Vui lòng nhập Họ và tên!',
-//                                     },
-//                                 ]}
-//                             >
-//                                 <Input />
-//                             </Form.Item>
-//                             <Form.Item
-//                                 style={{ width: "32%", marginBottom: 10 }}
-//                                 label="Số điện thoại"
-//                                 name="phone"
-//                                 rules={[
-//                                     {
-//                                         required: true,
-//                                         message: 'Vui lòng nhập Số điện thoại!',
-//                                     },
-//                                 ]}
-//                             >
-//                                 <Input />
-//                             </Form.Item>
-//                             {/* <Form.Item
-//                                 style={{ width: "32%", marginBottom: 10 }}
-//                                 label="Email"
-//                                 name="email"
-//                                 rules={[
-//                                     {
-//                                         type: 'email',
-//                                         message: 'Email không hợp lệ!',
-//                                     },
-//                                     {
-//                                         required: true,
-//                                         message: 'Vui lòng nhập Email!',
-//                                     },
-//                                 ]}
-//                             >
-//                                 <Input />
-//                             </Form.Item> */}
-
-//                         </div>
-//                         <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-//                             <Form.Item
-//                                 style={{ width: "32%", marginBottom: 10 }}
-//                                 label="Tỉnh/Thành Phố"
-//                                 name="province"
-//                                 rules={[
-//                                     {
-//                                         required: true,
-//                                         message: 'Vui lòng chọn Tỉnh/Thành Phố!',
-//                                     },
-//                                 ]}
-//                             >
-//                                 <Select
-//                                     showSearch
-//                                     placeholder="Chọn Tỉnh/Thành Phố"
-//                                     optionFilterProp="children"
-//                                     onChange={onChangeProvince}
-//                                     onSearch={onSearchProvince}
-//                                     onSelect={(value) => console.log(value)}
-//                                     filterOption={(input, option) =>
-//                                         (option?.fullName ?? '').toLowerCase().includes(input.toLowerCase())
-//                                     }
-//                                     fieldNames={{ label: "fullName", value: "fullName", options: "options" }}
-//                                     options={listAddress.province}
-//                                 />
-//                             </Form.Item>
-//                             <Form.Item
-//                                 style={{ width: "32%", marginBottom: 10 }}
-//                                 label="Huyện/Quận"
-//                                 name="district"
-//                                 rules={[
-//                                     {
-//                                         required: true,
-//                                         message: 'Vui lòng chọn Huyện/Quận!',
-//                                     },
-//                                 ]}
-//                             >
-//                                 <Select
-//                                     showSearch
-//                                     placeholder="Chọn Huyện/Quận"
-//                                     optionFilterProp="children"
-//                                     onChange={onChangeDistrict}
-//                                     onSearch={onSearchDistrict}
-//                                     onSelect={(value) => console.log(value)}
-//                                     filterOption={(input, option) =>
-//                                         (option?.fullName ?? '').toLowerCase().includes(input.toLowerCase())
-//                                     }
-//                                     fieldNames={{ label: "fullName", value: "fullName", options: "options" }}
-//                                     options={listAddress.district}
-//                                 />
-//                             </Form.Item>
-//                             <Form.Item
-//                                 style={{ width: "32%", marginBottom: 10 }}
-//                                 label="Phường/Xã"
-//                                 name="ward"
-//                                 rules={[
-//                                     {
-//                                         required: true,
-//                                         message: 'Vui lòng chọn Phường/Xã!',
-//                                     },
-//                                 ]}
-//                             >
-//                                 <Select
-//                                     showSearch
-//                                     placeholder="Chọn Phường/Xã"
-//                                     optionFilterProp="children"
-//                                     onChange={onChangeWard}
-//                                     onSearch={onSearchWard}
-//                                     onSelect={(value) => console.log(value)}
-//                                     filterOption={(input, option) =>
-//                                         (option?.fullName ?? '').toLowerCase().includes(input.toLowerCase())
-//                                     }
-//                                     fieldNames={{ label: "fullName", value: "fullName", options: "options" }}
-//                                     options={listAddress.ward}
-//                                 />
-//                             </Form.Item>
-
-//                         </div>
-//                         <Form.Item
-//                             style={{ width: "100%", marginBottom: 10 }}
-//                             label="Địa chỉ cụ thể"
-//                             name="address"
-//                             rules={[
-//                                 {
-//                                     required: true,
-//                                     message: 'Vui lòng nhập Địa chỉ của bạn!',
-//                                 },
-//                             ]}
-//                         >
-//                             <Input/>
-//                         </Form.Item>
-
-//                         <h3 style={{ marginBottom: 6 }}>Thông tin ủng hộ</h3>
