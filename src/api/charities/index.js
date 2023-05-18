@@ -16,13 +16,42 @@ export const getAllCharities = async () => {
     return res
 }
 
-export const getInfoCharityCurrent = async () => {
+export const getInfoCharity = async (charityId) => {
     const res = await axios({
         method: 'GET',
-        url: URL_API_KIEN + '/user/current-user',
+        url: URL_API_KIEN + '/charity/' + charityId,
         headers: {
-            Authorization: `Bearer ${token}`,
-          },
+            Authorization: token ? `Bearer ${token}` : "",
+        },
+    });
+
+    return res
+}
+
+export const setFollowCharity = async (userId, charityId, isFollow) => {
+    const res = await axios({
+        method: 'POST',
+        url: URL_API_KIEN + '/user/charity-follow/change-status',
+        data: {
+            userId: userId,
+            charityId: charityId,
+            isFollow: isFollow ? true : false
+        },
+        headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+        },
+    });
+
+    return res
+}
+
+export const getCharityFollow = async (userId) => {
+    const res = await axios({
+        method: 'GET',
+        url: URL_API_KIEN + '/user/charity-follow/' + userId,
+        headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+        },
     });
 
     return res

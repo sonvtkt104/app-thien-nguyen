@@ -8,145 +8,18 @@
   /* font-family: "Quicksand", sans-serif; */
 }
 
-.switch {
-  display: flex;
-  gap: 2rem;
-  margin-left: auto;
-  margin-right: auto;
+.titleCharity {
+  margin-bottom: 24px;
 }
 
-.header-table {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 5rem;
-}
-
-.header-table button {
-  display: block;
-  font-size: 0.9rem;
-  padding: 10px 5px;
-  width: 11rem;
-  height: 36px;
-  border-radius: 6px;
-  background-color: rgb(78, 115, 223);
-  color: white;
-  outline: none;
-  border: none;
-}
-
-.header-table button:hover {
-  cursor: pointer;
-  background-color: rgba(78, 115, 223, 0.9);
-}
-
-.header-title {
-  font-size: 1.4rem;
-  font-weight: 600;
-  /* font-family: "Quicksand", sans-serif; */
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-.table-user th {
-  text-align: left;
-}
-
-table,
-.table-user th,
-.table-user td {
-  /* border: 1px solid #ccc; */
-  height: 52px;
-  padding-left: 1.4rem;
-  font-size: 0.8rem;
-  text-align: left;
-}
-
-.table-user tr:hover {
-  background-color: #f8fafb;
-}
-
-.list {
-  margin: auto;
-  background-color: white;
-}
-
-.user-list {
-  display: flex;
-  height: 60px;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 60px;
-  padding-right: 60px;
-}
-
-.user-list p {
-  font-size: 16px;
-}
-
-.first-column {
-  background-color: #f2f5f7;
-}
-
-.edit {
-  margin-right: 16px;
-}
-
-.stt {
-  width: 6%;
-}
-
-.userName {
-  width: 20%;
-}
-
-.status {
-  width: 16%;
-}
-
-.email {
-  width: 22%;
-}
-
-.role {
-  width: 16%;
-}
-
-.editHeader {
-  width: 20%;
-}
-
-footer {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.8rem;
-  padding: 30px;
-}
-
-.footer-text {
-  color: #cacbd6;
-}
-
-.footer-control {
-  width: 200px;
-  display: flex;
-  align-items: center;
-}
-
-.icon-left,
-.icon-right {
-  display: block;
+.user-button {
   border: none;
   background-color: transparent;
-  font-size: 1.1rem;
-  padding: 8px 12px;
 }
 
-.icon-left:hover,
-.icon-right:hover {
+.user-icon-ban,
+.user-icon-un-ban {
+  width: 20px;
+  height: 20px;
   cursor: pointer;
-  color: #cacbd6;
 }

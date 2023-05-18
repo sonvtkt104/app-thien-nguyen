@@ -1,12 +1,28 @@
 import "./css/SideBar.css"
 import { Link, useNavigate, useLocation } from "react-router-dom"
-import { Menu } from "antd"
+import { Menu, Modal } from "antd"
 import HomeHeader from "../Home/components/HomeHeader";
-
+import { logOutApp } from "./MyAccountService";
 
 function SideBar({children,key})  {
     const navigate = useNavigate()
     const selectedKey = useLocation().pathname
+
+    const handleLogOut = () => {
+        Modal.confirm({
+            title: `Bạn có chắc chắn, bạn muốn Đăng xuất?`,
+            okText: "Có",
+            cancelText: "Quay lại",
+            okType: "danger",
+            onOk: () => {
+                logOutApp().then(res => {
+                    if(res?.status === 200) {
+                        navigate('/')
+                    }
+                })
+            }
+        });
+    }
     
     const highlight = () => {
         // console.log(selectedKey)
@@ -43,7 +59,8 @@ function SideBar({children,key})  {
                         {label:"Bài đăng ủng hộ", key: '2', onClick: () => { navigate('/my-account/donation-post')}},
                         {label:"Tổ chức đã theo dõi", key: '3', onClick: () => { navigate('/my-account/organization-follow')}},
                         {label:"Cuộc vận động đã lưu", key: '4', onClick: () => { navigate('/my-account/campaign-saved')}},
-                        {label:"Thoát", key: '5', onClick: () => { navigate('/')}},
+                        // {label:"Thoát", key: '5', onClick: () => { navigate('/')}},
+                        {label:"Đăng xuất", key: '5', onClick: () => { handleLogOut()}},
                         // {label:"Yêu cầu xác nhận", key: '6', onClick: () => { navigate('/my-account/request-confirmation')}},
                         // {label:"Mật khẩu", key: '7', onClick: () => { navigate('/my-account/password')}}
                     ]}

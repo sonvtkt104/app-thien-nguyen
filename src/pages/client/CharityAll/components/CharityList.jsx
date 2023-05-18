@@ -3,7 +3,13 @@ import { Col, Row, Tag } from "antd"
 import { memo } from "react"
 import ItemCharity from "./ItemCharity"
 
-function CharityList() {
+function CharityList({
+    listCharities,
+    setListCharities
+}) {
+
+    console.log("listCharities", listCharities)
+
     return (
         <Row justify='center'
             style={{padding :'50px 0'}}
@@ -19,13 +25,13 @@ function CharityList() {
                 </Row>
                 <Row justify='space-between'>
                     {
-                        [1,2,3,4,5,6,7,8,9,10].map((item, i) => (
-                            <Col xs={8} sm={8} md={8} lg={8} xl={8}
+                        (listCharities && listCharities?.length > 0) ? listCharities?.map((item, i) => (
+                            <Col xs={8} sm={8} md={8} lg={8} xl={8} key={i}
                                 style={{padding: '0 10px', marginBottom: 30}}
                             >
-                                <ItemCharity />
+                                <ItemCharity data={item} listCharities={listCharities} setListCharities={setListCharities}/>
                             </Col>
-                        ))
+                        )) : "Không tìm thấy tổ chức từ thiện nào"
                     }
                 </Row>
             </Col>

@@ -3,7 +3,7 @@ import { Button, Image, Popover, Modal } from "antd"
 import React, { useEffect, useState } from 'react';
 import ModalDetail from "../../app/Donation/ModalDetail";
 import { MoreOutlined, FrownOutlined, SmileOutlined, HeartFilled, WhatsAppOutlined, StarFilled } from '@ant-design/icons';
-import { deleteDonationPostUser, deleteDonationPostUserDonor, getAllCharity, updateDonationPostUser } from "./MyAccountService";
+import { deleteDonationPostUser, deleteDonationPostUserDonor, deleteDonationPostUserRequest, getAllCharity, updateDonationPostUser } from "./MyAccountService";
 import { toast } from "react-toastify";
 
 function ItemDonationPost({ data, handleOpenModal, getListDonation, handleReload }) {
@@ -58,7 +58,8 @@ function ItemDonationPost({ data, handleOpenModal, getListDonation, handleReload
                         const newListRequest = data.listRequest = data.listRequest.map(data => {
                             return { ...data, status: "Bị hủy" }
                         })
-                        updateDonationPostUser(data.id, {...data, idDonor: null, listRequest: newListRequest}).then(res => {
+                        console.log(data);
+                        deleteDonationPostUserRequest(data.id, newListRequest).then(res => {
                             if(res?.status === 200) {
                                 getListDonation();
                                 toast.success("Xóa bài đăng ủng hộ thành công!")

@@ -6,7 +6,7 @@ const Manage = (props) => {
   return (
     <div className={classes.container}>
       <main className={classes.main}>
-        <ManageControl />
+        <ManageControl className={classes.control} />
         <div>
           <ManageHeader />
           {props.children}

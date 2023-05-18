@@ -46,7 +46,7 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
                         // getListDonation();
                         // onClose()
                         handleReload({})
-                        toast.success("Đã xóa thành công!")
+                        toast.success("Xác nhận thành công!")
                     } else {
                         toast.error("Hệ thống lỗi, xin thử lại sau!")
                     }

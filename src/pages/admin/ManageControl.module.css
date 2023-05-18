@@ -51,8 +51,13 @@
   margin-right: 4px;
 }
 
+.manage-list a {
+  opacity: 0.5;
+}
+
 .manage-list a.active {
   color: #4e73df;
+  opacity: 1;
 }
 
 .active path {
