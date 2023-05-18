@@ -4,6 +4,7 @@ import { memo, useMemo, useState } from "react"
 import { NotificationIcon, SettingIcon } from "../Icon"
 import { Link, useNavigate } from "react-router-dom"
 import { logOutApp } from "../../pages/client/MyAccount/MyAccountService"
+import { handleLogout } from "../../pages/Authentication/HandleUserInfomation"
 
 function Header({
 
@@ -14,7 +15,7 @@ function Header({
     const [openNotice, setOpenNotice] = useState(false)
     const [openProfile, setOpenProfile] = useState(false)
 
-    const handleLogOut = () => {
+    const handleLogOutApp = () => {
         Modal.confirm({
             title: `Bạn có chắc chắn, bạn muốn Đăng xuất?`,
             okText: "Có",
@@ -23,6 +24,7 @@ function Header({
             onOk: () => {
                 logOutApp().then(res => {
                     if(res?.status === 200) {
+                        handleLogout()
                         navigate('/')
                     }
                 })
@@ -142,7 +144,7 @@ function Header({
                                         Thay đổi mật khẩu
                                     </Row> */}
                                     <Row className="app-hover-background" style={{ padding: '8px 16px', lineHeight: '24px'}} 
-                                        onClick={handleLogOut}
+                                        onClick={handleLogOutApp}
                                     >
                                         <span style={{marginRight: 16}}><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" className="style-scope yt-icon" style={{width: 24, height: 24}}><g className="style-scope yt-icon"><path d="M20,3v18H8v-1h11V4H8V3H20z M11.1,15.1l0.7,0.7l4.4-4.4l-4.4-4.4l-0.7,0.7l3.1,3.1H3v1h11.3L11.1,15.1z" className="style-scope yt-icon"></path></g></svg></span>
                                         Đăng xuất

@@ -11,6 +11,7 @@ import axios from "axios";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { useParams } from "react-router-dom";
+import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
 
 function ModalEditPost({
     isOpenModalEditPost,
@@ -59,7 +60,8 @@ function ModalEditPost({
                         method: 'get',
                         url: `http://localhost:8089/charity/post/get-post-by-id?post-id=${postId}`,
                         headers: {
-                            token: 'abcd'
+                            Authorization: `Bearer ${getTokenFromCookies()}`,
+                            Token: getTokenFromCookies()
                         }
                     }).then(res => res.data)
                     // console.log(res)
@@ -87,7 +89,8 @@ function ModalEditPost({
                 method: 'put',
                 url: 'http://localhost:8089/charity/post/update-post',
                 headers: {
-                    token: 'abcd'
+                    Authorization: `Bearer ${getTokenFromCookies()}`,
+                    Token: getTokenFromCookies()
                 },
                 data: {
                     post_id: postId,

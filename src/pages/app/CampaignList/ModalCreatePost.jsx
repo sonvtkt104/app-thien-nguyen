@@ -11,6 +11,7 @@ import axios from "axios";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { useParams } from "react-router-dom";
+import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
 
 function ModalCreatePost({
     isOpenModalCreatePost,
@@ -21,7 +22,7 @@ function ModalCreatePost({
 }) {
     const {TextArea} = Input;
     const [namePost, setNamePost] = useState('')
-    const [typePost, setTypePost] = useState(0)
+    const [typePost, setTypePost] = useState('')
     const [contentPost, setContentPost] = useState('')
 
     const {campaignId} = useParams();
@@ -61,7 +62,8 @@ function ModalCreatePost({
                 method: 'post',
                 url: 'http://localhost:8089/charity/post/add-post',
                 headers: {
-                    token: 'abcd'
+                    Authorization: `Bearer ${getTokenFromCookies()}`,
+                    Token: getTokenFromCookies()
                 },
                 data: {
                     campaign_id: campaignId,
@@ -73,7 +75,7 @@ function ModalCreatePost({
             })
             toast.success('Tạo mới bài viết thành công!');
             setNamePost('')
-            setTypePost(options[0])
+            setTypePost('')
             setContentPost('')
             handleOk()
             getDataPosts()
@@ -110,6 +112,7 @@ function ModalCreatePost({
                                  <label>Kiểu bài viết</label>
                                  <br />
                                  <Select
+                                    value={typePost}
                                     showSearch
                                     allowClear
                                     style={{width: '100%'}}

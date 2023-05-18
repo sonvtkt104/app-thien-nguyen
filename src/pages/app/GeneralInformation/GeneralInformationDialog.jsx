@@ -625,7 +625,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                     listType="picture-card"
                                     name="charityImages"
                                     onChange={handleChangeListImages}
-                                    fileList={images}
+                                    fileList={images || []}
                                     onRemove={onRemoveImage}
                                     onPreview={(file) => { setPreviewOpen(true); setPreviewImage(file.url) }}
                                     customRequest={() => false}
@@ -638,8 +638,12 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                     }}
                                 >
                                     <div>
-                                        {loading ? <LoadingOutlined /> : <PlusOutlined />}
-                                        <div style={{ marginTop: 8 }}>Tải ảnh</div>
+                                        {loading ? <LoadingOutlined /> : (
+                                            <>
+                                                <PlusOutlined />
+                                                <div style={{ marginTop: 8 }}>Tải ảnh</div>
+                                            </>
+                                        )}
                                     </div>
                                 </Upload>
                             </Form.Item>

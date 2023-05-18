@@ -25,58 +25,33 @@ import './DetailCampaign.scss';
 import { useEffect } from "react";
 import { useRef } from "react";
 import campaignService from "../../app/CampaignList/CampaignService";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
+import moment from "moment";
+import Search from "antd/es/input/Search";
 
 function DetailCampaign() {
 
   const [tab, setTab] = useState(0);
   const [valueSearch, setValueSearch] = useState()
 
-  const { Search } = Input;
+  // const { Search } = Input;
 
-  const dataDonation = [
-    {
-      key: 1,
-      name: 'Xuân Sơn',
-      amount: '400.000đ',
-      note: 'ủng hộ',
-      date: '22/03/2023'
-    },
-    {
-      key: 2,
-      name: 'Trịnh Hoàng',
-      amount: '200.000đ',
-      note: 'ủng hộ',
-      date: '22/03/2023'
-    },
-    {
-      key: 3,
-      name: 'Bá Tiên',
-      amount: '1.000.000đ',
-      note: 'ủng hộ',
-      date: '22/03/2023'
-    },
-    {
-      key: 4,
-      name: 'Văn Hải',
-      amount: '2.300.000đ',
-      note: 'ủng hộ',
-      date: '22/03/2023'
-    },
-    {
-      key: 5,
-      name: 'Văn Kiên',
-      amount: '400.000đ',
-      note: 'ủng hộ',
-      date: '22/03/2023'
-    },
-    {
-      key: 6,
-      name: 'Mạnh Linh',
-      amount: '400.000đ',
-      note: 'ủng hộ',
-      date: '22/03/2023'
-    }
-  ];
+  const {organizationId, campaignId} = useParams();
+
+  const [nameCampaign, setNameCampaign] = useState('')
+  const [nameOrganization, setNameOrganization] = useState('')
+  const [targetAmount, setTargetAmount] = useState('')
+  const [targetObject, setTargetObject] = useState('')
+  const [receiveAmount, setReceiveAmount] = useState('')
+  const [region, setRegion] = useState('')
+  const [follow, setFollow] = useState(0)
+  let [provinces, setProvinces] = useState([])
+  let [dataPosts, setDataPosts] = useState([])
+
+  let [dataDonation, setDataDonation] = useState([])
+  let [dataDonationSearch, setDataDonationSearch] = useState([])
 
   const columns = [
     {
@@ -101,32 +76,180 @@ function DetailCampaign() {
     },
   ];
 
-  const handleOnSearch = () => {
-    console.log("hi");
-    console.log(valueSearch)
-  };
+  // const handleOnSearch = () => {
+  //   console.log(valueSearch)
+  // };
 
   const btnBackToTop = useRef();
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
       let btn = btnBackToTop.current;
-      if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
-        btn.style.display = "flex";
+      if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+        if(btn) {
+          btn.style.display = "flex";
+        }
       } else {
-        btn.style.display = "none";
+        if(btn) {
+          btn.style.display = "none";
+        }
       }
     })
 
     ;(async () => {
       try {
-        let res = await campaignService.getAllCampaign();
-        console.log(res);
+        let res = await axios({
+          method: 'get',
+          url: `http://localhost:8089/charity/campaign/get-by-id?campaign-id=${campaignId}`,
+          headers: {
+            Authorization: `Bearer ${getTokenFromCookies()}`,
+            Token: getTokenFromCookies()
+          }
+        }).then(res => res.data)
+        // console.log(res)
+        if(res && res.organization && res.organization.id) {
+          setNameCampaign(res.campaignName)
+          setNameOrganization(res.organization.charityName)
+          setTargetObject(res.targetObject)
+          setTargetAmount(res.targetAmount)
+          setReceiveAmount(res.receiveAmount)
+          setRegion(res.region)
+        }
       } catch (err) {
         console.log(err)
       }
     })()
+
+    ;(async () => {
+      try {
+          let res = await axios({
+              method: 'get',
+              url: 'http://localhost:8089/charity/address/provinces',
+              headers: {
+                  Authorization: `Bearer ${getTokenFromCookies()}`,
+                  Token: getTokenFromCookies()
+              }
+          }).then(res => res.data)
+          setProvinces(res)
+          
+      } catch (error) {
+          console.log(error)
+      }
+
+  })()
+
   }, [])
+
+  let [totalDonor, setTotalDonor] = useState(0)
+  useEffect(() => {
+    ;(async () => {
+        try {
+            let res = await axios({
+                method: 'get',
+                url: `http://localhost:8089/charity/campaign/get-statement-campaign?campaign-id=${campaignId}`,
+                headers: {
+                    Authorization: `Bearer ${getTokenFromCookies()}`,
+                    Token: getTokenFromCookies()
+                }
+            }).then(res => res.data)
+            if(res && res.length > 0) {
+                setTotalDonor(res.length)
+            }
+            
+        } catch (error) {
+            console.log(error)
+        }
+    })()
+    ;(async () => {
+        try {
+            let res = await axios({
+                method: 'get',
+                url: `http://localhost:8089/charity/campaign/campaign-get-follower?campaign-id=${campaignId}`,
+                headers: {
+                    Authorization: `Bearer ${getTokenFromCookies()}`,
+                    Token: getTokenFromCookies()
+                }
+            }).then(res => res.data)
+            if(res.length > 0) {
+              setFollow(res.length)
+            }            
+        } catch (error) {
+            console.log(error)
+        }
+    })()
+  }, [])
+
+  useEffect(() => {
+
+    ;(async () => {
+        try {
+            let res = await axios({
+                method: 'get',
+                url: `http://localhost:8089/charity/campaign/get-statement-campaign?campaign-id=${campaignId}`,
+                headers: {
+                    Authorization: `Bearer ${getTokenFromCookies()}`,
+                    Token: getTokenFromCookies()
+                }
+            }).then(res => res.data)
+            if(res && res.length > 0) {
+                let data = res.map((item, index) => ({
+                  key: index,
+                  name: item.name,
+                  amount: item.amount,
+                  note: item.note,
+                  date: moment(item.timeCreate).format("DD/MM/YYYY"),
+                  user_id: item.id,
+                  type: item.type
+                }))
+                setDataDonation(data)
+                setDataDonationSearch(data)
+            }
+            
+        } catch (error) {
+            console.log(error)
+        }
+    })()
+
+    ;(async () => {
+      try {
+          let res = await axios({
+              method: 'get',
+              url: `http://localhost:8089/charity/post/get-post?campaign-id=${campaignId}`,
+              headers: {
+                  Authorization: `Bearer ${getTokenFromCookies()}`,
+                  Token: getTokenFromCookies()
+              }
+          }).then(res => res.data)
+          // console.log(res)
+          if(res && res.length > 0) {
+            setDataPosts(res)
+          }
+          
+      } catch (error) {
+          console.log(error)
+      }
+  })()
+  }, [])
+
+  let splitRegion = region.split(', ')
+  let dataRegion = provinces.filter((item) => {
+        let temp = splitRegion.filter((split) => {
+            return (split === item.codeName)
+        })
+        return temp.length > 0;
+  })
+
+  let resultRegion = dataRegion.map(data => data.fullName).join(', ')
+
+  const globalSearch = (value) => {
+    const filteredData = dataDonation.filter((data) => {
+        return (
+            data.name.toLowerCase().includes(value.toLowerCase())
+        )
+    })
+    setDataDonationSearch(filteredData)
+}
+
 
   return (
     <div className="main">
@@ -158,7 +281,7 @@ function DetailCampaign() {
                     style={{position: 'absolute', top: 20, left: 10, opacity: '0.9'}}
                   >
                     <Tag 
-                      title="Tre em"
+                      title={targetObject}
                       color="#FFFFFF"
                       background="var(--color-blue)"
                       style={{fontSize: 14, fontWeight: '600', padding: 10}}
@@ -186,7 +309,8 @@ function DetailCampaign() {
                     className="h1-app"
                     style={{fontSize: 20, paddingRight: 30}}
                   >
-                    Chung tay chăm sóc sức khỏe cho 200 trẻ nhập cư tại Trường tình thương Ái Linh
+                    {/* Chung tay chăm sóc sức khỏe cho 200 trẻ nhập cư tại Trường tình thương Ái Linh */}
+                    {nameCampaign}
                   </div>
                   <Row
                     style={{lineHeight: '60px', fontWeight: '600', fontSize: 16, marginTop: 10}}
@@ -194,7 +318,8 @@ function DetailCampaign() {
                     <img src="https://givenow.vn/wp-content/uploads/2023/02/NhaCuaVui-scaled.jpeg" alt="" 
                       style={{width: 60, height: 60, borderRadius: '50%', marginRight: 12}}
                     />
-                    Xuan Son
+                    {/* Xuan Son */}
+                    {nameOrganization}
                     <div
                       style={{marginLeft: 12}}
                     >
@@ -207,42 +332,47 @@ function DetailCampaign() {
                     <span style={{fontSize: 16, fontWeight: '600', color: 'var(--color-gray)'}}>
                       Mục tiêu cuộc vận động
                     </span>
-                    <span style={{fontSize: 16, fontWeight: '600', color: '#666d7a'}}>
-                      50.000.000đ
+                    <span style={{fontSize: 18, fontWeight: '600', color: '#666d7a'}}>
+                      {/* 50.000.000đ */}
+                      {`${new Intl.NumberFormat('vi-VI').format(targetAmount)} VNĐ`}
                     </span>
                   </Row>  
                   <Row
                     style={{margin: '10px 0'}}
                   >
-                    <Progress strokeColor={'#6DCCE3'} percent={50} showInfo={false} />
+                    <Progress strokeColor={'#6DCCE3'} percent={receiveAmount/targetAmount * 100} showInfo={false} />
                   </Row>
-                  <Row justify='space-between'
+                  <Row justify='space-between' align={'center'}
                     
                   >
                     <Col>
-                      <span style={{marginRight: 10, }}>
+                      <span style={{marginRight: 4, }}>
                         <TeamOutlined style={{fontSize: 20, fontWeight: '600', color: 'var(--color-gray)', transform: 'translateY(-3px)'}} />
                       </span>
                       <span style={{fontSize: 16, fontWeight: '600', color: 'var(--color-gray)'}}>
-                        12 lượt ủng hộ
+                        {`${totalDonor} lượt ủng hộ`}
                       </span>
 
-                      <span style={{marginRight: 10, marginLeft: 24, }}>
+                      <span style={{marginRight: 4, marginLeft: 12, }}>
                         <HeartOutlined style={{fontSize: 20, fontWeight: '600', color: 'var(--color-gray)', color: 'var(--color-gray)', transform: 'translateY(-3px)'}} />
                       </span>
                       <span style={{fontSize: 16, fontWeight: '600', color: 'var(--color-gray)'}}>
-                        10 lượt yêu thích
+                        {/* 10 lượt yêu thích */}
+                        {`${follow} lượt yêu thích`}
                       </span>
 
                     </Col>
+                    
                     <Col>
-                      <span style={{fontSize: 16, fontWeight: '600', color: 'var(--color-gray)'}}>
-                        Đã đạt được : {"  "}
-                      </span>
-                      <span style={{fontSize: 18, fontWeight: '600', color: 'var(--color-blue)'}}>
-                        22.000.000đ
-                      </span>
-                    </Col>
+                        <span style={{fontSize: 16, fontWeight: '600', color: 'var(--color-gray)'}}>
+                          Đã nhận được : {"  "}
+                        </span>
+                        <span style={{fontSize: 16, fontWeight: '600', color: 'var(--color-blue)'}}>
+                          {/* 22.000.000đ */}
+                          {`${new Intl.NumberFormat('vi-VI').format(receiveAmount)} VNĐ`}
+                        </span>
+                      </Col>
+                    
                   </Row> 
                   <Row
                     justify='end'
@@ -341,21 +471,22 @@ function DetailCampaign() {
                       <div className="class-common">Đơn vị tổ chức kêu gọi:</div>
                                           <div>
                                                 <Space align={"center"}>
-                                                  <span style={{ fontSize: "16px", fontWeight: 600}}> Tổ chức thiện nguyện A</span>
-                                                  <CheckCircleTwoTone
+                                                  <span style={{ fontSize: 18, fontWeight: 600}}> {nameOrganization}</span>
+                                                  {/* <CheckCircleTwoTone
                                                     style={{ fontWeight: 600, fontSize: "20px" }}
                                                     twoToneColor="#52c41a"
-                                                  />
+                                                  /> */}
+                                                  <TickIcon />
                                                 </Space>
                                           </div>
-                                        <div className="class-common">Chi tiết về cuộc vận động:</div>
-                                        <div>
+                                        {/* <div className="class-common">Chi tiết về cuộc vận động:</div> */}
+                                        {/* <div>
                                         Để kịp thời chia sẻ với những khó khăn, thiệt hại to lớn của đồng bào và các địa phương bị thiệt hại do mưa lũ gây ra, và hưởng ứng lời kêu gọi của Chính phủ và Bộ Tài chính, Công đoàn Bộ cũng đã phát động toàn thể cán bộ, công chức, viên chức, người lao động ở các đơn vị thuộc và trực thuộc Bộ Tài chính tham gia ủng hộ đồng bào các tỉnh miền Trung bị thiệt hại do bão lũ tối thiểu 01 ngày lương.
-                                        </div>
+                                        </div> */}
                                         <div className="class-common">Đối tượng vận động: </div>
-                                        <div>Toàn bộ người dân trong nước</div>
-                                        <div className="class-common">Địa chỉ vận động:</div>
-                                        <div>Nhân dân miền Trung</div>
+                                        <div>{targetObject}</div>
+                                        <div className="class-common">Khu vực kêu gọi:</div>
+                                        <div>{resultRegion}</div>
                                         <div className="class-common">Video & Ảnh mô tả:</div>
                                         <div style={{display: 'flex', justifyContent: 'center'}}>
                                           <iframe width="60%" height="315" src="https://www.youtube.com/embed/im08YRl3df4" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
@@ -383,7 +514,7 @@ function DetailCampaign() {
                   <div className="detail-campaign-statement">
                   <Row justify={"end"}>
                       <Space>
-                          <InputApp
+                          {/* <InputApp
                             placeholder="Nhập tên người dùng"
                             type="search"
                             onSearch={() => {
@@ -393,8 +524,22 @@ function DetailCampaign() {
                             onChange={(e) => {
                               setValueSearch(e.target.value)
                             }}
+                            // onSearch={(value) => globalSearch(value)}
                             style={{
                               minWidth: 300
+                            }}
+                          /> */}
+                          <Search
+                            placeholder="Tìm kiếm người ủng hộ"
+                            allowClear
+                            style={{
+                                width: 300,
+                            }}
+                            onSearch={(value) => {
+                                globalSearch(value)
+                            }} 
+                            onChange={(e) => {
+                                globalSearch(e.target.value)
                             }}
                           />
                           <button className="btn-primary">
@@ -406,55 +551,10 @@ function DetailCampaign() {
                   <div className="table-donation-client">
                     <TableApp 
                       columns={columns}
-                      dataSource={dataDonation}
+                      dataSource={dataDonationSearch}
                     />
                   </div>
-                    {/* <table className="detail-campaign-table">
-                        <tbody>
-                            <tr className="detail-campaign-table">
-                                <th>Họ và tên</th>
-                                <th>Số tiền quyên góp</th>
-                                <th>Ghi chú</th>
-                                <th>Thời gian</th>
-                            </tr>
-                            <tr className="detail-campaign-table">
-                                <td>Sơn</td>
-                                <td>500.000đ</td>
-                                <td>kcj</td>
-                                <td>22/03/2023</td>
-                            </tr>
-                            <tr className="detail-campaign-table">
-                                <td>Hoàng</td>
-                                <td>500.000đ</td>
-                                <td>ủng hộ</td>
-                                <td>22/03/2023</td>
-                            </tr>
-                            <tr className="detail-campaign-table">
-                                <td>Tiên</td>
-                                <td>300.000đ</td>
-                                <td>pro vjp</td>
-                                <td>22/03/2023</td>
-                            </tr>
-                            <tr className="detail-campaign-table">
-                                <td>Linh</td>
-                                <td>300.000đ</td>
-                                <td>pro vjp</td>
-                                <td>22/03/2023</td>
-                            </tr>
-                            <tr className="detail-campaign-table">
-                                <td>Hải</td>
-                                <td>400.000đ</td>
-                                <td>kcj</td>
-                                <td>22/03/2023</td>
-                            </tr>
-                            <tr className="detail-campaign-table">
-                                <td>Kiên</td>
-                                <td>400.000đ</td>
-                                <td>kcj</td>
-                                <td>22/03/2023</td>
-                            </tr>
-                        </tbody>
-                    </table> */}
+                    
                   </div>
                 }
 
@@ -462,7 +562,7 @@ function DetailCampaign() {
             ) : (
               <div className="list-detail-campaign-activity">
                 {
-                  [1,2,3].map((item, i) => (
+                  dataPosts.map((item, i) => (
                     <div 
                       key={i}
                       className="detail-campaign-activity"
@@ -475,12 +575,15 @@ function DetailCampaign() {
                       }}
                     >
                         <div>
-                            <div style={{fontSize: 18, fontWeight: 600}}>Bài đăng ủng hộ bão lũ miền Trung</div>
-                            <div>Thời gian đăng: 22/03/2023</div>
+                            <div style={{fontSize: 20, fontWeight: 600}}>{item.title}</div>
+                            <div>Thời gian đăng: <span style={{fontWeight: 600}}>{moment(item.submitTime).format('DD/MM/YYYY')}</span></div>
+                            <div>Kiểu bài đăng: <span style={{fontWeight: 600}}>{item.type}</span></div>
                         </div>
                         <br />
-                        <div style={{fontSize: 16, fontWeight: 600}}>Mô tả - Giới thiệu:</div>
-                        <div>Trong thời gian vừa qua, thanh thiếu nhi và nhân dân nhiều địa phương trong cả nước, đặc biệt là các tỉnh duyên hải miền Trung, Tây Nguyên phải hứng chịu nhiều thiên tai gây thiệt hại nặng nề về người và của, đời sống của nhân dân gặp nhiều khó khăn; nhằm phát huy tinh thần “Tương thân tương ái”, “Lá lành đùm lá rách” của dân tộc. </div>
+                        <div style={{fontSize: 18, fontWeight: 600}}>Mô tả - Giới thiệu:</div>
+                        <div
+                          dangerouslySetInnerHTML={{__html: item.content}}
+                        />
                         <br />
                         <Row justify="center">
                             <Space wrap>
