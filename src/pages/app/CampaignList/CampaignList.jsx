@@ -181,9 +181,9 @@ class CamPaignList extends Component {
             dataAllCampaigns = res.map((item, index) => ({
                 key: index,
                 name: item.campaignName,
-                receive: item.receiveAmount,
+                receive: `${new Intl.NumberFormat('vi-VI').format(item.receiveAmount)} VNĐ`,
                 complete: `${(item.receiveAmount/item.targetAmount * 100).toFixed(2)}%`,
-                target: item.targetAmount,
+                target: `${new Intl.NumberFormat('vi-VI').format(item.targetAmount)} VNĐ`,
                 status: item.status,
                 campaign_id: item.id,
                 organization_id: item.organization && item.organization.id
@@ -203,18 +203,7 @@ class CamPaignList extends Component {
                 organization_id: record.organization_id
             })
         }
-        // else if(type === 'delete') {
-
-        //     await axios({
-        //         method: 'delete',
-        //         url: `http://localhost:8089/charity/campaign/delete-campaign?campaign-id=${record.campaign_id}`,
-        //         headers: {
-        //             token: 'abcd'
-        //         },
-        //     });
-        //     toast.success('Đã xóa cuộc vận động này!');
-        //     this.getData(); 
-        // }
+        
         else if(type === 'preview') {
 
         }
@@ -330,13 +319,16 @@ class CamPaignList extends Component {
                         
                     </div>
 
-                    <ModalCreateCampaign 
-                        isOpenModalCompaign={isOpenModalCompaign}
-                        handleOk={this.handleOk} 
-                        handleCancel={this.handleCancel}
-                        getData={this.getData}
-                    />
-
+                    {
+                        isOpenModalCompaign ? (
+                            <ModalCreateCampaign 
+                                isOpenModalCompaign={isOpenModalCompaign}
+                                handleOk={this.handleOk} 
+                                handleCancel={this.handleCancel}
+                                getData={this.getData}
+                            />
+                        ) : ''
+                    }
                     <ModalEditCompaign 
                         isOpenModalEdit={isOpenModalEdit}
                         handleOk={this.handleOk} 
