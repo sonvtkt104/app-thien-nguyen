@@ -57,7 +57,7 @@ export default function Router() {
         <Route path="/general-information" element={<GeneralInformation />} />
         <Route path="/campaign-all" element={<CampaignAll />} />
         <Route path="/contact-us" element={<ContactUs />} />
-        <Route path="/profile-charity" element={<ProfileCharity />} />
+        <Route path="/profile-charity/:charityId" element={<ProfileCharity />} />
         <Route path="/charity-all" element={<CharityAll />} />
         <Route path="/charity-search" element={<CharitySearch />} />
         <Route path="/my-account" element={<Account />} />

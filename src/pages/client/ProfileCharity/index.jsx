@@ -4,14 +4,48 @@ import { useEffect, useState } from "react";
 import { FooterClient, HeaderClient, ItemCampaign, SearchIcon } from "../../../components";
 import "./css/index.css"
 import { getInfoCharity } from "../../../api/charities";
+import { useParams } from "react-router-dom";
 
 export default function ProfileCharity() {
     const [tab, setTab] = useState(0)
     const [previewImage, setPreviewImage] = useState(false)
+    const [infoCharity, setInfoCharity] = useState({})
+
+    const { charityId } = useParams()
+    console.log('charityId' ,charityId)
 
     useEffect(() => {
-        getInfoCharity()
+        getInfoCharity(charityId).then(res => {
+            setInfoCharity(JSON.parse(JSON.stringify(res?.data?.data)))
+        })
     }, [])
+
+    /**
+     * infoCharity = { 
+     *  id,
+     *  avatar,
+     *  charityAccountNumber,
+     * charityBank,
+     * charityBanner,
+     * charityDescription,
+     * charityFacebook,
+     * charityFile,
+     * charityImages,
+     * charityInstagram,
+     * charityIntroVideo,
+     * charityLinkedIn,
+     * charityMotto,
+     * charityName,
+     * charityTarget,
+     * charityTwitter,
+     * charityWebsite,
+     * googleMap,
+     * isFollow,
+     * isVerified
+     * }
+     */
+
+    console.log("infoCharity", infoCharity)
 
     return (
         <div>
@@ -29,23 +63,28 @@ export default function ProfileCharity() {
                         style={{background: '#FFFF', borderRadius: '0 0 6px 6px',boxShadow: '-1px 1px 6px rgba(0,0,0,.05)'}}
                     >
                         <div
-                            style={{
-                                backgroundImage: 'url("/images/banner-charity.jpeg")',
-                                backgroundSize: 'cover',
-                                backgroundPosition :'center',
-                                height: 250
-                            }}
+                            style={
+                                infoCharity?.charityBanner ? {
+                                    backgroundImage: 'url("/images/banner-charity.jpeg")',
+                                    backgroundSize: 'cover',
+                                    backgroundPosition :'center',
+                                    height: 250
+                                } : {
+                                    height: 250,
+                                    background: 'rgb(240, 240, 240)'
+                                }
+                            }
                         >
                         </div>
                         <Row
                             style={{padding: '30px 24px 30px 154px', position: 'relative'}}
                             justify='space-between'
                         >
-                            <img src="/images/logo.png" alt="logo" 
+                            <img src={infoCharity?.avatar || "https://scontent.fhan5-9.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-7&_nc_sid=7206a8&_nc_ohc=Y9NY4mwYloEAX9JF1oy&_nc_ht=scontent.fhan5-9.fna&oh=00_AfCL5aPIZO0VHpt0yPVvVv9k1b-71ZSxgskEDgpJsYX8ow&oe=648AEE38"} alt="logo" 
                                 style={{
                                     width :130,
                                     height : 130,
-                                    borderRadius: 8,
+                                    borderRadius: '50%',
                                     position: 'absolute',
                                     left: 24,
                                     bottom: 30,
@@ -57,12 +96,12 @@ export default function ProfileCharity() {
                                 style={{marginLeft: 30}}
                             >
                                 <div style={{fontSize: 24, fontWeight: '600', marginBottom :7}}>
-                                    Tổ chức Áo ấm trao em
+                                    {infoCharity?.charityName}
                                 </div>
                                 <Row>
                                     <span>
                                         <GlobalOutlined style={{color: 'var(--color-gray)'}}/>
-                                        <span style={{marginLeft: 5, color: 'var(--color-gray)'}}>http://www.thiennguyen.com/</span>
+                                        <span style={{marginLeft: 5, color: 'var(--color-gray)'}}>{infoCharity?.charityWebsite}</span>
                                     </span>
                                     <span style={{marginLeft: 50}}>
                                         <NotificationOutlined style={{fontWeight: '600'}} />
