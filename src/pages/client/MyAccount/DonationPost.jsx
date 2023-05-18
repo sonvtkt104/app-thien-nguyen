@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import DonationPostDialog from "./DonationPostDialog";
 import { getDonationPostUser } from "./MyAccountService";
 import { useRef } from "react";
-import { getUserInfomationFromCookies } from "../../Authentication/HandleUserInfomation";
+import { getUserInfomationFromCookies, getInfoOfUserFromCookies } from "../../Authentication/HandleUserInfomation";
 
 
 function DonationPost() {
@@ -21,11 +21,12 @@ function DonationPost() {
     console.log(value)
     reloadRef.current = value
   }
+  console.log(getInfoOfUserFromCookies())
 
   const getListDonation = () => {
     console.log("reload")
     getDonationPostUser()
-      .then(res => setDonationPosts(res.data.filter(data => data.idDonor === getUserInfomationFromCookies().id)))
+      .then(res => setDonationPosts(res.data.filter(data => data.idDonor === getInfoOfUserFromCookies().id)))
   }
   console.log(reloadRef.current)
   useEffect(() => {

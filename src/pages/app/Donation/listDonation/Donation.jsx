@@ -7,11 +7,13 @@ import { TableApp } from "../../../../components/TableApp"
 import ModalDetail from '../ModalDetail';
 import { PageLayout } from '../../../../components';
 import { getDonationPostUser, updateDonationPostUser, getCurrentUser } from '../../../client/MyAccount/MyAccountService';
-import { getUserInfomationFromCookies } from '../../../Authentication/HandleUserInfomation';
+import { getUserInfomationFromCookies, getInfoOfUserFromCookies } from '../../../Authentication/HandleUserInfomation';
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux"
 
 function Donation() {
-    
+    const { infoUser } = useSelector(state => state?.app)
+
     const [donations, setDonations] = useState([])
     const [openModalDetail, setOpenModalDetail] = useState(false)
     const [dataDetail, setDataDetail] = useState({})
@@ -19,21 +21,14 @@ function Donation() {
     const [reloadData, setReloadData] = useState({})
     const [infoCurrent, setInfoCurrent] = useState()
     
-    console.log(getUserInfomationFromCookies())
+    // console.log(getUserInfomationFromCookies)
 
     useEffect(() => {
         getCurrentUser().then(res => {
             setInfoCurrent(res?.data.data)
         })
     },[])
-
-    useEffect(()=> {
-        getDonationPostUser().then(res => {
-            console.log(res.data)
-            setDonations(res.data.filter(data => data.status === "Chưa nhận"))
-            setSearcheddata(res.data.filter(data => data.status === "Chưa nhận"))
-        })
-    },[reloadData])
+    
     useEffect(()=> {
         getDonationPostUser().then(res => {
             console.log(res.data)
@@ -101,13 +96,13 @@ function Donation() {
                         />
                         <PhoneOutlined 
                             className='donation-phone'
-                            style={rowData.listRequest?.reduce((arr,data) => [...arr, data.id], []).includes(infoCurrent?.charityId) ? {
+                            style={rowData.listRequest?.reduce((arr,data) => [...arr, data.id], []).includes(getInfoOfUserFromCookies()?.charityId) ? {
                               opacity:"0.4",
                               // pointerEvents: "none",
                               cursor:"no-drop",
                             } : null
                             }
-                            onClick={rowData.listRequest?.reduce((arr,data) => [...arr, data.id], []).includes(infoCurrent?.charityId) ? () => false : ()=> {
+                            onClick={rowData.listRequest?.reduce((arr,data) => [...arr, data.id], []).includes(getInfoOfUserFromCookies()?.charityId) ? () => false : ()=> {
                                 setReloadData(rowData)
                                 console.log(rowData)
                                 onContact(rowData)
@@ -126,9 +121,8 @@ function Donation() {
             okText: "Có",
             okType: "danger",
             onOk: () => {
-                setReloadData({})
-                rowData.listRequest = [...rowData.listRequest, {status: "Đợi xác nhận", id: infoCurrent?.charityId, name: "Áo ấm cho em" }]
-               
+                rowData.listRequest = [...rowData.listRequest, {status: "Đợi xác nhận", id: getInfoOfUserFromCookies()?.charityId, name: getInfoOfUserFromCookies()?.name }]
+                
                 const dataUpdateDonationPostUser = {...rowData}
                 delete dataUpdateDonationPostUser.organizationReceived
                 delete dataUpdateDonationPostUser.donorName
@@ -141,6 +135,7 @@ function Donation() {
                 updateDonationPostUser(dataUpdateDonationPostUser).then(res => {
                     if(res?.status === 200) {
                         toast.success("Liên hệ thành công thành công!")
+                        setReloadData({})
                     } else {
                         toast.error("Hệ thống lỗi, xin thử lại sau!")
                     }

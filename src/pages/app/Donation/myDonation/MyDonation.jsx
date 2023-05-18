@@ -11,12 +11,13 @@ import { RemoveIcon } from "../../../../components/Icon/RemoveIcon"
 import ModalDetail from '../ModalDetail';
 import { PageLayout } from '../../../../components';
 import { getDonationPostUser, updateDonationPostUser } from "../../../client/MyAccount/MyAccountService";
-import { getUserInfomationFromCookies } from "../../../Authentication/HandleUserInfomation";
+import { getUserInfomationFromCookies, getInfoOfUserFromCookies } from "../../../Authentication/HandleUserInfomation";
 import { toast } from "react-toastify";
 
 function MyDonation() {
   const dispatch = useDispatch()
-
+  
+  // console.log(getInfoOfUserFromCookies);
   const [segment, setSegment] = useState("Yêu cầu xác nhận")
   const [donations, setDonations] = useState([])
   const [openModalDetail, setOpenModalDetail] = useState(false)
@@ -30,7 +31,7 @@ function MyDonation() {
     getDonationPostUser().then(res => {
       setDonations(res.data.filter(data => {
         return data.listRequest.some(value =>
-          value.id === getUserInfomationFromCookies()?.charityId
+          value.id === getInfoOfUserFromCookies()?.charityId
         )
       }))
     })
@@ -45,7 +46,7 @@ function MyDonation() {
   useEffect(() => {
     setDonations(donations)
     setSearcheddata(() => donations?.filter(data => {
-      return data.listRequest.some(value => value.id === getUserInfomationFromCookies()?.charityId && value.status === segment)
+      return data.listRequest.some(value => value.id === getInfoOfUserFromCookies()?.charityId && value.status === segment)
     }))
   }, [segment, dataDetail])
 
@@ -56,7 +57,7 @@ function MyDonation() {
   useEffect(() => {
     setDonations(donations)
     setSearcheddata(() => donations?.filter(data => {
-      return data.listRequest.some(value => value.id === getUserInfomationFromCookies()?.charityId && value.status === segment)
+      return data.listRequest.some(value => value.id === getInfoOfUserFromCookies()?.charityId && value.status === segment)
     }))
   }, [donations])
 
@@ -209,7 +210,7 @@ function MyDonation() {
       onOk: () => {
         setReloadData({})
         const dataUpdateDonationPostUser = { ...rowData }
-        dataUpdateDonationPostUser.listRequest = rowData.listRequest.filter(data => data.id !== getUserInfomationFromCookies()?.charityId)
+        dataUpdateDonationPostUser.listRequest = rowData.listRequest.filter(data => data.id !== getInfoOfUserFromCookies()?.charityId)
         
         delete dataUpdateDonationPostUser.organizationReceived
         delete dataUpdateDonationPostUser.donorName
@@ -259,7 +260,7 @@ function MyDonation() {
 
   const globalSearch = (value) => {
     const filteredData = donations.filter(data => {
-      return data.listRequest.some(value => value.id === getUserInfomationFromCookies()?.charityId && value.status === segment)
+      return data.listRequest.some(value => value.id === getInfoOfUserFromCookies()?.charityId && value.status === segment)
     }).filter((donation) => {
       return (
         donation.name.toLowerCase().includes(value.toLowerCase()) ||
