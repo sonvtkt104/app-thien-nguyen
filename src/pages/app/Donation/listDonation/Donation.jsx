@@ -6,7 +6,7 @@ import React, { useState, useEffect, useMemo} from 'react'
 import { TableApp } from "../../../../components/TableApp"
 import ModalDetail from '../ModalDetail';
 import { PageLayout } from '../../../../components';
-import { getDonationPostUser, updateDonationPostUser } from '../../../client/MyAccount/MyAccountService';
+import { getDonationPostUser, updateDonationPostUser, getCurrentUser } from '../../../client/MyAccount/MyAccountService';
 import { getUserInfomationFromCookies } from '../../../Authentication/HandleUserInfomation';
 import { toast } from "react-toastify";
 
@@ -17,8 +17,15 @@ function Donation() {
     const [dataDetail, setDataDetail] = useState({})
     const [searchedData, setSearcheddata] = useState([])
     const [reloadData, setReloadData] = useState({})
+    const [infoCurrent, setInfoCurrent] = useState()
     
+    console.log(getUserInfomationFromCookies())
 
+    useEffect(() => {
+        getCurrentUser().then(res => {
+            setInfoCurrent(res?.data.data)
+        })
+    },[])
 
     useEffect(()=> {
         getDonationPostUser().then(res => {
@@ -94,13 +101,13 @@ function Donation() {
                         />
                         <PhoneOutlined 
                             className='donation-phone'
-                            style={rowData.listRequest?.reduce((arr,data) => [...arr, data.id], []).includes(getUserInfomationFromCookies().charityId) ? {
+                            style={rowData.listRequest?.reduce((arr,data) => [...arr, data.id], []).includes(infoCurrent?.charityId) ? {
                               opacity:"0.4",
                               // pointerEvents: "none",
                               cursor:"no-drop",
                             } : null
                             }
-                            onClick={rowData.listRequest?.reduce((arr,data) => [...arr, data.id], []).includes(getUserInfomationFromCookies().charityId) ? () => false : ()=> {
+                            onClick={rowData.listRequest?.reduce((arr,data) => [...arr, data.id], []).includes(infoCurrent?.charityId) ? () => false : ()=> {
                                 setReloadData(rowData)
                                 console.log(rowData)
                                 onContact(rowData)
@@ -120,7 +127,7 @@ function Donation() {
             okType: "danger",
             onOk: () => {
                 setReloadData({})
-                rowData.listRequest = [...rowData.listRequest, {status: "Đợi xác nhận", id: getUserInfomationFromCookies().charityId, name: "Áo ấm cho em" }]
+                rowData.listRequest = [...rowData.listRequest, {status: "Đợi xác nhận", id: infoCurrent?.charityId, name: "Áo ấm cho em" }]
                
                 const dataUpdateDonationPostUser = {...rowData}
                 delete dataUpdateDonationPostUser.organizationReceived

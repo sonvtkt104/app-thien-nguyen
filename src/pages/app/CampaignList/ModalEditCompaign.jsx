@@ -20,7 +20,6 @@ function ModalEditCampaign({
     handleCancel,
     getData,
     handleOk,
-    dataOrigin,
     campaign_id,
     organization_id
 }) {
@@ -151,9 +150,7 @@ function ModalEditCampaign({
                             return temp.length > 0;
                         })
                         dataRegion = dataRegion.map(item => ({label: item.fullName, value: item.codeName}))
-    
                         setOptionSelect(dataRegion)
-
                         setIntroductoryPost(res.introduction)
                     }
                 }

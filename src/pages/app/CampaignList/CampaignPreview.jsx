@@ -36,7 +36,7 @@ function CamPaignPreview() {
     let options = [
         {label: 'Thông tin chung', value: 1},
         {label: 'Bài viết', value: 2}, 
-        {label: 'Thống kê', value: 3}, 
+        {label: 'Sao kê', value: 3}, 
         // {label: 'Thống kê', value: 4}
     ]
 
@@ -457,22 +457,30 @@ function CamPaignPreview() {
                                 <TableApp columns={columns} dataSource={dataSource}>
 
                                 </TableApp>
-                                <ModalCreatePost
-                                    isOpenModalCreatePost={isOpenModalCreatePost}
-                                    handleOk={handleOk}
-                                    handleCancel={handleCancel}
-                                    // dataPosts={dataPosts}
-                                    postId={postId}
-                                    getDataPosts={getDataPosts}
-                                />
-                                <ModalEditPost
-                                    isOpenModalEditPost={isOpenModalEditPost}
-                                    handleOk={handleOk}
-                                    handleCancel={handleCancel}
-                                    // dataPosts={dataPosts}
-                                    postId={postId}
-                                    getDataPosts={getDataPosts}
-                                />
+                                {
+                                    isOpenModalCreatePost ? (
+                                        <ModalCreatePost
+                                            isOpenModalCreatePost={isOpenModalCreatePost}
+                                            handleOk={handleOk}
+                                            handleCancel={handleCancel}
+                                            // dataPosts={dataPosts}
+                                            postId={postId}
+                                            getDataPosts={getDataPosts}
+                                        />
+                                    ) : ''
+                                }
+                                {
+                                    isOpenModalEditPost ? (
+                                        <ModalEditPost
+                                            isOpenModalEditPost={isOpenModalEditPost}
+                                            handleOk={handleOk}
+                                            handleCancel={handleCancel}
+                                            // dataPosts={dataPosts}
+                                            postId={postId}
+                                            getDataPosts={getDataPosts}
+                                        />
+                                    ) : ''
+                                }
                             </div>
                         }
                         {
