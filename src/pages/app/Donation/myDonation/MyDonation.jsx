@@ -98,9 +98,10 @@ function MyDonation() {
     {
       key: "6",
       title: "Liên hệ",
+      width: 200,
       render: (rowData) => {
         return (
-          <div key={rowData.id}>{rowData.phone}, {rowData.address}</div>
+          <div key={rowData.id}>{`${rowData.phone}, ${rowData.ward}, ${rowData.district}, ${rowData.province}`}</div>
         )
       }
     },

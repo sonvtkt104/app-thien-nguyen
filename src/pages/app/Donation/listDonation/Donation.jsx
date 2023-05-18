@@ -1,8 +1,6 @@
 import { Button, Col, Input, Row, Modal, Image, Table   } from 'antd'
 import {EyeOutlined, PhoneOutlined, SearchOutlined} from '@ant-design/icons';
-
 import React, { useState, useEffect, useMemo} from 'react'
-
 import { TableApp } from "../../../../components/TableApp"
 import ModalDetail from '../ModalDetail';
 import { PageLayout } from '../../../../components';
@@ -21,14 +19,15 @@ function Donation() {
     const [reloadData, setReloadData] = useState({})
     const [infoCurrent, setInfoCurrent] = useState()
     
-    // console.log(getUserInfomationFromCookies)
+    // console.log(getInfoOfUserFromCookies())
+
 
     useEffect(() => {
         getCurrentUser().then(res => {
             setInfoCurrent(res?.data.data)
         })
     },[])
-    
+
     useEffect(()=> {
         getDonationPostUser().then(res => {
             console.log(res.data)
@@ -72,9 +71,10 @@ function Donation() {
         {
             key: "6",
             title: "Thông tin liên hệ",
+            width: 300,
             render: (rowData) => {
               return (
-                <p key={rowData.id}>{rowData.phone}, {rowData.address}</p>
+                <p key={rowData.id}>{`${rowData.phone}, ${rowData.ward}, ${rowData.district}, ${rowData.province}`}</p>
               )
             }
         },

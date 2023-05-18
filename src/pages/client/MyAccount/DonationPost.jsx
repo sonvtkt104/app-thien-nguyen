@@ -21,7 +21,6 @@ function DonationPost() {
     console.log(value)
     reloadRef.current = value
   }
-  console.log(getInfoOfUserFromCookies())
 
   const getListDonation = () => {
     console.log("reload")
