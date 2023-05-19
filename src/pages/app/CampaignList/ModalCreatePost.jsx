@@ -112,7 +112,7 @@ function ModalCreatePost({
                                  <label>Kiểu bài viết</label>
                                  <br />
                                  <Select
-                                    value={typePost}
+                                    // value={typePost}
                                     showSearch
                                     allowClear
                                     style={{width: '100%'}}

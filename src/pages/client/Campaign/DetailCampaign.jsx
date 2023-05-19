@@ -14,7 +14,7 @@ import {
   UpOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
-import { Button, Col, Input, Progress, Row, Space } from "antd";
+import { Button, Col, Input, Progress, Row, Space, Modal } from "antd";
 import {Input as InputApp, TableApp, Tag, TickIcon} from '../../../components'
 import { useState } from "react";
 import {
@@ -47,11 +47,24 @@ function DetailCampaign() {
   const [receiveAmount, setReceiveAmount] = useState('')
   const [region, setRegion] = useState('')
   const [follow, setFollow] = useState(0)
+  const [stkBank, setStkBank] = useState('')
+  const [intro, setIntro] = useState('')
+
   let [provinces, setProvinces] = useState([])
   let [dataPosts, setDataPosts] = useState([])
 
   let [dataDonation, setDataDonation] = useState([])
   let [dataDonationSearch, setDataDonationSearch] = useState([])
+
+  // Modal thông tin ủng hộ
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   const columns = [
     {
@@ -106,7 +119,7 @@ function DetailCampaign() {
             Token: getTokenFromCookies()
           }
         }).then(res => res.data)
-        // console.log(res)
+        console.log(res)
         if(res && res.organization && res.organization.id) {
           setNameCampaign(res.campaignName)
           setNameOrganization(res.organization.charityName)
@@ -114,6 +127,8 @@ function DetailCampaign() {
           setTargetAmount(res.targetAmount)
           setReceiveAmount(res.receiveAmount)
           setRegion(res.region)
+          setStkBank(res.organization.charityBank)
+          setIntro(res.introduction)
         }
       } catch (err) {
         console.log(err)
@@ -387,6 +402,7 @@ function DetailCampaign() {
                     <button
                       className="btn-primary"
                       style={{fontSize: 16, fontWeight: '600'}}
+                      onClick={() => setIsModalOpen(true)}
                     >
                       Ủng hộ ngay
                     </button>
@@ -479,11 +495,11 @@ function DetailCampaign() {
                                                   <TickIcon />
                                                 </Space>
                                           </div>
-                                        {/* <div className="class-common">Chi tiết về cuộc vận động:</div> */}
-                                        {/* <div>
-                                        Để kịp thời chia sẻ với những khó khăn, thiệt hại to lớn của đồng bào và các địa phương bị thiệt hại do mưa lũ gây ra, và hưởng ứng lời kêu gọi của Chính phủ và Bộ Tài chính, Công đoàn Bộ cũng đã phát động toàn thể cán bộ, công chức, viên chức, người lao động ở các đơn vị thuộc và trực thuộc Bộ Tài chính tham gia ủng hộ đồng bào các tỉnh miền Trung bị thiệt hại do bão lũ tối thiểu 01 ngày lương.
-                                        </div> */}
-                                        <div className="class-common">Đối tượng vận động: </div>
+                                        <div className="class-common">Giới thiệu về cuộc vận động:</div>
+                                        <div
+                                          dangerouslySetInnerHTML={{__html: intro}}
+                                        />
+                                        <div className="class-common">Đối tượng hướng tới: </div>
                                         <div>{targetObject}</div>
                                         <div className="class-common">Khu vực kêu gọi:</div>
                                         <div>{resultRegion}</div>
@@ -501,6 +517,7 @@ function DetailCampaign() {
                                           <button
                                             className="btn-primary"
                                             style={{fontSize: 16, fontWeight: '600'}}
+                                            onClick={() => setIsModalOpen(true)}
                                           >
                                             Ủng hộ ngay
                                           </button>
@@ -608,6 +625,23 @@ function DetailCampaign() {
           <UpOutlined style={{fontSize: 24, fontWeight: 600, color: '#fff'}} />
         </div>
       </div>
+
+      {
+        isModalOpen && (
+          <Modal 
+            title="Thông tin ủng hộ của tổ chức" 
+            centered
+            okText={'Đồng ý'}
+            cancelText={'Hủy bỏ'}
+            open={isModalOpen} 
+            onOk={handleOk} 
+            onCancel={handleCancel}>
+            <div>Tên tổ chức: <span style={{fontSize: 16, fontWeight: 600, fontStyle: 'italic'}}>{nameOrganization}</span></div>
+            <div>Tên cuộc vận động: <span style={{fontSize: 16, fontWeight: 600, fontStyle: 'italic'}}>{nameCampaign}</span></div>
+            <div>Số tài khoản: <span style={{fontSize: 16, fontWeight: 600, fontStyle: 'italic'}}>{stkBank}</span></div>
+          </Modal>
+        )
+      }
 
       
       <FooterClient />

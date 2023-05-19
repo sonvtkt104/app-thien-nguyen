@@ -51,6 +51,7 @@ function ModalCreateCampaign({
         });
 
     const handleChange = ({ fileList: newFileList }) => {
+        console.log(fileList)
         setFileList(newFileList);
     };
 
@@ -122,22 +123,31 @@ function ModalCreateCampaign({
     let options = [
         {
             label: 'Trẻ em',
-            value: 1
+            value: 'Trẻ em'
+        },
+        {
+            label: 'Trẻ em mồ côi',
+            value: 'Trẻ em mồ côi'
         },
         {
             label: 'Người già',
-            value: 2
+            value: 'Người già'
         },
         {
-            label: 'Tất cả mọi người',
-            value: 3
-        }
-    ]
-
-    let optionStatus = [
+            label: 'Người khuyết tật',
+            value: 'Người khuyết tật'
+        },
         {
-            label: 'Đang vận động',
-            value: 'Đang vận động',
+            label: 'Thương binh liệt sỹ',
+            value: 'Thương binh liệt sỹ'
+        },
+        {
+            label: 'Người vô gia cư',
+            value: 'Người vô gia cư'
+        },
+        {
+            label: 'Khác',
+            value: 'Khác'
         },
     ]
 
@@ -151,6 +161,7 @@ function ModalCreateCampaign({
         // console.log(region)
         // console.log(region.join(', '))
         // console.log(introductoryPost)
+        // handleOk()
         // return;
         if(!nameCampaign || !targetAudience || !targetCampaign || !startDay || !endDay || !region || !introductoryPost) {
             toast.error('Vui lòng điền đầy đủ thông tin!')
@@ -198,7 +209,7 @@ function ModalCreateCampaign({
     return (
         <>
                  <Modal
-                     width={1000}
+                     width={1200}
                      bodyStyle={{height: '100%'}}
                      okText={"Đồng ý"}
                      cancelText={"Quay lại"}
@@ -225,7 +236,7 @@ function ModalCreateCampaign({
                              <Col span={8}>
                                  <label>Đối tượng hướng tới</label>
                                  <br />
-                                 {/* <Select
+                                 <Select
                                     showSearch
                                     allowClear
                                     style={{width: '100%'}}
@@ -237,13 +248,13 @@ function ModalCreateCampaign({
                                         }
                                     }
                                     onChange={(value) => {setTargetAudience(value)}}
-                                 /> */}
-                                 <Input 
+                                 />
+                                 {/* <Input 
                                      placeholder=""
                                      value={targetAudience}
                                      onChange={(e) => setTargetAudience(e.target.value)} 
                                      style={{width: '100%'}}
-                                 />
+                                 /> */}
                              </Col>
                              <Col span={8}>
                                  <label>Mục tiêu số tiền</label>
@@ -332,7 +343,7 @@ function ModalCreateCampaign({
                          </Row>
                          <div style={{margin: '12px 0'}}></div>
                          <Row>
-                             <label>Bài viết giới thiệu</label>
+                             <label>Giới thiệu</label>
                              <Col span={24}>
                                 <CKEditor
                                     editor={ ClassicEditor }
