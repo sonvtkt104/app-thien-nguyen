@@ -21,18 +21,21 @@ const ManageUser = () => {
   const handleBanUser = async (value) => {
     const data = await changeUserStatus({
       id: value,
-      status: false,
-      updateStatusUser: false,
+      status: true,
     });
 
-    console.log(data);
+    if (data?.isSuccess) {
+      (async () => {
+        const resData = await getAllUsers();
+        dispatch(setUsers(resData.data));
+      })();
+    }
   };
 
   const handleUnBanUser = async (value) => {
     const data = await changeUserStatus({
       id: value,
-      status: true,
-      updateStatusUser: true,
+      status: false,
     });
 
     console.log(data);
@@ -45,6 +48,13 @@ const ManageUser = () => {
       key: "userName",
     },
     {
+      title: "Trạng thái",
+      key: "isLocked",
+      render: (_, record) => (
+        <p>{record.isLocked === false ? "Không khóa" : "Bị khóa"}</p>
+      ),
+    },
+    {
       title: "Email",
       dataIndex: "email",
       key: "email",
@@ -54,11 +64,11 @@ const ManageUser = () => {
       dataIndex: "phoneNumber",
       key: "phoneNumber",
     },
-    {
-      title: "Phường/Xã",
-      dataIndex: "address",
-      key: "address",
-    },
+    // {
+    //   title: "Phường/Xã",
+    //   dataIndex: "address",
+    //   key: "address",
+    // },
     {
       title: "Quận/Huyện",
       dataIndex: "ward",
@@ -112,7 +122,16 @@ const ManageUser = () => {
 
         <div className={classes.list}>
           <div className={classes["user-list"]}>
-            <Table dataSource={users} columns={columns} pagination={false} />
+            <Table
+              dataSource={users}
+              columns={columns}
+              // pagination={false}
+              pagination={{
+                defaultPageSize: 6,
+                showSizeChanger: true,
+                pageSizeOptions: ["8", "10"],
+              }}
+            />
           </div>
         </div>
       </div>
