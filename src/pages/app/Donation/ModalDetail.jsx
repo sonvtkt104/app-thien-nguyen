@@ -131,7 +131,7 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
             style={{ fontFamily: "Poppins" }}
         >
             <p><b>Người ủng hộ:</b> {dataDetail.donorName}</p>
-            <p><b>Thông tin liên hệ:</b> {dataDetail.phone}, {dataDetail.address} </p>
+            <p><b>Thông tin liên hệ:</b> {`${dataDetail.phone}, ${dataDetail.ward}, ${dataDetail.district}, ${dataDetail.province}`} </p>
             <p><b>Thông tin đồ ủng hộ:</b> "{dataDetail.name}", mong muốn ủng hộ cho "{dataDetail.donationObject}", ở "{dataDetail.donationAddress}"</p>
             <p><b>Ngày đăng:</b> {dataDetail.date}</p>
             <p><b>Mô tả:</b> {dataDetail.description}</p>

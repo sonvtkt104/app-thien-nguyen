@@ -1,7 +1,7 @@
 import { Button, Checkbox, Form, Input, Table, Select,Col, Row, Modal} from 'antd';
 import { useState } from 'react'
 import { updatePassWord } from '../../../client/MyAccount/MyAccountService';
-import { getUserInfomationFromCookies } from '../../../Authentication/HandleUserInfomation';
+import { getUserInfomationFromCookies, getInfoOfUserFromCookies } from '../../../Authentication/HandleUserInfomation';
 import { toast } from "react-toastify";
 import { forgetPassword, resetCode, resetPassword } from '../SettingsService';
 
@@ -19,7 +19,7 @@ export default function ItemPassword({
         console.log('Success:', values);
         console.log(values.newPassword === values.confirmNewPassword)
         if (values.newPassword === values.confirmNewPassword) {
-            updatePassWord(getUserInfomationFromCookies().id, values).then(res => {
+            updatePassWord(getInfoOfUserFromCookies().id, values).then(res => {
                 console.log(res)
                 // reloadRef.current = Math.random().toString(36).slice(-5)
                 if (res.status === 200) {
@@ -46,19 +46,19 @@ export default function ItemPassword({
     const onFinishFailedPassword = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
-
+ 
     const onFinishForgotpassword = (values) => {
         console.log('Success:', values);
         console.log(values.newPassword === values.confirmNewPassword)
         if (values.newPassword === values.confirmNewPassword) {
             const dataResetCode = {
-                id: getUserInfomationFromCookies().id.toString(),
+                id: getInfoOfUserFromCookies().id.toString(),
                 code: values.code
             }
             resetCode(dataResetCode).then(res => {
                 if (res?.status === 200) {
                     const dataResetPassword = {
-                        id: getUserInfomationFromCookies().id.toString(),
+                        id: getInfoOfUserFromCookies().id.toString(),
                         password: values.newPassword,
                         confirmPassword: values.confirmNewPassword,
                     }
@@ -92,7 +92,7 @@ export default function ItemPassword({
         console.log('Failed:', errorInfo);
     };
 
-    // console.log(getUserInfomationFromCookies());
+    // console.log(getInfoOfUserFromCookies());
     const confirmForgotpassword =() => {
         Modal.confirm({
             title: `Bạn có chắc chắn, bạn quên mật khẩu?`,
@@ -100,7 +100,7 @@ export default function ItemPassword({
             cancelText: "Quay lại",
             okType: "danger",
             onOk: () => {
-                forgetPassword(getUserInfomationFromCookies().userName).then(res => console.log(res))
+                forgetPassword(getInfoOfUserFromCookies().userName).then(res => console.log(res))
                 setOpenDialogForgotpassword(true)
             }
         });

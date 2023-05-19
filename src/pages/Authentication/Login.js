@@ -35,7 +35,7 @@ const LoginPage = () => {
         setError(data.messages[0]);
         return;
       }
-
+      
       handleSaveOnCookies(data.data);
       const accessToken = await fetch(
         "http://localhost:8089/charity/access/token",

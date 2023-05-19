@@ -103,7 +103,7 @@ function ItemDonationPost({ data, handleOpenModal, getListDonation, handleReload
                             preview={{ visible: false }}
                             // style={{width:"100%"}}
                             width={"100%"}
-                            height={200}
+                            height={240}
                             // src={data?.images !== "" ? data?.images?.split(", ")[0] : "https://firebasestorage.googleapis.com/v0/b/charityapp-b5d6f.appspot.com/o/avatar%2FnoImage.png?alt=media&token=89c8c1e0-7114-456b-ae67-37a648fc605b"}  
                             src={data?.images?.split(", ")[0]}
                             onClick={() => setVisible(true)}

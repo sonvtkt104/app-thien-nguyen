@@ -10,6 +10,7 @@ export const handleSaveOnCookies = (data) => {
       maxAge: decoded.exp,
     });
     cookies.set("user", data.user, { path: "/" });
+    cookies.set("infoOfUser", {id: data?.user?.id || null, charityId: data?.user?.charityId || null, name : data?.user?.name}, { path: "/" });
   } catch (error) {
     console.log(error);
   }
@@ -25,6 +26,15 @@ export const getTokenFromCookies = () => {
 };
 
 // get user information
+export const getInfoOfUserFromCookies = () => {
+  try {
+    const cookies = new Cookies();
+    return cookies.get("infoOfUser");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getUserInfomationFromCookies = () => {
   try {
     const cookies = new Cookies();
