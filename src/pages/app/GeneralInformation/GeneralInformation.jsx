@@ -20,6 +20,7 @@ function GeneralInformation() {
 
     useEffect(()=> {
         getCurrentCharity().then(res=> {
+            console.log(res.data.data);
             setCharity(res.data.data)
         })
     },[reloadData])
@@ -84,13 +85,19 @@ function GeneralInformation() {
                                             height={60}
                                             className="gi-image"
                                         />
-                                        <div className="gi-name">
-                                            <h4>{charity.name}</h4>
-                                            <CheckCircleFilled
-                                                className="gi-icon-check"
-                                                style={{ display: charity.isVerification ? "" : "none" }}
-                                            // disabled
-                                            />
+                                        <div style={{marginLeft:12}}>
+                                            <div className="gi-name">
+                                                <h4>{charity?.name}</h4>
+                                                <CheckCircleFilled
+                                                    className="gi-icon-check"
+                                                    style={{ display: charity?.isVerified ? "" : "none" }}
+                                                // disabled
+                                                />
+                                            </div>
+                                            <div style={{display:"flex"}}>
+                                                <p style={{marginRight:8}}>{`${charity?.numFollow} người theo dõi,`}</p>
+                                                <p>{`${charity?.numCampaign} cuộc vận động`}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </Row>

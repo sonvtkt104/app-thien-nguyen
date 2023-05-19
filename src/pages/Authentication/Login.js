@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./login.scss";
 import { Button, Checkbox, Form, Input, Row, Col } from "antd";
-
+import { toast } from "react-toastify";
 import { handleSaveOnCookies } from "./HandleUserInfomation";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -33,10 +33,12 @@ const LoginPage = () => {
 
       if (!data.isSuccess) {
         setError(data.messages[0]);
+        toast.error("login failed");
         return;
       }
 
       handleSaveOnCookies(data.data);
+
       const accessToken = await fetch(
         "http://localhost:8089/charity/access/token",
         {
@@ -51,20 +53,21 @@ const LoginPage = () => {
           }),
         }
       );
-      console.log(accessToken);
 
-      dispatch(setInfoUser(data?.data?.user))
-      const roleId = data.data.user.roleId;
+      toast.success("login success");
+
+      dispatch(setInfoUser(data?.data?.user));
+      const roleId = data.data.user.roleId || data.data.user.RoleId;
 
       if (roleId === 1) {
-        dispatch(setUserType('admin'))
+        dispatch(setUserType("admin"));
         navigate("../admin");
       } else if (roleId === 3) {
-        dispatch(setUserType('charity'))
-        // navigate("../home-page-charity");
-        window.location.replace("/general-information")
+        dispatch(setUserType("charity"));
+        // navigate("/general-information");
+        window.location.replace("/general-information");
       } else {
-        dispatch(setUserType('normal_user'))
+        dispatch(setUserType("normal_user"));
         navigate("..");
       }
     };

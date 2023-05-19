@@ -2,7 +2,7 @@ import SideBar from "./SideBar"
 import { Button, Checkbox, Form, Input, Table, Select } from 'antd';
 import { useEffect, useLayoutEffect, useReducer, useRef, useState } from "react";
 import { getCurrentUser, updateUser, getListProvince, getListDistrictByID, getListWardByID, updatePassWord } from "./MyAccountService";
-import { getUserInfomationFromCookies } from "../../Authentication/HandleUserInfomation";
+import { getUserInfomationFromCookies, getInfoOfUserFromCookies } from "../../Authentication/HandleUserInfomation";
 import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
 import { toast } from "react-toastify";
 
@@ -121,7 +121,7 @@ function Account() {
         console.log('Success:', values);
         // console.log(values.newPassword === values.confirmNewPassword)
         if (values.newPassword === values.confirmNewPassword) {
-            updatePassWord(getUserInfomationFromCookies().id, values).then(res => {
+            updatePassWord(getInfoOfUserFromCookies().id, values).then(res => {
                 console.log(res)
                 // reloadRef.current = Math.random().toString(36).slice(-5)
                 if (res.status === 200) {

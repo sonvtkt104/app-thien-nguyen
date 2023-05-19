@@ -1,6 +1,6 @@
 import { Component, useMemo } from "react";
 import { ArrowLeftIcon, PageLayout, SegmentedApp, TableApp } from "../../../components";
-import { Button, Divider, Modal } from "antd";
+import { Button, Divider, Modal, Upload, message } from "antd";
 import { Link } from "react-router-dom";
 import Chart from 'react-apexcharts';
 
@@ -17,6 +17,10 @@ import { useEffect } from "react";
 
 import { useParams } from "react-router-dom";
 import moment from "moment";
+
+// Papaparse
+import Papa from 'papaparse';
+import {CSVLink} from "react-csv";
 
 import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
 
@@ -259,6 +263,7 @@ function CamPaignPreview() {
     const [nameCampaign, setNameCampaign] = useState('')
     const [targetAudience, setTargetAudience] = useState('')
     const [targetCampaign, setTargetCampaign] = useState('')
+    const [intro, setIntro] = useState('')
     const [startDay, setStartDay] = useState('')
     const [endDay, setEndDay] = useState('')
     const [region, setRegion] = useState('')
@@ -281,6 +286,7 @@ function CamPaignPreview() {
                 setNameCampaign(res.campaignName)
                 setTargetAudience(res.targetObject)
                 setTargetCampaign(res.targetAmount)
+                setIntro(res.introduction)
                 // setStartDay(res.startDate)
                 // setEndDay(res.stopDate)
                 setStartDay(moment(res.startDate).format('DD/MM/YYYY'))
@@ -323,26 +329,47 @@ function CamPaignPreview() {
         })()
     }, [])
 
-    useEffect(() => {
-        ;(async () => {
-            try {
-                let res = await axios({
-                    method: 'get',
-                    url: `http://localhost:8089/charity/campaign/get-statement-campaign?campaign-id=${campaignId}`,
-                    headers: {
-                        Authorization: `Bearer ${getTokenFromCookies()}`,
-                        Token: getTokenFromCookies()
-                    }
-                }).then(res => res.data)
-                if(res && res.length > 0) {
-                    setTotalDonor(res.length)
-                    setDataDonors(res)
+    let getDataStatement = async () => {
+        try {
+            let res = await axios({
+                method: 'get',
+                url: `http://localhost:8089/charity/campaign/get-statement-campaign?campaign-id=${campaignId}`,
+                headers: {
+                    Authorization: `Bearer ${getTokenFromCookies()}`,
+                    Token: getTokenFromCookies()
                 }
-                
-            } catch (error) {
-                console.log(error)
+            }).then(res => res.data)
+            if(res && res.length > 0) {
+                setTotalDonor(res.length)
+                setDataDonors(res)
             }
-        })()
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        // ;(async () => {
+        //     try {
+        //         let res = await axios({
+        //             method: 'get',
+        //             url: `http://localhost:8089/charity/campaign/get-statement-campaign?campaign-id=${campaignId}`,
+        //             headers: {
+        //                 Authorization: `Bearer ${getTokenFromCookies()}`,
+        //                 Token: getTokenFromCookies()
+        //             }
+        //         }).then(res => res.data)
+        //         if(res && res.length > 0) {
+        //             setTotalDonor(res.length)
+        //             setDataDonors(res)
+        //         }
+                
+        //     } catch (error) {
+        //         console.log(error)
+        //     }
+        // })()
+        getDataStatement();
     }, [])
 
     let splitRegion = region.split(', ')
@@ -387,6 +414,33 @@ function CamPaignPreview() {
         }
     }
 
+    const handleChangeImport = (e) => {
+
+        Papa.parse(e.target.files[0], {
+            header: true,
+            complete: async (results) => {
+                
+                let res = await axios({
+                    method: 'post',
+                    url: `http://localhost:8089/charity/campaign/add-statement-campaign?campaign-id=${campaignId}`,
+                    headers: {
+                        Authorization: `Bearer ${getTokenFromCookies()}`,
+                        Token: getTokenFromCookies()
+                    },
+                    data: results.data 
+                })
+                if(res.status === 200) {
+                    await getDataStatement()
+                    toast.success('Import file thành công!')
+                }
+                else {
+                    toast.error('Import file thất bại')
+                }
+
+            }
+        });
+    }
+
     return(
         <>
                 <PageLayout>
@@ -418,10 +472,11 @@ function CamPaignPreview() {
                                             <div className='description-name'>Tên cuộc vận động:</div>
                                             <div className='description-info'>{nameCampaign}</div>
                                         </div>
-                                        {/* <div className="form-group">
+                                        <div className="form-group">
                                             <div className='description-name'>Giới thiệu:</div>
-                                            <div className='description-info'>Mưa lũ đã đi qua để lại cho các tỉnh miền Trung sự hoang tàn, đổ nát, hàng nghìn ngôi nhà, công trình, cơ sở hạ tầng bị hư hỏng, nhiều tài sản, gia súc, hoa màu... bị lũ cuốn trôi. Sau những cơn bão, lũ lại là những cảnh con mất mẹ, vợ mất chồng, cha mẹ mất con... Cảnh người dân ngơ ngác, đau đáu nhìn về những ngôi nhà thân yêu của mình đang ngập trong biển nước mà nước mắt cứ mãi mãi dâng trào. Giờ đây, ở nơi đó, sau lũ lụt là bao nhọc nhằn vất vả để ổn định cuộc sống, là bao nhiêu nỗi lo canh cánh bên lòng nào là sách vở, quần áo cho con đến trường, lúa giống cho vụ mùa tới, thuốc men để phòng dịch bệnh, tiền đâu để sửa chữa nhà, mua sắm vật dụng sinh hoạt hàng ngày...</div>
-                                        </div> */}
+                                            <div className='description-info' dangerouslySetInnerHTML={{__html: intro}}>
+                                            </div>
+                                        </div>
                                         <div className="form-group">
                                             <div className='description-name'>Đối tượng hướng tới:</div>
                                             <div className='description-info'>{targetAudience}</div>
@@ -489,14 +544,19 @@ function CamPaignPreview() {
                                 <div className="s-c-up">
                                     <div className="total-donor">Tổng số người ủng hộ: <span style={{color: 'blue'}}>{totalDonor}</span></div>
                                     <div className="btn-actions">
-                                        <button className="btn-action-import">Import</button>
-                                        <button className="btn-action-export">Export</button>
+                                        
+                                        <label htmlFor="custom-file-input">Import</label>
+                                        <input className="custom-file-input" id="custom-file-input" type="file" onChange={(e) => handleChangeImport(e)} />                                        
+                                        {/* <button className="btn-action-export">Export</button> */}
+                                        <CSVLink className="btn-action-export" data={dataSource2} filename={'my-file.csv'} target="_blank">
+                                            Export
+                                        </CSVLink>
                                     </div>
                                 </div>
                                 <div className="s-c-down">
                                     <div className="statement-table">
                                         <div className="header-title">
-                                        <div className="h-t-name">Danh sách thống kê</div>
+                                        <div className="h-t-name">Danh sách sao kê</div>
                                     </div>
                                     <Divider />
                                     <TableApp columns={columns2} dataSource={dataSource2}>

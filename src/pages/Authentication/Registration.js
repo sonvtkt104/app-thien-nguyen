@@ -9,6 +9,7 @@ import {
   getListWardByID,
   getListDistrictByID,
 } from "../client/MyAccount/MyAccountService";
+import { toast } from "react-toastify";
 
 const RegistrationPage = () => {
   const [isCreateUser, setIsCreateUser] = useState(true);
@@ -129,8 +130,11 @@ const RegistrationPage = () => {
 
       if (!data.isSuccess) {
         setError(data.messages[0]);
+        toast.error("Đăng ký lỗi");
         return;
       }
+
+      toast.success("Đăng ký thành công");
 
       navigate("../login");
     };
@@ -227,8 +231,10 @@ const RegistrationPage = () => {
 
       if (!data.isSuccess) {
         setError(data.messages[0]);
+        toast.error("Đăng ký lỗi");
         return;
       }
+      toast.success("Đăng ký thành công");
 
       navigate("../login");
     };
@@ -485,7 +491,7 @@ const RegistrationPage = () => {
                           onChange={handleProvinceChange}
                           options={listProvince}
                           className="select-app"
-                          style={{width: 220}}
+                          style={{ width: 220 }}
                         />
                       </Form.Item>
                     </Col>
@@ -507,7 +513,7 @@ const RegistrationPage = () => {
                           onChange={handleDistrictChange}
                           options={listDistrict}
                           className="select-app"
-                          style={{width: 220}}
+                          style={{ width: 220 }}
                         />
                       </Form.Item>
                     </Col>
@@ -528,7 +534,7 @@ const RegistrationPage = () => {
                           onChange={handleWardChange}
                           options={listWard}
                           className="select-app"
-                          style={{width: 220}}
+                          style={{ width: 220 }}
                         />
                       </Form.Item>
                     </Col>
@@ -732,7 +738,6 @@ const RegistrationPage = () => {
                           name="charityMotto"
                           rules={[
                             {
-                              required: true,
                               message: "Vui lòng nhập phương châm của tổ chức",
                             },
                           ]}
@@ -753,7 +758,6 @@ const RegistrationPage = () => {
                           name="province"
                           rules={[
                             {
-                              required: true,
                               message: "Vui lòng nhập Tỉnh/Thành phố của bạn",
                             },
                           ]}
@@ -771,7 +775,7 @@ const RegistrationPage = () => {
                             onChange={handleProvinceChange}
                             options={listProvince}
                             className="select-app"
-                            style={{width: 220}}
+                            style={{ width: 220 }}
                           />
                         </Form.Item>
                       </Col>
@@ -782,7 +786,6 @@ const RegistrationPage = () => {
                           name="district"
                           rules={[
                             {
-                              required: true,
                               message: "Vui lòng nhập Quận/Huyện của bạn",
                             },
                           ]}
@@ -793,7 +796,7 @@ const RegistrationPage = () => {
                             onChange={handleDistrictChange}
                             options={listDistrict}
                             className="select-app"
-                            style={{width: 220}}
+                            style={{ width: 220 }}
                           />
                         </Form.Item>
                       </Col>
@@ -803,7 +806,6 @@ const RegistrationPage = () => {
                           name="ward"
                           rules={[
                             {
-                              required: true,
                               message: "Vui lòng nhập Phường/Xã của bạn!",
                             },
                           ]}
@@ -814,7 +816,7 @@ const RegistrationPage = () => {
                             onChange={handleWardChange}
                             options={listWard}
                             className="select-app"
-                            style={{width: 220}}
+                            style={{ width: 220 }}
                           />
                         </Form.Item>
                       </Col>
@@ -825,7 +827,6 @@ const RegistrationPage = () => {
                           name="detailAddress"
                           rules={[
                             {
-                              required: true,
                               message: "Vui lòng nhập địa chỉ cụ thể",
                             },
                           ]}
@@ -846,7 +847,6 @@ const RegistrationPage = () => {
                           name="charityTarget"
                           rules={[
                             {
-                              required: true,
                               message: "Vui lòng nhập Mục tiêu của tổ chức!",
                             },
                           ]}
@@ -861,7 +861,6 @@ const RegistrationPage = () => {
                           name="charityDescription"
                           rules={[
                             {
-                              required: true,
                               message: "Vui lòng mô tả về tổ chức",
                             },
                           ]}
