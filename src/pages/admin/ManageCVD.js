@@ -5,68 +5,73 @@ import { Select, Table, Modal, Button, Space, Row, Col, Image } from "antd";
 import { useSelector } from "react-redux";
 
 const ManageCVD = () => {
-  const charity = useSelector((state) => state.admin.users).filter((item) => {
+  const charitys = useSelector((state) => state.admin.users).filter((item) => {
     const { charityId } = item;
     return charityId;
   });
 
-  const optionCharity =
-    charity.length === 0
-      ? []
-      : [
-          ...charity.map((item) => ({
-            value: item.charityId,
-            label: item.name,
-          })),
-        ];
+  console.log(charitys);
 
-  const campaignsList = useSelector((state) => state.admin.campaigns);
-  const hanleOnchangeSearch = (value) => {};
+  const columns = [
+    {
+      title: "Tên tổ chức",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Cấp tích xanh",
+      key: "isVerified",
+      render: (_, record) => (
+        <p>{record.isVerified === false ? "Chưa cấp" : "Cấp rồi"}</p>
+      ),
+    },
+    {
+      title: "Trang chủ",
+      key: "charityId",
+      render: (_, record) => (
+        <a href={`/profile-charity/${record.charityId}`}>
+          Link tới trang charity
+        </a>
+      ),
+    },
+    {
+      title: "Hình ảnh",
+      render: (_, record) => <Button>Mở Hình ảnh</Button>,
+      key: "img",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <button
+            className={classes["user-button"]}
+            // onClick={() => handleBanUser(record.id)}
+          >
+            Cấp tích xanh
+          </button>
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <Manage>
       <div className={classes.main}>
         <div className={classes.headerCharity}>
-          <h2 className={classes.titleCharity}>Tổ chức</h2>
-
-          <Select
-            showSearch
-            style={{
-              width: 300,
-              // height: 60,
-            }}
-            placeholder="Search to Select"
-            optionFilterProp="children"
-            filterOption={(input, option) =>
-              (option?.label ?? "").includes(input)
-            }
-            filterSort={(optionA, optionB) =>
-              (optionA?.label ?? "")
-                .toLowerCase()
-                .localeCompare((optionB?.label ?? "").toLowerCase())
-            }
-            options={optionCharity}
-            onChange={(value) => hanleOnchangeSearch(value)}
-          />
+          <h2 className={classes.titleCharity}>Cấp tích xanh cho tổ chức</h2>
         </div>
 
-        <Row>
-          <Col span={12}>
-            <h3>Thông tin của tổ chức</h3>
-          </Col>
-
-          <Col span={12}>
-            <h3>Xác minh tổ chức</h3>
-
-            <div style={{ marginBottom: "20px", marginTop: "20px" }}>
-              <Image
-                width={200}
-                src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-              />
-            </div>
-            <Button>Xác minh tổ chức</Button>
-          </Col>
-        </Row>
+        <Table
+          dataSource={charitys}
+          columns={columns}
+          // pagination={false}
+          pagination={{
+            defaultPageSize: 6,
+            showSizeChanger: true,
+            pageSizeOptions: ["8", "10"],
+          }}
+        />
       </div>
     </Manage>
   );
