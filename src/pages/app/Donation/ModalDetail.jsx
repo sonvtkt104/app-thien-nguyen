@@ -45,13 +45,14 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
                     if(res?.status === 200) {
                         // getListDonation();
                         // onClose()
+                        handleCloseModalDetail()
                         handleReload({})
                         toast.success("Xác nhận thành công!")
                     } else {
                         toast.error("Hệ thống lỗi, xin thử lại sau!")
                     }
                 })
-                handleCloseModalDetail()
+                // handleCloseModalDetail()
 
                 // getListDonation()
                 

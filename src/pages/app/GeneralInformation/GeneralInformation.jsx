@@ -85,19 +85,18 @@ function GeneralInformation() {
                                             height={60}
                                             className="gi-image"
                                         />
-                                        <div>
+                                        <div style={{marginLeft:12}}>
                                             <div className="gi-name">
-                                                {/* <h4>{charity.name}</h4> */}
-                                                <h4>áo ấm cho em</h4>
+                                                <h4>{charity?.name}</h4>
                                                 <CheckCircleFilled
                                                     className="gi-icon-check"
-                                                    style={{ display: charity.isVerification ? "" : "none" }}
+                                                    style={{ display: charity?.isVerified ? "" : "none" }}
                                                 // disabled
                                                 />
                                             </div>
                                             <div style={{display:"flex"}}>
-                                                <p style={{marginRight:12}}>10 người theo dõi,</p>
-                                                <p>5 cuộc vận động</p>
+                                                <p style={{marginRight:8}}>{`${charity?.numFollow} người theo dõi,`}</p>
+                                                <p>{`${charity?.numCampaign} cuộc vận động`}</p>
                                             </div>
                                         </div>
                                     </div>
