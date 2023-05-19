@@ -39,7 +39,7 @@ const CampaignStar = () => {
       const messages = await getAllFeedbacks();
       dispatch(setMessages(messages));
     })();
-    return () => {};
+    return () => { };
   }, []);
 
   const columns = [
@@ -54,13 +54,13 @@ const CampaignStar = () => {
       key: "UserSendRoleId",
       render: (_, record) => (
         <p>
-          {record.UserSendId === 1
-            ? "Admin"
-            : record.UserSendId === 2
+          {record.UserSendRoleId === 2
             ? "Người dùng"
-            : "Tổ chức"}
+            : record.UserSendRoleId === 3
+              ? "Tổ chức" : ""}
         </p>
-      ),
+      )
+      ,
     },
     {
       title: "Nội dung",

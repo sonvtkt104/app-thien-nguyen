@@ -57,14 +57,14 @@ const LoginPage = () => {
       toast.success("login success");
 
       dispatch(setInfoUser(data?.data?.user));
-      const roleId = data.data.user.RoleId;
+      const roleId = data.data.user.roleId || data.data.user.RoleId;
 
       if (roleId === 1) {
         dispatch(setUserType("admin"));
         navigate("../admin");
       } else if (roleId === 3) {
         dispatch(setUserType("charity"));
-        // navigate("../home-page-charity");
+        // navigate("/general-information");
         window.location.replace("/general-information");
       } else {
         dispatch(setUserType("normal_user"));

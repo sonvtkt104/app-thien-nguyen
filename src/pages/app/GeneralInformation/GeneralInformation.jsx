@@ -20,6 +20,7 @@ function GeneralInformation() {
 
     useEffect(()=> {
         getCurrentCharity().then(res=> {
+            console.log(res.data.data);
             setCharity(res.data.data)
         })
     },[reloadData])
@@ -84,13 +85,20 @@ function GeneralInformation() {
                                             height={60}
                                             className="gi-image"
                                         />
-                                        <div className="gi-name">
-                                            <h4>{charity.name}</h4>
-                                            <CheckCircleFilled
-                                                className="gi-icon-check"
-                                                style={{ display: charity.isVerification ? "" : "none" }}
-                                            // disabled
-                                            />
+                                        <div>
+                                            <div className="gi-name">
+                                                {/* <h4>{charity.name}</h4> */}
+                                                <h4>áo ấm cho em</h4>
+                                                <CheckCircleFilled
+                                                    className="gi-icon-check"
+                                                    style={{ display: charity.isVerification ? "" : "none" }}
+                                                // disabled
+                                                />
+                                            </div>
+                                            <div style={{display:"flex"}}>
+                                                <p style={{marginRight:12}}>10 người theo dõi,</p>
+                                                <p>5 cuộc vận động</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </Row>
