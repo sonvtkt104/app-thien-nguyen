@@ -49,3 +49,15 @@ export const setUserUnFollowCampaign = async (campaignId) => {
 
     return res
 }
+
+export const getCampaignByCharityId = async (charityId) => {
+    const res = await axios({
+        method: 'GET',
+        url: URL_API_HOANG + '/charity/campaign/get-by-organization?organization-id=' + charityId,
+        headers: {
+            Token: ""
+        }
+    });
+
+    return res
+}

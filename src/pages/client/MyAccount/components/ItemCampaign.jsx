@@ -74,7 +74,7 @@ export function ItemCampaign({
                 {
                     !data?.campaignImage ? (
                         <div style={{color: 'rgba(13, 12, 34, 0.5)', fontWeight: '600', fontSize: 16, textAlign: 'center'}}>
-                            CHƯA THÊM ẢNH
+                            {/* CHƯA THÊM ẢNH */}
                         </div>
                     ) : ""
                 }

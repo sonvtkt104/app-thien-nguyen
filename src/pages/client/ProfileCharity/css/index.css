@@ -6,3 +6,11 @@
 .profile-charity-menu-item:hover {
     color: var(--color-blue);
 }
+.btn-primary.charity-un-follow-profile {
+    padding: 9px 20px !important;
+    /* position: absolute;
+    bottom: 25px;
+    right: 20px; */
+    background: #a8a8a8 !important;
+    border: 1px solid #a8a8a8 !important;
+}
