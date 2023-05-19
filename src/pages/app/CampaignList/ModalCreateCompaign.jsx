@@ -343,7 +343,7 @@ function ModalCreateCampaign({
                          </Row>
                          <div style={{margin: '12px 0'}}></div>
                          <Row>
-                             <label>Bài viết giới thiệu</label>
+                             <label>Giới thiệu</label>
                              <Col span={24}>
                                 <CKEditor
                                     editor={ ClassicEditor }

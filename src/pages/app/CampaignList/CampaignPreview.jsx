@@ -263,6 +263,7 @@ function CamPaignPreview() {
     const [nameCampaign, setNameCampaign] = useState('')
     const [targetAudience, setTargetAudience] = useState('')
     const [targetCampaign, setTargetCampaign] = useState('')
+    const [intro, setIntro] = useState('')
     const [startDay, setStartDay] = useState('')
     const [endDay, setEndDay] = useState('')
     const [region, setRegion] = useState('')
@@ -285,6 +286,7 @@ function CamPaignPreview() {
                 setNameCampaign(res.campaignName)
                 setTargetAudience(res.targetObject)
                 setTargetCampaign(res.targetAmount)
+                setIntro(res.introduction)
                 // setStartDay(res.startDate)
                 // setEndDay(res.stopDate)
                 setStartDay(moment(res.startDate).format('DD/MM/YYYY'))
@@ -470,10 +472,11 @@ function CamPaignPreview() {
                                             <div className='description-name'>Tên cuộc vận động:</div>
                                             <div className='description-info'>{nameCampaign}</div>
                                         </div>
-                                        {/* <div className="form-group">
+                                        <div className="form-group">
                                             <div className='description-name'>Giới thiệu:</div>
-                                            <div className='description-info'>Mưa lũ đã đi qua để lại cho các tỉnh miền Trung sự hoang tàn, đổ nát, hàng nghìn ngôi nhà, công trình, cơ sở hạ tầng bị hư hỏng, nhiều tài sản, gia súc, hoa màu... bị lũ cuốn trôi. Sau những cơn bão, lũ lại là những cảnh con mất mẹ, vợ mất chồng, cha mẹ mất con... Cảnh người dân ngơ ngác, đau đáu nhìn về những ngôi nhà thân yêu của mình đang ngập trong biển nước mà nước mắt cứ mãi mãi dâng trào. Giờ đây, ở nơi đó, sau lũ lụt là bao nhọc nhằn vất vả để ổn định cuộc sống, là bao nhiêu nỗi lo canh cánh bên lòng nào là sách vở, quần áo cho con đến trường, lúa giống cho vụ mùa tới, thuốc men để phòng dịch bệnh, tiền đâu để sửa chữa nhà, mua sắm vật dụng sinh hoạt hàng ngày...</div>
-                                        </div> */}
+                                            <div className='description-info' dangerouslySetInnerHTML={{__html: intro}}>
+                                            </div>
+                                        </div>
                                         <div className="form-group">
                                             <div className='description-name'>Đối tượng hướng tới:</div>
                                             <div className='description-info'>{targetAudience}</div>
