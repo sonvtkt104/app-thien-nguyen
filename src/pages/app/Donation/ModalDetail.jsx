@@ -82,7 +82,7 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
                     <a
                         key={rowData.id}
                         className="cm-border-or"
-                        href= {`http://localhost:3000/profile-charity1/${rowData.id}`}
+                        href= {`http://localhost:3000/profile-charity/${rowData.id}`}
                         // href="http://localhost:3000/profile-charity"
                         target="_blank"
                     >

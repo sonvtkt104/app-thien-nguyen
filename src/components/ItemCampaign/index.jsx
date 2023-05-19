@@ -132,7 +132,7 @@ export function ItemCampaign({
                     WebkitBoxOrient: 'vertical', cursor: 'pointer' }}
 
                     onClick={() => {
-                        navigate("/detail-campaign/1")
+                        navigate("/detail-campaign/" + data?.campaignId)
                     }}
                 >
                     {data?.campaignName}
@@ -160,13 +160,13 @@ export function ItemCampaign({
                                 <img src={data?.charityAvatar || "https://scontent.fhan5-9.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-7&_nc_sid=7206a8&_nc_ohc=Y9NY4mwYloEAX9JF1oy&_nc_ht=scontent.fhan5-9.fna&oh=00_AfCL5aPIZO0VHpt0yPVvVv9k1b-71ZSxgskEDgpJsYX8ow&oe=648AEE38"} alt="charity_img" 
                                     style={{width: 40, height: 40, borderRadius: '50%', marginRight: 10, cursor: 'pointer'}}
                                     onClick={() => {
-                                        navigate("/profile-charity")
+                                        navigate("/profile-charity/" + data?.charityId)
                                     }}
                                 />
                             </Col>
                             <Col className="flex-col-center" style={{cursor: 'pointer'}}
                                 onClick={() => {
-                                    navigate("/profile-charity")
+                                    navigate("/profile-charity/" + data?.charityId)
                                 }}
                             >
                                 {data?.charityName}

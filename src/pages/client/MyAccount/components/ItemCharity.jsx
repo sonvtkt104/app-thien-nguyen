@@ -40,7 +40,7 @@ function ItemCharity({
                     cursor: 'pointer'
                 }}
                 onClick={() => {
-                    navigate("/profile-charity")
+                    navigate("/profile-charity/" + data?.charityId)
                 }}
             >
                 <div

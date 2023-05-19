@@ -171,7 +171,7 @@ export default function CharitySearch() {
                                                     key={i}
                                                     style={{padding: 16, marginBottom: 20, borderRadius: 5, boxShadow: '-1px 1px 6px rgba(0,0,0,.05)', flexWrap: 'nowrap', position: 'relative'}}
                                                     onClick={() => {
-                                                        navigate("/profile-charity")
+                                                        navigate("/profile-charity/" + item?.charityId)
                                                     }} 
                                                 >
                                                     <img 
@@ -254,7 +254,7 @@ export default function CharitySearch() {
                                                         cursor: 'pointer'
                                                     }}
                                                     onClick={() => {
-                                                        navigate("/profile-charity")
+                                                        navigate("/profile-charity/" + item?.charityId)
                                                     }}
                                                 >
                                                     <img 
