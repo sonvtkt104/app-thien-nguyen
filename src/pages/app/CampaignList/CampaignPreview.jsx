@@ -1,6 +1,6 @@
 import { Component, useMemo } from "react";
 import { ArrowLeftIcon, PageLayout, SegmentedApp, TableApp } from "../../../components";
-import { Button, Divider, Modal } from "antd";
+import { Button, Divider, Modal, Upload, message } from "antd";
 import { Link } from "react-router-dom";
 import Chart from 'react-apexcharts';
 
@@ -17,6 +17,10 @@ import { useEffect } from "react";
 
 import { useParams } from "react-router-dom";
 import moment from "moment";
+
+// Papaparse
+import Papa from 'papaparse';
+import {CSVLink} from "react-csv";
 
 import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
 
@@ -323,26 +327,47 @@ function CamPaignPreview() {
         })()
     }, [])
 
-    useEffect(() => {
-        ;(async () => {
-            try {
-                let res = await axios({
-                    method: 'get',
-                    url: `http://localhost:8089/charity/campaign/get-statement-campaign?campaign-id=${campaignId}`,
-                    headers: {
-                        Authorization: `Bearer ${getTokenFromCookies()}`,
-                        Token: getTokenFromCookies()
-                    }
-                }).then(res => res.data)
-                if(res && res.length > 0) {
-                    setTotalDonor(res.length)
-                    setDataDonors(res)
+    let getDataStatement = async () => {
+        try {
+            let res = await axios({
+                method: 'get',
+                url: `http://localhost:8089/charity/campaign/get-statement-campaign?campaign-id=${campaignId}`,
+                headers: {
+                    Authorization: `Bearer ${getTokenFromCookies()}`,
+                    Token: getTokenFromCookies()
                 }
-                
-            } catch (error) {
-                console.log(error)
+            }).then(res => res.data)
+            if(res && res.length > 0) {
+                setTotalDonor(res.length)
+                setDataDonors(res)
             }
-        })()
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        // ;(async () => {
+        //     try {
+        //         let res = await axios({
+        //             method: 'get',
+        //             url: `http://localhost:8089/charity/campaign/get-statement-campaign?campaign-id=${campaignId}`,
+        //             headers: {
+        //                 Authorization: `Bearer ${getTokenFromCookies()}`,
+        //                 Token: getTokenFromCookies()
+        //             }
+        //         }).then(res => res.data)
+        //         if(res && res.length > 0) {
+        //             setTotalDonor(res.length)
+        //             setDataDonors(res)
+        //         }
+                
+        //     } catch (error) {
+        //         console.log(error)
+        //     }
+        // })()
+        getDataStatement();
     }, [])
 
     let splitRegion = region.split(', ')
@@ -385,6 +410,33 @@ function CamPaignPreview() {
             setIsOpenModalEditPost(true);
             setPostId(record.postId)
         }
+    }
+
+    const handleChangeImport = (e) => {
+
+        Papa.parse(e.target.files[0], {
+            header: true,
+            complete: async (results) => {
+                
+                let res = await axios({
+                    method: 'post',
+                    url: `http://localhost:8089/charity/campaign/add-statement-campaign?campaign-id=${campaignId}`,
+                    headers: {
+                        Authorization: `Bearer ${getTokenFromCookies()}`,
+                        Token: getTokenFromCookies()
+                    },
+                    data: results.data 
+                })
+                if(res.status === 200) {
+                    await getDataStatement()
+                    toast.success('Import file thành công!')
+                }
+                else {
+                    toast.error('Import file thất bại')
+                }
+
+            }
+        });
     }
 
     return(
@@ -489,14 +541,19 @@ function CamPaignPreview() {
                                 <div className="s-c-up">
                                     <div className="total-donor">Tổng số người ủng hộ: <span style={{color: 'blue'}}>{totalDonor}</span></div>
                                     <div className="btn-actions">
-                                        <button className="btn-action-import">Import</button>
-                                        <button className="btn-action-export">Export</button>
+                                        
+                                        <label htmlFor="custom-file-input">Import</label>
+                                        <input className="custom-file-input" id="custom-file-input" type="file" onChange={(e) => handleChangeImport(e)} />                                        
+                                        {/* <button className="btn-action-export">Export</button> */}
+                                        <CSVLink className="btn-action-export" data={dataSource2} filename={'my-file.csv'} target="_blank">
+                                            Export
+                                        </CSVLink>
                                     </div>
                                 </div>
                                 <div className="s-c-down">
                                     <div className="statement-table">
                                         <div className="header-title">
-                                        <div className="h-t-name">Danh sách thống kê</div>
+                                        <div className="h-t-name">Danh sách sao kê</div>
                                     </div>
                                     <Divider />
                                     <TableApp columns={columns2} dataSource={dataSource2}>

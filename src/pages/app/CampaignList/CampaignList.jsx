@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import Search from "antd/es/input/Search";
 import campaignService from "./CampaignService";
 import axios from "axios";
+import {Tooltip} from "antd";
 
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { Modal, Space } from 'antd';
@@ -84,21 +85,27 @@ class CamPaignList extends Component {
                         return (
                             <div className="campaign-list-actions">                              
                                 <Link to={`/campaign-list/preview/${record.campaign_id}`}>
+                                <Tooltip title="Xem chi tiết" color={'green'}>
                                     <EyeOutlined
                                         className="actions-hide"
                                         onClick={()=> this.handleActions(record, 'preview')}
                                     />
+                                </Tooltip>
                                 </Link> 
-            
-                                <EditOutlined
-                                    className="actions-edit"
-                                    onClick={()=> this.handleActions(record, 'edit')}
-                                />
-            
-                                <DeleteOutlined
-                                    className="actions-delete"
-                                    onClick={() => this.showDeleteConfirm(record)}
-                                />            
+
+                                <Tooltip title="Chỉnh sửa" color={'orange'}>
+                                    <EditOutlined
+                                        className="actions-edit"
+                                        onClick={()=> this.handleActions(record, 'edit')}
+                                    />
+                                </Tooltip>
+
+                                <Tooltip title="Xóa" color={'red'}>
+                                    <DeleteOutlined
+                                        className="actions-delete"
+                                        onClick={() => this.showDeleteConfirm(record)}
+                                    />            
+                                </Tooltip>
                             </div>
                         )
                     }
@@ -182,7 +189,7 @@ class CamPaignList extends Component {
                 key: index,
                 name: item.campaignName,
                 receive: `${new Intl.NumberFormat('vi-VI').format(item.receiveAmount)} VNĐ`,
-                complete: `${(item.receiveAmount/item.targetAmount * 100).toFixed(2)}%`,
+                complete: `${(item.receiveAmount/item.targetAmount * 100).toFixed(0)}%`,
                 target: `${new Intl.NumberFormat('vi-VI').format(item.targetAmount)} VNĐ`,
                 status: item.status,
                 campaign_id: item.id,

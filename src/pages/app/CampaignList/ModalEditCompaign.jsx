@@ -29,6 +29,7 @@ function ModalEditCampaign({
     const {TextArea} = Input;
     const [nameCampaign, setNameCampaign] = useState('')
     const [targetAudience, setTargetAudience] = useState('')
+    const [optionSelectTargetAudience, setOptionSelectTargetAudience] = useState('')
     const [targetCampaign, setTargetCampaign] = useState('')
     const [region, setRegion] = useState('')
     const [introductoryPost, setIntroductoryPost] = useState('')
@@ -137,6 +138,7 @@ function ModalEditCampaign({
                     if(res && res.organization && res.organization.id) {
                         setNameCampaign(res.campaignName)
                         setTargetAudience(res.targetObject)
+                        setOptionSelectTargetAudience({label: res.targetObject, value: res.targetObject})
                         setTargetCampaign(res.targetAmount)
                         setStartDay(res.startDate)
                         setEndDay(res.stopDate)
@@ -215,11 +217,41 @@ function ModalEditCampaign({
         setRegion(value.join(', '))
     }
 
+    let options = [
+        {
+            label: 'Trẻ em',
+            value: 'Trẻ em'
+        },
+        {
+            label: 'Trẻ em mồ côi',
+            value: 'Trẻ em mồ côi'
+        },
+        {
+            label: 'Người già',
+            value: 'Người già'
+        },
+        {
+            label: 'Người khuyết tật',
+            value: 'Người khuyết tật'
+        },
+        {
+            label: 'Thương binh liệt sỹ',
+            value: 'Thương binh liệt sỹ'
+        },
+        {
+            label: 'Người vô gia cư',
+            value: 'Người vô gia cư'
+        },
+        {
+            label: 'Khác',
+            value: 'Khác'
+        },
+    ]
 
     return (
         <>
                  <Modal
-                     width={1000}
+                     width={1200}
                      bodyStyle={{height: '100%'}}
                      okText={"Lưu thay đổi"}
                      cancelText={"Quay lại"}
@@ -245,12 +277,26 @@ function ModalEditCampaign({
                              <Col span={8}>
                                  <label>Đối tượng hướng tới</label>
                                  <br />
-                                 <Input 
+                                 <Select
+                                    value={optionSelectTargetAudience}
+                                    showSearch
+                                    allowClear
+                                    style={{width: '100%'}}
+                                    placeholder='Vui lòng đối tượng hướng tới'
+                                    options={options}
+                                    placement={'bottomLeft'}
+                                    filterOption={(input, option) => {
+                                        return option.label.toLowerCase().includes(input.toLowerCase())
+                                        }
+                                    }
+                                    onChange={(value) => {setTargetAudience(value); setOptionSelectTargetAudience({label: value, value: value})}}
+                                 />
+                                 {/* <Input 
                                      placeholder=""
                                      value={targetAudience}
                                      onChange={(e) => setTargetAudience(e.target.value)} 
                                      style={{width: '100%'}}
-                                 />
+                                 /> */}
                              </Col>
                              <Col span={8}>
                                  <label>Mục tiêu</label>
