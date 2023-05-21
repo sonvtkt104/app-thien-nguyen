@@ -13,14 +13,14 @@ const CampaignStar = () => {
   const [mes, setMes] = useState("");
   const [idSend, setIdSend] = useState(null);
   const messages = useSelector((state) => state.admin.messages).map((item) => ({
-    id: item.id,
-    message: item.message,
-    reply: item.reply,
-    UserSendId: item.userAccount.id,
-    UserSendUserName: item.userAccount.name,
-    UserSendRoleId: item.userAccount.roleId,
-    timeCreate: item.timeCreate.slice(0, 10),
-    timeReply: item.timeReply.slice(0, 10),
+    id: item?.id,
+    message: item?.message,
+    reply: item?.reply,
+    UserSendId: item?.userAccount.id,
+    UserSendUserName: item?.userAccount?.name,
+    UserSendRoleId: item?.userAccount?.roleId,
+    timeCreate: item?.timeCreate?.slice(0, 10),
+    timeReply: item?.timeReply?.slice(0, 10),
   }));
 
   const handleResponseUser = async () => {

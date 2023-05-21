@@ -8,6 +8,8 @@ import { handleLogout } from "../../pages/Authentication/HandleUserInfomation"
 import { userGetReplyAdmin } from "../../api/feedbacks"
 import { userGetNotification } from "../../api/notifications"
 import { useSelector } from "react-redux"
+import moment from "moment"
+import ModalNotification from "../ModalNotification"
 
 function Header({
 
@@ -19,15 +21,67 @@ function Header({
     const [openNotice, setOpenNotice] = useState(false)
     const [openProfile, setOpenProfile] = useState(false)
 
+    const [listReplyAdmins, setListReplyAdmins] = useState([])
+    const [listMessageUsers, setListMessageUsers] = useState([])
+    const [listNotifications, setListNotifications] = useState([])
+
+    const [dataNotification, setDataNotification] = useState({})
+    const [open, setOpen] = useState(false)
+
     useEffect(() => {
         userGetReplyAdmin().then(res => {
             console.log('user get reply admin', res.data)
+            if(res.data) {
+                setListReplyAdmins(res.data)
+            }
         })
 
         userGetNotification().then(res => {
             console.log('user get notification ', res.data)
+            if(res.data) {
+                setListMessageUsers(res.data)
+            }
         })
     }, [])
+
+    useEffect(() => {
+        let arr = []
+        if(listReplyAdmins && listReplyAdmins?.length > 0) {
+            listReplyAdmins?.forEach(item => {
+                if(item?.reply) {
+                    let obj = {}
+                    obj.image = 'https://cdn-icons-png.flaticon.com/512/1253/1253685.png'
+                    obj.newNotice = true
+                    obj.title = 'Thông báo phản hồi từ hệ thống'
+                    obj.message = item?.message
+                    obj.reply = item?.reply
+                    obj.date = item?.timeReply
+                    obj.type = 'admin'
+
+                    arr.push(obj)
+                }
+            })
+        }
+
+        if(listMessageUsers && listMessageUsers?.length > 0) {
+            listMessageUsers?.forEach(item => {
+                let obj = {}
+                obj.image = "https://scontent.fhan5-9.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-7&_nc_sid=7206a8&_nc_ohc=Y9NY4mwYloEAX9JF1oy&_nc_ht=scontent.fhan5-9.fna&oh=00_AfCL5aPIZO0VHpt0yPVvVv9k1b-71ZSxgskEDgpJsYX8ow&oe=648AEE38"
+                obj.newNotice = true
+                obj.title = `${item?.createdUser?.roleId == 2 ? "Người dùng" : item?.createdUser?.roleId == 3 ? "Tổ chức" : ''} ${item?.createdUser?.name}`
+                obj.message = item?.message
+                obj.reply = item?.message
+                obj.date = item?.timeCreate
+                obj.type = 'user'
+
+                arr.push(obj)
+            })
+        }
+
+        setListNotifications(arr)
+
+    } , [listReplyAdmins, listMessageUsers])
+
 
     const handleLogOutApp = () => {
         Modal.confirm({
@@ -46,24 +100,6 @@ function Header({
         });
     }
 
-    const arrNotice = useMemo(() => {
-        return [
-            {
-                id: 1,
-                image: 'https://cdn-icons-png.flaticon.com/512/1253/1253685.png',
-                newNotice: true,
-                description: 'Recommended: Còn ai nghe “Đôi Bờ” chứ ạ? #doibo #trucnhan #xhtdrlx2 #xhtđrlx2 #foreststudio',
-                timeCreated: "11 hours ago",
-            },
-            {
-                id: 2,
-                image: "https://yt3.ggpht.com/gxc1jOYPN-TOex8HbAmzSXrMu35AEUmqVbfnYy4nn1RkFR-zR5kyesPXDUjdvWwrc59R7vds0g=s88-c-k-c0x00ffffff-no-rj",
-                newNotice: false,
-                description: "Daniel Truong Dev uploaded: Lần đầu trải nghiệm Competitive Programming - Advent of Code 2022 ( Day 3 )",
-                timeCreated: "16 hours ago",
-            },
-        ]
-    }, [])
 
     useEffect(() => {
         if(openNotice || openProfile) {
@@ -97,7 +133,7 @@ function Header({
                     <Popover
                         placement="topRight"
                         content={
-                            <div style={{ maxWidth: '360px' }}>
+                            <div style={{ width: '360px' }}>
                                 <Row
                                     style={{ padding: '16px 16px 8px', borderBottom: '1px solid var(--color-border)' }}
                                 >
@@ -112,18 +148,30 @@ function Header({
                                     }}
                                 >
                                     {
-                                        arrNotice?.map((item, index) => (
+                                        listNotifications?.sort((a, b) => {
+                                            let timeA = a.date ? new Date(a.date).getTime() : 0
+                                            let timeB = b.date ? new Date(b.date).getTime() : 0
+                                            if(timeA > timeB) { return 1}
+                                            else if (timeA < timeB) { return -1}
+                                            else return 0
+                                        })?.map((item, index) => (
                                             <Row
                                                 className="app-hover"
                                                 key={index}
-                                                style={{ flexWrap: 'nowrap', margin: '0 15px', padding: '10px 10px 10px 0', borderBottom: '1px solid var(--color-border)', position: 'relative' }}
+                                                style={{ flexWrap: 'nowrap', margin: '0 15px', padding: '10px 10px 10px 0', borderBottom: '1px solid var(--color-border)', position: 'relative', cursor: 'pointer' }}
+                                                onClick={() => {
+                                                    setDataNotification(JSON.parse(JSON.stringify(item)))
+                                                    setOpen(true)
+                                                    setOpenNotice(false)
+                                                }}
                                             >
                                                 <img src={item.image} alt={item.image}
                                                     style={{ width: 48, height: 48, borderRadius: '50%', marginRight: 16 }}
                                                 />
                                                 <div>
-                                                    <div style={{ lineHeight: '21px', marginBottom: 8 }}>{item.description}</div>
-                                                    {/* <div style={{ fontSize: 12, color: 'var(--color-gray)' }}>{item.timeCreated}</div> */}
+                                                    <div style={{ lineHeight: '21px', marginBottom: 8, fontWeight: 600 }}>{item.title}</div>
+                                                    <div style={{ lineHeight: '21px', marginBottom: 8 }}>{item.reply}</div>
+                                                    <div style={{ fontSize: 12, color: 'var(--color-gray)' }}>{moment(item.date).format('DD-MM-YYYY')}</div>
                                                 </div>
                                                 {
                                                     item.newNotice ? (
@@ -143,7 +191,18 @@ function Header({
                             setOpenNotice(!openNotice)
                         }}
                     >
-                        <span className="icon-app-header" style={{ cursor: 'pointer', padding: 5, borderRadius: "50%", background: 'transparent' }}>
+                        <span className="icon-app-header" style={{ cursor: 'pointer', padding: 5, borderRadius: "50%", background: 'transparent', position: 'relative' }}>
+                            {
+                                listNotifications && listNotifications.length > 0 ? (
+                                    <span style={{
+                                        position: 'absolute',
+                                        width: "6px",
+                                        height: "6px",
+                                        borderRadius: "50%",
+                                        background: "var(--color-red)",
+                                        right: 7}}></span>
+                                ) : ""
+                            }
                             <NotificationIcon fontSize={25} />
                         </span>
                     </Popover>
@@ -201,6 +260,11 @@ function Header({
                     </Popover>
                 </span>
             </Row>
+            <ModalNotification 
+                open={open}
+                setOpen={setOpen}
+                data={dataNotification}
+            />
         </div>
     )
 }
