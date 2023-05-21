@@ -1,12 +1,12 @@
 import { CloseOutlined, EnvironmentOutlined, GlobalOutlined, MailOutlined, NotificationOutlined, PhoneOutlined } from "@ant-design/icons";
-import { Button, Col, Input, Modal, Row } from "antd";
+import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { useEffect, useState } from "react";
 import { FooterClient, HeaderClient, ItemCampaign, SearchIcon } from "../../../components";
 import "./css/index.css"
 import { getInfoCharity, setFollowCharity } from "../../../api/charities";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { getCampaignByCharityId } from "../../../api/campaigns";
+import { getAllProvinces, getCampaignByCharityId, getCampaignFollow } from "../../../api/campaigns";
 import ReactPlayer from 'react-player'
 
 export default function ProfileCharity() {
@@ -18,7 +18,22 @@ export default function ProfileCharity() {
     const [previewImage, setPreviewImage] = useState(false)
     const [infoCharity, setInfoCharity] = useState({})
     const [listCampaign, setListCampaign] = useState([])
+    const [listCampaignOrigin, setListCampaignOrigin] = useState([])
+    const [listProvinces, setListProvinces] = useState({})
+    const [listCampaignFollow, setListCampaignFollow] = useState([])
+    const [search, setSearch] = useState("")
+    const [imagePreview, setImagePreview] = useState("")
 
+    const handleSearch = () => {
+        if(search) {
+            let result = listCampaignOrigin?.filter(campaign => {
+                return campaign?.campaignName?.toLowerCase()?.includes(search?.toLowerCase())
+            })
+            setListCampaign(JSON.parse(JSON.stringify(result)))
+        } else {
+            setListCampaign(JSON.parse(JSON.stringify(listCampaignOrigin)))
+        }
+    }
 
     console.log('charityId', charityId)
 
@@ -27,9 +42,51 @@ export default function ProfileCharity() {
             setInfoCharity(JSON.parse(JSON.stringify(res?.data?.data)))
         })
 
+        getCampaignFollow().then(res => {
+            console.log('campaign follow', res.data)
+            let arr = []
+            res.data?.forEach(item => {
+                arr.push(item.id)
+            })
+            console.log('arrr list campaign follow', arr)
+            setListCampaignFollow(arr)
+        })
+
+        getAllProvinces().then(res => {
+            console.log('getAllProvinces', res.data)
+            let obj = {}
+            res?.data?.forEach(item => {
+                obj[item?.codeName] =  item?.name
+            })
+            setListProvinces(JSON.parse(JSON.stringify(obj)))
+        })
+
         getCampaignByCharityId(charityId).then(res => {
-            console.log('list campaign by charity', res.data)
-            setListCampaign(res?.data)
+            let arr = [];
+            res?.data?.forEach(item => {
+                console.log(item)
+                let obj = {
+                    campaignId: item.id,
+                    campaignName: item.campaignName,
+                    campaignImage: item.campaignImage,  // ???
+                    campaignTargetAmount: Number(item.targetAmount),
+                    campaignReceiveAmount: Number(item.receiveAmount),
+                    campaignRegion: item.region,
+                    campaignStatus: item.status,
+                    campaignStartDate: item.startDate,
+                    campaignStopDate: item.stopDate,
+                    campaignTargeObject: item.targetObject,
+                    charityId: item?.organization.id,
+                    charityName: item?.organization.charityName,
+                    charityAvatar: item?.organization.avatar,
+                    charityIsVerified: item?.organization.isVerified
+                }
+                arr.push(obj)
+            })
+            console.log(arr)
+            console.log('list campaign by charity', arr)
+            setListCampaign(arr)
+            setListCampaignOrigin(arr)
         })
     }, [])
 
@@ -122,7 +179,7 @@ export default function ProfileCharity() {
                                     }
                                     <span>
                                         <NotificationOutlined style={{ fontWeight: '600' }} />
-                                        <span style={{ marginLeft: 5, fontWeight: '600' }}>Dự án: {listCampaign?.length}</span>
+                                        <span style={{ marginLeft: 5, fontWeight: '600' }}>Cuộc vận động: {listCampaignOrigin?.length}</span>
                                     </span>
                                 </Row>
                             </Col>
@@ -181,7 +238,7 @@ export default function ProfileCharity() {
                                 className={tab == 1 ? 'profile-charity-menu-item active' : 'profile-charity-menu-item'}
                                 onClick={() => setTab(1)}
                             >
-                                Dự án
+                                Cuộc vận động
                             </Col>
                             <Col style={{ padding: '20px 30px', fontSize: '18px', fontWeight: '600', cursor: 'pointer', borderBottom: '1.5px solid #fff' }}
                                 className={tab == 2 ? 'profile-charity-menu-item active' : 'profile-charity-menu-item'}
@@ -253,31 +310,44 @@ export default function ProfileCharity() {
                                                     </div>
                                                 ) : ""
                                             }
-                                            <div>
-                                                <Row justify='space-between'
-                                                    style={{ marginBottom: 12 }}
-                                                >
-                                                    <span style={{ fontSize: 18, fontWeight: '600' }}>
-                                                        Hình ảnh của tổ chức
-                                                    </span>
-                                                    <span className="text-hover" style={{ fontSize: 16, fontWeight: '600', color: 'var(--color-blue)', cursor: 'pointer' }}>
-                                                        Tất cả hình ảnh
-                                                    </span>
-                                                </Row>
-                                                <Row>
-                                                    {
-                                                        [1, 2, 3].map((item, i) => (
-                                                            <Col xs={8} sm={8} md={8} lg={8} xl={8}
-                                                                style={{ padding: '10px', }}
+                                            {
+                                                infoCharity?.charityImages ? (
+                                                    <div>
+                                                        <Row justify='space-between'
+                                                            style={{ marginBottom: 12 }}
+                                                        >
+                                                            <span style={{ fontSize: 18, fontWeight: '600' }}>
+                                                                Hình ảnh của tổ chức
+                                                            </span>
+                                                            <span className="text-hover" style={{ fontSize: 16, fontWeight: '600', color: 'var(--color-blue)', cursor: 'pointer' }}
+                                                                onClick={() => {
+                                                                    setTab(2)
+                                                                }}
                                                             >
-                                                                <img src="https://media.doisongphapluat.com/333/2014/4/8/7.jpg" alt="charity_image"
-                                                                    style={{ width: "100%" }}
-                                                                />
-                                                            </Col>
-                                                        ))
-                                                    }
-                                                </Row>
-                                            </div>
+                                                                Tất cả hình ảnh
+                                                            </span>
+                                                        </Row>
+                                                        <Row>
+                                                            {
+                                                                infoCharity?.charityImages?.split(',')?.map((item, i) => {
+                                                                    if( i == 0 || i == 1 || i == 2 ) {
+                                                                        return (
+                                                                            <Col xs={8} sm={8} md={8} lg={8} xl={8}
+                                                                                style={{ padding: '10px', }}
+                                                                                key={i}
+                                                                            >
+                                                                                <img src={item} alt="charity_image"
+                                                                                    style={{ width: "100%", objectFit: 'cover', maxHeight: 140 }}
+                                                                                />
+                                                                            </Col>
+                                                                        )
+                                                                    } else return ''
+                                                                })
+                                                            }
+                                                        </Row>
+                                                    </div>
+                                                ) : ""
+                                            }
                                         </div>
                                     </Col>
                                     <Col xs={9} sm={9} md={9} lg={9} xl={9} >
@@ -288,89 +358,160 @@ export default function ProfileCharity() {
                                                 Liên hệ
                                             </Row>
                                             <Row style={{ padding: '16px 0', borderBottom: '1px solid var(--color-border)' }}>
-                                                <img src="/images/logo.png" alt="logo"
+                                                <img src={infoCharity?.avatar || "https://scontent.fhan5-9.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-7&_nc_sid=7206a8&_nc_ohc=Y9NY4mwYloEAX9JF1oy&_nc_ht=scontent.fhan5-9.fna&oh=00_AfCL5aPIZO0VHpt0yPVvVv9k1b-71ZSxgskEDgpJsYX8ow&oe=648AEE38"} alt="logo"
                                                     style={{ width: 50, height: 50, borderRadius: '50%', marginRight: 24 }}
                                                 />
                                                 <span style={{ fontSize: 16, fontWeight: '500' }}
                                                     className='flex-col-center'
                                                 >
-                                                    Áo ấm cho em
+                                                    {infoCharity?.charityName}
                                                 </span>
                                             </Row>
                                             <div style={{ padding: '16px 0' }}>
-                                                <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px' }}>
-                                                    <PhoneOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
-                                                    0349348227
-                                                </Row>
-                                                <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px' }}>
-                                                    <GlobalOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
-                                                    http://www.thiennguyen.com/
-                                                </Row>
-                                                <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px' }}>
-                                                    <MailOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
-                                                    thiennguyen@gmail.com
-                                                </Row>
+                                                {
+                                                    infoCharity?.phoneNumber ? (
+                                                        <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px' }}>
+                                                            <PhoneOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
+                                                            {infoCharity?.phoneNumber}
+                                                        </Row>
+                                                    ) : ""
+                                                }
+                                                {
+                                                    infoCharity?.charityWebsite ? (
+                                                        <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px' }}>
+                                                            <GlobalOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
+                                                            {infoCharity?.charityWebsite}
+                                                        </Row>
+                                                    ) : ""
+                                                }
+                                                {
+                                                    infoCharity?.email ? (
+                                                        <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px' }}>
+                                                            <MailOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
+                                                            {infoCharity?.email}
+                                                        </Row>
+                                                    ) : ""
+                                                }
                                                 <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px', flexWrap: 'nowrap' }}>
                                                     <EnvironmentOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
                                                     Trường ĐH Công nghệ - Đại học quốc gia Hà Nội, 144 Xuân Thủy, Cầu Giấy, Hà Nội
                                                 </Row>
-                                                <div style={{ marginBottom: 20 }}>
-                                                    <div style={{ fontSize: 16, fontWeight: '600', marginBottom: 20 }}>Địa chỉ trụ sở chính</div>
+                                                {
+                                                    infoCharity?.googleMap ? (
+                                                        <div style={{ marginBottom: 20 }}>
+                                                            <div style={{ fontSize: 16, fontWeight: '600', marginBottom: 20 }}>Địa chỉ trụ sở chính</div>
+                                                            <div>
+                                                                <iframe title="Google map" src={infoCharity?.googleMap} style={{ border: 0, width: '100%' }} allowFullScreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                                            </div>
+                                                        </div>
+                                                    ) : ""
+                                                }
+                                                {
+                                                    (infoCharity?.charityFacebook || infoCharity?.charityInstagram || infoCharity?.charityTwitter || infoCharity?.charityLinkedIn) ? (
+                                                        <div>
+                                                            <div style={{ fontSize: 16, fontWeight: '600', marginBottom: 20 }}>Liên hệ qua mạng xã hội</div>
+                                                            <Row>
+                                                                {
+                                                                    infoCharity?.charityFacebook ? (
+                                                                        <div style={{ marginRight: 12, padding: '0 10px', textAlign: 'center' }}>
+                                                                            <img src="/images/facebook.png" alt="logo facebook"
+                                                                                style={{ width: 33, marginBottom: 8, cursor: 'pointer' }}
+                                                                                onClick={() => {
+                                                                                    window.open(infoCharity?.charityFacebook, '_blank')
+                                                                                }}
+                                                                            />
+                                                                            <div style={{ color: "var(--color-blue)", lineHeight: '18px', cursor: 'pointer' }}
+                                                                                onClick={() => {
+                                                                                    window.open(infoCharity?.charityFacebook, '_blank')
+                                                                                }}
+                                                                            >
+                                                                                Facebook
+                                                                            </div>
+                                                                        </div>
+                                                                    ) : ""
+                                                                }
+                                                                {
+                                                                    infoCharity?.charityInstagram ? (
+                                                                        <div style={{ marginRight: 12, padding: '0 10px', textAlign: 'center' }}>
+                                                                            <img src="/images/instagram.png" alt="logo instagram"
+                                                                                style={{ width: 33, marginBottom: 8, cursor: 'pointer' }}
+                                                                                onClick={() => {
+                                                                                    window.open(infoCharity?.charityInstagram, '_blank')
+                                                                                }}
+                                                                            />
+                                                                            <div style={{ color: "var(--color-blue)", lineHeight: '18px', cursor: 'pointer' }}
+                                                                                onClick={() => {
+                                                                                    window.open(infoCharity?.charityInstagram, '_blank')
+                                                                                }}
+                                                                            >
+                                                                                Instagram
+                                                                            </div>
+                                                                        </div>
+                                                                    ) : ""
+                                                                }
+                                                                {
+                                                                    infoCharity?.charityTwitter ? (
+                                                                        <div style={{ marginRight: 12, padding: '0 10px', textAlign: 'center' }}>
+                                                                            <img src="/images/twitter.png" alt="logo Twitter"
+                                                                                style={{ width: 33, marginBottom: 8, cursor: 'pointer' }}
+                                                                                onClick={() => {
+                                                                                    window.open(infoCharity?.charityTwitter, '_blank')
+                                                                                }}
+                                                                            />
+                                                                            <div style={{ color: "var(--color-blue)", lineHeight: '18px', cursor: 'pointer' }}
+                                                                                onClick={() => {
+                                                                                    window.open(infoCharity?.charityTwitter, '_blank')
+                                                                                }}
+                                                                            >
+                                                                                Twitter
+                                                                            </div>
+                                                                        </div>
+                                                                    ) : ""
+                                                                }
+                                                                {
+                                                                    infoCharity?.charityLinkedIn ? (
+                                                                        <div style={{ padding: '0 10px', textAlign: 'center' }}>
+                                                                            <img src="/images/linkedin.png" alt="logo LinkedIn"
+                                                                                style={{ width: 33, marginBottom: 8, cursor: 'pointer' }}
+                                                                                onClick={() => {
+                                                                                    window.open(infoCharity?.charityLinkedIn, '_blank')
+                                                                                }}
+                                                                            />
+                                                                            <div style={{ color: "var(--color-blue)", lineHeight: '18px', cursor: 'pointer' }}
+                                                                                onClick={() => {
+                                                                                    window.open(infoCharity?.charityLinkedIn, '_blank')
+                                                                                }}
+                                                                            >
+                                                                                LinkedIn
+                                                                            </div>
+                                                                        </div>
+                                                                    ) : ""
+                                                                }
+                                                            </Row>
+                                                        </div>
+                                                    ) : ""
+                                                }
+                                            </div>
+                                        </div>
+                                        {
+                                            listCampaignOrigin?.length > 0 ? (
+                                                <div
+                                                    style={{ background: '#fff', boxShadow: '-1px 1px 6px rgba(0,0,0,.05)', padding: 20, marginTop: '20px' }}
+                                                >
+                                                    <Row style={{ paddingLeft: 10, borderLeft: '3px solid var(--color-blue)', fontSize: 16, fontWeight: '600', marginBottom: 20 }}>
+                                                        Cuộc vận động nổi bật
+                                                    </Row>
                                                     <div>
-                                                        <iframe title="Google map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.8610660551603!2d105.78048991492963!3d21.038244392830343!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab354920c233%3A0x5d0313a3bfdc4f37!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBDw7RuZyBuZ2jhu4csIMSQ4bqhaSBo4buNYyBRdeG7kWMgZ2lhIEjDoCBO4buZaQ!5e0!3m2!1svi!2s!4v1679246091627!5m2!1svi!2s" style={{ border: 0, width: '100%' }} allowFullScreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                                        <ItemCampaign
+                                                            style={{ marginBottom: 0 }}
+                                                            data={listCampaignOrigin[0]}
+                                                            listProvinces={listProvinces}
+                                                            hideFollow={true}
+                                                        />
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <div style={{ fontSize: 16, fontWeight: '600', marginBottom: 20 }}>Liên hệ qua mạng xã hội</div>
-                                                    <Row>
-                                                        <div style={{ marginRight: 12, padding: '0 10px', textAlign: 'center' }}>
-                                                            <img src="/images/facebook.png" alt="logo facebook"
-                                                                style={{ width: 33, marginBottom: 8 }}
-                                                            />
-                                                            <div style={{ color: "var(--color-blue)", lineHeight: '18px' }}>
-                                                                Facebook
-                                                            </div>
-                                                        </div>
-                                                        <div style={{ marginRight: 12, padding: '0 10px', textAlign: 'center' }}>
-                                                            <img src="/images/instagram.png" alt="logo instagram"
-                                                                style={{ width: 33, marginBottom: 8 }}
-                                                            />
-                                                            <div style={{ color: "var(--color-blue)", lineHeight: '18px' }}>
-                                                                Instagram
-                                                            </div>
-                                                        </div>
-                                                        <div style={{ marginRight: 12, padding: '0 10px', textAlign: 'center' }}>
-                                                            <img src="/images/twitter.png" alt="logo Twitter"
-                                                                style={{ width: 33, marginBottom: 8 }}
-                                                            />
-                                                            <div style={{ color: "var(--color-blue)", lineHeight: '18px' }}>
-                                                                Twitter
-                                                            </div>
-                                                        </div>
-                                                        <div style={{ padding: '0 10px', textAlign: 'center' }}>
-                                                            <img src="/images/linkedin.png" alt="logo LinkedIn"
-                                                                style={{ width: 33, marginBottom: 8 }}
-                                                            />
-                                                            <div style={{ color: "var(--color-blue)", lineHeight: '18px' }}>
-                                                                LinkedIn
-                                                            </div>
-                                                        </div>
-                                                    </Row>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div
-                                            style={{ background: '#fff', boxShadow: '-1px 1px 6px rgba(0,0,0,.05)', padding: 20, marginTop: '20px' }}
-                                        >
-                                            <Row style={{ paddingLeft: 10, borderLeft: '3px solid var(--color-blue)', fontSize: 16, fontWeight: '600', marginBottom: 20 }}>
-                                                Dự án nổi bật
-                                            </Row>
-                                            <div>
-                                                <ItemCampaign
-                                                    style={{ marginBottom: 0 }}
-                                                />
-                                            </div>
-                                        </div>
+                                            ) : ""
+                                        }
                                     </Col>
                                 </Row>
                             </div>
@@ -381,37 +522,66 @@ export default function ProfileCharity() {
                                 >
                                     <Col style={{ lineHeight: '30px' }}>
                                         <Row style={{ paddingLeft: 10, borderLeft: '3px solid var(--color-blue)', fontSize: 18, fontWeight: '600', marginBottom: 10 }}>
-                                            Danh sách dự án
+                                            Danh sách cuộc vận động
                                         </Row>
                                     </Col>
                                     <Col>
-                                        <Row style={{ flexWrap: 'nowrap' }}>
-                                            <Input className="input-app"
-                                                style={{ maxHeight: 40, borderRadius: "4px 0 0 4px", minWidth: 300 }}
-                                            />
-                                            <Button className="btn-primary"
-                                                style={{ maxHeight: 40, borderRadius: '0 4px 4px 0', border: "1px solid var(--color-blue)" }}
-                                            >
-                                                <Row style={{ flexWrap: 'nowrap', lineHeight: '20px' }}>
-                                                    <span>
-                                                        <SearchIcon color='#fff' style={{ marginRight: 5 }} />
-                                                    </span>
-                                                    Tìm kiếm
-                                                </Row>
-                                            </Button>
-                                        </Row>
+                                        <Form
+                                            name="basic"
+                                            onFinish={() => {
+                                                console.log("finish")
+                                                handleSearch()
+                                            }}
+                                        >
+                                            <Row style={{ flexWrap: 'nowrap' }}>
+                                                <Input className="input-app"
+                                                    style={{ maxHeight: 40, borderRadius: "4px 0 0 4px", minWidth: 300 }}
+                                                    value={search}
+                                                    onChange={(e) => { setSearch(e.target.value) }}
+                                                />
+                                                <Button className="btn-primary"
+                                                    onClick={() => {
+                                                        console.log("finish")
+                                                        handleSearch()
+                                                    }}
+                                                    style={{ maxHeight: 40, borderRadius: '0 4px 4px 0', border: "1px solid var(--color-blue)" }}
+                                                >
+                                                    <Row style={{ flexWrap: 'nowrap', lineHeight: '20px' }}>
+                                                        <span>
+                                                            <SearchIcon color='#fff' style={{ marginRight: 5 }} />
+                                                        </span>
+                                                        Tìm kiếm
+                                                    </Row>
+                                                </Button>
+                                            </Row>
+                                        </Form>
                                     </Col>
                                 </Row>
                                 <Row>
-                                    <Row justify='space-between'>
-                                        {
-                                            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, i) => (
-                                                <Col xs={11} sm={11} md={11} lg={11} xl={11}>
-                                                    <ItemCampaign />
-                                                </Col>
-                                            ))
-                                        }
-                                    </Row>
+                                    {
+                                        listCampaign?.length > 0 ? (
+
+                                            <Row justify='space-between'
+                                                style={{width: '100%',}}
+                                            >
+                                                {
+                                                    listCampaign?.map((item, i) => (
+                                                        <Col xs={11} sm={11} md={11} lg={11} xl={11}
+                                                            key={i}
+                                                        >
+                                                            <ItemCampaign
+                                                                data={item}  
+                                                                isFollow={listCampaignFollow?.includes(item?.campaignId)}  
+                                                                listCampaignFollow={listCampaignFollow}
+                                                                setListCampaignFollow={setListCampaignFollow}
+                                                                listProvinces={listProvinces}
+                                                            />
+                                                        </Col>
+                                                    ))
+                                                }
+                                            </Row>
+                                        ) : "Không tìm thấy cuộc vận động nào"
+                                    }
                                 </Row>
                             </div>
                         ) : (
@@ -426,22 +596,28 @@ export default function ProfileCharity() {
                                     </Col>
                                 </Row>
                                 <Row>
-                                    <Row>
-                                        {
-                                            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, i) => (
-                                                <Col xs={6} sm={6} md={6} lg={6} xl={6}
-                                                    style={{ padding: '0 12px', marginBottom: 20 }}
-                                                >
-                                                    <img src="https://media.doisongphapluat.com/333/2014/4/8/7.jpg" alt="charity_image"
-                                                        style={{ width: '100%', borderRadius: 10, cursor: 'pointer' }}
-                                                        onClick={() => {
-                                                            setPreviewImage(true)
-                                                        }}
-                                                    />
-                                                </Col>
-                                            ))
-                                        }
-                                    </Row>
+                                    {
+                                        infoCharity?.charityImages ? (
+                                            <Row>
+                                                {
+                                                    infoCharity?.charityImages?.split(",")?.map((item, i) => (
+                                                        <Col xs={6} sm={6} md={6} lg={6} xl={6}
+                                                            style={{ padding: '0 12px', marginBottom: 20 }}
+                                                            key={i}
+                                                        >
+                                                            <img src={item} alt="charity_image"
+                                                                style={{ width: '100%', borderRadius: 10, cursor: 'pointer', maxHeight: 170, objectFit: 'cover' }}
+                                                                onClick={() => {
+                                                                    setPreviewImage(true)
+                                                                    setImagePreview(item)
+                                                                }}
+                                                            />
+                                                        </Col>
+                                                    ))
+                                                }
+                                            </Row>
+                                        ) : "Tổ chức chưa thêm hình ảnh nào"
+                                    }
                                 </Row>
                             </div>
                         )
@@ -459,7 +635,7 @@ export default function ProfileCharity() {
                     setPreviewImage(false);
                 }}
             >
-                <img src="https://media.doisongphapluat.com/333/2014/4/8/7.jpg" alt="charity_image"
+                <img src={imagePreview} alt="charity_image"
                     style={{ width: '100%', height: '100%' }}
                 />
             </Modal>

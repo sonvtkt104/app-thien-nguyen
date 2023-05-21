@@ -1,12 +1,25 @@
 import { useState } from "react";
 import { Card } from "../../../../components"
-import { message, Row, Upload, Form, Image, Input, Button } from 'antd';
+import { message, Row, Upload, Form, Image, Input, Button, notification } from 'antd';
+import { userPushFeedBack } from "../../../../api/feedbacks";
 
 function FeedbackSupport() {
     const [feedback, setFeedback] = useState("")
     // console.log(feedback)
     const onSubmit = () => {
         console.log(feedback)
+        userPushFeedBack(feedback).then(res => {
+            if(res.data) {
+                console.log(res)
+                notification.success({
+                    message: "Gửi phản hồi thành công",
+                    description:
+                        "Cảm ơn bạn đã gửi phản hồi cho chúng tôi. Chúng tôi sẽ trả lời bạn trong thời gian sớm nhất.",
+                    placement: 'bottomRight'
+                })
+                setFeedback("")
+            }
+        })
     }
     return (
         <Card

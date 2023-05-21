@@ -3,7 +3,7 @@ import { Row, Col, Input, Space, Form } from "antd";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getCampaignFollow } from "../../../api/campaigns";
+import { getAllProvinces, getCampaignFollow } from "../../../api/campaigns";
 import { ItemCampaign } from "./components/ItemCampaign";
 
 function CampaignSaved() {
@@ -14,6 +14,7 @@ function CampaignSaved() {
     const [listCampaignFollow, setListCampaignFollow] = useState([])
     const [listCampaignFollowOrigin, setListCampaignFollowOrigin] = useState([])
     const [search, setSearch] = useState("")
+    const [listProvinces, setListProvinces] = useState({})
 
     useEffect(() => {
         console.log("campaign follow", userType, infoUser)
@@ -36,7 +37,7 @@ function CampaignSaved() {
                     charityId: item?.organization.id,
                     charityName: item?.organization.charityName,
                     charityAvatar: item?.organization.avatar,
-                    charityIsVerified: item?.organization.isVerificated,
+                    charityIsVerified: item?.organization.isVerified,
                     isFollow: 1
                 }
                 arr.push(obj)
@@ -44,6 +45,15 @@ function CampaignSaved() {
             console.log('arrr list campaign follow', arr)
             setListCampaignFollow(arr)
             setListCampaignFollowOrigin(arr)
+        })
+
+        getAllProvinces().then(res => {
+            console.log('getAllProvinces', res.data)
+            let obj = {}
+            res?.data?.forEach(item => {
+                obj[item?.codeName] =  item?.name
+            })
+            setListProvinces(JSON.parse(JSON.stringify(obj)))
         })
     }, [])
 
@@ -121,6 +131,7 @@ function CampaignSaved() {
                             setListCampaignFollow={setListCampaignFollow}
                             listCampaignFollowOrigin={listCampaignFollowOrigin}
                             setListCampaignFollowOrigin={setListCampaignFollowOrigin}
+                            listProvinces={listProvinces}
                         />
                     )): (
                         <div>

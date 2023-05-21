@@ -1,6 +1,6 @@
-import { Affix, Button, Col, Row } from "antd"
+import { Affix, Button, Col, Popover, Row } from "antd"
 import { memo } from "react"
-import { SearchIcon } from "../Icon"
+import { NotificationIcon, SearchIcon } from "../Icon"
 import { Link, useNavigate } from "react-router-dom"
 import "./index.css"
 import { useSelector } from "react-redux"
@@ -115,11 +115,64 @@ export function HeaderClient({
                                             className="flex-col-center"
                                         >
                                             <Row>
-                                                <span style={{fontWeight: '600', margin: '0 30px', cursor: 'pointer'}}
+                                                <span style={{ marginLeft: 15 }} className='flex-col-center'>
+                                                    <Popover
+                                                        placement="bottomRight"
+                                                        content={
+                                                            <div style={{ maxWidth: '360px' }}>
+                                                                {/* <Row
+                                                                    style={{ padding: '16px 16px 8px', borderBottom: '1px solid var(--color-border)' }}
+                                                                >
+                                                                    <span className='flex-col' style={{ fontWeight: '600', fontSize: 16 }}>
+                                                                        Thông báo
+                                                                    </span>
+                                                                </Row>
+                                                                <div
+                                                                    style={{
+                                                                        maxHeight: '80vh',
+                                                                        overflow: 'auto'
+                                                                    }}
+                                                                >
+                                                                    {
+                                                                        [1,2,3]?.map((item, index) => (
+                                                                            <Row
+                                                                                className="app-hover"
+                                                                                key={index}
+                                                                                style={{ flexWrap: 'nowrap', margin: '0 15px', padding: '10px 10px 10px 0', borderBottom: '1px solid var(--color-border)', position: 'relative' }}
+                                                                            >
+                                                                                <img src={item.image} alt={item.image}
+                                                                                    style={{ width: 48, height: 48, borderRadius: '50%', marginRight: 16 }}
+                                                                                />
+                                                                                <div>
+                                                                                    <div style={{ lineHeight: '21px', marginBottom: 8 }}>{item.description}</div>
+                                                                                    <div style={{ fontSize: 12, color: 'var(--color-gray)' }}>{item.timeCreated}</div>
+                                                                                </div>
+                                                                                {
+                                                                                    item.newNotice ? (
+                                                                                        <span style={{ width: 8, height: 8, borderRadius: '50%', background: "var(--color-blue)", position: 'absolute', top: 10, right: 0 }}></span>
+                                                                                    ) : ''
+                                                                                }
+                                                                            </Row>
+                                                                        ))
+                                                                    }
+                                                                </div> */}
+                                                            </div>
+                                                        }
+                                                        trigger="click"
+                                                        open={true}
+                                                        onOpenChange={() => {}}
+                                                    >
+                                                        <span style={{ cursor: 'pointer', padding: 5, borderRadius: "50%", background: 'transparent' }}>
+                                                            <NotificationIcon fontSize={25} color="#96A2BA" />
+                                                        </span>
+                                                    </Popover>
+                                                </span>
+                                                <span style={{fontWeight: '600', margin: '0 30px 0 15px', cursor: 'pointer'}}
                                                     onClick={() => {
                                                         // navigate("/my-account")
                                                         window.location.replace("/my-account")
                                                     }}
+                                                    className="flex-col-center"
                                                 >
                                                     Tài khoản
                                                 </span>
