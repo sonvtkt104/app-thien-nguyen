@@ -147,6 +147,12 @@ function MyDonation() {
                   delete rowData.ward
                   delete rowData.district
                   delete rowData.address
+                  if (rowData.idOrganization === null) {
+                    delete rowData.idOrganization
+                  }
+                  if (rowData.idDonor === null) {
+                    delete rowData.idDonor
+                  }
                   console.log(rowData)
                   setDataDetail(rowData)
 
@@ -172,6 +178,7 @@ function MyDonation() {
       title: "Hành động",
       align: 'center',
       render: (rowData) => {
+        console.log(rowData);
         return (
           <div key={rowData.id}>
             <EyeOutlined
@@ -209,7 +216,6 @@ function MyDonation() {
       okType: "danger",
       onCancel: () => { setDataDetail({}) },
       onOk: () => {
-        setReloadData({})
         const dataUpdateDonationPostUser = { ...rowData }
         dataUpdateDonationPostUser.listRequest = rowData.listRequest.filter(data => data.id !== getInfoOfUserFromCookies()?.charityId)
         
@@ -220,8 +226,15 @@ function MyDonation() {
         delete dataUpdateDonationPostUser.ward
         delete dataUpdateDonationPostUser.district
         delete dataUpdateDonationPostUser.address
+        if (dataUpdateDonationPostUser.idOrganization === null) {
+          delete dataUpdateDonationPostUser.idOrganization
+        }
+        if (dataUpdateDonationPostUser.idDonor === null) {
+          delete dataUpdateDonationPostUser.idDonor
+        }
         updateDonationPostUser(dataUpdateDonationPostUser).then(res => {
           if (res?.status === 200) {
+            setReloadData({})
             toast.success("Đã xóa thành công!")
           } else {
             toast.error("Hệ thống lỗi, xin thử lại sau!")
@@ -249,6 +262,12 @@ function MyDonation() {
     delete dataUpdateDonationPostUser.ward
     delete dataUpdateDonationPostUser.district
     delete dataUpdateDonationPostUser.address
+    if (dataUpdateDonationPostUser.idOrganization === null) {
+      delete dataUpdateDonationPostUser.idOrganization
+    }
+    if (dataUpdateDonationPostUser.idDonor === null) {
+      delete dataUpdateDonationPostUser.idDonor
+    }
     updateDonationPostUser(dataUpdateDonationPostUser).then(res => {
       if (res?.status === 200) {
         const message = action === "Từ chối" ? "Đã từ chối thành công!" : "Đã xác nhận thành công!"

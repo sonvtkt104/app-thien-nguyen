@@ -1,17 +1,42 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./login.scss";
 import { Button, Checkbox, Form, Input, Row, Col } from "antd";
-import { toast } from "react-toastify";
-import { handleSaveOnCookies } from "./HandleUserInfomation";
-import { useState } from "react";
+import {
+  getUserInfomationFromCookies,
+  handleSaveOnCookies,
+} from "./HandleUserInfomation";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setInfoUser, setUserType } from "../../redux/appSlice";
 
 const LoginPage = () => {
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const user = getUserInfomationFromCookies();
+    if (user) {
+      dispatch(setInfoUser(user));
+      const roleId = user.roleId || user.RoleId;
+
+      if (roleId === 1) {
+        dispatch(setUserType("admin"));
+        navigate("../admin");
+      } else if (roleId === 3) {
+        dispatch(setUserType("charity"));
+        // navigate("/general-information");
+        window.location.replace("/general-information");
+      } else {
+        dispatch(setUserType("normal_user"));
+        navigate("..");
+      }
+    }
+
+    return () => {};
+  }, []);
 
   const onFinish = (values) => {
     const submitData = {
@@ -20,6 +45,7 @@ const LoginPage = () => {
     };
 
     const submit = async () => {
+      setIsLoading(true);
       const response = await fetch("http://localhost:8080/Login", {
         method: "POST",
         headers: {
@@ -33,7 +59,6 @@ const LoginPage = () => {
 
       if (!data.isSuccess) {
         setError(data.messages[0]);
-        toast.error("login failed");
         return;
       }
 
@@ -54,8 +79,6 @@ const LoginPage = () => {
         }
       );
 
-      toast.success("login success");
-
       dispatch(setInfoUser(data?.data?.user));
       const roleId = data.data.user.roleId || data.data.user.RoleId;
 
@@ -70,6 +93,8 @@ const LoginPage = () => {
         dispatch(setUserType("normal_user"));
         navigate("..");
       }
+
+      setIsLoading(false);
     };
 
     submit();
@@ -177,6 +202,7 @@ const LoginPage = () => {
                       htmlType="submit"
                       className="login-button btn-primary"
                       style={{ borderRadius: 4 }}
+                      loading={isLoading}
                     >
                       Đăng nhập
                     </Button>

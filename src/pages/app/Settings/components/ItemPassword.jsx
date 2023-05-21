@@ -280,7 +280,7 @@ export default function ItemPassword({
                                     Quay lại
                                 </Button>
                                 <Button type="primary" htmlType="submit">
-                                    Lưu thay đổi mật khẩu
+                                    Lưu
                                 </Button>
                             </div>
                         </Form.Item>

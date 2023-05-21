@@ -7,6 +7,7 @@ import GeneralInformationDialog from "./GeneralInformationDialog";
 import { CheckCircleFilled, CloseOutlined, EnvironmentOutlined, GlobalOutlined, MailOutlined, NotificationOutlined, PhoneOutlined } from "@ant-design/icons";
 import { getCurrentCharity } from "../HomePageCharity/HomePageCharityService"
 import { useNavigate } from "react-router-dom"
+import ReactPlayer from 'react-player'
 
 function GeneralInformation() {
 
@@ -18,12 +19,12 @@ function GeneralInformation() {
     const [dataUpdate, setDataUpdate] = useState({})
     const [reloadData, setReloadData] = useState()
 
-    useEffect(()=> {
-        getCurrentCharity().then(res=> {
+    useEffect(() => {
+        getCurrentCharity().then(res => {
             console.log(res.data.data);
             setCharity(res.data.data)
         })
-    },[reloadData])
+    }, [reloadData])
     // console.log(reloadData)
     // console.log(charity)
 
@@ -46,7 +47,7 @@ function GeneralInformation() {
                     <Button
                         type="primary"
                         size="large"
-                        style={{marginRight: "8px"}}
+                        style={{ marginRight: "8px" }}
                         onClick={() => {
                             // navigate("/profile-charity")
                             // window.open('/profile-charity', '_blank');
@@ -85,17 +86,16 @@ function GeneralInformation() {
                                             height={60}
                                             className="gi-image"
                                         />
-                                        <div style={{marginLeft:12}}>
+                                        <div style={{ marginLeft: 12 }}>
                                             <div className="gi-name">
                                                 <h4>{charity?.name}</h4>
                                                 <CheckCircleFilled
                                                     className="gi-icon-check"
-                                                    style={{ display: charity?.isVerified ? "" : "none" }}
-                                                // disabled
+                                                    style={{ display: charity?.isVerified === 2 ? "" : "none" }}
                                                 />
                                             </div>
-                                            <div style={{display:"flex"}}>
-                                                <p style={{marginRight:8}}>{`${charity?.numFollow} người theo dõi,`}</p>
+                                            <div style={{ display: "flex" }}>
+                                                <p style={{ marginRight: 8 }}>{`${charity?.numFollow} người theo dõi,`}</p>
                                                 <p>{`${charity?.numCampaign} cuộc vận động`}</p>
                                             </div>
                                         </div>
@@ -113,7 +113,7 @@ function GeneralInformation() {
                                     Phương châm
                                 </Row>
                                 <div style={{ lineHeight: '21px', marginBottom: 10 }}>
-                                {charity?.charityMotto}
+                                    {charity?.charityMotto}
                                 </div>
                             </div>
                             <div style={{ marginBottom: 20 }}>
@@ -131,10 +131,13 @@ function GeneralInformation() {
                                     Video Giới thiệu
                                 </div>
                                 {
-                                    charity?.charityIntroVideo &&
-                                        <div>
-                                            <iframe width="100%" height="350" src={charity?.charityIntroVideo} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
-                                        </div>
+                                    ReactPlayer.canPlay(charity?.charityIntroVideo) &&
+                                        <ReactPlayer 
+                                            url={charity?.charityIntroVideo}
+                                            style={{ width: '100%', display: charity?.charityIntroVideo && charity?.charityIntroVideo !== "" ? "" : "none"  }}
+                                            width='100%'
+                                            height="350px"
+                                        />
                                 }
                             </div>
                             <div>
@@ -147,16 +150,16 @@ function GeneralInformation() {
                                 </Row>
                                 <div style={{ display: "flex", flexWrap: "wrap" }}>
                                     {
-                                        charity?.charityBanner && charity?.charityBanner !== "" && 
-                                            <div style={{ margin: "4px", border: "1px solid #e7e5e5", display: "flex", alignItems: "center", height: 125, width: 125 }}>
-                                                <Image
-                                                    className="modal-detail-image"
-                                                    style={{ maxHeight: 125, maxWidth: 125 }}
-                                                    width={125}
-                                                    src={charity?.charityBanner}>
-                                                </Image>
-                                            </div>
-                                        
+                                        charity?.charityBanner && charity?.charityBanner !== "" &&
+                                        <div style={{ margin: "4px", border: "1px solid #e7e5e5", display: "flex", alignItems: "center", height: 125, width: 125 }}>
+                                            <Image
+                                                className="modal-detail-image"
+                                                style={{ maxHeight: 125, maxWidth: 125 }}
+                                                width={125}
+                                                src={charity?.charityBanner}>
+                                            </Image>
+                                        </div>
+
                                     }
 
                                 </div>
@@ -182,23 +185,19 @@ function GeneralInformation() {
                         <div
                             style={{ background: '#fff', borderRadius: 6, boxShadow: 'rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px', padding: 20 }}
                         >
-                            <Row style={{paddingLeft:10 , borderLeft: '3px solid var(--color-blue)', fontSize: 16, fontWeight: '600', marginBottom: 10 }}>
+                            <Row style={{ paddingLeft: 10, borderLeft: '3px solid var(--color-blue)', fontSize: 16, fontWeight: '600', marginBottom: 10 }}>
                                 Liên hệ
                             </Row>
-                            {/* <Row style={{ padding: '3px 0', borderBottom: '1px solid var(--color-border)' }}></Row> */}
-                            <div style={{ paddingTop: 6}}>
-                                <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px', marginLeft: 10,}}>
+                            <div style={{ paddingTop: 6 }}>
+                                <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px', marginLeft: 10, }}>
                                     <PhoneOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
                                     {charity?.phoneNumber}
                                 </Row>
-                                {
-                                    charity?.charityWebsite && charity?.charityWebsite !== "" &&
-                                        <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px', marginLeft: 10,}}>
-                                            <GlobalOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
-                                            {charity?.charityWebsite}
-                                        </Row>
-                                }
-                                <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px', marginLeft: 10,}}>
+                                    <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px', marginLeft: 10, display: charity?.charityWebsite && charity?.charityWebsite !== "" ? "" : "none" }}>
+                                        <GlobalOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
+                                        {charity?.charityWebsite}
+                                    </Row>
+                                <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px', marginLeft: 10, }}>
                                     <MailOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
                                     {charity?.email}
                                 </Row>
@@ -207,74 +206,71 @@ function GeneralInformation() {
                                     {`${charity?.address}, ${charity?.ward}, ${charity?.district}, ${charity?.province}`}
                                 </Row>
                                 <div style={{ margin: "0 10px 20px 10px", }}>
-                                    {
-                                        charity?.googleMap && charity?.googleMap !== "" &&
-                                        <div>
-                                            <iframe title="Google map" src={charity?.googleMap} style={{ border: 0, width: '100%' }} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
-                                        </div>
-                                    }
+                                    <div style={{display: charity?.googleMap && charity?.googleMap !== "" ? "" : "none" }}>
+                                        <iframe title="Google map" src={charity?.googleMap} style={{ border: 0, width: '100%', height:200 }} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+                                    </div>
                                 </div>
-                                <div>
-                                    <div style={{ fontSize: 16, fontWeight: '600', marginBottom: 20, borderLeft: '3px solid var(--color-blue)', paddingLeft:10 }}>Liên hệ qua mạng xã hội</div>
+                                <div style={{display:charity?.charityFacebook !== "" || charity?.charityInstagram !== "" || charity?.charityLinkedIn !== "" || charity?.charityTwitter !== "" ? "" : "none" }}>
+                                    <div style={{ fontSize: 16, fontWeight: '600', marginBottom: 20, borderLeft: '3px solid var(--color-blue)', paddingLeft: 10 }}>Liên hệ qua mạng xã hội</div>
                                     <Row>
-                                        <div style={{ marginRight: 12, padding: '0 10px', textAlign: 'center' }}>
+                                        <div style={{ marginRight: 12, padding: '0 10px', textAlign: 'center', display: charity?.charityFacebook && charity?.charityFacebook !== "" ? "" : "none" }}>
                                             <img src="/images/facebook.png" alt="logo facebook"
                                                 style={{ width: 33, marginBottom: 8 }}
                                             />
-                                            <a 
+                                            <a
                                                 href={charity?.charityFacebook}
-                                                target="_blank" 
+                                                target="_blank"
                                                 className="gi-socialNetwork-link"
                                                 onClick={(e) => {
-                                                    if(charity?.charityFacebook === "") {
+                                                    if (charity?.charityFacebook === "") {
                                                         e.preventDefault()
                                                     }
                                                 }}
                                             >Facebook</a>
 
                                         </div>
-                                        <div style={{ marginRight: 12, padding: '0 10px', textAlign: 'center' }}>
+                                        <div style={{ marginRight: 12, padding: '0 10px', textAlign: 'center', display: charity?.charityInstagram && charity?.charityInstagram !== "" ? "" : "none" }}>
                                             <img src="/images/instagram.png" alt="logo instagram"
                                                 style={{ width: 33, marginBottom: 8 }}
                                             />
-                                            <a 
-                                                href={charity?.charityInstagram} 
-                                                target="_blank" 
+                                            <a
+                                                href={charity?.charityInstagram}
+                                                target="_blank"
                                                 className="gi-socialNetwork-link"
                                                 onClick={(e) => {
-                                                    if(charity?.charityInstagram === "") {
+                                                    if (charity?.charityInstagram === "") {
                                                         e.preventDefault()
                                                     }
                                                 }}
                                             >Instagram</a>
 
                                         </div>
-                                        <div style={{ marginRight: 12, padding: '0 10px', textAlign: 'center' }}>
+                                        <div style={{ marginRight: 12, padding: '0 10px', textAlign: 'center', display: charity?.charityTwitter && charity?.charityTwitter !== "" ? "" : "none" }}>
                                             <img src="/images/twitter.png" alt="logo Twitter"
                                                 style={{ width: 33, marginBottom: 8 }}
                                             />
-                                            <a 
-                                                href={charity?.charityTwitter} 
-                                                target="_blank" 
+                                            <a
+                                                href={charity?.charityTwitter}
+                                                target="_blank"
                                                 className="gi-socialNetwork-link"
                                                 onClick={(e) => {
-                                                    if(charity?.charityTwitter === "") {
+                                                    if (charity?.charityTwitter === "") {
                                                         e.preventDefault()
                                                     }
                                                 }}
                                             >Twitter</a>
 
                                         </div>
-                                        <div style={{ padding: '0 10px', textAlign: 'center' }}>
+                                        <div style={{ padding: '0 10px', textAlign: 'center', display: charity?.charityLinkedIn && charity?.charityLinkedIn !== "" ? "" : "none" }}>
                                             <img src="/images/linkedin.png" alt="logo LinkedIn"
                                                 style={{ width: 33, marginBottom: 8 }}
                                             />
-                                            <a 
-                                                href={charity?.charityLinkedIn} 
-                                                target="_blank" 
-                                                className="gi-socialNetwork-link" 
+                                            <a
+                                                href={charity?.charityLinkedIn}
+                                                target="_blank"
+                                                className="gi-socialNetwork-link"
                                                 onClick={(e) => {
-                                                    if(charity?.charityLinkedIn === "") {
+                                                    if (charity?.charityLinkedIn === "") {
                                                         e.preventDefault()
                                                     }
                                                 }}
@@ -292,7 +288,7 @@ function GeneralInformation() {
 
 
 
-            
+
             {
                 openDialog && <GeneralInformationDialog
                     dataUpdate={dataUpdate}
