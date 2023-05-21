@@ -14,22 +14,21 @@ function DonationPost() {
   const [dataUpdate, setDataUpdate] = useState({})
   const [donationPosts, setDonationPosts] = useState([])
   const [searchedData, setSearcheddata] = useState([])
-  const reloadRef = useRef(1)
+  const reloadRef = useRef()
 
-
+  console.log(getInfoOfUserFromCookies());
   const handleReload = (value) => {
-    console.log(value)
     reloadRef.current = value
   }
 
   const getListDonation = () => {
-    console.log("reload")
     getDonationPostUser()
       .then(res => setDonationPosts(res.data.filter(data => data.idDonor === getInfoOfUserFromCookies().id)))
   }
-  console.log(reloadRef.current)
+  console.log(donationPosts)
+
   useEffect(() => {
-    console.log("useeffect")
+    console.log("kakakaka");
     getListDonation()
   }, [reloadRef.current])
   useEffect(() => {
@@ -46,7 +45,6 @@ function DonationPost() {
     setDataUpdate(data)
   }
 
-  console.log(donationPosts)
 
 
   const globalSearch = (value) => {

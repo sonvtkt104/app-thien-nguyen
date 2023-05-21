@@ -131,6 +131,9 @@ function Donation() {
                 delete dataUpdateDonationPostUser.ward
                 delete dataUpdateDonationPostUser.district
                 delete dataUpdateDonationPostUser.address
+                if (dataUpdateDonationPostUser.idOrganization === null) {
+                    delete dataUpdateDonationPostUser.idOrganization
+                }
                 console.log(dataUpdateDonationPostUser)
                 updateDonationPostUser(dataUpdateDonationPostUser).then(res => {
                     if(res?.status === 200) {

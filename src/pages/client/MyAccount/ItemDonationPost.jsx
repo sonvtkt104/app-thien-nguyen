@@ -17,6 +17,8 @@ function ItemDonationPost({ data, handleOpenModal, getListDonation, handleReload
     const handleCloseModalDetail = () => {
         setOpenModalDetail(false)
         // setDataDetail({})
+        handleReload({})
+        getListDonation()
     }
 
 
@@ -32,59 +34,100 @@ function ItemDonationPost({ data, handleOpenModal, getListDonation, handleReload
                     deleteDonationPostUser(data.id).then(res => {
                         if(res?.status === 200) {
                             getListDonation();
-                            toast.success("Xóa bài đăng ủng hộ thành công!")
+                            // toast.success("Xóa bài đăng ủng hộ thành công!")
+                            Modal.success({
+                                title: 'Thành công',
+                                content: 'Xóa bài đăng ủng hộ thành công!',
+                                okText: "Đóng",
+                                duration: 3
+                            });
                         } else {
-                            toast.error("Hệ thống lỗi, xin thử lại sau!")
+                            // toast.error("Hệ thống lỗi, xin thử lại sau!")
+                            Modal.error({
+                                title: 'Thất bại',
+                                content: 'Hệ thống lỗi, xin thử lại sau!',
+                                okText: "Đóng",
+                                duration: 3
+                            });
                         }
                     })
                     .catch(error => {
-                        toast.error("Hệ thống lỗi, xin thử lại sau!")
+                        // toast.error("Hệ thống lỗi, xin thử lại sau!")
+                        Modal.error({
+                            title: 'Thất bại',
+                            content: 'Hệ thống lỗi, xin thử lại sau!',
+                            okText: "Đóng",
+                            duration: 3
+                        });
                     })
                 } else if (data.status === "Chưa nhận") {
                     if (data.listRequest.length === 0) {
-                        // updateDonationPostUser(data.id, {...data, idDonor: null}).then(res => {
-                        //     getListDonation()
-                        //     console.log(res)
-                        // })
                         deleteDonationPostUser(data.id).then(res => {
                             if(res?.status === 200) {
                                 getListDonation();
-                                toast.success("Xóa bài đăng ủng hộ thành công!")
+                                // toast.success("Xóa bài đăng ủng hộ thành công!")
+                                Modal.success({
+                                    title: 'Thành công',
+                                    content: 'Xóa bài đăng ủng hộ thành công!',
+                                    okText: "Đóng",
+                                    duration: 3
+                                });
                             } else {
-                                toast.error("Hệ thống lỗi, xin thử lại sau!")
+                                // toast.error("Hệ thống lỗi, xin thử lại sau!")
+                                Modal.error({
+                                    title: 'Thất bại',
+                                    content: 'Hệ thống lỗi, xin thử lại sau!',
+                                    okText: "Đóng",
+                                    duration: 3
+                                });
                             }
                         })
                     } else {
-                        const newListRequest = data.listRequest = data.listRequest.map(data => {
+                        const newListRequest = data.listRequest.map(data => {
                             return { ...data, status: "Bị hủy" }
                         })
                         console.log(data);
                         deleteDonationPostUserRequest(data.id, newListRequest).then(res => {
                             if(res?.status === 200) {
                                 getListDonation();
-                                toast.success("Xóa bài đăng ủng hộ thành công!")
+                                // toast.success("Xóa bài đăng ủng hộ thành công!")
+                                Modal.success({
+                                    title: 'Thành công',
+                                    content: 'Xóa bài đăng ủng hộ thành công!',
+                                    okText: "Đóng",
+                                    duration: 3
+                                });
                             } else {
-                                toast.error("Hệ thống lỗi, xin thử lại sau!")
+                                // toast.error("Hệ thống lỗi, xin thử lại sau!")
+                                Modal.error({
+                                    title: 'Thất bại',
+                                    content: 'Hệ thống lỗi, xin thử lại sau!',
+                                    okText: "Đóng",
+                                    duration: 3
+                                });
                             }
                         })
                     }
 
                 } else {
-                    // updateDonationPostUser(data.id, {...data, idDonor: null}).then(res => {
-                    //     if(res?.status === 200) {
-                    //         getListDonation();
-                    //         toast.success("Xóa bài đăng ủng hộ thành công!")
-                    //     } else {
-                    //         toast.error("Hệ thống lỗi, xin thử lại sau!")
-                    //     }
-                    //     })
-
                     deleteDonationPostUserDonor(data.id).then(res => {
                         if(res?.status === 200) {
                             getListDonation();
-                            toast.success("Xóa bài đăng ủng hộ thành công!")
+                            // toast.success("Xóa bài đăng ủng hộ thành công!")
+                            Modal.success({
+                                title: 'Thành công',
+                                content: 'Xóa bài đăng ủng hộ thành công!',
+                                okText: "Đóng",
+                                duration: 3
+                            });
                         } else {
-                            toast.error("Hệ thống lỗi, xin thử lại sau!")
+                            // toast.error("Hệ thống lỗi, xin thử lại sau!")
+                            Modal.error({
+                                title: 'Thất bại',
+                                content: 'Hệ thống lỗi, xin thử lại sau!',
+                                okText: "Đóng",
+                                duration: 3
+                            });
                         }
                         })
 
