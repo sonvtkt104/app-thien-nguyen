@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Manage from "./Manage";
-import classes from "./CampaignStar.module.css";
+import "./CampaignStar.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Input, Modal, Space, Table } from "antd";
 import { getAllFeedbacks, sendFeedbackToUser } from "./AdminService";
@@ -8,24 +8,28 @@ import { useEffect } from "react";
 import { setMessages } from "../../redux/adminSlice";
 
 const CampaignStar = () => {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [mes, setMes] = useState("");
-  const dispatch = useDispatch();
+  const [idSend, setIdSend] = useState(null);
   const messages = useSelector((state) => state.admin.messages).map((item) => ({
     id: item.id,
     message: item.message,
     reply: item.reply,
     UserSendId: item.userAccount.id,
-    UserSendUserName: item.userAccount.userName,
+    UserSendUserName: item.userAccount.name,
     UserSendRoleId: item.userAccount.roleId,
+    timeCreate: item.timeCreate.slice(0, 10),
+    timeReply: item.timeReply.slice(0, 10),
   }));
 
-  const handleResponseUser = async (value) => {
+  const handleResponseUser = async () => {
     setOpen(false);
     setMes("");
+
     const data = await sendFeedbackToUser({
       content: mes,
-      user_id_receive: value,
+      user_id_receive: idSend,
     });
 
     (async () => {
@@ -37,9 +41,10 @@ const CampaignStar = () => {
   useEffect(() => {
     (async () => {
       const messages = await getAllFeedbacks();
+      console.log(messages);
       dispatch(setMessages(messages));
     })();
-    return () => { };
+    return () => {};
   }, []);
 
   const columns = [
@@ -57,16 +62,16 @@ const CampaignStar = () => {
           {record.UserSendRoleId === 2
             ? "Người dùng"
             : record.UserSendRoleId === 3
-              ? "Tổ chức" : ""}
+            ? "Tổ chức"
+            : ""}
         </p>
-      )
-      ,
+      ),
     },
     {
       title: "Nội dung",
       dataIndex: "message",
       key: "content",
-      width: "30%",
+      width: "20%",
     },
     {
       title: "Thông báo",
@@ -76,20 +81,58 @@ const CampaignStar = () => {
           {record && record.reply ? (
             record.reply
           ) : (
-            <p style={{ color: "#f03e3e" }}>Chưa xử lý</p>
+            <p style={{ color: "#e03131" }}>Chưa xử lý</p>
           )}
         </p>
       ),
-      width: "30%",
+      width: "20%",
+    },
+    {
+      title: "Thời gian gửi",
+      dataIndex: "timeCreate",
+      key: "timeCreate",
+    },
+    {
+      title: "Thời gian phản hồi",
+      dataIndex: "timeReply",
+      key: "timeReply",
     },
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Button type="primary" onClick={() => setOpen(true)}>
-            Gửi lại phản hồi
+          <Button
+            type="primary"
+            onClick={() => {
+              setOpen(true);
+              setIdSend(record.id);
+            }}
+          >
+            Gửi phản hồi
           </Button>
+        </Space>
+      ),
+    },
+  ];
+
+  return (
+    <Manage>
+      <div className="main">
+        <h2 className="header-title">Quản lý thông báo</h2>
+
+        <div className="list">
+          <Table
+            dataSource={messages}
+            columns={columns}
+            // pagination={false}
+            pagination={{
+              defaultPageSize: 4,
+              showSizeChanger: true,
+              pageSizeOptions: ["6", "8"],
+            }}
+          />
+
           <Modal
             title="Gửi lại thông báo cho người dùng"
             open={open}
@@ -102,34 +145,13 @@ const CampaignStar = () => {
             />
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
               <Button
-                onClick={() => handleResponseUser(record.id)}
+                onClick={() => handleResponseUser()}
                 style={{ width: "140px", marginTop: "20px" }}
               >
                 Gửi
               </Button>
             </div>
           </Modal>
-        </Space>
-      ),
-    },
-  ];
-
-  return (
-    <Manage>
-      <div className={classes.main}>
-        <h2 className={classes["header-title"]}>Quản lý thông báo</h2>
-
-        <div className={classes.list}>
-          <Table
-            dataSource={messages}
-            columns={columns}
-            // pagination={false}
-            pagination={{
-              defaultPageSize: 4,
-              showSizeChanger: true,
-              pageSizeOptions: ["6", "8"],
-            }}
-          />
         </div>
       </div>
     </Manage>
