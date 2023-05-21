@@ -1,19 +1,33 @@
 import { BellOutlined } from "@ant-design/icons"
 import { Col, Popover, Row, Modal } from "antd"
-import { memo, useMemo, useState } from "react"
+import { memo, useEffect, useMemo, useState } from "react"
 import { NotificationIcon, SettingIcon } from "../Icon"
 import { Link, useNavigate } from "react-router-dom"
 import { logOutApp } from "../../pages/client/MyAccount/MyAccountService"
 import { handleLogout } from "../../pages/Authentication/HandleUserInfomation"
+import { userGetReplyAdmin } from "../../api/feedbacks"
+import { userGetNotification } from "../../api/notifications"
+import { useSelector } from "react-redux"
 
 function Header({
 
 }) {
 
     const navigate = useNavigate()
+    const { infoUser} = useSelector(state => state?.app)
 
     const [openNotice, setOpenNotice] = useState(false)
     const [openProfile, setOpenProfile] = useState(false)
+
+    useEffect(() => {
+        userGetReplyAdmin().then(res => {
+            console.log('user get reply admin', res.data)
+        })
+
+        userGetNotification().then(res => {
+            console.log('user get notification ', res.data)
+        })
+    }, [])
 
     const handleLogOutApp = () => {
         Modal.confirm({
@@ -36,7 +50,7 @@ function Header({
         return [
             {
                 id: 1,
-                image: "https://yt3.ggpht.com/gxc1jOYPN-TOex8HbAmzSXrMu35AEUmqVbfnYy4nn1RkFR-zR5kyesPXDUjdvWwrc59R7vds0g=s88-c-k-c0x00ffffff-no-rj",
+                image: 'https://cdn-icons-png.flaticon.com/512/1253/1253685.png',
                 newNotice: true,
                 description: 'Recommended: Còn ai nghe “Đôi Bờ” chứ ạ? #doibo #trucnhan #xhtdrlx2 #xhtđrlx2 #foreststudio',
                 timeCreated: "11 hours ago",
@@ -50,6 +64,19 @@ function Header({
             },
         ]
     }, [])
+
+    useEffect(() => {
+        if(openNotice || openProfile) {
+            document.querySelector('body').style.overflow = 'hidden'
+        } else {
+            document.querySelector('body').style.overflow = 'auto'
+        }
+
+        return () => {
+            document.querySelector('body').style.overflow = 'auto'
+        }
+    }, [openNotice, openProfile])
+    
 
     return (
         <div className="page-layout-header flex-col-center">
@@ -68,7 +95,7 @@ function Header({
                 
                 <span style={{ marginRight: 20 }} className='flex-col-center'>
                     <Popover
-                        placement="bottomRight"
+                        placement="topRight"
                         content={
                             <div style={{ maxWidth: '360px' }}>
                                 <Row
@@ -96,7 +123,7 @@ function Header({
                                                 />
                                                 <div>
                                                     <div style={{ lineHeight: '21px', marginBottom: 8 }}>{item.description}</div>
-                                                    <div style={{ fontSize: 12, color: 'var(--color-gray)' }}>{item.timeCreated}</div>
+                                                    {/* <div style={{ fontSize: 12, color: 'var(--color-gray)' }}>{item.timeCreated}</div> */}
                                                 </div>
                                                 {
                                                     item.newNotice ? (
@@ -111,19 +138,22 @@ function Header({
                         }
                         trigger="click"
                         open={openNotice}
-                        onOpenChange={() => setOpenNotice(!openNotice)}
+                        onOpenChange={() => {
+                           
+                            setOpenNotice(!openNotice)
+                        }}
                     >
                         <span className="icon-app-header" style={{ cursor: 'pointer', padding: 5, borderRadius: "50%", background: 'transparent' }}>
                             <NotificationIcon fontSize={25} />
                         </span>
                     </Popover>
                 </span>
-                <span>
+                <span className="flex-col-center">
                     <Popover
                         placement="bottomRight"
                         content={
                             <div style={{ width: 250 }}>
-                                <Row style={{ padding: '16px 16px 8px', borderBottom: '1px solid var(--color-border)', flexWrap: 'nowrap' }}>
+                                {/* <Row style={{ padding: '16px 16px 8px', borderBottom: '1px solid var(--color-border)', flexWrap: 'nowrap' }}>
                                     <img src="/images/logo.png" alt="logo"
                                         style={{ width: 40, height: 40, borderRadius: '50%', marginRight: 16 }}
                                     />
@@ -133,7 +163,7 @@ function Header({
                                     >
                                         Mùa đông ấm áp
                                     </Col>
-                                </Row>
+                                </Row> */}
                                 <div style={{padding: '8px 0'}}>
                                     {/* <Row className="app-hover-background" style={{ padding: '8px 16px', lineHeight: '24px'}}>
                                         <span style={{marginRight: 16}}><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" className="style-scope yt-icon" style={{width: 24, height: 24}}><g className="style-scope yt-icon"><path d="M3,3v18h18V3H3z M4.99,20c0.39-2.62,2.38-5.1,7.01-5.1s6.62,2.48,7.01,5.1H4.99z M9,10c0-1.65,1.35-3,3-3s3,1.35,3,3 c0,1.65-1.35,3-3,3S9,11.65,9,10z M12.72,13.93C14.58,13.59,16,11.96,16,10c0-2.21-1.79-4-4-4c-2.21,0-4,1.79-4,4 c0,1.96,1.42,3.59,3.28,3.93c-4.42,0.25-6.84,2.8-7.28,6V4h16v15.93C19.56,16.73,17.14,14.18,12.72,13.93z" className="style-scope yt-icon"></path></g></svg></span>
@@ -144,11 +174,17 @@ function Header({
                                         Thay đổi mật khẩu
                                     </Row> */}
                                     <Row className="app-hover-background" style={{ padding: '8px 16px', lineHeight: '24px'}} 
-                                        onClick={handleLogOutApp}
                                     >
-                                        <span style={{marginRight: 16}}><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" className="style-scope yt-icon" style={{width: 24, height: 24}}><g className="style-scope yt-icon"><path d="M20,3v18H8v-1h11V4H8V3H20z M11.1,15.1l0.7,0.7l4.4-4.4l-4.4-4.4l-0.7,0.7l3.1,3.1H3v1h11.3L11.1,15.1z" className="style-scope yt-icon"></path></g></svg></span>
-                                        Đăng xuất
+                                        <Col span={24} className="flex-col-center" style={{cursor: 'pointer'}}
+                                            onClick={handleLogOutApp}
+                                        >
+                                            <Row >
+                                                <span className="flex-col-center" style={{marginRight: 16}}><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" className="style-scope yt-icon" style={{width: 24, height: 24}}><g className="style-scope yt-icon"><path d="M20,3v18H8v-1h11V4H8V3H20z M11.1,15.1l0.7,0.7l4.4-4.4l-4.4-4.4l-0.7,0.7l3.1,3.1H3v1h11.3L11.1,15.1z" className="style-scope yt-icon"></path></g></svg></span>
+                                                Đăng xuất
+                                            </Row>
+                                        </Col>
                                     </Row>
+                                    
                                 </div>
                             </div>
                         }
@@ -156,14 +192,12 @@ function Header({
                         open={openProfile}
                         onOpenChange={() => setOpenProfile(!openProfile)}
                     >
-                        <img src="/images/logo.png" alt="logo-user"
-                            style={{
-                                width: 40,
-                                height: 40,
-                                borderRadius: '50%',
-                                cursor: 'pointer'
-                            }}
-                        />
+                        <span
+                            className="flex-col-center"
+                            style={{cursor: 'pointer', fontWeight :'600'}}
+                        >
+                            Tài khoản
+                        </span>
                     </Popover>
                 </span>
             </Row>

@@ -18,3 +18,15 @@ export const userPushFeedBack = async (message) => {
 
     return res
 }
+
+export const userGetReplyAdmin = async () => {
+    const res = await axios({
+        method: 'GET',
+        url: URL_API_HOANG + '/charity/feedback/get-reply',
+        headers: {
+            Token: getTokenFromCookies() || ""
+        }
+    });
+
+    return res
+}
