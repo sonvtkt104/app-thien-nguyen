@@ -1,10 +1,21 @@
-import { Button, Col, Input, Row } from "antd";
+import { Button, Col, Input, Row, notification } from "antd";
 import { FooterClient, HeaderClient } from "../../../components";
 import './css/index.css'
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { userPushFeedBack } from "../../../api/feedbacks";
 
 const {TextArea} = Input
 
 export default function ContactUs() {
+
+    const { userType } = useSelector(state => state?.app) 
+    const navigate = useNavigate()
+
+    const [message, setMessage] = useState("")
+    console.log(message)
+
     return (
         <div>
             <HeaderClient page="contact-us" />
@@ -48,9 +59,34 @@ export default function ContactUs() {
                             <TextArea className="textarea-app"
                                 placeholder="Tin nhắn của bạn"
                                 style={{marginTop: 20, minHeight: 130}}
+                                value={message}
+                                onChange={(e) => {
+                                    setMessage(e.target.value);
+                                }}
                             />
                             <Row justify='center' style={{marginTop: 25}}>
-                                <Button className="btn-primary">GỬI PHẢN HỒI</Button>
+                                <Button className="btn-primary"
+                                    onClick={() => {
+                                        if(userType == 'normal_user') { // follow or un follow
+                                            userPushFeedBack(message).then(res => {
+                                                if(res.data) {
+                                                    console.log(res)
+                                                    notification.success({
+                                                        message: "Gửi phản hồi thành công",
+                                                        description:
+                                                            "Cảm ơn bạn đã gửi phản hồi cho chúng tôi. Chúng tôi sẽ trả lời bạn trong thời gian sớm nhất.",
+                                                        placement: 'bottomRight'
+                                                    })
+                                                    setMessage("")
+                                                }
+                                            })
+                                        } else { // login
+                                            navigate("/login")
+                                        }
+                                    }}
+                                >
+                                    GỬI PHẢN HỒI
+                                </Button>
                             </Row>
                         </Col>
                     </Row>

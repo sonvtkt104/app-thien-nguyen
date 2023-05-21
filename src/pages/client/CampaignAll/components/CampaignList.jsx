@@ -2,7 +2,7 @@ import { CloseOutlined } from "@ant-design/icons"
 import { Col, Row, Tag } from "antd"
 import { memo, useEffect, useState } from "react"
 import { ItemCampaign } from "../../../../components"
-import { getCampaignFollow } from "../../../../api/campaigns"
+import { getAllProvinces, getCampaignFollow } from "../../../../api/campaigns"
 
 function CampaignList({
     listCampaign,
@@ -32,19 +32,31 @@ function CampaignList({
 }) {
 
     const [listCampaignFollow, setListCampaignFollow] = useState([])
+    const [listProvinces, setListProvinces] = useState({})
 
     useEffect(() => {
         console.log('list campaign')
         getCampaignFollow().then(res => {
             console.log('campaign follow', res.data)
             let arr = []
-            res.data.forEach(item => {
+            res.data?.forEach(item => {
                 arr.push(item.id)
             })
             console.log('arrr list campaign follow', arr)
             setListCampaignFollow(arr)
         })
+
+        getAllProvinces().then(res => {
+            console.log('getAllProvinces', res.data)
+            let obj = {}
+            res?.data?.forEach(item => {
+                obj[item?.codeName] =  item?.name
+            })
+            setListProvinces(JSON.parse(JSON.stringify(obj)))
+        })
     }, [])
+
+    console.log("listProvinces", listProvinces)
 
 
     return (
@@ -176,6 +188,7 @@ function CampaignList({
                                     isFollow={listCampaignFollow?.includes(item?.campaignId)}  
                                     listCampaignFollow={listCampaignFollow}
                                     setListCampaignFollow={setListCampaignFollow}
+                                    listProvinces={listProvinces}
                                 /> 
                             </Col>
                         ))
