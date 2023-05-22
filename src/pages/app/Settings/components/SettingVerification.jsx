@@ -20,11 +20,13 @@ function SettingVerification() {
 
     useEffect(() => {
         getVerificationRequest(getInfoOfUserFromCookies().charityId).then(res => {
+            console.log((res));
             setDataRequest(res?.data?.data)
         })
     }, [reload])
 
     console.log(dataRequest);
+    console.log(getInfoOfUserFromCookies());
 
     const onFinish = (values) => {
         const formData = new FormData();

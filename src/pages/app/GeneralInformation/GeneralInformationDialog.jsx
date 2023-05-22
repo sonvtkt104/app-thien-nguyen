@@ -14,7 +14,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
     const [form] = Form.useForm();
     console.log(dataUpdate)
     
-    const valueImages = dataUpdate?.charityImages && dataUpdate?.charityImages !== "" ? dataUpdate?.charityImages?.split(", ").reduce((a, b) => {
+    const valueImages = dataUpdate?.charityImages && dataUpdate?.charityImages !== "" ? dataUpdate?.charityImages?.split(",").reduce((a, b) => {
         return [...a, { url: b }]
     }, []) : []
 
@@ -111,7 +111,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
         values.charityBanner = imageBanner
         values.charityImages = images?.reduce((a, b) => {
             return [...a, b.url]
-        }, []).join(", ")
+        }, []).join(",")
         values.googleMap = values?.googleMap?.includes("iframe") ? values.googleMap?.split('"')[1] : values.googleMap
         values.provinceId = provinceId || dataUpdate?.provinceId
         values.districtId = districtId || dataUpdate?.districtId
