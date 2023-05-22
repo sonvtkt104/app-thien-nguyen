@@ -52,6 +52,7 @@ function DetailCampaign() {
   const [intro, setIntro] = useState('')
   const [imageCampaign, setImageCampaign] = useState('')
   const [introVideo, setIntroVideo] = useState('')
+  const [imageOriganization, setImageOriganization] = useState('')
 
   let [provinces, setProvinces] = useState([])
   let [dataPosts, setDataPosts] = useState([])
@@ -140,6 +141,7 @@ function DetailCampaign() {
           setReceiveAmount(res.receiveAmount)
           setRegion(res.region)
           setStkBank(res.organization.charityAccountNumber)
+          setImageOriganization(res.organization.avatar)
           setIntro(res.introduction)
           setIntroVideo(res.introVideo)
           // console.log(res.images)
@@ -301,7 +303,7 @@ function DetailCampaign() {
                 <Col
                   style={{borderRadius: 6,width: 450, position: 'relative'}}
                 >
-                  <img src="https://givenow.vn/wp-content/uploads/2023/03/Cover-2-800x600.png" alt="a" 
+                  <img src={imageCampaign && imageCampaign.length > 0 ? imageCampaign[0].url : "https://givenow.vn/wp-content/uploads/2023/03/Cover-2-800x600.png"} alt="a" 
                     style={{
                       width: 450,
                       height: 350,
@@ -347,7 +349,7 @@ function DetailCampaign() {
                   <Row
                     style={{lineHeight: '60px', fontWeight: '600', fontSize: 16, marginTop: 10}}
                   >
-                    <img src="https://givenow.vn/wp-content/uploads/2023/02/NhaCuaVui-scaled.jpeg" alt="" 
+                    <img src={imageOriganization ? imageOriganization : "https://givenow.vn/wp-content/uploads/2023/02/NhaCuaVui-scaled.jpeg"} alt="image campaign" 
                       style={{width: 60, height: 60, borderRadius: '50%', marginRight: 12}}
                     />
                     {/* Xuan Son */}
