@@ -192,10 +192,27 @@
     background-color: #fff;
     margin: 0 auto;
     border-radius: 16px;
+    
+    .header-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-    .h-t-name {
-        margin-left: 24px;
+        .h-t-name {
+            margin-left: 24px;
+        }
+
+        .h-t-tai-file-mau {
+            padding: 8px 16px;
+            border: none;
+            outline: none;
+            color: white;
+            background-color: #34B1F8;
+            border-radius: 8px;
+            cursor: pointer;
+        }
     }
+
 }
 
 .statistical-container{

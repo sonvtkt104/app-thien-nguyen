@@ -35,6 +35,7 @@ function ModalCreateCampaign({
     const [endDay, setEndDay] = useState('')
     const [introductoryPost, setIntroductoryPost] = useState('')
     const [imageCampaign, setImageCampaign] = useState('')
+    const [introVideo, setIntroVideo] = useState('')
 
 
     const [fileList, setFileList] = useState([]);
@@ -50,10 +51,32 @@ function ModalCreateCampaign({
                 reader.onerror = (error) => reject(error);
         });
 
-    const handleChange = ({ fileList: newFileList }) => {
-        console.log(fileList)
-        setFileList(newFileList);
+    const handleChange = async ({ file }) => {
+
+        const formData = new FormData();
+        formData.append('file', file.originFileObj);
+        let res = await axios({
+            method: 'post',
+            url: 'http://localhost:8080/upload',
+            data: formData,
+            headers: {
+                Authorization: `Bearer ${getTokenFromCookies()}`,
+                Token: getTokenFromCookies()
+            }
+        }).then(res => res.data)
+        // console.log(res)
+        // console.log([...fileList, res.data])
+        setFileList(prev => prev ? [...prev, {url: res.data}] : [{url: res.data}]);
+        // let arrTemp = fileList.map((image) => (image.url)).join(', ')
+        // setImageCampaign(arrTemp)
+
     };
+
+    const onRemoveImage = (value) => {
+        // console.log(value);
+        setFileList((images) => images.filter((image) => image.url !== value.url))
+        return false
+    }
 
     const handlePreview = async (file) => {
         if (!file.url && !file.preview) {
@@ -153,15 +176,20 @@ function ModalCreateCampaign({
 
 
     const handlePressOk = async () => {
+        let images = fileList.map((image) => (image.url)).join(', ')
+        // // setImageCampaign(arrTemp)
         // console.log(nameCampaign)
         // console.log(targetAudience)
         // console.log(targetCampaign)
         // console.log(startDay)
         // console.log(endDay)
         // console.log(region)
-        // console.log(region.join(', '))
+        // // console.log(region.join(', '))
+        // console.log(introVideo)
+        // console.log(images)
+        // // console.log(imageCampaign)
         // console.log(introductoryPost)
-        // handleOk()
+        // // handleOk()
         // return;
         if(!nameCampaign || !targetAudience || !targetCampaign || !startDay || !endDay || !region || !introductoryPost) {
             toast.error('Vui lòng điền đầy đủ thông tin!')
@@ -180,13 +208,15 @@ function ModalCreateCampaign({
                     target_object: targetAudience,
                     region: region.join(', '),
                     status: 'Đang vận động',
-                    campaign_type: 'Tạm thời chưa biết',
+                    // campaign_type: 'Tạm thời chưa biết',
+                    intro_video: introVideo,
+                    images: images,
                     target_amount: targetCampaign,
                     start_date: startDay,
                     stop_date: endDay,
-                    start_active_date: startDay,
-                    stop_active_date: endDay,
-                    stop_receive_date: endDay
+                    // start_active_date: startDay,
+                    // stop_active_date: endDay,
+                    // stop_receive_date: endDay
                 }
             })
             toast.success('Tạo mới cuộc vận động thành công!');
@@ -223,7 +253,7 @@ function ModalCreateCampaign({
                      <div className="modal-body">
                          <Row gutter={[12, 12]}>
                              <Col span={8}>
-                                 <label>Tên cuộc vận động</label>
+                                 <label><span style={{color: 'red'}}>*</span> Tên cuộc vận động</label>
                                  <br />
                                  <Input 
                                      placeholder=""
@@ -234,7 +264,7 @@ function ModalCreateCampaign({
                                  />
                              </Col>
                              <Col span={8}>
-                                 <label>Đối tượng hướng tới</label>
+                                 <label><span style={{color: 'red'}}>*</span> Đối tượng hướng tới</label>
                                  <br />
                                  <Select
                                     showSearch
@@ -257,7 +287,7 @@ function ModalCreateCampaign({
                                  /> */}
                              </Col>
                              <Col span={8}>
-                                 <label>Mục tiêu số tiền</label>
+                                 <label><span style={{color: 'red'}}>*</span> Mục tiêu số tiền</label>
                                  <br />
                                  <Input
                                      placeholder=""
@@ -270,7 +300,7 @@ function ModalCreateCampaign({
                          <div style={{margin: '12px 0'}}></div>
                          <Row gutter={[12, 0]}>
                             <Col span={8}>
-                                <label>Ngày bắt đầu</label>
+                                <label><span style={{color: 'red'}}>*</span> Ngày bắt đầu</label>
                                 <Input
                                     style={{width: '100%'}}
                                     value={startDay}
@@ -293,7 +323,7 @@ function ModalCreateCampaign({
                                 }    
                             </Col>
                             <Col span={8}>
-                                <label>Ngày kết thúc</label>
+                                <label><span style={{color: 'red'}}>*</span> Ngày kết thúc</label>
                                 <Input
                                     style={{width: '100%'}}
                                     value={endDay}
@@ -316,7 +346,7 @@ function ModalCreateCampaign({
                                 }        
                             </Col>
                             <Col span={8}>
-                                <label>Khu vực kêu gọi</label>
+                                <label><span style={{color: 'red'}}>*</span> Khu vực kêu gọi</label>
                                 <Select
                                     mode="multiple"
                                     showSearch
@@ -343,7 +373,7 @@ function ModalCreateCampaign({
                          </Row>
                          <div style={{margin: '12px 0'}}></div>
                          <Row>
-                             <label>Giới thiệu</label>
+                             <label><span style={{color: 'red'}}>*</span> Giới thiệu</label>
                              <Col span={24}>
                                 <CKEditor
                                     editor={ ClassicEditor }
@@ -357,12 +387,21 @@ function ModalCreateCampaign({
                          </Row>
                          <div style={{margin: '12px 0'}}></div>
                          <Row>
+                            <Col span={8} style={{marginRight: 24}}>
+                                <label>Link video youtube</label>
+                                <Input
+                                    placeholder="Link video" 
+                                    value={introVideo}
+                                    onChange={(e) => setIntroVideo(e.target.value)}
+                                 />
+                            </Col>
                             <Col span={8}>
                             Chọn ảnh đăng tải
                                 <Upload
-                                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                                     listType="picture-card"
+                                    onRemove={onRemoveImage}
                                     fileList={fileList}
+                                    customRequest={() => false}
                                     onPreview={handlePreview}
                                     onChange={handleChange}
                                     beforeUpload={beforeUpload}
@@ -383,6 +422,7 @@ function ModalCreateCampaign({
                                     />
                                 </Modal>
                             </Col>
+                            
                          </Row>
                      </div>
                  </Modal>

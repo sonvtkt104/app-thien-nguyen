@@ -168,6 +168,15 @@ function CamPaignPreview() {
         date: moment(item.timeCreate).format("DD/MM/YYYY")
     }))
 
+    let dataSourceMau = [
+        {
+            name: 'ten nguoi ung ho',
+            money: 'nhap so tien ung ho',
+            content: 'nhap noi dung o day',
+            type: 'nhan hoac trao',
+        }
+    ]
+
     // let dataSource2 = [
     //                     {
     //                         key: 1,
@@ -546,8 +555,7 @@ function CamPaignPreview() {
                                     <div className="btn-actions">
                                         
                                         <label htmlFor="custom-file-input">Import</label>
-                                        <input className="custom-file-input" id="custom-file-input" type="file" onChange={(e) => handleChangeImport(e)} />                                        
-                                        {/* <button className="btn-action-export">Export</button> */}
+                                        <input className="custom-file-input" id="custom-file-input" type="file" onChange={(e) => handleChangeImport(e)} />                                                         
                                         <CSVLink className="btn-action-export" data={dataSource2} filename={'my-file.csv'} target="_blank">
                                             Export
                                         </CSVLink>
@@ -556,12 +564,15 @@ function CamPaignPreview() {
                                 <div className="s-c-down">
                                     <div className="statement-table">
                                         <div className="header-title">
-                                        <div className="h-t-name">Danh sách sao kê</div>
-                                    </div>
-                                    <Divider />
-                                    <TableApp columns={columns2} dataSource={dataSource2}>
+                                            <div className="h-t-name">Danh sách sao kê</div>
+                                            <CSVLink className="h-t-tai-file-mau" data={dataSourceMau} filename={'new-file-data.csv'} target="_blank">
+                                                Tải xuống file mẫu
+                                            </CSVLink>
+                                        </div>
+                                        <Divider />
+                                        <TableApp columns={columns2} dataSource={dataSource2}>
 
-                                    </TableApp>
+                                        </TableApp>
                                     </div>
                                 </div>
                             </div>

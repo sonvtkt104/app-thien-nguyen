@@ -36,6 +36,8 @@ function ModalEditCampaign({
     const [startDay, setStartDay] = useState('')
     const [endDay, setEndDay] = useState('')
     const [imageCampaign, setImageCampaign] = useState('')
+    const [introVideo, setIntroVideo] = useState('')
+    const [receiveAmount, setReceiveAmount] = useState('')
 
     const [fileList, setFileList] = useState([]);
     const [previewImage, setPreviewImage] = useState(false);
@@ -53,9 +55,32 @@ function ModalEditCampaign({
                 reader.onerror = (error) => reject(error);
         });
 
-    const handleChange = ({ fileList: newFileList }) => {
-        setFileList(newFileList);
-    };
+        const handleChange = async ({ file }) => {
+
+            const formData = new FormData();
+            formData.append('file', file.originFileObj);
+            let res = await axios({
+                method: 'post',
+                url: 'http://localhost:8080/upload',
+                data: formData,
+                headers: {
+                    Authorization: `Bearer ${getTokenFromCookies()}`,
+                    Token: getTokenFromCookies()
+                }
+            }).then(res => res.data)
+            // console.log(res)
+            // console.log([...fileList, res.data])
+            setFileList(prev => prev ? [...prev, {url: res.data}] : [{url: res.data}]);
+            // let arrTemp = fileList.map((image) => (image.url)).join(', ')
+            // setImageCampaign(arrTemp)
+    
+        };
+
+    const onRemoveImage = (value) => {
+        // console.log(value);
+        setFileList((images) => images.filter((image) => image.url !== value.url))
+        return false
+    }
 
     const handlePreview = async (file) => {
         if (!file.url && !file.preview) {
@@ -143,6 +168,12 @@ function ModalEditCampaign({
                         setStartDay(res.startDate)
                         setEndDay(res.stopDate)
                         setRegion(res.region)
+                        setIntroVideo(res.introVideo)
+                        let arr = res.images && res.images.length > 0 ? res.images.split(', ').map(image => ({url: image})) : null;
+                        
+                        // console.log(arr)
+                        setFileList(arr)
+                        setReceiveAmount(res.receiveAmount)
                         
                         let splitRegion = res.region.split(', ')
                         let dataRegion = provinces.filter((item) => {
@@ -165,7 +196,7 @@ function ModalEditCampaign({
     
 
     const handlePressOk = async () => {
-
+        let images = fileList.map((image) => (image.url)).join(', ')
         // console.log(campaign_id)
         // console.log(nameCampaign)
         // console.log(targetAudience)
@@ -173,6 +204,8 @@ function ModalEditCampaign({
         // console.log(startDay)
         // console.log(endDay)
         // console.log(region)
+        // console.log(introVideo)
+        // console.log(imageCampaign)
         // console.log(introductoryPost)
         // return;
 
@@ -193,17 +226,12 @@ function ModalEditCampaign({
                     target_object: targetAudience,
                     region: region,
                     status: 'Đang vận động',
-                    campaign_type: 'Tạm thời chưa biết',
+                    images: images,
+                    intro_video: introVideo,
                     target_amount: targetCampaign,
-                    receive_amount: 1000000,
-                    donor_amount: 0,
-                    spent_amount: 0,
+                    receive_amount: receiveAmount,
                     start_date: startDay,
-                    stop_date: endDay,
-                    start_active_date: startDay,
-                    stop_active_date: endDay,
-                    stop_receive_date: endDay,
-                    isStar: true
+                    stop_date: endDay,                  
                 }
             })
             toast.success('Chỉnh sửa cuộc vận động thành công!')
@@ -265,7 +293,7 @@ function ModalEditCampaign({
                      <div className="modal-body">
                          <Row gutter={[12, 12]}>
                              <Col span={8}>
-                                 <label>Tên cuộc vận động</label>
+                                 <label><span style={{color: 'red'}}>*</span> Tên cuộc vận động</label>
                                  <br />
                                  <Input 
                                      placeholder=""
@@ -275,7 +303,7 @@ function ModalEditCampaign({
                                  />
                              </Col>
                              <Col span={8}>
-                                 <label>Đối tượng hướng tới</label>
+                                 <label><span style={{color: 'red'}}>*</span> Đối tượng hướng tới</label>
                                  <br />
                                  <Select
                                     value={optionSelectTargetAudience}
@@ -299,7 +327,7 @@ function ModalEditCampaign({
                                  /> */}
                              </Col>
                              <Col span={8}>
-                                 <label>Mục tiêu</label>
+                                 <label><span style={{color: 'red'}}>*</span> Mục tiêu</label>
                                  <br />
                                  <Input 
                                      placeholder=""
@@ -312,7 +340,7 @@ function ModalEditCampaign({
                          <div style={{margin: '12px 0'}}></div>
                          <Row gutter={[12, 0]}>
                             <Col span={8}>
-                                <label>Ngày bắt đầu</label>
+                                <label><span style={{color: 'red'}}>*</span> Ngày bắt đầu</label>
                                 <Input
                                     style={{width: '100%'}}
                                     value={startDay}
@@ -335,7 +363,7 @@ function ModalEditCampaign({
                                 }       
                             </Col>
                             <Col span={8}>
-                                <label>Ngày kết thúc</label>
+                                <label><span style={{color: 'red'}}>*</span> Ngày kết thúc</label>
                                 <Input
                                     style={{width: '100%'}}
                                     value={endDay}
@@ -358,7 +386,7 @@ function ModalEditCampaign({
                                 }           
                             </Col>
                             <Col span={8}>
-                                <label>Khu vực kêu gọi</label>
+                                <label><span style={{color: 'red'}}>*</span> Khu vực kêu gọi</label>
                                 <Select
                                     mode="multiple"
                                     value={optionSelect}
@@ -379,7 +407,7 @@ function ModalEditCampaign({
                          </Row>
                          <div style={{margin: '12px 0'}}></div>
                          <Row>
-                             <label>Bài viết giới thiệu</label>
+                             <label><span style={{color: 'red'}}>*</span> Giới thiệu</label>
                              <Col span={24}>
                                 <CKEditor
                                     editor={ ClassicEditor }
@@ -393,19 +421,29 @@ function ModalEditCampaign({
                          </Row>
                          <div style={{margin: '12px 0'}}></div>
                          <Row>
+                            <Col span={8} style={{marginRight: 24}}>
+                                <label>Link video youtube</label>
+                                <Input
+                                    placeholder="Link video" 
+                                    value={introVideo}
+                                    onChange={(e) => setIntroVideo(e.target.value)}
+                                 />
+                            </Col>
+
                             <Col span={8}>
                             Chọn ảnh đăng tải
                                 <Upload
-                                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                                     listType="picture-card"
+                                    onRemove={onRemoveImage}
                                     fileList={fileList}
+                                    customRequest={() => false}
                                     onPreview={handlePreview}
                                     onChange={handleChange}
                                     beforeUpload={beforeUpload}
                                     multiple
                                 >
                                     {
-                                        fileList && fileList.length >= 1 ? null : uploadButton
+                                        fileList && fileList.length >= 3 ? null : uploadButton
                                     }
                                     
                                 </Upload>

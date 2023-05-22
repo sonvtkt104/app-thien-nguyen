@@ -30,6 +30,7 @@ import { useParams } from "react-router-dom";
 import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
 import moment from "moment";
 import Search from "antd/es/input/Search";
+import { CSVLink } from "react-csv";
 
 function DetailCampaign() {
 
@@ -49,12 +50,23 @@ function DetailCampaign() {
   const [follow, setFollow] = useState(0)
   const [stkBank, setStkBank] = useState('')
   const [intro, setIntro] = useState('')
+  const [imageCampaign, setImageCampaign] = useState('')
+  const [introVideo, setIntroVideo] = useState('')
 
   let [provinces, setProvinces] = useState([])
   let [dataPosts, setDataPosts] = useState([])
 
   let [dataDonation, setDataDonation] = useState([])
   let [dataDonationSearch, setDataDonationSearch] = useState([])
+
+  let dataSourceMau = [
+    {
+        name: 'ten nguoi ung ho',
+        money: 'nhap so tien ung ho',
+        content: 'nhap noi dung o day',
+        type: 'nhan hoac trao',
+    }
+  ]
 
   // Modal thông tin ủng hộ
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -127,8 +139,13 @@ function DetailCampaign() {
           setTargetAmount(res.targetAmount)
           setReceiveAmount(res.receiveAmount)
           setRegion(res.region)
-          setStkBank(res.organization.charityBank)
+          setStkBank(res.organization.charityAccountNumber)
           setIntro(res.introduction)
+          setIntroVideo(res.introVideo)
+          // console.log(res.images)
+          let arr = res.images ? res.images.split(', ').map(image => ({url: image})) : null; 
+          // console.log(arr)
+          setImageCampaign(arr)
         }
       } catch (err) {
         console.log(err)
@@ -390,15 +407,15 @@ function DetailCampaign() {
                     
                   </Row> 
                   <Row
-                    justify='end'
+                    justify='center'
                     style={{marginTop: 20}}
                   >
-                    <button
+                    {/* <button
                       className="btn"
                       style={{fontSize: 16, fontWeight: '600', background: "#ffffff", marginRight: 20}}
                     >
                       Chia sẻ
-                    </button>
+                    </button> */}
                     <button
                       className="btn-primary"
                       style={{fontSize: 16, fontWeight: '600'}}
@@ -504,13 +521,24 @@ function DetailCampaign() {
                                         <div className="class-common">Khu vực kêu gọi:</div>
                                         <div>{resultRegion}</div>
                                         <div className="class-common">Video & Ảnh mô tả:</div>
-                                        <div style={{display: 'flex', justifyContent: 'center'}}>
-                                          <iframe width="60%" height="315" src="https://www.youtube.com/embed/im08YRl3df4" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
-                                        </div>
+                                        {
+                                          introVideo && (
+                                            <div style={{display: 'flex', justifyContent: 'center'}}>
+                                              <iframe width="60%" height="315" src={introVideo} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                                            </div>
+                                          )
+                                        }
+                                        
                                         <div className="img-info">
-                                            <img src="/images/mien-trung-1.jpg" alt="bla bla"></img>
+                                          {
+                                            imageCampaign && imageCampaign.length > 0 &&
+                                            imageCampaign.map((img, index) => (
+                                              <img src={img.url} alt="bla bla" key={index} className="custom-img"></img>
+                                            ))
+                                          }
+                                            {/* <img src="/images/mien-trung-1.jpg" alt="bla bla"></img>
                                             <img src="/images/mien-trung-2.jpg" alt="bla bla"></img>
-                                            <img src="/images/mien-trung-2.jpg" alt="bla bla"></img>
+                                            <img src="/images/mien-trung-2.jpg" alt="bla bla"></img> */}
                                         </div>
                                       
                                         <div style={{margin: '16px auto', display: 'flex', justifyContent: 'center'}}>
@@ -559,9 +587,9 @@ function DetailCampaign() {
                                 globalSearch(e.target.value)
                             }}
                           />
-                          <button className="btn-primary">
+                          <CSVLink className="btn-primary" data={dataSourceMau} filename={'file-donation.csv'} target="_blank">
                               Tải xuống
-                          </button>
+                          </CSVLink>
                       </Space>
                   </Row>
                   <br />
