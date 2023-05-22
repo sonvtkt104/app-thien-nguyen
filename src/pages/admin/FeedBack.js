@@ -1,13 +1,13 @@
 import { useState } from "react";
 import Manage from "./Manage";
-import "./CampaignStar.scss";
+import "./FeedBack.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Input, Modal, Space, Table } from "antd";
 import { getAllFeedbacks, sendFeedbackToUser } from "./AdminService";
 import { useEffect } from "react";
 import { setMessages } from "../../redux/adminSlice";
 
-const CampaignStar = () => {
+const FeedBack = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [mes, setMes] = useState("");
@@ -158,4 +158,4 @@ const CampaignStar = () => {
   );
 };
 
-export default CampaignStar;
+export default FeedBack;

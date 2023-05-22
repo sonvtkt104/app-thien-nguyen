@@ -6,8 +6,8 @@ import {
   Donation,
   MyDonation,
   ManageUser,
-  ManageCVD,
-  CampaignStar,
+  ManageVerify,
+  FeedBack,
   CamPaignList,
   GeneralInformation,
   HomePageCharity,
@@ -45,8 +45,8 @@ export default function Router() {
           element={<CamPaignPreview />}
         />
         <Route path="/admin" element={<ManageUser />} />
-        <Route path="/admin/cuocvandong" element={<ManageCVD />} />
-        <Route path="/admin/cuocvandongnoibat" element={<CampaignStar />} />
+        <Route path="/admin/verify" element={<ManageVerify />} />
+        <Route path="/admin/feedback" element={<FeedBack />} />
         <Route path="/home-page-charity" element={<HomePageCharity />} />
         <Route path="/general-information" element={<GeneralInformation />} />
         <Route
@@ -57,7 +57,10 @@ export default function Router() {
         <Route path="/general-information" element={<GeneralInformation />} />
         <Route path="/campaign-all" element={<CampaignAll />} />
         <Route path="/contact-us" element={<ContactUs />} />
-        <Route path="/profile-charity/:charityId" element={<ProfileCharity />} />
+        <Route
+          path="/profile-charity/:charityId"
+          element={<ProfileCharity />}
+        />
         <Route path="/charity-all" element={<CharityAll />} />
         <Route path="/charity-search" element={<CharitySearch />} />
         <Route path="/my-account" element={<Account />} />
