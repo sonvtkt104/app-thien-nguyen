@@ -10,14 +10,14 @@ import { SegmentedApp } from "../../../../components/SegmentedApp"
 import { RemoveIcon } from "../../../../components/Icon/RemoveIcon"
 import ModalDetail from '../ModalDetail';
 import { PageLayout } from '../../../../components';
-import { getDonationPostUser, updateDonationPostUser } from "../../../client/MyAccount/MyAccountService";
+import { getDonationPostUser, sendNotification, updateDonationPostUser } from "../../../client/MyAccount/MyAccountService";
 import { getUserInfomationFromCookies, getInfoOfUserFromCookies } from "../../../Authentication/HandleUserInfomation";
 import { toast } from "react-toastify";
 
 function MyDonation() {
   const dispatch = useDispatch()
   
-  // console.log(getInfoOfUserFromCookies);
+  console.log(getInfoOfUserFromCookies());
   const [segment, setSegment] = useState("Yêu cầu xác nhận")
   const [donations, setDonations] = useState([])
   const [openModalDetail, setOpenModalDetail] = useState(false)
@@ -160,6 +160,14 @@ function MyDonation() {
                     .then(res => {
                       if (res?.status === 200) {
                         toast.success("Chuyển trạng thái thành công!")
+                        if(rowData?.idDonor && segment === "Đã nhận") {
+                          const dataSendNotification= {
+                              "receive_user_id": rowData?.idDonor,
+                              "created_user_id": getInfoOfUserFromCookies().id,
+                              "message": `Tổ chức ${getInfoOfUserFromCookies()?.name} đã quyên góp thành công đồ ủng hộ "${rowData.name}" của bạn`
+                            }
+                          sendNotification(dataSendNotification).then(res => console.log(res))
+                        }
                       } else {
                         toast.error("Hệ thống lỗi, xin thử lại sau!")
                       }
@@ -272,6 +280,17 @@ function MyDonation() {
       if (res?.status === 200) {
         const message = action === "Từ chối" ? "Đã từ chối thành công!" : "Đã xác nhận thành công!"
         toast.success(message)
+        const dataSendNotification= {
+          "receive_user_id": rowData.idDonor,
+          "created_user_id": getInfoOfUserFromCookies().id,
+          "message": ""
+        }
+        if(action === "Từ chối") {
+          dataSendNotification.message = `Tổ chức ${rowData.organizationReceived} đã từ chối bài đăng ủng hộ "${rowData.name}" của bạn`
+        } else {
+          dataSendNotification.message = `Tổ chức ${rowData.organizationReceived} đã xác nhận bài đăng ủng hộ "${rowData.name}" của bạn`
+        }
+        sendNotification(dataSendNotification).then(res => console.log(res))
       } else {
         toast.error("Hệ thống lỗi, xin thử lại sau!")
       }

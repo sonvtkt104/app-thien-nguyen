@@ -130,3 +130,17 @@ export const logOutApp = async () => {
     const url = "http://localhost:8080/logout";
     return await axios.get(url, headers)
 } 
+
+
+//notification
+
+export const sendNotification= async (data) => {
+    const url = "http://localhost:8089/charity/notification/post-to-user";
+    return await axios.post(url, data, headers2)
+}
+
+export const getUserIdCharity = async (id) => {
+    const url = `http://localhost:8089/charity/access/get-user-id-by-organization-id?organization-id=${id}`;
+    return await axios.get(url);
+};
+

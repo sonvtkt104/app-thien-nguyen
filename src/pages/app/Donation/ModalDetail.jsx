@@ -1,17 +1,19 @@
 import "./donation.css"
 import { Modal, Image, Table, Button } from 'antd'
 import { useState } from 'react'
-import { updateDonationPostUser } from "../../client/MyAccount/MyAccountService";
+import { updateDonationPostUser, getUserIdCharity, sendNotification } from "../../client/MyAccount/MyAccountService";
 import { toast } from "react-toastify";
+
 
 function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handleReload, status }) {
     const [open, setOpen] = useState(true)
     const [dataRow, setDataRow] = useState({})
-    // console.log(dataDetail)
+    console.log(dataDetail)
     // console.log(handleReload)
 
 
     const handleConfirmation = (rowData) => {
+        console.log(rowData);
         Modal.confirm({
             title: `Bạn có chắc chắn, bạn muốn xác nhận cho tổ chức  ${rowData.name}?`,
             cancelText: "Quay lại",
@@ -50,6 +52,15 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
                         handleCloseModalDetail()
                         toast.success("Xác nhận thành công!")
                         // handleReload({})
+                        getUserIdCharity(rowData?.id).then(res => {
+                            console.log(res);
+                            const data = {
+                                "receive_user_id": res?.data?.message,
+                                "created_user_id": dataDetail?.idDonor,
+                                "message": `${dataDetail?.donorName} đã xác nhận đồ ủng hộ "${dataDetail?.name}" cho tổ chức của bạn`
+                            }
+                            sendNotification(data).then(res => console.log(res))
+                        })
                     } else {
                         toast.error("Hệ thống lỗi, xin thử lại sau!")
                     }

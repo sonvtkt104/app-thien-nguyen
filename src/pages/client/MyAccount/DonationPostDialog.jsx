@@ -2,7 +2,7 @@ import "./css/DonationPost.css"
 import { useEffect, useRef, useState } from 'react'
 import { Modal, Image, Button, Checkbox, Form, Input, Upload, Select } from 'antd'
 import { PlusOutlined, CloseOutlined, LoadingOutlined, UploadOutlined } from '@ant-design/icons';
-import { createDonationPostUser, getCurrentUser, getListDistrictByID, getListProvince, getListWardByID, updateDonationPostUser, getAllCharity } from "./MyAccountService";
+import { createDonationPostUser, getCurrentUser, getListDistrictByID, getListProvince, getListWardByID, updateDonationPostUser, getAllCharity, sendNotification, getUserIdCharity } from "./MyAccountService";
 import { uploadImage } from "../../app/HomePageCharity/HomePageCharityService";
 import { toast } from "react-toastify";
 
@@ -49,7 +49,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
             form.setFieldsValue(dataUpdate)
         })
     }, [])
-    // console.log(listCharity)
+    // console.log(dataInfo)
 
     useEffect(() => {
         getAllCharity().then(res => {
@@ -276,6 +276,18 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                         okText: "Đóng",
                         duration: 3
                     });
+
+                    // if(idOrganization !== "Tất cả" && idOrganization !== null) {
+                    //     getUserIdCharity(idOrganization).then(res => {
+                    //         console.log(res);
+                    //         const data = {
+                    //             "receive_user_id": res?.data?.message,
+                    //             "created_user_id": dataInfo?.id,
+                    //             "message": `${dataInfo?.name} muốn quyên góp ủng hộ "${values.name}" cho tổ chức của bạn`
+                    //         }
+                    //         sendNotification(data).then(res => console.log(res))
+                    //     })
+                    // }
                 } else {
                     // toast.error("Hệ thống lỗi, xin thử lại sau!")
                     Modal.error({
@@ -296,6 +308,18 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                     });
                 })
 
+        }
+
+        if(idOrganization !== "Tất cả" && idOrganization !== null) {
+            getUserIdCharity(idOrganization).then(res => {
+                console.log(res);
+                const data = {
+                    "receive_user_id": res?.data?.message,
+                    "created_user_id": dataInfo?.id,
+                    "message": `${dataInfo?.name} muốn quyên góp ủng hộ "${values.name}" cho tổ chức của bạn`
+                }
+                sendNotification(data).then(res => console.log(res))
+            })
         }
     };
 
