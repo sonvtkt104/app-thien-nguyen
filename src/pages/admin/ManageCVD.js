@@ -5,12 +5,12 @@ import { Select, Table, Modal, Button, Space, Row, Col, Image } from "antd";
 import { useSelector } from "react-redux";
 
 const ManageCVD = () => {
-  const charitys = useSelector((state) => state.admin.users).filter((item) => {
+  const charities = useSelector((state) => state.admin.users).filter((item) => {
     const { charityId } = item;
     return charityId;
   });
 
-  console.log(charitys);
+  console.log(charities);
 
   const columns = [
     {
@@ -22,7 +22,7 @@ const ManageCVD = () => {
       title: "Cấp tích xanh",
       key: "isVerified",
       render: (_, record) => (
-        <p>{record.isVerified === false ? "Chưa cấp" : "Cấp rồi"}</p>
+        <p>{record.isVerified === 0 ? "Chưa cấp" : "Cấp rồi"}</p>
       ),
     },
     {
@@ -63,7 +63,7 @@ const ManageCVD = () => {
         </div>
 
         <Table
-          dataSource={charitys}
+          dataSource={charities}
           columns={columns}
           // pagination={false}
           pagination={{

@@ -12,6 +12,37 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
     const [listCharity, setListCharity] = useState([]);
     const [dataInfo, setDataInfo] = useState();
 
+    let options = [
+        {
+            label: 'Tất cả mọi người',
+            value: 'Tất cả mọi người'
+        },
+        {
+            label: 'Trẻ em',
+            value: 'Trẻ em'
+        },
+        {
+            label: 'Trẻ em mồ côi',
+            value: 'Trẻ em mồ côi'
+        },
+        {
+            label: 'Người già',
+            value: 'Người già'
+        },
+        {
+            label: 'Người khuyết tật',
+            value: 'Người khuyết tật'
+        },
+        {
+            label: 'Thương binh liệt sỹ',
+            value: 'Thương binh liệt sỹ'
+        },
+        {
+            label: 'Người vô gia cư',
+            value: 'Người vô gia cư'
+        },
+    ]
+
     useEffect(() => {
         getCurrentUser().then(res => {
             setDataInfo(res?.data?.data)
@@ -36,6 +67,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
 
     const [open, setOpen] = useState(true)
     const [images, setImages] = useState(valueImages)
+    const [imagesBase, setImagesBase] = useState(valueImages)
     const [previewImage, setPreviewImage] = useState()
     const [previewOpen, setPreviewOpen] = useState(false);
     const [idOrganization, setIdOrganization] = useState(dataUpdate ? dataUpdate.idOrganization : null)
@@ -150,6 +182,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                 else {
                     console.log("all")
                     dataUpdateDonationPostUser.listRequest = dataUpdateDonationPostUser.listRequest.filter(data => data.id !== dataUpdate.idOrganization)
+                    dataUpdateDonationPostUser.idOrganization = null
                 }
             } else if (dataUpdate.status === "Từ chối nhận") {
                 if (idOrganization !== "Tất cả" && idOrganization !== null) {
@@ -178,6 +211,9 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
             delete dataUpdateDonationPostUser.ward
             delete dataUpdateDonationPostUser.district
             delete dataUpdateDonationPostUser.address
+            if (dataUpdateDonationPostUser.idOrganization === null) {
+                delete dataUpdateDonationPostUser.idOrganization
+            }
 
             console.log(dataUpdateDonationPostUser);
 
@@ -186,13 +222,31 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                 if (res?.status === 200) {
                     getListDonation();
                     onClose()
-                    toast.success("Chỉnh sửa bài đăng ủng hộ thành công!")
+                    // toast.success("Chỉnh sửa bài đăng ủng hộ thành công!")
+                    Modal.success({
+                        title: 'Thành công',
+                        content: 'Chỉnh sửa bài đăng ủng hộ thành công!',
+                        okText: "Đóng",
+                        duration: 3
+                    });
                 } else {
-                    toast.error("Hệ thống lỗi, xin thử lại sau!")
+                    // toast.error("Hệ thống lỗi, xin thử lại sau!")
+                    Modal.error({
+                        title: 'Thất bại',
+                        content: 'Hệ thống lỗi, xin thử lại sau!',
+                        okText: "Đóng",
+                        duration: 3
+                    });
                 }
             })
                 .catch(error => {
-                    toast.error("Hệ thống lỗi, xin thử lại sau!")
+                    // toast.error("Hệ thống lỗi, xin thử lại sau!")
+                    Modal.error({
+                        title: 'Thất bại',
+                        content: 'Hệ thống lỗi, xin thử lại sau!',
+                        okText: "Đóng",
+                        duration: 3
+                    });
                 })
 
         } else {
@@ -206,19 +260,40 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
             values.status = idOrganization === "Tất cả" ? "Chưa nhận" : "Chờ xác nhận"
             values.listRequest = idOrganization === "Tất cả" ? [] : [{ status: "Yêu cầu xác nhận", id: idOrganization, name: organizationReceived }]
             delete values.organizationReceived
+            if (values.idOrganization === null) {
+                delete values.idOrganization
+            }
             console.log("tao data", values)
             createDonationPostUser(values).then(res => {
                 if (res?.status === 200) {
                     getListDonation();
                     onClose()
                     console.log(res)
-                    toast.success("Tạo bài đăng ủng hộ thành công!")
+                    // toast.success("Tạo bài đăng ủng hộ thành công!")
+                    Modal.success({
+                        title: 'Thành công',
+                        content: 'Tạo bài đăng ủng hộ thành công!',
+                        okText: "Đóng",
+                        duration: 3
+                    });
                 } else {
-                    toast.error("Hệ thống lỗi, xin thử lại sau!")
+                    // toast.error("Hệ thống lỗi, xin thử lại sau!")
+                    Modal.error({
+                        title: 'Thất bại',
+                        content: 'Hệ thống lỗi, xin thử lại sau!',
+                        okText: "Đóng",
+                        duration: 3
+                    });
                 }
             })
                 .catch(error => {
-                    toast.error("Hệ thống lỗi, xin thử lại sau!")
+                    // toast.error("Hệ thống lỗi, xin thử lại sau!")
+                    Modal.error({
+                        title: 'Thất bại',
+                        content: 'Hệ thống lỗi, xin thử lại sau!',
+                        okText: "Đóng",
+                        duration: 3
+                    });
                 })
 
         }
@@ -238,9 +313,9 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
         });
 
     const handleChange = async ({ file }) => {
-        // const fileUrl = await getBase64(file.originFileObj);
-        // // console.log(fileUrl)
-        // setImages((images) => images.includes(fileUrl) ? images : [...images, { url: fileUrl }])
+        const fileBase = await getBase64(file.originFileObj);
+        setImagesBase((images) => images ? [...images, { url: fileBase }] : [{ url: fileBase }])
+
         const fileUrl = file.originFileObj;
         const formData = new FormData();
         formData.append('file', fileUrl);
@@ -248,14 +323,16 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
             console.log(res)
             setLoading(false)
             if (res.data.statusCode === 200) {
-                setImages((images) => images ? [...images, { url: res.data.data }] : [{ url: res.data.data }])
+                setImages((images) => images ? [...images, { url: res.data.data, urlBase: fileBase }] : [{ url: res.data.data, urlBase: fileBase }])
 
             }
         })
     };
 
     const onRemoveImage = (value) => {
-        setImages((images) => images.filter((image) => image.url !== value.url))
+        console.log(value);
+        setImages((images) => images.filter((image) => value.url.includes("firebasestorage") ? image.url !== value.url : image.urlBase !== value.url))
+        setImagesBase((images) => images.filter((image) => image.url !== value.url))
         return false
     }
 
@@ -273,6 +350,17 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
         console.log('search:', value);
         console.log(value1);
         setOrganizationReceived(value)
+    };
+    const onChangeDonationObject = (value, value1) => {
+        // console.log(value);
+        // console.log(value1);
+        // setIdOrganization(value)
+        // setOrganizationReceived(value1.charityName)
+    };
+    const onSearchDonationObject = (value, value1) => {
+        // console.log('search:', value);
+        // console.log(value1);
+        // setOrganizationReceived(value)
     };
 
     const onChangeProvince = (value, value1) => {
@@ -390,7 +478,20 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                                     },
                                 ]}
                             >
-                                <Input />
+                                {/* <Input /> */}
+                                <Select
+                                    showSearch
+                                    placeholder="Chọn đối tượng"
+                                    optionFilterProp="children"
+                                    onChange={onChangeDonationObject}
+                                    onSearch={onSearchDonationObject}
+                                    onSelect={(value) => console.log(value)}
+                                    filterOption={(input, option) =>
+                                        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                    }
+                                    fieldNames={{ label: "label", value: "value", options: "options" }}
+                                    options={options}
+                                />
                             </Form.Item>
 
                             <Form.Item
@@ -425,10 +526,12 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
 
                         <Form.Item label="Ảnh" name="images">
                             <Upload
+                                multiple
                                 listType="picture-card"
                                 name="images"
                                 onChange={handleChange}
-                                fileList={images || []}
+                                // fileList={images || []}
+                                fileList={imagesBase || []}
                                 onRemove={onRemoveImage}
                                 onPreview={(file) => { setPreviewOpen(true); setPreviewImage(file.url) }}
                                 customRequest={() => false}
@@ -439,14 +542,18 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                                     setLoading(false)
                                 }}
                             >
-                                
-                                <div>
+
+                                {/* <div>
                                     {loading ? <LoadingOutlined /> : (
                                         <>
                                             <PlusOutlined />
                                             <div style={{ marginTop: 8 }}>Tải ảnh</div>
                                         </>
                                     )}
+                                </div> */}
+                                <div>
+                                    <PlusOutlined />
+                                    <div style={{ marginTop: 8 }}>Tải ảnh</div>
                                 </div>
                             </Upload>
                         </Form.Item>

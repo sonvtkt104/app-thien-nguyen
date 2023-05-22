@@ -1,19 +1,87 @@
 import { BellOutlined } from "@ant-design/icons"
 import { Col, Popover, Row, Modal } from "antd"
-import { memo, useMemo, useState } from "react"
+import { memo, useEffect, useMemo, useState } from "react"
 import { NotificationIcon, SettingIcon } from "../Icon"
 import { Link, useNavigate } from "react-router-dom"
 import { logOutApp } from "../../pages/client/MyAccount/MyAccountService"
 import { handleLogout } from "../../pages/Authentication/HandleUserInfomation"
+import { userGetReplyAdmin } from "../../api/feedbacks"
+import { userGetNotification } from "../../api/notifications"
+import { useSelector } from "react-redux"
+import moment from "moment"
+import ModalNotification from "../ModalNotification"
 
 function Header({
 
 }) {
 
     const navigate = useNavigate()
+    const { infoUser} = useSelector(state => state?.app)
 
     const [openNotice, setOpenNotice] = useState(false)
     const [openProfile, setOpenProfile] = useState(false)
+
+    const [listReplyAdmins, setListReplyAdmins] = useState([])
+    const [listMessageUsers, setListMessageUsers] = useState([])
+    const [listNotifications, setListNotifications] = useState([])
+
+    const [dataNotification, setDataNotification] = useState({})
+    const [open, setOpen] = useState(false)
+
+    useEffect(() => {
+        userGetReplyAdmin().then(res => {
+            console.log('user get reply admin', res.data)
+            if(res.data) {
+                setListReplyAdmins(res.data)
+            }
+        })
+
+        userGetNotification().then(res => {
+            console.log('user get notification ', res.data)
+            if(res.data) {
+                setListMessageUsers(res.data)
+            }
+        })
+    }, [])
+
+    useEffect(() => {
+        let arr = []
+        if(listReplyAdmins && listReplyAdmins?.length > 0) {
+            listReplyAdmins?.forEach(item => {
+                if(item?.reply) {
+                    let obj = {}
+                    obj.image = 'https://cdn-icons-png.flaticon.com/512/1253/1253685.png'
+                    obj.newNotice = true
+                    obj.title = 'Thông báo phản hồi từ hệ thống'
+                    obj.message = item?.message
+                    obj.reply = item?.reply
+                    obj.date = item?.timeReply
+                    obj.type = 'admin'
+
+                    arr.push(obj)
+                }
+            })
+        }
+
+        if(listMessageUsers && listMessageUsers?.length > 0) {
+            listMessageUsers?.forEach(item => {
+                let obj = {}
+                obj.image = "https://scontent.fhan5-9.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-7&_nc_sid=7206a8&_nc_ohc=Y9NY4mwYloEAX9JF1oy&_nc_ht=scontent.fhan5-9.fna&oh=00_AfCL5aPIZO0VHpt0yPVvVv9k1b-71ZSxgskEDgpJsYX8ow&oe=648AEE38"
+                obj.newNotice = true
+                obj.title = `${item?.createdUser?.roleId == 2 ? "Người dùng" : item?.createdUser?.roleId == 3 ? "Tổ chức" : ''} ${item?.createdUser?.name}`
+                obj.message = item?.message
+                obj.reply = item?.message
+                obj.date = item?.timeCreate
+                obj.type = 'user'
+
+                arr.push(obj)
+            })
+        }
+
+        setListNotifications(arr)
+
+    } , [listReplyAdmins, listMessageUsers])
+
 
     const handleLogOutApp = () => {
         Modal.confirm({
@@ -32,24 +100,19 @@ function Header({
         });
     }
 
-    const arrNotice = useMemo(() => {
-        return [
-            {
-                id: 1,
-                image: "https://yt3.ggpht.com/gxc1jOYPN-TOex8HbAmzSXrMu35AEUmqVbfnYy4nn1RkFR-zR5kyesPXDUjdvWwrc59R7vds0g=s88-c-k-c0x00ffffff-no-rj",
-                newNotice: true,
-                description: 'Recommended: Còn ai nghe “Đôi Bờ” chứ ạ? #doibo #trucnhan #xhtdrlx2 #xhtđrlx2 #foreststudio',
-                timeCreated: "11 hours ago",
-            },
-            {
-                id: 2,
-                image: "https://yt3.ggpht.com/gxc1jOYPN-TOex8HbAmzSXrMu35AEUmqVbfnYy4nn1RkFR-zR5kyesPXDUjdvWwrc59R7vds0g=s88-c-k-c0x00ffffff-no-rj",
-                newNotice: false,
-                description: "Daniel Truong Dev uploaded: Lần đầu trải nghiệm Competitive Programming - Advent of Code 2022 ( Day 3 )",
-                timeCreated: "16 hours ago",
-            },
-        ]
-    }, [])
+
+    useEffect(() => {
+        if(openNotice || openProfile) {
+            document.querySelector('body').style.overflow = 'hidden'
+        } else {
+            document.querySelector('body').style.overflow = 'auto'
+        }
+
+        return () => {
+            document.querySelector('body').style.overflow = 'auto'
+        }
+    }, [openNotice, openProfile])
+    
 
     return (
         <div className="page-layout-header flex-col-center">
@@ -68,9 +131,9 @@ function Header({
                 
                 <span style={{ marginRight: 20 }} className='flex-col-center'>
                     <Popover
-                        placement="bottomRight"
+                        placement="topRight"
                         content={
-                            <div style={{ maxWidth: '360px' }}>
+                            <div style={{ width: '360px' }}>
                                 <Row
                                     style={{ padding: '16px 16px 8px', borderBottom: '1px solid var(--color-border)' }}
                                 >
@@ -85,18 +148,30 @@ function Header({
                                     }}
                                 >
                                     {
-                                        arrNotice?.map((item, index) => (
+                                        listNotifications?.sort((a, b) => {
+                                            let timeA = a.date ? new Date(a.date).getTime() : 0
+                                            let timeB = b.date ? new Date(b.date).getTime() : 0
+                                            if(timeA > timeB) { return 1}
+                                            else if (timeA < timeB) { return -1}
+                                            else return 0
+                                        })?.map((item, index) => (
                                             <Row
                                                 className="app-hover"
                                                 key={index}
-                                                style={{ flexWrap: 'nowrap', margin: '0 15px', padding: '10px 10px 10px 0', borderBottom: '1px solid var(--color-border)', position: 'relative' }}
+                                                style={{ flexWrap: 'nowrap', margin: '0 15px', padding: '10px 10px 10px 0', borderBottom: '1px solid var(--color-border)', position: 'relative', cursor: 'pointer' }}
+                                                onClick={() => {
+                                                    setDataNotification(JSON.parse(JSON.stringify(item)))
+                                                    setOpen(true)
+                                                    setOpenNotice(false)
+                                                }}
                                             >
                                                 <img src={item.image} alt={item.image}
                                                     style={{ width: 48, height: 48, borderRadius: '50%', marginRight: 16 }}
                                                 />
                                                 <div>
-                                                    <div style={{ lineHeight: '21px', marginBottom: 8 }}>{item.description}</div>
-                                                    <div style={{ fontSize: 12, color: 'var(--color-gray)' }}>{item.timeCreated}</div>
+                                                    <div style={{ lineHeight: '21px', marginBottom: 8, fontWeight: 600 }}>{item.title}</div>
+                                                    <div style={{ lineHeight: '21px', marginBottom: 8 }}>{item.reply}</div>
+                                                    <div style={{ fontSize: 12, color: 'var(--color-gray)' }}>{moment(item.date).format('DD-MM-YYYY')}</div>
                                                 </div>
                                                 {
                                                     item.newNotice ? (
@@ -111,19 +186,33 @@ function Header({
                         }
                         trigger="click"
                         open={openNotice}
-                        onOpenChange={() => setOpenNotice(!openNotice)}
+                        onOpenChange={() => {
+                           
+                            setOpenNotice(!openNotice)
+                        }}
                     >
-                        <span className="icon-app-header" style={{ cursor: 'pointer', padding: 5, borderRadius: "50%", background: 'transparent' }}>
+                        <span className="icon-app-header" style={{ cursor: 'pointer', padding: 5, borderRadius: "50%", background: 'transparent', position: 'relative' }}>
+                            {
+                                listNotifications && listNotifications.length > 0 ? (
+                                    <span style={{
+                                        position: 'absolute',
+                                        width: "6px",
+                                        height: "6px",
+                                        borderRadius: "50%",
+                                        background: "var(--color-red)",
+                                        right: 7}}></span>
+                                ) : ""
+                            }
                             <NotificationIcon fontSize={25} />
                         </span>
                     </Popover>
                 </span>
-                <span>
+                <span className="flex-col-center">
                     <Popover
                         placement="bottomRight"
                         content={
                             <div style={{ width: 250 }}>
-                                <Row style={{ padding: '16px 16px 8px', borderBottom: '1px solid var(--color-border)', flexWrap: 'nowrap' }}>
+                                {/* <Row style={{ padding: '16px 16px 8px', borderBottom: '1px solid var(--color-border)', flexWrap: 'nowrap' }}>
                                     <img src="/images/logo.png" alt="logo"
                                         style={{ width: 40, height: 40, borderRadius: '50%', marginRight: 16 }}
                                     />
@@ -133,7 +222,7 @@ function Header({
                                     >
                                         Mùa đông ấm áp
                                     </Col>
-                                </Row>
+                                </Row> */}
                                 <div style={{padding: '8px 0'}}>
                                     {/* <Row className="app-hover-background" style={{ padding: '8px 16px', lineHeight: '24px'}}>
                                         <span style={{marginRight: 16}}><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" className="style-scope yt-icon" style={{width: 24, height: 24}}><g className="style-scope yt-icon"><path d="M3,3v18h18V3H3z M4.99,20c0.39-2.62,2.38-5.1,7.01-5.1s6.62,2.48,7.01,5.1H4.99z M9,10c0-1.65,1.35-3,3-3s3,1.35,3,3 c0,1.65-1.35,3-3,3S9,11.65,9,10z M12.72,13.93C14.58,13.59,16,11.96,16,10c0-2.21-1.79-4-4-4c-2.21,0-4,1.79-4,4 c0,1.96,1.42,3.59,3.28,3.93c-4.42,0.25-6.84,2.8-7.28,6V4h16v15.93C19.56,16.73,17.14,14.18,12.72,13.93z" className="style-scope yt-icon"></path></g></svg></span>
@@ -144,11 +233,17 @@ function Header({
                                         Thay đổi mật khẩu
                                     </Row> */}
                                     <Row className="app-hover-background" style={{ padding: '8px 16px', lineHeight: '24px'}} 
-                                        onClick={handleLogOutApp}
                                     >
-                                        <span style={{marginRight: 16}}><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" className="style-scope yt-icon" style={{width: 24, height: 24}}><g className="style-scope yt-icon"><path d="M20,3v18H8v-1h11V4H8V3H20z M11.1,15.1l0.7,0.7l4.4-4.4l-4.4-4.4l-0.7,0.7l3.1,3.1H3v1h11.3L11.1,15.1z" className="style-scope yt-icon"></path></g></svg></span>
-                                        Đăng xuất
+                                        <Col span={24} className="flex-col-center" style={{cursor: 'pointer'}}
+                                            onClick={handleLogOutApp}
+                                        >
+                                            <Row >
+                                                <span className="flex-col-center" style={{marginRight: 16}}><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" className="style-scope yt-icon" style={{width: 24, height: 24}}><g className="style-scope yt-icon"><path d="M20,3v18H8v-1h11V4H8V3H20z M11.1,15.1l0.7,0.7l4.4-4.4l-4.4-4.4l-0.7,0.7l3.1,3.1H3v1h11.3L11.1,15.1z" className="style-scope yt-icon"></path></g></svg></span>
+                                                Đăng xuất
+                                            </Row>
+                                        </Col>
                                     </Row>
+                                    
                                 </div>
                             </div>
                         }
@@ -156,17 +251,20 @@ function Header({
                         open={openProfile}
                         onOpenChange={() => setOpenProfile(!openProfile)}
                     >
-                        <img src="/images/logo.png" alt="logo-user"
-                            style={{
-                                width: 40,
-                                height: 40,
-                                borderRadius: '50%',
-                                cursor: 'pointer'
-                            }}
-                        />
+                        <span
+                            className="flex-col-center"
+                            style={{cursor: 'pointer', fontWeight :'600'}}
+                        >
+                            Tài khoản
+                        </span>
                     </Popover>
                 </span>
             </Row>
+            <ModalNotification 
+                open={open}
+                setOpen={setOpen}
+                data={dataNotification}
+            />
         </div>
     )
 }

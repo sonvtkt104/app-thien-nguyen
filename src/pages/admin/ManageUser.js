@@ -9,7 +9,7 @@ import { useEffect } from "react";
 const ManageUser = () => {
   const users = useSelector((state) => state.admin.users);
   const dispatch = useDispatch();
-
+  console.log(users);
   useEffect(() => {
     (async () => {
       const resData = await getAllUsers();
@@ -18,7 +18,8 @@ const ManageUser = () => {
     return () => {};
   }, []);
 
-  const handleBanUser = async (value) => {
+  const handleBanUser = async (value, islocked) => {
+    if (islocked) return;
     const data = await changeUserStatus({
       id: value,
       status: true,
@@ -32,16 +33,27 @@ const ManageUser = () => {
     }
   };
 
-  const handleUnBanUser = async (value) => {
+  const handleUnBanUser = async (value, isLocked) => {
+    if (!isLocked) return;
     const data = await changeUserStatus({
       id: value,
       status: false,
     });
 
-    console.log(data);
+    if (data?.isSuccess) {
+      (async () => {
+        const resData = await getAllUsers();
+        dispatch(setUsers(resData.data));
+      })();
+    }
   };
 
   const columns = [
+    {
+      title: "Tên người dùng",
+      dataIndex: "name",
+      key: "name",
+    },
     {
       title: "Username",
       dataIndex: "userName",
@@ -51,33 +63,18 @@ const ManageUser = () => {
       title: "Trạng thái",
       key: "isLocked",
       render: (_, record) => (
-        <p>{record.isLocked === false ? "Không khóa" : "Bị khóa"}</p>
+        <p>{record.isLocked === false ? "Hoạt động" : "Khóa"}</p>
       ),
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
     },
     {
       title: "Số điện thoại",
       dataIndex: "phoneNumber",
       key: "phoneNumber",
     },
-    // {
-    //   title: "Phường/Xã",
-    //   dataIndex: "address",
-    //   key: "address",
-    // },
     {
-      title: "Quận/Huyện",
-      dataIndex: "ward",
-      key: "ward",
-    },
-    {
-      title: "Tỉnh/Thành phố",
-      dataIndex: "province",
-      key: "province",
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
     },
     {
       title: "Action",
@@ -86,7 +83,7 @@ const ManageUser = () => {
         <Space size="middle">
           <button
             className={classes["user-button"]}
-            onClick={() => handleBanUser(record.id)}
+            onClick={() => handleBanUser(record.id, record.isLocked)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -99,7 +96,7 @@ const ManageUser = () => {
           </button>
           <button
             className={classes["user-button"]}
-            onClick={() => handleUnBanUser(record.id)}
+            onClick={() => handleUnBanUser(record.id, record.isLocked)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -9,9 +9,12 @@ import {
   getListWardByID,
   getListDistrictByID,
 } from "../client/MyAccount/MyAccountService";
-import { toast } from "react-toastify";
+import { getUserInfomationFromCookies } from "./HandleUserInfomation";
+import { useDispatch } from "react-redux";
+import { setInfoUser, setUserType } from "../../redux/appSlice";
 
 const RegistrationPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [isCreateUser, setIsCreateUser] = useState(true);
   const [error, setError] = useState("");
   const { TextArea } = Input;
@@ -22,6 +25,30 @@ const RegistrationPage = () => {
   const [listDistrict, setListDistrict] = useState([]);
   const [wardId, setWardId] = useState(undefined);
   const [listWard, setListWard] = useState([]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const user = getUserInfomationFromCookies();
+    if (user) {
+      console.log("log user the first time", user);
+      dispatch(setInfoUser(user));
+      const roleId = user.roleId || user.RoleId;
+
+      if (roleId === 1) {
+        dispatch(setUserType("admin"));
+        navigate("../admin");
+      } else if (roleId === 3) {
+        dispatch(setUserType("charity"));
+        // navigate("/general-information");
+        window.location.replace("/general-information");
+      } else {
+        dispatch(setUserType("normal_user"));
+        navigate("..");
+      }
+    }
+
+    return () => {};
+  }, []);
 
   useEffect(() => {
     async function getProvinces() {
@@ -115,6 +142,7 @@ const RegistrationPage = () => {
     // }
 
     const submit = async () => {
+      setIsLoading(true);
       const response = await fetch("http://localhost:8080/Register", {
         method: "POST",
         headers: {
@@ -130,12 +158,10 @@ const RegistrationPage = () => {
 
       if (!data.isSuccess) {
         setError(data.messages[0]);
-        toast.error("Đăng ký lỗi");
         return;
       }
 
-      toast.success("Đăng ký thành công");
-
+      setIsLoading(false);
       navigate("../login");
     };
 
@@ -216,6 +242,7 @@ const RegistrationPage = () => {
     // };
 
     const submit = async () => {
+      setIsLoading(true);
       const response = await fetch("http://localhost:8080/Register", {
         method: "POST",
         headers: {
@@ -231,11 +258,9 @@ const RegistrationPage = () => {
 
       if (!data.isSuccess) {
         setError(data.messages[0]);
-        toast.error("Đăng ký lỗi");
         return;
       }
-      toast.success("Đăng ký thành công");
-
+      setIsLoading(false);
       navigate("../login");
     };
 
@@ -568,6 +593,7 @@ const RegistrationPage = () => {
                         htmlType="submit"
                         className="regis-button btn-primary"
                         style={{ margin: "auto" }}
+                        loading={isLoading}
                       >
                         Đăng ký
                       </Button>
@@ -880,6 +906,7 @@ const RegistrationPage = () => {
                           htmlType="submit"
                           className="regis-button btn-primary"
                           style={{ margin: "auto" }}
+                          loading={isLoading}
                         >
                           Đăng ký
                         </Button>

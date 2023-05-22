@@ -1,5 +1,5 @@
 import SideBar from "./SideBar"
-import { Button, Checkbox, Form, Input, Table, Select } from 'antd';
+import { Button, Checkbox, Form, Input, Table, Select, Modal } from 'antd';
 import { useEffect, useLayoutEffect, useReducer, useRef, useState } from "react";
 import { getCurrentUser, updateUser, getListProvince, getListDistrictByID, getListWardByID, updatePassWord } from "./MyAccountService";
 import { getUserInfomationFromCookies, getInfoOfUserFromCookies } from "../../Authentication/HandleUserInfomation";
@@ -98,15 +98,33 @@ function Account() {
                     form.setFieldsValue(values);
                     setDataInfo(values)
                     setReload({})
-                    toast.success("Chỉnh sửa thành công.")
+                    // toast.success("Chỉnh sửa thành công.")
+                    Modal.success({
+                        title: 'Thành công',
+                        content: 'Chỉnh sửa thông tin thành công!',
+                        okText: "Đóng",
+                        duration: 3
+                    });
                 } else {
                     console.log("loii")
-                    toast.error("Hệ thống lỗi, xin thử lại sau!")
+                    // toast.error("Hệ thống lỗi, xin thử lại sau!")
+                    Modal.error({
+                        title: 'Thất bại',
+                        content: 'Hệ thống lỗi, xin thử lại sau!',
+                        okText: "Đóng",
+                        duration: 3
+                    });
                     // form.setFieldsValue(info);
                 }
             })
         } else {
-            toast.warning("Chưa có thay đổi gì!")
+            // toast.warning("Bạn chưa có thay đổi gì!")
+            Modal.info({
+                title: 'Thông báo',
+                content: 'Bạn chưa có thay đổi gì!',
+                okText: "Đóng",
+                duration: 3
+            });
 
         }
 
@@ -126,16 +144,41 @@ function Account() {
                 // reloadRef.current = Math.random().toString(36).slice(-5)
                 if (res.status === 200) {
                     formPassWord.resetFields()
-                    toast.success("Đổi mật khẩu thành công.")
+                    // toast.success("Đổi mật khẩu thành công.")
+                    Modal.success({
+                        title: 'Thành công',
+                        content: 'Đổi mật khẩu thành công!',
+                        okText: "Đóng",
+                        duration: 3
+                    });
+                    
                 } else {
-                    toast.error("Hệ thống lỗi, xin thử lại sau!")
+                    // toast.error("Hệ thống lỗi, xin thử lại sau!")
+                    Modal.error({
+                        title: 'Thất bại',
+                        content: 'Hệ thống lỗi, xin thử lại sau!',
+                        okText: "Đóng",
+                        duration: 3
+                    });
                 }
             })
                 .catch(error => {
                     console.log(error)
                     if (error?.response?.status === 400) {
-                        error?.response?.data?.message ? toast.warning("Mật khẩu mới không được trùng với mật khẩu cũ") :
-                            toast.error("Mật khẩu hiện tại chưa chính xác!")
+                        error?.response?.data?.message ?
+                            Modal.info({
+                                title: 'Thông báo',
+                                content: 'Mật khẩu mới không được trùng với mật khẩu cũ!',
+                                okText: "Đóng",
+                                duration: 3
+                            }) :
+                                // toast.error("Mật khẩu hiện tại chưa chính xác!")
+                                Modal.error({
+                                    title: 'Thất bại',
+                                    content: 'Mật khẩu hiện tại chưa chính xác!',
+                                    okText: "Đóng",
+                                    duration: 3
+                                });
                     } else {
                         // toast.error("Hệ thống lỗi, xin thử lại sau!")
                     }
@@ -361,7 +404,7 @@ function Account() {
                     >
 
                         <Form.Item
-                            style={{ width: "100%", marginBottom: 10 }}
+                            style={{ width: "32%", marginBottom: 10 }}
                             label="Mật khẩu hiện tại"
                             name="oldPassword"
                             rules={[
@@ -375,7 +418,7 @@ function Account() {
                         </Form.Item>
 
                         <Form.Item
-                            style={{ width: "100%", marginBottom: 10 }}
+                            style={{ width: "32%", marginBottom: 10 }}
                             label="Mật khẩu mới"
                             hasFeedback
                             name="newPassword"
@@ -392,7 +435,7 @@ function Account() {
 
 
                         <Form.Item
-                            style={{ width: "100%", marginBottom: 16 }}
+                            style={{ width: "32%", marginBottom: 16 }}
                             label="Xác nhận mật khẩu mới"
                             hasFeedback
                             name="confirmNewPassword"

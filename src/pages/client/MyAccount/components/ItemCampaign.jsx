@@ -12,7 +12,8 @@ export function ItemCampaign({
     listCampaignFollow, // [campaignId, ....]
     setListCampaignFollow,
     listCampaignFollowOrigin,
-    setListCampaignFollowOrigin
+    setListCampaignFollowOrigin,
+    listProvinces
 }) {
 
     /**
@@ -154,10 +155,22 @@ export function ItemCampaign({
                     {data?.campaignName}
                 </div>
                 <Row style={{margin: '10px 0'}}>
-                    <span><Tag title={data?.campaignTargeObject} color='var(--color-blue)' background="#e4faff" /></span>
-                    <span
-                        style={{margin: '0 7px'}}
-                    ><Tag title={data?.campaignRegion} color='var(--color-red)' background="#ff3c001a"/></span>
+                    {
+                        data?.campaignTargeObject ? (
+                            <span><Tag title={data?.campaignTargeObject} color='var(--color-blue)' background="#e4faff" /></span>
+                        ) : ""
+                    }
+                    {
+                        data?.campaignRegion ? data?.campaignRegion?.split(",")?.map((item, i) => {
+                            let key = item.trim();
+                            return (
+                                <span
+                                    style={{margin: '0 0px 5px 10px'}}
+                                ><Tag title={listProvinces[key]} color='var(--color-red)' background="#ff3c001a"/></span>
+                            )
+                        })
+                        : ""
+                    }
                     {/* <span><Tag title={data?.campaignRegion} /></span> */}
                 </Row>
                 <Row>

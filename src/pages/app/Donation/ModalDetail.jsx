@@ -7,8 +7,8 @@ import { toast } from "react-toastify";
 function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handleReload, status }) {
     const [open, setOpen] = useState(true)
     const [dataRow, setDataRow] = useState({})
-    console.log(dataDetail)
-    console.log(handleReload)
+    // console.log(dataDetail)
+    // console.log(handleReload)
 
 
     const handleConfirmation = (rowData) => {
@@ -19,13 +19,13 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
             okType: "danger",
             centered: "true",
             onCancel: () => {
-                console.log("quay lai")
+                // console.log("quay lai")
                 // setDataRow({})
             },
             onOk: async () => {
                 // setDataRow({})
-                console.log(rowData)
-                console.log(dataDetail)
+                // console.log(rowData)
+                // console.log(dataDetail)
                 const idUpdateDonationPostUser = dataDetail.id
                 const dataUpdateDonationPostUser = { ...dataDetail, idOrganization: rowData.id, organizationReceived: rowData.name, status: "Đã nhận" }
                 dataUpdateDonationPostUser.listRequest = dataDetail?.listRequest?.map(data => {
@@ -40,19 +40,22 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
                 delete dataUpdateDonationPostUser.address
                 console.log(dataUpdateDonationPostUser)
                 // console.log("update bai dang", rowData)
+                // handleReload({})
+                
                 updateDonationPostUser(dataUpdateDonationPostUser)
                 .then(res => {
                     if(res?.status === 200) {
                         // getListDonation();
                         // onClose()
                         handleCloseModalDetail()
-                        handleReload({})
                         toast.success("Xác nhận thành công!")
+                        // handleReload({})
                     } else {
                         toast.error("Hệ thống lỗi, xin thử lại sau!")
                     }
                 })
                 // handleCloseModalDetail()
+                getListDonation()
 
                 // getListDonation()
                 
@@ -78,7 +81,7 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
             align: 'center',
             // dataIndex: "name",
             render: (rowData) => {
-                console.log(rowData)
+                // console.log(rowData)
                 return (
                     <a
                         key={rowData.id}
@@ -105,7 +108,7 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
                             type="primary"
                             size="middle"
                             onClick={() => {
-                                console.log(rowData)
+                                // console.log(rowData)
                                 handleConfirmation(rowData)
                                 // setDataRow(row)
                             }}
@@ -132,7 +135,7 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
             style={{ fontFamily: "Poppins" }}
         >
             <p><b>Người ủng hộ:</b> {dataDetail.donorName}</p>
-            <p><b>Thông tin liên hệ:</b> {`${dataDetail.phone}, ${dataDetail.ward}, ${dataDetail.district}, ${dataDetail.province}`} </p>
+            <p><b>Thông tin liên hệ:</b> {`${dataDetail.phone}, ${dataDetail.address}, ${dataDetail.ward}, ${dataDetail.district}, ${dataDetail.province}`} </p>
             <p><b>Thông tin đồ ủng hộ:</b> "{dataDetail.name}", mong muốn ủng hộ cho "{dataDetail.donationObject}", ở "{dataDetail.donationAddress}"</p>
             <p><b>Ngày đăng:</b> {dataDetail.date}</p>
             <p><b>Mô tả:</b> {dataDetail.description}</p>

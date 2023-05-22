@@ -75,7 +75,7 @@ export default function CampaignAll() {
                     charityId: item?.organization.id,
                     charityName: item?.organization.charityName,
                     charityAvatar: item?.organization.avatar,
-                    charityIsVerified: item?.organization.isVerificated
+                    charityIsVerified: item?.organization.isVerified
                 }
                 arr.push(obj)
             })

@@ -10,7 +10,7 @@ export const handleSaveOnCookies = (data) => {
       maxAge: decoded.exp,
     });
     cookies.set("user", data.user, { path: "/" });
-    cookies.set("infoOfUser", {id: data?.user?.id || null, charityId: data?.user?.charityId || null, name : data?.user?.name}, { path: "/" });
+    cookies.set("infoOfUser", {id: data?.user?.id || null, charityId: data?.user?.charityId || null, name : data?.user?.name, isVerified: data?.user?.isVerified === 0 ? 0 : data?.user?.isVerified === 1 ? 1 : 2}, { path: "/" });
   } catch (error) {
     console.log(error);
   }

@@ -61,3 +61,13 @@ export const getCampaignByCharityId = async (charityId) => {
 
     return res
 }
+
+
+export const getAllProvinces = async () => {
+    const res = await axios({
+        method: 'GET',
+        url: URL_API_HOANG + '/charity/address/provinces',
+    });
+
+    return res
+}

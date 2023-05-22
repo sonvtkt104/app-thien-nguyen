@@ -9,20 +9,12 @@ import { setUserFollowCampaign, setUserUnFollowCampaign } from "../../api/campai
 export function ItemCampaign({
     style,
     className,
-    image = 'https://crowdfunding.comicola.com/wp-content/uploads/2022/11/banner3.png',
-    name = 'Dự án hoạt hình con thỏ',
-    type = 'Hoạt hình',
-    target_amount = 1200000000,
-    amount_receive = 1697116725,
-    charity_img = 'https://secure.gravatar.com/avatar/4aa5c6c6edd6bd67ab5404e369b1c19c?s=80&d=mm&r=g',
-    charity_name = 'Xuân Sơn',
-    target_object = 'Tổ chức',
-    area = 'Hà Nội',
-    status = 'active',
     data,
     isFollow,
     listCampaignFollow, // [campaignId, ....]
     setListCampaignFollow,
+    listProvinces,
+    hideFollow
 }) {
 
     /**
@@ -91,40 +83,44 @@ export function ItemCampaign({
             <Col xs={16} sm={16} md={16} lg={16} xl={16}
                 style={{ padding: 20, position: 'relative' }}
             >
-                <span
-                    style={{
-                      position: 'absolute',
-                      right: 10,
-                      top: 10,
-                      cursor: 'pointer',
-                      zIndex: 1
-                    }}
-                    onClick={() => {
-                        console.log('like campaign')
-                        if(isFollow) { // click to un follow
-                            setUserUnFollowCampaign(data?.campaignId).then(res => {
-                                console.log(res)
-                                let arr = listCampaignFollow?.filter(item => {
-                                    return item != data?.campaignId
-                                }) 
-                                setListCampaignFollow(JSON.parse(JSON.stringify(arr)))
-                            }) 
-                        } else { // click to follow
-                            setUserFollowCampaign(data?.campaignId).then(res => {
-                                console.log(res.data)
-                                setListCampaignFollow([...listCampaignFollow, data?.campaignId])
-                            }) 
-                        }
-                    }}
-                  >
-                    {
-                        isFollow ? (
-                            <HeartFilled style={{fontSize: 20, fontWeight: '600', color: 'var(--color-red)', transform: 'translateY(-3px)'}} />
-                        ) : (
-                            <HeartOutlined style={{fontSize: 20, fontWeight: '600', color: 'var(--color-gray)', transform: 'translateY(-3px)'}} />
-                        )
-                    }
-                  </span>
+                {
+                    hideFollow ? "" : (
+                        <span
+                            style={{
+                            position: 'absolute',
+                            right: 10,
+                            top: 10,
+                            cursor: 'pointer',
+                            zIndex: 1
+                            }}
+                            onClick={() => {
+                                console.log('like campaign')
+                                if(isFollow) { // click to un follow
+                                    setUserUnFollowCampaign(data?.campaignId).then(res => {
+                                        console.log(res)
+                                        let arr = listCampaignFollow?.filter(item => {
+                                            return item != data?.campaignId
+                                        }) 
+                                        setListCampaignFollow(JSON.parse(JSON.stringify(arr)))
+                                    }) 
+                                } else { // click to follow
+                                    setUserFollowCampaign(data?.campaignId).then(res => {
+                                        console.log(res.data)
+                                        setListCampaignFollow([...listCampaignFollow, data?.campaignId])
+                                    }) 
+                                }
+                            }}
+                        >
+                            {
+                                isFollow ? (
+                                    <HeartFilled style={{fontSize: 20, fontWeight: '600', color: 'var(--color-red)', transform: 'translateY(-3px)'}} />
+                                ) : (
+                                    <HeartOutlined style={{fontSize: 20, fontWeight: '600', color: 'var(--color-gray)', transform: 'translateY(-3px)'}} />
+                                )
+                            }
+                        </span>
+                    )
+                }
                 <div className="text-hover"
                     style={{ fontSize: 18, fontWeight: '600', paddingRight: 20, WebkitLineClamp: 1,
                     overflow: 'hidden',
@@ -138,10 +134,22 @@ export function ItemCampaign({
                     {data?.campaignName}
                 </div>
                 <Row style={{margin: '10px 0'}}>
-                    <span><Tag title={data?.campaignTargeObject} color='var(--color-blue)' background="#e4faff" /></span>
-                    <span
-                        style={{margin: '0 7px'}}
-                    ><Tag title={data?.campaignRegion} color='var(--color-red)' background="#ff3c001a"/></span>
+                    {
+                        data?.campaignTargeObject ? (
+                            <span><Tag title={data?.campaignTargeObject} color='var(--color-blue)' background="#e4faff" /></span>
+                        ) : ""
+                    }
+                    {
+                        data?.campaignRegion ? data?.campaignRegion?.split(",")?.map((item, i) => {
+                            let key = item.trim();
+                            return (
+                                <span
+                                    style={{margin: '0 0px 5px 10px'}}
+                                ><Tag title={listProvinces[key]} color='var(--color-red)' background="#ff3c001a"/></span>
+                            )
+                        })
+                        : ""
+                    }
                     {/* <span><Tag title={data?.campaignRegion} /></span> */}
                 </Row>
                 <Row>
@@ -152,7 +160,7 @@ export function ItemCampaign({
                     style={{marginBottom: 20}}
                 />
                 <Row justify='space-between'
-                    style={{paddingTop: 10, borderTop: '1px solid var(--color-border)'}}
+                    style={{paddingTop: 10, borderTop: '1px solid var(--color-border)', flexWrap: 'nowrap'}}
                 >
                     <Col style={{flexBasis: '65%'}}>
                         <Row>
