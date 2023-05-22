@@ -634,8 +634,12 @@ function DetailCampaign() {
                         <br />
                         <Row justify="center">
                             <Space wrap>
-                                <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="bla bla"></img>
-                                <img className="detail-campaign-img" src="/images/mien-trung-1.jpg" alt="bla bla"></img>
+                              {
+                                imageCampaign && imageCampaign.length > 0 &&
+                                imageCampaign.map((img, index) => (
+                                <img src={img.url} alt="bla bla" key={index} className="detail-campaign-img"></img>
+                                ))
+                              }
                             </Space>
                         </Row>
                     </div>
