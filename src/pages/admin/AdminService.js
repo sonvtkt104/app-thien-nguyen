@@ -44,10 +44,44 @@ export const changeUserStatus = async (data) => {
   } catch (error) {
     toast.success("Khóa hoặc mở khóa người dùng thất bại");
   }
+};
 
-  // return axios
-  //   .post("http://localhost:8080/user/change-status", data)
-  //   .then((res) => res.data);
+export const getListVerified = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:8080/account/verified-list",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getTokenFromCookies()}`,
+          Token: `Bearer ${getTokenFromCookies()}`,
+        },
+      }
+    );
+    return await response.json();
+  } catch (error) {
+    toast.success("Khóa hoặc mở khóa người dùng thất bại");
+  }
+};
+
+export const changeVerified = async (data) => {
+  try {
+    const response = await fetch(
+      "http://localhost:8080/account/change-verify",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getTokenFromCookies()}`,
+          Token: `Bearer ${getTokenFromCookies()}`,
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    return await response.json();
+  } catch (error) {
+    toast.success("Khóa hoặc mở khóa người dùng thất bại");
+  }
 };
 
 export const getAllCampaigns = async () => {

@@ -5,7 +5,7 @@ import MyDonation from "./app/Donation/myDonation/MyDonation";
 import HomePageCharity from "./app/HomePageCharity/HomePageCharity";
 import GeneralInformation from "./app/GeneralInformation/GeneralInformation";
 import ManageUser from "./admin/ManageUser";
-import ManageCVD from "./admin/ManageCVD";
+import ManageVerify from "./admin/ManageVerify";
 import CamPaignList from "./app/CampaignList/CampaignList";
 import CampaignPreview from "./app/CampaignList/CampaignPreview";
 import Account from "./client/MyAccount/Account";
@@ -18,7 +18,7 @@ import ProfileCharity from "./client/ProfileCharity";
 import LoginPage from "./Authentication/Login";
 import RegistrationPage from "./Authentication/Registration";
 import PassWord from "./client/MyAccount/PassWord";
-import CampaignStar from "./admin/CampaignStar";
+import FeedBack from "./admin/FeedBack";
 import CharityAll from "./client/CharityAll";
 import CharitySearch from "./client/CharitySearch";
 import OrganizationFollow from "./client/MyAccount/OrganizationFollow";
@@ -32,8 +32,8 @@ export {
   Donation,
   MyDonation,
   ManageUser,
-  ManageCVD,
-  CampaignStar,
+  ManageVerify,
+  FeedBack,
   CamPaignList,
   CampaignPreview,
   HomePageCharity,

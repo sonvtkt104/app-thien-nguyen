@@ -6,6 +6,7 @@ export const adminSlice = createSlice({
     users: [],
     campaigns: [],
     messages: [],
+    listVerifies: [],
   },
   reducers: {
     setUsers: (state, action) => {
@@ -26,6 +27,12 @@ export const adminSlice = createSlice({
     reloadMessages: (state, action) => {
       state.messages = action.payload;
     },
+    setListVerifies: (state, action) => {
+      state.listVerifies = action.payload;
+    },
+    reloadVerifies: (state, action) => {
+      state.listVerifies = action.payload;
+    },
   },
 });
 
@@ -36,5 +43,7 @@ export const {
   reloadCampaigns,
   setMessages,
   reloadMessages,
+  setListVerifies,
+  reloadVerifies,
 } = adminSlice.actions;
 export default adminSlice.reducer;

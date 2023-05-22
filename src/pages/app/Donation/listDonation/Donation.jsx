@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo} from 'react'
 import { TableApp } from "../../../../components/TableApp"
 import ModalDetail from '../ModalDetail';
 import { PageLayout } from '../../../../components';
-import { getDonationPostUser, updateDonationPostUser, getCurrentUser } from '../../../client/MyAccount/MyAccountService';
+import { getDonationPostUser, updateDonationPostUser, getCurrentUser, sendNotification } from '../../../client/MyAccount/MyAccountService';
 import { getUserInfomationFromCookies, getInfoOfUserFromCookies } from '../../../Authentication/HandleUserInfomation';
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux"
@@ -139,6 +139,12 @@ function Donation() {
                     if(res?.status === 200) {
                         toast.success("Liên hệ thành công thành công!")
                         setReloadData({})
+                        const dataSendNotification= {
+                            "receive_user_id": rowData.idDonor,
+                            "created_user_id": getInfoOfUserFromCookies().id,
+                            "message": `Tổ chức ${getInfoOfUserFromCookies()?.name} đã gửi yêu cầu xác nhận bài đăng ủng hộ "${rowData.name}" của bạn`
+                          }
+                        sendNotification(dataSendNotification).then(res => console.log(res))
                     } else {
                         toast.error("Hệ thống lỗi, xin thử lại sau!")
                     }

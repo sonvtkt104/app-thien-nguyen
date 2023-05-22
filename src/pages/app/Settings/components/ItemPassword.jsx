@@ -195,7 +195,7 @@ export default function ItemPassword({
                         name="basic"
                         style={{
                             width: "100%",
-                            padding: "10px 0 10px 20px",
+                            // padding: "10px 0 10px 20px",
                             flexWrap: "wrap"
                         }}
                         initialValues={{
