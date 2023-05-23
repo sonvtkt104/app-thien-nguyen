@@ -19,6 +19,7 @@ function GeneralInformation() {
     const [dataUpdate, setDataUpdate] = useState({})
     const [reloadData, setReloadData] = useState()
 
+
     useEffect(() => {
         getCurrentCharity().then(res => {
             console.log(res.data.data);
@@ -26,7 +27,6 @@ function GeneralInformation() {
         })
     }, [reloadData])
     // console.log(reloadData)
-    // console.log(charity)
 
 
     const handleCloseModal = () => {
@@ -131,13 +131,13 @@ function GeneralInformation() {
                                     Video Giới thiệu
                                 </div>
                                 {
-                                    ReactPlayer.canPlay(charity?.charityIntroVideo) &&
+                                    ReactPlayer.canPlay(charity?.charityIntroVideo) ?
                                         <ReactPlayer 
                                             url={charity?.charityIntroVideo}
                                             style={{ width: '100%', display: charity?.charityIntroVideo && charity?.charityIntroVideo !== "" ? "" : "none"  }}
                                             width='100%'
                                             height="350px"
-                                        />
+                                        /> : <p>Link youtube của bạn lỗi!!</p>
                                 }
                             </div>
                             <div>
@@ -207,10 +207,12 @@ function GeneralInformation() {
                                 </Row>
                                 <div style={{ margin: "0 10px 20px 10px", }}>
                                     <div style={{display: charity?.googleMap && charity?.googleMap !== "" ? "" : "none" }}>
-                                        <iframe title="Google map" src={charity?.googleMap} style={{ border: 0, width: '100%', height:200 }} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+                                        <iframe title="Google map" alt='Lỗi rồi' onerror="this.contentDocument.body.innerHTML='src sai rồi'" src={charity?.googleMap} style={{ border: 0, width: '100%', height:200 }} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
                                     </div>
                                 </div>
-                                <div style={{display:charity?.charityFacebook !== "" || charity?.charityInstagram !== "" || charity?.charityLinkedIn !== "" || charity?.charityTwitter !== "" ? "" : "none" }}>
+                                {/* (charity?.charityFacebook || charity?.charityInstagram || charity?.charityLinkedIn || charity?.charityTwitter) && (charity?.charityFacebook !== "" || charity?.charityInstagram !== "" || charity?.charityLinkedIn !== "" || charity?.charityTwitter !== "") */}
+                                
+                                <div style={{display: (!!charity?.charityFacebook || !!charity?.charityInstagram || !!charity?.charityLinkedIn || !!charity?.charityTwitter) ? "" : "none" }}>
                                     <div style={{ fontSize: 16, fontWeight: '600', marginBottom: 20, borderLeft: '3px solid var(--color-blue)', paddingLeft: 10 }}>Liên hệ qua mạng xã hội</div>
                                     <Row>
                                         <div style={{ marginRight: 12, padding: '0 10px', textAlign: 'center', display: charity?.charityFacebook && charity?.charityFacebook !== "" ? "" : "none" }}>

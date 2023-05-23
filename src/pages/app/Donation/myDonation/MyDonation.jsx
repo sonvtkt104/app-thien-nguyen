@@ -100,8 +100,9 @@ function MyDonation() {
       title: "Liên hệ",
       width: 200,
       render: (rowData) => {
+        console.log(rowData);
         return (
-          <div key={rowData.id}>{`${rowData.phone}, ${rowData.ward}, ${rowData.district}, ${rowData.province}`}</div>
+          <div key={rowData?.id}>{`${rowData?.phone}, ${rowData?.ward}, ${rowData?.district}, ${rowData.province}`}</div>
         )
       }
     },
@@ -140,13 +141,13 @@ function MyDonation() {
                     return data.id === rowData.idOrganization ? { ...data, status: segment === "Đã xác nhận" ? "Đã nhận" : "Đã quyên góp" } : { ...data }
                   })
 
-                  delete rowData.organizationReceived
-                  delete rowData.donorName
-                  delete rowData.phone
-                  delete rowData.province
-                  delete rowData.ward
-                  delete rowData.district
-                  delete rowData.address
+                  // delete rowData.organizationReceived
+                  // delete rowData.donorName
+                  // delete rowData.phone
+                  // delete rowData.province
+                  // delete rowData.ward
+                  // delete rowData.district
+                  // delete rowData.address
                   if (rowData.idOrganization === null) {
                     delete rowData.idOrganization
                   }
@@ -160,6 +161,7 @@ function MyDonation() {
                     .then(res => {
                       if (res?.status === 200) {
                         toast.success("Chuyển trạng thái thành công!")
+
                         if(rowData?.idDonor && segment === "Đã nhận") {
                           const dataSendNotification= {
                               "receive_user_id": rowData?.idDonor,

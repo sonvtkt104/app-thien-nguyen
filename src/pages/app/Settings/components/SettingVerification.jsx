@@ -131,7 +131,7 @@ function SettingVerification() {
                                         </Upload>
                                     </Form.Item>
                                 </div>
-                                <p style={{ fontSize: 20, fontWeight: '600', margin: '20px 0 10px' }}>Thêm lời nhắn</p>
+                                <p style={{ fontSize: 20, fontWeight: '600', margin: '20px 0 10px' }}>Nội dung</p>
                                 <Form.Item
                                     style={{ width: "100%", marginBottom: 16 }}
                                     // label="Thêm lời nhắn"
@@ -184,7 +184,7 @@ function SettingVerification() {
                                             )
                                         }
                                     </div>
-                                    <p><b>Lời nhắn:</b> {dataRequest.messageToAdmin}</p>
+                                    <p><b>Nội dung:</b> {dataRequest.messageToAdmin}</p>
                                 </div>
                             )
                     }

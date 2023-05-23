@@ -60,7 +60,7 @@ function SideBar({children,key})  {
                         {label:"Tài khoản", key: '1', onClick: () => { navigate('/my-account')}},
                         {label:"Bài đăng ủng hộ", key: '2', onClick: () => { navigate('/my-account/donation-post')}},
                         {label:"Tổ chức đã theo dõi", key: '3', onClick: () => { navigate('/my-account/organization-follow')}},
-                        {label:"Cuộc vận động đã lưu", key: '4', onClick: () => { navigate('/my-account/campaign-saved')}},
+                        {label:"Cuộc vận động đã thích", key: '4', onClick: () => { navigate('/my-account/campaign-saved')}},
                         // {label:"Thoát", key: '5', onClick: () => { navigate('/')}},
                         {label:"Đăng xuất", key: '5', onClick: () => { handleLogOutApp()}},
                         // {label:"Yêu cầu xác nhận", key: '6', onClick: () => { navigate('/my-account/request-confirmation')}},
