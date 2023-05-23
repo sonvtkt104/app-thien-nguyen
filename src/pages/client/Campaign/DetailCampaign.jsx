@@ -39,7 +39,7 @@ function DetailCampaign() {
 
   // const { Search } = Input;
 
-  const {organizationId, campaignId} = useParams();
+  const {campaignId} = useParams();
 
   const [nameCampaign, setNameCampaign] = useState('')
   const [nameOrganization, setNameOrganization] = useState('')
@@ -128,27 +128,27 @@ function DetailCampaign() {
           method: 'get',
           url: `http://localhost:8089/charity/campaign/get-by-id?campaign-id=${campaignId}`,
           headers: {
-            Authorization: `Bearer ${getTokenFromCookies()}`,
-            Token: getTokenFromCookies()
+            Authorization: '',
+            Token: ''
           }
         }).then(res => res.data)
-        console.log(res)
-        if(res && res.organization && res.organization.id) {
-          setNameCampaign(res.campaignName)
-          setNameOrganization(res.organization.charityName)
-          setTargetObject(res.targetObject)
-          setTargetAmount(res.targetAmount)
-          setReceiveAmount(res.receiveAmount)
-          setRegion(res.region)
-          setStkBank(res.organization.charityAccountNumber)
-          setImageOriganization(res.organization.avatar)
-          setIntro(res.introduction)
-          setIntroVideo(res.introVideo)
-          // console.log(res.images)
-          let arr = res.images ? res.images.split(', ').map(image => ({url: image})) : null; 
-          // console.log(arr)
-          setImageCampaign(arr)
-        }
+        console.log(res[0])
+        setNameCampaign(res[0].campaignName)
+        setNameOrganization(res[0].organization.charityName)
+        setTargetObject(res[0].targetObject)
+        setTargetAmount(res[0].targetAmount)
+        setReceiveAmount(res[0].receiveAmount)
+        setRegion(res[0].region)
+        setStkBank(res[0].organization.charityAccountNumber)
+        setImageOriganization(res[0].organization.avatar)
+        setIntro(res[0].introduction)
+        setIntroVideo(res[0].introVideo)
+        // console.log(res[0].images)
+        let arr = res[0].images ? res[0].images.split(', ').map(image => ({url: image})) : null; 
+        // console.log(arr)
+        setImageCampaign(arr)
+        // if(res && res.organization && res.organization.id) {
+        // }
       } catch (err) {
         console.log(err)
       }
@@ -160,8 +160,8 @@ function DetailCampaign() {
               method: 'get',
               url: 'http://localhost:8089/charity/address/provinces',
               headers: {
-                  Authorization: `Bearer ${getTokenFromCookies()}`,
-                  Token: getTokenFromCookies()
+                  Authorization: '',
+                  Token: ''
               }
           }).then(res => res.data)
           setProvinces(res)
@@ -182,8 +182,8 @@ function DetailCampaign() {
                 method: 'get',
                 url: `http://localhost:8089/charity/campaign/get-statement-campaign?campaign-id=${campaignId}`,
                 headers: {
-                    Authorization: `Bearer ${getTokenFromCookies()}`,
-                    Token: getTokenFromCookies()
+                    Authorization: '',
+                    Token: ''
                 }
             }).then(res => res.data)
             if(res && res.length > 0) {
@@ -200,8 +200,8 @@ function DetailCampaign() {
                 method: 'get',
                 url: `http://localhost:8089/charity/campaign/campaign-get-follower?campaign-id=${campaignId}`,
                 headers: {
-                    Authorization: `Bearer ${getTokenFromCookies()}`,
-                    Token: getTokenFromCookies()
+                    Authorization: '',
+                    Token: ''
                 }
             }).then(res => res.data)
             if(res.length > 0) {
@@ -221,8 +221,8 @@ function DetailCampaign() {
                 method: 'get',
                 url: `http://localhost:8089/charity/campaign/get-statement-campaign?campaign-id=${campaignId}`,
                 headers: {
-                    Authorization: `Bearer ${getTokenFromCookies()}`,
-                    Token: getTokenFromCookies()
+                    Authorization: '',
+                    Token: ''
                 }
             }).then(res => res.data)
             if(res && res.length > 0) {
@@ -250,8 +250,8 @@ function DetailCampaign() {
               method: 'get',
               url: `http://localhost:8089/charity/post/get-post?campaign-id=${campaignId}`,
               headers: {
-                  Authorization: `Bearer ${getTokenFromCookies()}`,
-                  Token: getTokenFromCookies()
+                  Authorization: '',
+                  Token: ''
               }
           }).then(res => res.data)
           // console.log(res)

@@ -429,23 +429,28 @@ function CamPaignPreview() {
                         let data = results.data.filter((item) => {
                             if(item.name && item.amount && item.note && item.type) return item
                         })
-
-                        let res = await axios({
-                            method: 'post',
-                            url: `http://localhost:8089/charity/campaign/add-statement-campaign?campaign-id=${campaignId}`,
-                            headers: {
-                                Authorization: `Bearer ${getTokenFromCookies()}`,
-                                Token: getTokenFromCookies()
-                            },
-                            data: data 
-                        })
-                        if(res.status === 200) {
-                            await getDataStatement()
-                            toast.success('Import file thành công!')
+                        if(data.length > 0) {
+                            let res = await axios({
+                                method: 'post',
+                                url: `http://localhost:8089/charity/campaign/add-statement-campaign?campaign-id=${campaignId}`,
+                                headers: {
+                                    Authorization: `Bearer ${getTokenFromCookies()}`,
+                                    Token: getTokenFromCookies()
+                                },
+                                data: data 
+                            })
+                            if(res.status === 200) {
+                                await getDataStatement()
+                                toast.success('Import file thành công!')
+                            }
+                            else {
+                                toast.error('Import file thất bại')
+                            }
                         }
                         else {
-                            toast.error('Import file thất bại')
+                            toast.error('Import file không đúng định dạng!')
                         }
+
                     }                
                     else {
                         toast.error('Import file không đúng định dạng!')
