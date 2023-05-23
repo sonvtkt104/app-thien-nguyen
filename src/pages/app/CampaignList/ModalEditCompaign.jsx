@@ -196,7 +196,7 @@ function ModalEditCampaign({
     
 
     const handlePressOk = async () => {
-        let images = fileList.map((image) => (image.url)).join(', ')
+        let images = fileList && fileList.length > 0 ? fileList.map((image) => (image.url)).join(', ') : ''
         // console.log(campaign_id)
         // console.log(nameCampaign)
         // console.log(targetAudience)
