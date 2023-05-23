@@ -73,8 +73,8 @@ function OrganizationFollow() {
 
     return (
         <SideBar>
-            <div className="cs-title">
-                <h2>Danh sách các Tổ chức</h2>
+            <div className="cs-title" style={{marginBottom: 30}}>
+                <h2 className="h2-app">Danh sách các Tổ chức</h2>
                 <Form
                     name="basic"
                     onFinish={() => {

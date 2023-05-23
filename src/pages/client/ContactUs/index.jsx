@@ -44,7 +44,7 @@ export default function ContactUs() {
                         >
                             <div className="h1-app" style={{textAlign: 'center', fontSize: 28}}>LIÊN HỆ VỚI CHÚNG TÔI</div>
                             <Row justify='center' style={{color: 'gray', fontSize: 16, margin: '20px 0 50px'}}>Nếu bạn có câu hỏi nào, hãy để lời nhắn cho chúng tôi</Row>
-                            <Row>
+                            {/* <Row>
                                 <Col xs={12} sm={12} md={12} lg={12} xl={12} style={{paddingRight: 10}}>
                                     <Input placeholder="Tên của bạn"
                                         className="input-app"
@@ -55,10 +55,10 @@ export default function ContactUs() {
                                         className="input-app"
                                     />
                                 </Col>
-                            </Row>
+                            </Row> */}
                             <TextArea className="textarea-app"
                                 placeholder="Tin nhắn của bạn"
-                                style={{marginTop: 20, minHeight: 130}}
+                                style={{ minHeight: 170}}
                                 value={message}
                                 onChange={(e) => {
                                     setMessage(e.target.value);

@@ -1,7 +1,7 @@
 import { CloseOutlined, EnvironmentOutlined, GlobalOutlined, MailOutlined, NotificationOutlined, PhoneOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { useEffect, useState } from "react";
-import { FooterClient, HeaderClient, ItemCampaign, SearchIcon } from "../../../components";
+import { FooterClient, HeaderClient, ItemCampaign, SearchIcon, TickIcon } from "../../../components";
 import "./css/index.css"
 import { getInfoCharity, setFollowCharity } from "../../../api/charities";
 import { useNavigate, useParams } from "react-router-dom";
@@ -165,9 +165,16 @@ export default function ProfileCharity() {
                                 className="flex-col-center"
                                 style={{ marginLeft: 30 }}
                             >
-                                <div style={{ fontSize: 24, fontWeight: '600', marginBottom: 7 }}>
+                                <Row style={{ fontSize: 24, fontWeight: '600', marginBottom: 7 }}>
                                     {infoCharity?.charityName}
-                                </div>
+                                    {
+                                        infoCharity?.isVerified == 2? (
+                                            <span className="flex-col-center" style={{marginLeft: 10}}>
+                                                <TickIcon />
+                                            </span>
+                                        ) : ""
+                                    }
+                                </Row>
                                 <Row>
                                     {
                                         infoCharity?.charityWebsite ? (
@@ -364,7 +371,16 @@ export default function ProfileCharity() {
                                                 <span style={{ fontSize: 16, fontWeight: '500' }}
                                                     className='flex-col-center'
                                                 >
-                                                    {infoCharity?.charityName}
+                                                    <Row>
+                                                        {infoCharity?.charityName}
+                                                        {
+                                                            infoCharity?.isVerified == 2 ? (
+                                                                <span className="flex-col-center" style={{marginLeft: 10}}>
+                                                                    <TickIcon />
+                                                                </span>
+                                                            ) : ""
+                                                        }
+                                                    </Row>
                                                 </span>
                                             </Row>
                                             <div style={{ padding: '16px 0' }}>

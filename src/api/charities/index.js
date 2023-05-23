@@ -56,3 +56,15 @@ export const getCharityFollow = async (userId) => {
 
     return res
 }
+
+export const getTopCharity = async () => {
+    const res = await axios({
+        method: 'GET',
+        url: URL_API_KIEN + '/charity/top-charity',
+        headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+        },
+    });
+
+    return res
+}
