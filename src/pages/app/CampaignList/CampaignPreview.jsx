@@ -59,18 +59,12 @@ function CamPaignPreview() {
                         },
                         {
                           key: 3,
-                          title: "Trạng thái",
-                          dataIndex: "status",
-                          align: 'center',
-                        },
-                        {
-                          key: 4,
                           title: "Thời gian đăng",
                           dataIndex: "date",
                           align: 'center',
                         },
                         {
-                          key: 5,
+                          key: 4,
                           title: "Hành động",
                           dataIndex: "action",
                           align: 'center',
@@ -127,7 +121,6 @@ function CamPaignPreview() {
     let dataSource = dataPosts.map((item, index) => ({
         key: index,
         name: item.title,
-        status: 'Đang hoạt động',
         postType: item.type,
         date: moment(item.submitTime).format("DD/MM/YYYY"),
         postId: item.id
@@ -424,30 +417,43 @@ function CamPaignPreview() {
     }
 
     const handleChangeImport = (e) => {
+        // console.log(e.target.file[0])
+        // console.log(e.target.files[0])
+        // return;
+        if(e.target.files[0]) {
+            Papa.parse(e.target.files[0], {
+                header: true,
+                complete: async (results) => {
+                    console.log(results)
+                    if(results.data.length > 0) {
+                        let data = results.data.filter((item) => {
+                            if(item.name && item.amount && item.note && item.type) return item
+                        })
 
-        Papa.parse(e.target.files[0], {
-            header: true,
-            complete: async (results) => {
-                
-                let res = await axios({
-                    method: 'post',
-                    url: `http://localhost:8089/charity/campaign/add-statement-campaign?campaign-id=${campaignId}`,
-                    headers: {
-                        Authorization: `Bearer ${getTokenFromCookies()}`,
-                        Token: getTokenFromCookies()
-                    },
-                    data: results.data 
-                })
-                if(res.status === 200) {
-                    await getDataStatement()
-                    toast.success('Import file thành công!')
+                        let res = await axios({
+                            method: 'post',
+                            url: `http://localhost:8089/charity/campaign/add-statement-campaign?campaign-id=${campaignId}`,
+                            headers: {
+                                Authorization: `Bearer ${getTokenFromCookies()}`,
+                                Token: getTokenFromCookies()
+                            },
+                            data: data 
+                        })
+                        if(res.status === 200) {
+                            await getDataStatement()
+                            toast.success('Import file thành công!')
+                        }
+                        else {
+                            toast.error('Import file thất bại')
+                        }
+                    }                
+                    else {
+                        toast.error('Import file không đúng định dạng!')
+                    }
                 }
-                else {
-                    toast.error('Import file thất bại')
-                }
+            });
+        }
 
-            }
-        });
     }
 
     return(

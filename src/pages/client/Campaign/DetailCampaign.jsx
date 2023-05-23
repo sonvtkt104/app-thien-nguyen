@@ -632,16 +632,14 @@ function DetailCampaign() {
                           dangerouslySetInnerHTML={{__html: item.content}}
                         />
                         <br />
-                        <Row justify="center">
-                            <Space wrap>
+                        <div className="list-images">
                               {
                                 imageCampaign && imageCampaign.length > 0 &&
                                 imageCampaign.map((img, index) => (
                                 <img src={img.url} alt="bla bla" key={index} className="detail-campaign-img"></img>
                                 ))
                               }
-                            </Space>
-                        </Row>
+                        </div>
                     </div>
                   ))
                 }
