@@ -246,3 +246,8 @@ a {
   border-color: var(--color-blue) !important;
 }
 
+
+.page-layout-sidebar .ant-menu-item-selected,
+.page-layout-sidebar .ant-menu-submenu-open.ant-menu-submenu-selected .ant-menu-submenu-title {
+  color: var(--color-blue) !important;
+}

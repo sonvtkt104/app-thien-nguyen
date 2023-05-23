@@ -46,25 +46,28 @@ function GeneralInformation() {
                 <div>
                     <Button
                         type="primary"
-                        size="large"
-                        style={{ marginRight: "8px" }}
+                        // size="large"
+                        style={{ marginRight: "8px", fontSize: 16, fontWeight: '400' }}
                         onClick={() => {
                             // navigate("/profile-charity")
                             // window.open('/profile-charity', '_blank');
                             window.open(`/profile-charity/${charity?.charityId}`, '_blank');
                         }}
+                        className="btn-primary"
                     >
                         Xem chi tiết
                     </Button>
                     <Button
                         type="primary"
-                        size="large"
+                        // size="large"
                         onClick={() => {
                             setOpenDialog(true)
                             // setDataUpdate(infoCharity)
                             setDataUpdate(charity)
                             setReloadData("1")
                         }}
+                        className="btn-primary"
+                        style={{fontSize: 16, fontWeight: '400'}}
                     >
                         Chỉnh sửa
                     </Button>

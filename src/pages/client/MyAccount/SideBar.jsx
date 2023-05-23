@@ -5,9 +5,12 @@ import HomeHeader from "../Home/components/HomeHeader";
 import { logOutApp } from "./MyAccountService";
 import { handleLogout } from "../../Authentication/HandleUserInfomation";
 import { FooterClient } from "../../../components";
+import { useDispatch } from "react-redux";
+import { setInfoUser, setUserType } from "../../../redux/appSlice";
 
 function SideBar({children,key})  {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const selectedKey = useLocation().pathname
 
     const handleLogOutApp = () => {
@@ -20,6 +23,8 @@ function SideBar({children,key})  {
                 logOutApp().then(res => {
                     if(res?.status === 200) {
                         handleLogout()
+                        dispatch(setInfoUser({}))
+                        dispatch(setUserType('guest'))
                         navigate('/')
                     }
                 })
