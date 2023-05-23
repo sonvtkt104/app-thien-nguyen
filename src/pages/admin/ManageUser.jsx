@@ -5,6 +5,7 @@ import { Space, Table } from "antd";
 import { changeUserStatus, getAllUsers } from "./AdminService";
 import { setUsers } from "../../redux/adminSlice";
 import { useEffect } from "react";
+import { TableApp } from "../../components/TableApp/index";
 
 const ManageUser = () => {
   const users = useSelector((state) => state.admin.users);
@@ -119,7 +120,7 @@ const ManageUser = () => {
 
         <div className={classes.list}>
           <div className={classes["user-list"]}>
-            <Table
+            <TableApp
               dataSource={users}
               columns={columns}
               // pagination={false}

@@ -17,6 +17,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeVerified, getListVerified } from "./AdminService";
 import { setListVerifies } from "../../redux/adminSlice";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import { TableApp } from "../../components/TableApp/index";
 
 const ManageVerify = () => {
   const dispatch = useDispatch();
@@ -112,9 +114,13 @@ const ManageVerify = () => {
       title: "Trang chủ",
       key: "charityId",
       render: (_, record) => (
-        <a href={`/profile-charity/${record.charityId}`}>
+        <Link
+          to={`/profile-charity/${record.charityId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Link tới trang charity
-        </a>
+        </Link>
       ),
     },
     {
@@ -169,12 +175,12 @@ const ManageVerify = () => {
           <h2 className={classes.titleCharity}>Cấp tích xanh cho tổ chức</h2>
         </div>
 
-        <Table
+        <TableApp
           dataSource={verifies}
           columns={columns}
           // pagination={false}
           pagination={{
-            defaultPageSize: 6,
+            defaultPageSize: 4,
             showSizeChanger: true,
             pageSizeOptions: ["8", "10"],
           }}

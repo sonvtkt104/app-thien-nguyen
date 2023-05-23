@@ -6,6 +6,7 @@ import { Button, Input, Modal, Space, Table } from "antd";
 import { getAllFeedbacks, sendFeedbackToUser } from "./AdminService";
 import { useEffect } from "react";
 import { setMessages } from "../../redux/adminSlice";
+import { TableApp } from "../../components/TableApp/index";
 
 const FeedBack = () => {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ const FeedBack = () => {
 
   const columns = [
     {
-      title: "Tên người gửi",
+      title: "Người gửi",
       dataIndex: "UserSendUserName",
       key: "UserSendUserName",
       align: "top",
@@ -74,7 +75,7 @@ const FeedBack = () => {
       width: "20%",
     },
     {
-      title: "Thông báo",
+      title: "Phản hồi",
       key: "content",
       render: (_, record) => (
         <p>
@@ -122,7 +123,7 @@ const FeedBack = () => {
         <h2 className="header-title">Quản lý thông báo</h2>
 
         <div className="list">
-          <Table
+          <TableApp
             dataSource={messages}
             columns={columns}
             // pagination={false}
