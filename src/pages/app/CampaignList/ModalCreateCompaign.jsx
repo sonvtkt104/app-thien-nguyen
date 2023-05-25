@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import {PlusOutlined} from '@ant-design/icons';
 import './CampaignList.scss'
-import { Col, message, Modal, Row, Select, Space, Upload } from "antd";
+import { Col, DatePicker, message, Modal, Row, Select, Space, Upload } from "antd";
 import { Input } from 'antd';
 
 import moment from "moment";
@@ -256,17 +256,19 @@ function ModalCreateCampaign({
                                  <label><span style={{color: 'red'}}>*</span> Tên cuộc vận động</label>
                                  <br />
                                  <Input 
-                                     placeholder=""
+                                     placeholder="Nhập tên cuộc vận động"
                                      value={nameCampaign}
                                      onChange={(e) => setNameCampaign(e.target.value)} 
                                      style={{width: '100%'}}
                                      autoFocus
+                                     className="input-app"
                                  />
                              </Col>
                              <Col span={8}>
                                  <label><span style={{color: 'red'}}>*</span> Đối tượng hướng tới</label>
                                  <br />
                                  <Select
+                                    className="select-app"
                                     showSearch
                                     allowClear
                                     style={{width: '100%'}}
@@ -290,18 +292,29 @@ function ModalCreateCampaign({
                                  <label><span style={{color: 'red'}}>*</span> Mục tiêu số tiền</label>
                                  <br />
                                  <Input
-                                     placeholder=""
+                                     placeholder="VNĐ"
                                      value={targetCampaign}
                                      onChange={(e) => setTargetCampaign(e.target.value)} 
                                      style={{width: '100%'}}
+                                     className="input-app"
                                  />
                              </Col>
                          </Row>                       
                          <div style={{margin: '12px 0'}}></div>
                          <Row gutter={[12, 0]}>
                             <Col span={8}>
-                                <label><span style={{color: 'red'}}>*</span> Ngày bắt đầu</label>
-                                <Input
+                                <div>
+                                    <label><span style={{color: 'red'}}>*</span> Ngày bắt đầu</label>
+                                </div>
+                                <DatePicker 
+                                    onChange={(date, dateString) => {
+                                        console.log(date, dateString);
+                                        setStartDay(dateString)
+                                    }}
+                                    placeholder="Năm-Tháng-Ngày"
+                                    className="date-picker-app"
+                                />
+                                {/* <Input
                                     style={{width: '100%'}}
                                     value={startDay}
                                     onChange={(e) => setStartDay(e.target.value)}
@@ -320,7 +333,7 @@ function ModalCreateCampaign({
                                         }}
                                          
                                     />
-                                }    
+                                }     */}
                             </Col>
                             <Col span={8}>
                                 <label><span style={{color: 'red'}}>*</span> Ngày kết thúc</label>

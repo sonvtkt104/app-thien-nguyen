@@ -251,3 +251,41 @@ a {
 .page-layout-sidebar .ant-menu-submenu-open.ant-menu-submenu-selected .ant-menu-submenu-title {
   color: var(--color-blue) !important;
 }
+
+.search-app .ant-input-affix-wrapper:focus,
+.search-app .ant-input-affix-wrapper:hover,
+.search-app button:hover,
+.search-app button:hover .anticon-search {
+  border-color: var(--color-blue) !important;
+  color: var(--color-blue) !important;
+}
+
+.search-app input {
+  height: 28px;
+}
+
+.search-app button {
+  height: 38px !important;
+}
+
+.date-picker-app {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  padding: 11px 20px;
+  text-align: left;
+}
+
+.date-picker-app:hover {
+  border-color: var(--color-blue) !important;
+}
+
+.ant-picker-dropdown .ant-picker-today-btn {
+  color: var(--color-blue) !important;
+}
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before{
+  border: 1px solid var(--color-blue) !important;
+}
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner{
+  background: var(--color-blue) !important;
+}

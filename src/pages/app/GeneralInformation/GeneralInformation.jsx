@@ -42,7 +42,7 @@ function GeneralInformation() {
     return (
         <PageLayout keyActive='info'>
             <div className="gi-header">
-                <h1>Thông tin chung</h1>
+                <h1 style={{fontSize: 24, fontWeight: '600'}}>Thông tin chung</h1>
                 <div>
                     <Button
                         type="primary"
@@ -91,7 +91,7 @@ function GeneralInformation() {
                                         />
                                         <div style={{ marginLeft: 12 }}>
                                             <div className="gi-name">
-                                                <h4>{charity?.name}</h4>
+                                                <h4 style={{fontSize: 22, fontWeight: "600"}}>{charity?.name}</h4>
                                                 <CheckCircleFilled
                                                     className="gi-icon-check"
                                                     style={{ display: charity?.isVerified === 2 ? "" : "none" }}

@@ -2,7 +2,7 @@ import { Component } from "react";
 import { Input, PageLayout, TableApp } from "../../../components";
 import {EyeOutlined, EditOutlined, DeleteOutlined} from '@ant-design/icons';
 import './CampaignList.scss'
-import { Button} from "antd";
+import { Button, Row} from "antd";
 import { Link } from "react-router-dom";
 import ModalCreateCampaign from "./ModalCreateCompaign";
 import ModalEditCompaign from "./ModalEditCompaign";
@@ -293,17 +293,23 @@ class CamPaignList extends Component {
         return (
             <>
                 <PageLayout keyActive='campaign'>
-                    <div className="campaign-list-title">
+                    <Row className="campaign-list-title" justify='space-between'
+                        style={{justifyContent: 'space-between'}}
+                    >
+                        <div style={{fontSize: 24, fontWeight: '600'}}>Danh sách cuộc vận động</div>
                         <Button 
                             type="primary"
                             onClick={() => this.handleClickCampaign()}
+                            className="btn-primary"
                         >
                             Tạo cuộc vận động mới
                         </Button>
-                    </div>
+                    </Row>
                     <div className="campaign-list-table">
-                        <div className="c-l-t-header">
-                            <h2 className="c-l-t-name">Danh sách cuộc vận động</h2>
+                        <div className="c-l-t-header"
+                            style={{marginBottom: 10}}
+                        >
+                            <span></span>
                             <Search
                                 placeholder="Tìm kiếm"
                                 allowClear
@@ -316,6 +322,7 @@ class CamPaignList extends Component {
                                 onChange={(e) => {
                                     this.globalSearch(e.target.value)
                                 }}
+                                className='search-app'
                             />
                         </div>
                         
