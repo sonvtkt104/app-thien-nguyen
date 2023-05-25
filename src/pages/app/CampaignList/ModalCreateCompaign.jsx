@@ -239,7 +239,8 @@ function ModalCreateCampaign({
     return (
         <>
                  <Modal
-                     width={1200}
+                     width={'100%'}
+                     height={'100%'}
                      bodyStyle={{height: '100%'}}
                      okText={"Đồng ý"}
                      cancelText={"Quay lại"}

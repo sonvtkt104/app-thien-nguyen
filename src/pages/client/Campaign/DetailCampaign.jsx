@@ -51,6 +51,7 @@ function DetailCampaign() {
   const [stkBank, setStkBank] = useState('')
   const [intro, setIntro] = useState('')
   const [imageCampaign, setImageCampaign] = useState('')
+  const [imagePosts, setImagePosts] = useState('')
   const [introVideo, setIntroVideo] = useState('')
   const [imageOriganization, setImageOriganization] = useState('')
 
@@ -254,9 +255,12 @@ function DetailCampaign() {
                   Token: ''
               }
           }).then(res => res.data)
-          // console.log(res)
+          console.log(res)
           if(res && res.length > 0) {
             setDataPosts(res)
+            let arr = res[0].images ? res[0].images.split(', ').map(image => ({url: image})) : null; 
+            // console.log(arr)
+            setImagePosts(arr) 
           }
           
       } catch (error) {
@@ -609,39 +613,43 @@ function DetailCampaign() {
             ) : (
               <div className="list-detail-campaign-activity">
                 {
-                  dataPosts.map((item, i) => (
-                    <div 
-                      key={i}
-                      className="detail-campaign-activity"
-                      style={{
-                        borderRadius: 6,
-                        background :'#ffffff', 
-                        marginTop :20,
-                        marginBottom : 30,
-                        padding: "24px 30px"
-                      }}
-                    >
-                        <div>
-                            <div style={{fontSize: 20, fontWeight: 600}}>{item.title}</div>
-                            <div>Thời gian đăng: <span style={{fontWeight: 600}}>{moment(item.submitTime).format('DD/MM/YYYY')}</span></div>
-                            <div>Kiểu bài đăng: <span style={{fontWeight: 600}}>{item.type}</span></div>
+                  dataPosts && dataPosts.length > 0 ? <>
+                    {
+                      dataPosts.map((item, i) => (
+                        <div 
+                          key={i}
+                          className="detail-campaign-activity"
+                          style={{
+                            borderRadius: 6,
+                            background :'#ffffff', 
+                            marginTop :20,
+                            marginBottom : 30,
+                            padding: "24px 30px"
+                          }}
+                        >
+                            <div>
+                                <div style={{fontSize: 20, fontWeight: 600}}>{item.title}</div>
+                                <div>Thời gian đăng: <span style={{fontWeight: 600}}>{moment(item.submitTime).format('DD/MM/YYYY')}</span></div>
+                                <div>Kiểu bài đăng: <span style={{fontWeight: 600}}>{item.type}</span></div>
+                            </div>
+                            <br />
+                            <div style={{fontSize: 18, fontWeight: 600}}>Mô tả - Giới thiệu:</div>
+                            <div
+                              dangerouslySetInnerHTML={{__html: item.content}}
+                            />
+                            <br />
+                            <div className="list-images">
+                                  {
+                                    item.images && item.images.length > 0 &&
+                                    item.images.split(', ').map((img, index) => (
+                                    <img src={img} alt="bla bla" key={index} className="detail-campaign-img"></img>
+                                    ))
+                                  }
+                            </div>
                         </div>
-                        <br />
-                        <div style={{fontSize: 18, fontWeight: 600}}>Mô tả - Giới thiệu:</div>
-                        <div
-                          dangerouslySetInnerHTML={{__html: item.content}}
-                        />
-                        <br />
-                        <div className="list-images">
-                              {
-                                imageCampaign && imageCampaign.length > 0 &&
-                                imageCampaign.map((img, index) => (
-                                <img src={img.url} alt="bla bla" key={index} className="detail-campaign-img"></img>
-                                ))
-                              }
-                        </div>
-                    </div>
-                  ))
+                      ))
+                    }
+                  </> : <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 24}}>Cuộc vận động này chưa có bài viết.</div>
                 }
               </div>
             )
