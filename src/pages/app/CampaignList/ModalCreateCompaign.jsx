@@ -15,6 +15,7 @@ import 'react-calendar/dist/Calendar.css';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
+import ReactPlayer from "react-player";
 
 
 
@@ -36,6 +37,7 @@ function ModalCreateCampaign({
     const [introductoryPost, setIntroductoryPost] = useState('')
     const [imageCampaign, setImageCampaign] = useState('')
     const [introVideo, setIntroVideo] = useState('')
+    const [status, setStatus] = useState('Đang vận động')
 
 
     const [fileList, setFileList] = useState([]);
@@ -174,6 +176,17 @@ function ModalCreateCampaign({
         },
     ]
 
+    let optionStatus = [
+        {
+            label: 'Đang vận động',
+            value: 'Đang vận động'
+        },
+        {
+            label: 'Kết thúc',
+            value: 'Kết thúc'
+        }
+    ]
+
 
     const handlePressOk = async () => {
         let images = fileList && fileList.length > 0 ? fileList.map((image) => (image.url)).join(', ') : ''
@@ -187,6 +200,7 @@ function ModalCreateCampaign({
         // // console.log(region.join(', '))
         // console.log(introVideo)
         // console.log(images)
+        // console.log(status)
         // // console.log(imageCampaign)
         // console.log(introductoryPost)
         // // handleOk()
@@ -207,16 +221,12 @@ function ModalCreateCampaign({
                     introduction: introductoryPost,
                     target_object: targetAudience,
                     region: region.join(', '),
-                    status: 'Đang vận động',
-                    // campaign_type: 'Tạm thời chưa biết',
+                    status: status,
                     intro_video: introVideo,
                     images: images,
                     target_amount: targetCampaign,
                     start_date: startDay,
-                    stop_date: endDay,
-                    // start_active_date: startDay,
-                    // stop_active_date: endDay,
-                    // stop_receive_date: endDay
+                    stop_date: endDay,                  
                 }
             })
             toast.success('Tạo mới cuộc vận động thành công!');
@@ -388,15 +398,44 @@ function ModalCreateCampaign({
                          </Row>
                          <div style={{margin: '12px 0'}}></div>
                          <Row>
+                            <Col span={8}>
+                                <label>Trạng thái</label>
+                                <br></br>
+                                <Select
+                                    value={status}
+                                    showSearch
+                                    allowClear
+                                    style={{width: '100%'}}
+                                    options={optionStatus}
+                                    placement={'bottomLeft'}
+                                    filterOption={(input, option) => {
+                                        return option.label.toLowerCase().includes(input.toLowerCase())
+                                        }
+                                    }
+                                    onChange={(value) => setStatus(value)}
+                                 />
+                                {/* <Select
+                                    style={{width: '100%'}}
+                                    options={optionStatus}
+                                    onChange={(value) => setStatus(value)}
+                                 /> */}
+                            </Col>
+                            <div style={{margin: '12px 8px'}}></div>
                             <Col span={8} style={{marginRight: 24}}>
                                 <label>Link video youtube</label>
+                                {/* <ReactPlayer 
+                                    url={introVideo}
+                                    placeholder="Link video"
+                                    onCh 
+
+                                /> */}
                                 <Input
                                     placeholder="Link video" 
                                     value={introVideo}
                                     onChange={(e) => setIntroVideo(e.target.value)}
                                  />
                             </Col>
-                            <Col span={8}>
+                            <Col span={24} style={{marginTop: 12}}>
                             Chọn ảnh đăng tải
                                 <Upload
                                     listType="picture-card"
