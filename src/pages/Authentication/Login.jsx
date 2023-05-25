@@ -55,6 +55,7 @@ const LoginPage = () => {
         body: JSON.stringify(submitData),
       });
 
+      setIsLoading(false);
       const data = await response.json();
 
       if (!data.isSuccess) {
@@ -93,8 +94,6 @@ const LoginPage = () => {
         dispatch(setUserType("normal_user"));
         navigate("..");
       }
-
-      setIsLoading(false);
     };
 
     submit();

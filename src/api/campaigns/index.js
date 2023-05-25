@@ -71,3 +71,15 @@ export const getAllProvinces = async () => {
 
     return res
 }
+
+export const getTopCampaign = async () => {
+    const res = await axios({
+        method: 'GET',
+        url: URL_API_HOANG + '/charity/campaign/get-outstanding',
+        headers: {
+            Token: ""
+        }
+    });
+
+    return res
+}

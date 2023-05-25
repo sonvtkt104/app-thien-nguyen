@@ -218,7 +218,7 @@ function Account() {
         <SideBar>
             <div style={{ width: "100%" }}>
                 <div style={{ marginTop: 10 }}>
-                    <h2>Thông tin chung</h2>
+                    <h2 className="h2-app">Thông tin chung</h2>
                     <Form
                         form={form}
                         layout={"vertical"}
@@ -232,7 +232,7 @@ function Account() {
                         onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
-                        <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", width: "100%", marginBottom: 5 }}>
                             <Form.Item
                                 style={{ width: "32%", marginBottom: 10 }}
                                 label="Họ và tên"
@@ -244,7 +244,7 @@ function Account() {
                                     },
                                 ]}
                             >
-                                <Input />
+                                <Input className="input-app" />
                             </Form.Item>
                             <Form.Item
                                 style={{ width: "32%", marginBottom: 10 }}
@@ -258,7 +258,7 @@ function Account() {
                                 ]}
 
                             >
-                                <Input />
+                                <Input className="input-app"/>
                             </Form.Item>
 
                             <Form.Item
@@ -276,11 +276,11 @@ function Account() {
                                     },
                                 ]}
                             >
-                                <Input />
+                                <Input className="input-app"/>
                             </Form.Item>
                         </div>
 
-                        <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", width: "100%", marginBottom: 5 }}>
                             <Form.Item
                                 style={{ width: "32%", marginBottom: 10 }}
                                 label="Tỉnh/Thành Phố"
@@ -304,6 +304,7 @@ function Account() {
                                     }
                                     fieldNames={{ label: "fullName", value: "fullName", options: "options" }}
                                     options={listAddress.province}
+                                    className="select-app"
                                 />
                             </Form.Item>
                             <Form.Item
@@ -329,6 +330,7 @@ function Account() {
                                     }
                                     fieldNames={{ label: "fullName", value: "fullName", options: "options" }}
                                     options={listAddress.district}
+                                    className="select-app"
                                 />
                             </Form.Item>
                             <Form.Item
@@ -354,6 +356,7 @@ function Account() {
                                     }
                                     fieldNames={{ label: "fullName", value: "fullName", options: "options" }}
                                     options={listAddress.ward}
+                                    className="select-app"
                                 />
                             </Form.Item>
 
@@ -370,7 +373,7 @@ function Account() {
                                 },
                             ]}
                         >
-                            <Input />
+                            <Input className="input-app" />
                         </Form.Item>
                         <Form.Item
                             wrapperCol={{
@@ -378,14 +381,14 @@ function Account() {
                                 // span: 8,
                             }}
                         >
-                            <Button type="primary" htmlType="submit">
+                            <Button type="primary" htmlType="submit" className="btn-primary">
                                 Lưu thay đổi thông tin
                             </Button>
                         </Form.Item>
                     </Form>
                 </div>
                 <div>
-                    <h2>Thay đổi mật khẩu</h2>
+                    <h2 className="h2-app">Thay đổi mật khẩu</h2>
                     <Form
                         form={formPassWord}
                         layout={"vertical"}
@@ -414,7 +417,7 @@ function Account() {
                                 },
                             ]}
                         >
-                            <Input.Password />
+                            <Input.Password className="input-app" />
                         </Form.Item>
 
                         <Form.Item
@@ -429,7 +432,7 @@ function Account() {
                                 },
                             ]}
                         >
-                            <Input.Password />
+                            <Input.Password className="input-app" />
                         </Form.Item>
 
 
@@ -457,7 +460,7 @@ function Account() {
                                 }),
                             ]}
                         >
-                            <Input.Password />
+                            <Input.Password className="input-app" />
                         </Form.Item>
 
                         <Form.Item
@@ -466,7 +469,7 @@ function Account() {
                                 span: 16,
                             }}
                         >
-                            <Button type="primary" htmlType="submit">
+                            <Button type="primary" htmlType="submit" className="btn-primary">
                                 Lưu thay đổi mật khẩu
                             </Button>
                         </Form.Item>

@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import "./ForgotYourPassword.scss";
 import { Button, Checkbox, Form, Input, Row, Col } from "antd";
 import { useState } from "react";
-import { toast } from "react-toastify";
 
 const ForgotYourPassword = (values) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,17 +25,16 @@ const ForgotYourPassword = (values) => {
         }
       );
 
+      setIsLoading(false);
       const data = await response.json();
 
       if (!data.isSuccess) {
         setError(data.messages[0]);
-        setIsLoading(false);
         return;
       }
 
       setIdUser(data.data.id);
-      setMessage(data.message[0] ? data.messages[0] : "");
-      setIsLoading(false);
+      setMessage(data.messages[0] ? data.messages[0] : "");
       setPage(2);
     };
 
@@ -59,16 +57,14 @@ const ForgotYourPassword = (values) => {
         },
         body: JSON.stringify(submitData),
       });
+      setIsLoading(false);
 
       const data = await response.json();
 
       if (!data.isSuccess) {
         setError(data.messages[0]);
-        setIsLoading(false);
         return;
       }
-
-      setIsLoading(false);
       setPage(3);
     };
 
@@ -92,14 +88,13 @@ const ForgotYourPassword = (values) => {
         body: JSON.stringify(submitData),
       });
 
+      setIsLoading(false);
       const data = await response.json();
 
       if (!data.isSuccess) {
         setError(data.messages[0]);
-        setIsLoading(false);
         return;
       }
-      setIsLoading(false);
       navigate("../login");
     };
 
@@ -412,7 +407,7 @@ const ForgotYourPassword = (values) => {
                 className="input-app"
               />
             </Form.Item>
-            <p>message</p>
+            <p>{message}</p>
             <p className="error">{error}</p>
             <Form.Item wrapperCol={{ span: 24 }}>
               <Button

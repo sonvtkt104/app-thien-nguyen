@@ -89,8 +89,8 @@ function CampaignSaved() {
 
     return (
         <SideBar>
-            <div className="cs-title">
-                <h2>Danh sách các Cuộc vận động</h2>
+            <div className="cs-title" style={{marginBottom: 30}}>
+                <h2 className="h2-app">Danh sách các Cuộc vận động</h2>
                 <Form
                     name="basic"
                     onFinish={() => {

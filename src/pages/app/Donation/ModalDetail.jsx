@@ -96,10 +96,11 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
                 return (
                     <a
                         key={rowData.id}
-                        className="cm-border-or"
-                        href= {`http://localhost:3000/profile-charity/${rowData.id}`}
+                        className="cm-border-or text-hover"
+                        href={`http://localhost:3000/profile-charity/${rowData.id}`}
                         // href="http://localhost:3000/profile-charity"
                         target="_blank"
+                        style={{color: 'var(--color-blue)'}}
                     >
                         {rowData.name}
                     </a>
@@ -123,6 +124,7 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
                                 handleConfirmation(rowData)
                                 // setDataRow(row)
                             }}
+                            className="btn-primary"
                         // key={index}
                         >
                             Xác nhận
@@ -134,7 +136,7 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
     ]
     return (
         <Modal
-            title="Thông tin chi tiết"
+            title={<span className="h2-app">Thông tin chi tiết</span>}
             cancelText="Quay lại"
             okText="Liên hệ"
             centered
@@ -145,13 +147,13 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
             onCancel={() => { setOpen(false); handleCloseModalDetail() }}
             style={{ fontFamily: "Poppins" }}
         >
-            <p><b>Người ủng hộ:</b> {dataDetail.donorName}</p>
-            <p><b>Thông tin liên hệ:</b> {`${dataDetail.phone}, ${dataDetail.address}, ${dataDetail.ward}, ${dataDetail.district}, ${dataDetail.province}`} </p>
-            <p><b>Thông tin đồ ủng hộ:</b> "{dataDetail.name}", mong muốn ủng hộ cho "{dataDetail.donationObject}", ở "{dataDetail.donationAddress}"</p>
-            <p><b>Ngày đăng:</b> {dataDetail.date}</p>
-            <p><b>Mô tả:</b> {dataDetail.description}</p>
-            <p><b>Ảnh:</b>{ dataDetail.images === "" ? " Không có ảnh nào!" : ""}</p>
-            <div style={{ display: "flex", flexWrap: "wrap" }}>
+            <p style={{marginBottom: 10}}><b>Người ủng hộ:</b> {dataDetail.donorName}</p>
+            <p style={{marginBottom: 10}}><b>Thông tin liên hệ:</b> {`${dataDetail.phone}, ${dataDetail.address}, ${dataDetail.ward}, ${dataDetail.district}, ${dataDetail.province}`} </p>
+            <p style={{marginBottom: 10}}><b>Thông tin đồ ủng hộ:</b> "{dataDetail.name}", mong muốn ủng hộ cho "{dataDetail.donationObject}", ở "{dataDetail.donationAddress}"</p>
+            <p style={{marginBottom: 10}}><b>Ngày đăng:</b> {dataDetail.date}</p>
+            <p style={{marginBottom: 10}}><b>Mô tả:</b> {dataDetail.description}</p>
+            <p style={{marginBottom: 10}}><b>Ảnh:</b>{ dataDetail.images === "" ? " Không có ảnh nào!" : ""}</p>
+            <div style={{ display: "flex", flexWrap: "wrap", marginBottom: 10 }}>
                 {
                     dataDetail.images !== "" ? dataDetail.images?.split(", ").map((image, index) =>
                         <div key={index} style={{ margin: "2px", border: "1px solid #e7e5e5", display: "flex", alignItems: "center", height: 100, width: 100 }}>
@@ -169,14 +171,14 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
             {
                 status &&
                 (
-                    <div>
+                    <div style={{marginBottom: 10}}>
                         {
                             dataDetail.status === "Đã nhận" ? 
-                                <p><b>Tổ chức đã nhận:</b> {dataDetail.organizationReceived}</p> : dataDetail.status === "Chờ xác nhận" ?
-                                    <p><b>Tổ chức yêu cầu:</b> {dataDetail.organizationReceived}</p> : dataDetail.status === "Từ chối nhận" ?
-                                        <p><b>Tổ chức đã từ chối:</b> {dataDetail.organizationReceived}</p> : 
+                                <p style={{marginBottom: 10}}><b>Tổ chức đã nhận:</b> {dataDetail.organizationReceived}</p> : dataDetail.status === "Chờ xác nhận" ?
+                                    <p style={{marginBottom: 10}}><b>Tổ chức yêu cầu:</b> {dataDetail.organizationReceived}</p> : dataDetail.status === "Từ chối nhận" ?
+                                        <p style={{marginBottom: 10}}><b>Tổ chức đã từ chối:</b> {dataDetail.organizationReceived}</p> : 
                                            <div>
-                                                <p><b>Danh sách tổ chức yêu cầu xác nhận:</b> {dataDetail?.listRequest.length === 0 ? "Chưa có tổ chức nào" : ""}</p>
+                                                <p style={{marginBottom: 10}}><b>Danh sách tổ chức yêu cầu xác nhận:</b> {dataDetail?.listRequest.length === 0 ? "Chưa có tổ chức nào" : ""}</p>
                                                 {
                                                     dataDetail?.listRequest.length !== 0 ? (
                                                         <div>

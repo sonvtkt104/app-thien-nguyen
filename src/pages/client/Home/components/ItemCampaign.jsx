@@ -7,14 +7,15 @@ import { useNavigate } from "react-router-dom"
 
 function ItemCampaign({
     key= 1,
-    image= 'https://crowdfunding.comicola.com/wp-content/uploads/2017/10/22688446_514860328866877_2961839570336965602_n-660x400.jpg',
-    type= 'Nổi bật sách',
-    name= 'Gây quỹ để xuất bản Cuốn sách “Họa Sắc Việt”',
-    donation= '185,012,500',
-    timeRemaining= 0,
-    supporter= 135,
-    process= 135
+    image,
+    type,
+    name,
+    donation,
+    timeRemaining,
+    supporter,
+    process,
 }) {
+    console.log('img,', image)
 
     const navigate = useNavigate()
     return (
@@ -35,9 +36,18 @@ function ItemCampaign({
                 }}
             >
                 <div>
-                    <img src={image} alt="" 
-                        style={{width: '100%', borderRadius: '4px 4px 0 0', height: 242, objectFit: 'cover'}}
-                    />
+                    {
+                        image ? (
+                            <img src={image} alt="campaign" 
+                                style={{width: '100%', borderRadius: '4px 4px 0 0', height: 242, objectFit: 'cover'}}
+                            />
+                        ) : (
+                            <div
+                            style={{width: '100%', background: 'rgba(13, 12, 34, 0.05)' ,borderRadius: '4px 4px 0 0', height: 242, objectFit: 'cover'}}
+                            >
+                            </div>
+                        )
+                    }
                 </div>
                 <div
                     style={{padding: '30px 20px 10px'}}
@@ -60,7 +70,7 @@ function ItemCampaign({
                         borderBottom: '1px solid var(--color-border)'
                     }}
                 >
-                    <div>{`${donation} ₫ đã được ủng hộ`}</div>
+                    <div>{`${donation} đã được ủng hộ`}</div>
                     <div>
                         <Progress strokeColor={'#6DCCE3'} percent={process} showInfo={false} />
                     </div>

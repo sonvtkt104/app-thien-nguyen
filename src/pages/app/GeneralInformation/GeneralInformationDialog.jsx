@@ -304,7 +304,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                                 setLoadingAvatar(false)
                                             }}
                                         >
-                                            <Button >
+                                            <Button className="btn" >
                                                 Chọn ảnh đại diện
                                             </Button>
                                         </Upload>
@@ -325,7 +325,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                         },
                                     ]}
                                 >
-                                    <Input />
+                                    <Input className="input-app" />
                                 </Form.Item>
                                 <Form.Item
                                     style={{ width: "32%", marginBottom: 10 }}
@@ -338,7 +338,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                         },
                                     ]}
                                 >
-                                    <Input />
+                                    <Input className="input-app"/>
                                 </Form.Item>
                                 <Form.Item
                                     style={{ width: "32%", marginBottom: 10 }}
@@ -355,7 +355,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                         },
                                     ]}
                                 >
-                                    <Input />
+                                    <Input className="input-app"/>
                                 </Form.Item>
 
                             </div>
@@ -384,6 +384,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                         }
                                         fieldNames={{ label: "fullName", value: "fullName", options: "options" }}
                                         options={listAddress.province}
+                                        className="select-app"
                                     />
                                 </Form.Item>
                                 <Form.Item
@@ -409,6 +410,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                         }
                                         fieldNames={{ label: "fullName", value: "fullName", options: "options" }}
                                         options={listAddress.district}
+                                        className="select-app"
                                     />
                                 </Form.Item>
                                 <Form.Item
@@ -434,6 +436,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                         }
                                         fieldNames={{ label: "fullName", value: "fullName", options: "options" }}
                                         options={listAddress.ward}
+                                        className="select-app"
                                     />
                                 </Form.Item>
 
@@ -451,7 +454,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                         },
                                     ]}
                                 >
-                                    <Input />
+                                    <Input className="input-app"/>
                                 </Form.Item>
 
                             </div>
@@ -466,7 +469,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                     },
                                 ]}
                             >
-                                <Input.TextArea rows={4} />
+                                <Input.TextArea rows={4} className="textarea-app" />
                             </Form.Item>
                             <Form.Item
                                 style={{ width: "100%", marginBottom: 16 }}
@@ -479,7 +482,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                     },
                                 ]}
                             >
-                                <Input placeholder="Nhập link video Youtube" />
+                                <Input placeholder="Nhập link video Youtube" className="input-app" />
                             </Form.Item>
                             <Form.Item
                                 style={{ width: "100%", marginBottom: 16 }}
@@ -492,7 +495,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                     },
                                 ]}
                             >
-                                <Input.TextArea rows={4} />
+                                <Input.TextArea rows={4} className="textarea-app" />
                             </Form.Item>
 
                             <Form.Item
@@ -506,7 +509,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                     },
                                 ]}
                             >
-                                <Input.TextArea rows={4} />
+                                <Input.TextArea rows={4} className="textarea-app"/>
                             </Form.Item>
 
                             <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
@@ -521,7 +524,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                 //     },
                                 // ]}
                                 >
-                                    <Input placeholder="Nhập thông tin Tài khoản ngân hàng" />
+                                    <Input placeholder="Nhập thông tin Tài khoản ngân hàng" className="input-app" />
                                 </Form.Item>
                                 <Form.Item
                                     style={{ width: "32%", marginBottom: 16 }}
@@ -534,7 +537,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                 //     },
                                 // ]}
                                 >
-                                    <Input placeholder="Nhập link website" />
+                                    <Input placeholder="Nhập link website" className="input-app"  />
                                 </Form.Item>
 
                                 <Form.Item
@@ -548,7 +551,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                 //     },
                                 // ]}
                                 >
-                                    <Input placeholder="Nhập iframe nhúng bản đồ" />
+                                    <Input placeholder="Nhập iframe nhúng bản đồ"  className="input-app" />
                                 </Form.Item>
                             </div>
                             <p style={{ marginBottom: 10 }}>Mạng xã hội khác</p>
@@ -558,28 +561,28 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                     label="Facebook"
                                     name="charityFacebook"
                                 >
-                                    <Input placeholder="Nhập link Facebook" />
+                                    <Input placeholder="Nhập link Facebook" className="input-app" />
                                 </Form.Item>
                                 <Form.Item
                                     style={{ width: "49%", marginBottom: 16 }}
                                     label="Instagram"
                                     name="charityInstagram"
                                 >
-                                    <Input placeholder="Nhập link Instagram" />
+                                    <Input placeholder="Nhập link Instagram" className="input-app"  />
                                 </Form.Item>
                                 <Form.Item
                                     style={{ width: "48%", marginBottom: 16, marginLeft: 10 }}
                                     label="Twitter"
                                     name="charityTwitter"
                                 >
-                                    <Input placeholder="Nhập link Twitter" />
+                                    <Input placeholder="Nhập link Twitter" className="input-app" />
                                 </Form.Item>
                                 <Form.Item
                                     style={{ width: "49%", marginBottom: 16 }}
                                     label="LinkedIn"
                                     name="charityLinkedIn"
                                 >
-                                    <Input placeholder="Nhập link LinkedIn" />
+                                    <Input placeholder="Nhập link LinkedIn" className="input-app" />
                                 </Form.Item>
                             </div>
                             <Form.Item label="Ảnh Banner" name="charityBanner">
@@ -642,12 +645,14 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                             <Button
                                 style={{ marginRight: 10 }}
                                 onClick={onClose}
+                                className="btn"
                             >
                                 Quay lại
                             </Button>
                             <Button
                                 type="primary"
                                 htmlType="submit"
+                                className="btn-primary"
                             >
                                 Lưu
                             </Button>

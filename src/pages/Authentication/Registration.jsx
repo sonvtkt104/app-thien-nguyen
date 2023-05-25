@@ -30,7 +30,6 @@ const RegistrationPage = () => {
   useEffect(() => {
     const user = getUserInfomationFromCookies();
     if (user) {
-      console.log("log user the first time", user);
       dispatch(setInfoUser(user));
       const roleId = user.roleId || user.RoleId;
 
@@ -124,23 +123,6 @@ const RegistrationPage = () => {
       confirmPassword: values.password,
     };
 
-    // console.log(submitData);
-
-    // {
-    //   Username: "lemanhlinh",
-    //   Email: "lemanhlinh0808@gmail.com",
-    //   PhoneNumber: "03333333333",
-    //   Password: "1234567890",
-    //   DetailOfAddress: "số 55, Thạch Xá, Thạch Thât, Hà Nội",
-    //   Ward: "Thạch xá",
-    //   District: "Thạch Thất",
-    //   Province: "Hà Nội"
-    //   RoleId: 1, // RoleId = 1 là tài khoản người dùng
-    //   // các trường mặc định và không truyền theo khi đăng ký
-    //   isLocked: false, // mặc định là tài khoản không bị khóa
-    //   star: false, // mặc định đây không phải là tài khoản nổi bật
-    // }
-
     const submit = async () => {
       setIsLoading(true);
       const response = await fetch("http://localhost:8080/Register", {
@@ -152,16 +134,14 @@ const RegistrationPage = () => {
         body: JSON.stringify(submitData),
       });
 
+      setIsLoading(false);
       const data = await response.json();
-
-      console.log(data);
 
       if (!data.isSuccess) {
         setError(data.messages[0]);
         return;
       }
 
-      setIsLoading(false);
       navigate("../login");
     };
 
@@ -193,53 +173,6 @@ const RegistrationPage = () => {
         charityFile: "handle file",
       },
     };
-    console.log(submitData);
-
-    // {
-    //   // của người đăng ký cho tổ chức
-    //   Username: "lemanhlinh", // của người đăng ký
-    //   Email: "lemanhlinh0808@gmail.com", // của người đăng ký
-    //   PhoneNumber: "0347373222", // của người đăng ký
-    //   Password: "12345678", // của người đăng ký
-    //   DetailOfAddress: "số 55, Thạch Xá, Thạch Thât, Hà Nội",
-    //   Ward: "Thạch xá",
-    //   District: "Thạch Thất",
-    //   Province: "Hà Nội" // của người đăng ký
-    //   roleId: 2, // roleId = 2 là của tổ chức
-
-    //   // của tổ chức
-    //   CharityName: "Áo ấm cho em",
-    //   CharityDetailAddress: "144, Xuân Thủy, Cầu Giấy, Hà Nội",
-    //   CharityWard: "Thạch xá",
-    //   CharityDistrict: "Thạch Thất",
-    //   CharityProvince: "Hà Nội",
-    //   CharityPhone: "0347373222",
-    //   CharityEmail: "aoamchoem@gmail.com",
-    //   CharityMotto: "Vì Mọi người",      // slogan của tổ chức/ châm ngôn
-    //   CharityTarget: "Giúp nhiều người càng tốt", // mục tiêu của tổ chức
-    //   CharityDescription: "description", // Mô tả về tổ chức
-    //   CharityFacebook: "facebook",
-    //   CharityInstagram: "instagram",
-    //   CharityTwitter: "twitter",
-    //   CharityLinkedIn: "linkedIn",
-    //   CharityIntroVideo: "Video", // video giới thiệu
-    //   CharityAccountNumber: "Số tài khoản", // số tài khoản của tổ chức
-    //   //Các trường mặc định và không có trong api đăng ký của tổ chức
-    //   isLocked: false, // mặc định là tài khoản không bị khóa
-    //   star: false, // mặc định đây không phải là tài khoản nổi bật
-
-    //   // các trường sau sẽ không có trong api đăng ký của tổ chức
-    //   // nhung sẽ phải có và cập nhật sau
-    //   id: "abc123", // id tổ chức
-    //   avatar: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",// avatar của tổ chức
-    //   images: ["https://images2.thanhnien.vn/uploaded/datdt/2020_10_19/20201019_092450_KEIY.jpg?width=500",
-    //   "https://cdnimg.vietnamplus.vn/uploaded/fsmsy/2018_03_01/thuc_an_tet.jpg",], // list ảnh
-    //   googlemap: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.8610660551603!2d105.78048991492963!3d21.038244392830343!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab354920c233%3A0x5d0313a3bfdc4f37!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBDw7RuZyBuZ2jhu4csIMSQ4bqhaSBo4buNYyBRdeG7kWMgZ2lhIEjDoCBO4buZaQ!5e0!3m2!1svi!2s!4v1679246091627!5m2!1svi!2s", // google map
-    //   isVerification: true, // xác minh(tích xanh)
-    //   followers: 157422, // lượt theo dõi
-    //   numberCampaigns: 29,
-    //   reach: [3034, 1355, 5432, 4000, 7342, 3245, 8543, 5234, 6543, 12423, 8403, 13024]
-    // };
 
     const submit = async () => {
       setIsLoading(true);
@@ -252,15 +185,13 @@ const RegistrationPage = () => {
         body: JSON.stringify(submitData),
       });
 
+      setIsLoading(false);
       const data = await response.json();
-
-      console.log(data);
 
       if (!data.isSuccess) {
         setError(data.messages[0]);
         return;
       }
-      setIsLoading(false);
       navigate("../login");
     };
 
@@ -277,10 +208,6 @@ const RegistrationPage = () => {
 
   const handleWardChange = (wardId) => {
     setWardId(wardId);
-  };
-
-  const handleFile = (event) => {
-    console.log(event.target.files[0]);
   };
 
   return (

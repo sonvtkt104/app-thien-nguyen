@@ -67,12 +67,12 @@ function DonationPost() {
   return (
     <SideBar>
       <div className="dp-title">
-        <h2>Bài viết đã đăng</h2>
+        <h2 className="h2-app">Bài viết đã đăng</h2>
         <div>
           <Input.Search
-            placeholder="Tìm kiếm..."
+            placeholder="Nhập tên..."
             allowClear
-            enterButton="Search"
+            enterButton="Tìm kiếm"
             // size="large"
             onSearch={(value) => {
               globalSearch(value)
@@ -84,7 +84,7 @@ function DonationPost() {
           />
           <Button
             type="primary"
-            className="dp-create"
+            className="btn-primary"
             // size="large"
             onClick={() => {
               setOpenDialog(true)

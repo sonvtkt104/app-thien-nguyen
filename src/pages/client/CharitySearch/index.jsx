@@ -6,7 +6,7 @@ import CharitySearchHeader from "./components/CharitySearchHeader";
 import './css/index.css'
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllCharities, setFollowCharity } from "../../../api/charities";
+import { getAllCharities, getTopCharity, setFollowCharity } from "../../../api/charities";
 import { useSelector } from "react-redux";
 
 export default function CharitySearch() {
@@ -17,6 +17,7 @@ export default function CharitySearch() {
 
     const [listCharities, setListCharities] = useState([])
     const [listCharitiesOrigin, setListCharitiesOrigin] = useState([])
+    const [charityTheBest, setCharityTheBest] = useState([])
     /**
      * data = {
      *  charityId,
@@ -70,14 +71,30 @@ export default function CharitySearch() {
         }
     }
 
-    const charityTheBest = [
-        'https://cdn.topcv.vn/60/company_logos/cong-ty-tnhh-transcosmos-viet-nam-63f70af7037aa.jpg',
-        'https://cdn.topcv.vn/60/company_logos/cong-ty-co-phan-smartosc-61d50e76c4aec.jpg',
-        'https://crowdfunding.comicola.com/wp-content/uploads/2022/05/Anh-bia-1.jpg',
-        'https://cdn.topcv.vn/135/company_logos/d5b536ece7651788c2e034cd811aade4-62296d605176d.jpg',
-        'https://cdn.topcv.vn/60/company_logos/cong-ty-tnhh-transcosmos-viet-nam-63f70af7037aa.jpg',
-        'https://cdn.topcv.vn/60/company_logos/cong-ty-co-phan-smartosc-61d50e76c4aec.jpg',
-    ]
+    useEffect(() => {
+        getTopCharity().then(res => {
+            console.log('charity the best', res)
+            if(res.data && res.data.data) {
+                let arr = []
+                res?.data?.data?.forEach(item => {
+                    let obj = {}
+                    obj.id = item.id
+                    obj.avatar = item.avatar
+                    arr.push(obj)
+                })
+                setCharityTheBest(arr)
+            }
+        })
+    }, [])
+
+    // const charityTheBest = [
+    //     'https://cdn.topcv.vn/60/company_logos/cong-ty-tnhh-transcosmos-viet-nam-63f70af7037aa.jpg',
+    //     'https://cdn.topcv.vn/60/company_logos/cong-ty-co-phan-smartosc-61d50e76c4aec.jpg',
+    //     'https://crowdfunding.comicola.com/wp-content/uploads/2022/05/Anh-bia-1.jpg',
+    //     'https://cdn.topcv.vn/135/company_logos/d5b536ece7651788c2e034cd811aade4-62296d605176d.jpg',
+    //     'https://cdn.topcv.vn/60/company_logos/cong-ty-tnhh-transcosmos-viet-nam-63f70af7037aa.jpg',
+    //     'https://cdn.topcv.vn/60/company_logos/cong-ty-co-phan-smartosc-61d50e76c4aec.jpg',
+    // ]
 
     console.log("charity search", {
         listCharities,
@@ -247,22 +264,21 @@ export default function CharitySearch() {
                                             charityTheBest.map((item, i) => (
                                                 <div
                                                     key={i}
-                                                    style={{padding: 15, background: "#FFFF", borderRadius: '50%',
-                                                        filter: 'drop-shadow(-1px 1px 6px rgba(0,0,0,.05))',
-                                                        border: '1px solid #f7f7f7',
+                                                    style={{ background: "#FFFF", borderRadius: '50%',
                                                         margin: '0 10px 16px',
                                                         cursor: 'pointer'
                                                     }}
                                                     onClick={() => {
-                                                        navigate("/profile-charity/" + item?.charityId)
+                                                        navigate("/profile-charity/" + item?.id)
                                                     }}
                                                 >
                                                     <img 
-                                                        src={item}
+                                                        src={item?.avatar}
                                                         alt="charity-logo" 
                                                         style={{
                                                             width: 60, height: 60, 
-                                                            objectFit: "contain",
+                                                            objectFit: 'cover',
+                                                            borderRadius: '50%'
                                                         }}
                                                     />
                                                 </div>

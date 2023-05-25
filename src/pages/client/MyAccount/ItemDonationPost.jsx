@@ -186,11 +186,16 @@ function ItemDonationPost({ data, handleOpenModal, getListDonation, handleReload
                         <p className="idp-organization">{data.status === "Chờ xác nhận" ? "Tổ chức yêu cầu" : data.status === "Chưa nhận" ? "Yêu cầu xác nhận" : data.status === "Từ chối nhận" ? "Tổ chức từ chối" : "Tổ chức đã nhận"}: {data.organizationReceived ? `"${data.organizationReceived}"` : `${data.listRequest?.filter(data => data.status === "Đợi xác nhận").length} tổ chức`}</p>
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                             <Button
-                                className="idp-detail"
+                                className="btn"
                                 type="primary"
                                 onClick={() => {
                                     setDataDetail(data)
                                     setOpenModalDetail(true)
+                                }}
+                                style={{ 
+                                    backgroundColor: 'transparent',
+                                    boxShadow: 'none',
+                                    marginTop: 5
                                 }}
                             // size="middle"
                             >

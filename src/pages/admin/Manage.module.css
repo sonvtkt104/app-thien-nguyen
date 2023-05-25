@@ -1,16 +1,16 @@
 .main {
   display: grid;
   grid-template-columns: 1fr 5fr;
-}
-
-.container {
-  height: 100vh;
   overflow: hidden;
 }
 
-/* .control {
+.container {
+  overflow: hidden;
+}
+
+.control {
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
-} */
+}
