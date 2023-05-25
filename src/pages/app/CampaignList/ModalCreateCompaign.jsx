@@ -240,6 +240,7 @@ function ModalCreateCampaign({
         <>
                  <Modal
                      width={1200}
+                    //  height={'100%'}
                      bodyStyle={{height: '100%'}}
                      okText={"Đồng ý"}
                      cancelText={"Quay lại"}
@@ -409,7 +410,7 @@ function ModalCreateCampaign({
                                     onChange={ ( event, editor ) => {
                                         const data = editor.getData();
                                         setIntroductoryPost(data);
-                                    } }                                
+                                    } }       
                                 />
                              </Col>
                          </Row>

@@ -50,8 +50,9 @@ function ModalCreatePost({
     ]
 
     const handlePressOk = async () => {
+        let images = fileList && fileList.length > 0 ? fileList.map((image) => (image.url)).join(', ') : ''
 
-        // console.log(campaignId, namePost, typePost, contentPost);
+        // console.log(campaignId, namePost, typePost, contentPost, images);
         // return;
 
         if(!campaignId || !namePost || !typePost || !contentPost) {
@@ -69,7 +70,8 @@ function ModalCreatePost({
                     campaign_id: campaignId,
                     title: namePost,
                     content: contentPost,
-                    type: typePost
+                    type: typePost,
+                    images: images
                 }
                 
             })
@@ -81,6 +83,80 @@ function ModalCreatePost({
             getDataPosts()
         }
     }
+
+    const [fileList, setFileList] = useState([]);
+    const [previewImage, setPreviewImage] = useState(false);
+    const [previewTitle, setPreviewTitle] = useState('');
+    const [previewOpen, setPreviewOpen] = useState(false);
+
+        const getBase64 = (file) =>
+            new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = (error) => reject(error);
+        });
+
+    const handleChange = async ({ file }) => {
+
+        const formData = new FormData();
+        formData.append('file', file.originFileObj);
+        let res = await axios({
+            method: 'post',
+            url: 'http://localhost:8080/upload',
+            data: formData,
+            headers: {
+                Authorization: `Bearer ${getTokenFromCookies()}`,
+                Token: getTokenFromCookies()
+            }
+        }).then(res => res.data)
+        // console.log(res)
+        // console.log([...fileList, res.data])
+        setFileList(prev => prev ? [...prev, {url: res.data}] : [{url: res.data}]);
+        // let arrTemp = fileList.map((image) => (image.url)).join(', ')
+        // setImageCampaign(arrTemp)
+
+    };
+
+    const onRemoveImage = (value) => {
+        // console.log(value);
+        setFileList((images) => images.filter((image) => image.url !== value.url))
+        return false
+    }
+
+    const handlePreview = async (file) => {
+        if (!file.url && !file.preview) {
+        file.preview = await getBase64(file.originFileObj);
+        }
+        setPreviewImage(file.url || file.preview);
+        setPreviewOpen(true);
+        setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+    };
+
+    const beforeUpload = (file) => {
+        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+        if (!isJpgOrPng) {
+          message.error('You can only upload JPG/PNG file!');
+        }
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+          message.error('Image must smaller than 2MB!');
+        }
+        return isJpgOrPng && isLt2M;
+      };
+
+    const uploadButton = (
+        <div>
+        <PlusOutlined />
+        <div
+            style={{
+            marginTop: 8,
+            }}
+        >
+            Tải ảnh lên
+        </div>
+        </div>
+    );
 
     return (
         <>
@@ -164,20 +240,21 @@ function ModalCreatePost({
                              </Col>
                          </Row>
                          <div style={{margin: '12px 0'}}></div>
-                         {/* <Row>
-                            <Col span={8}>
+                         <Row>
+                         <Col span={24}>
                             Chọn ảnh đăng tải
                                 <Upload
-                                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                                     listType="picture-card"
+                                    onRemove={onRemoveImage}
                                     fileList={fileList}
+                                    customRequest={() => false}
                                     onPreview={handlePreview}
                                     onChange={handleChange}
                                     beforeUpload={beforeUpload}
                                     multiple
                                 >
                                     {
-                                        fileList && fileList.length >= 2 ? null : uploadButton
+                                        fileList && fileList.length >= 3 ? null : uploadButton
                                     }
                                     
                                 </Upload>
@@ -191,7 +268,7 @@ function ModalCreatePost({
                                     />
                                 </Modal>
                             </Col>
-                         </Row> */}
+                         </Row>
                      </div>
                  </Modal>
         </>
