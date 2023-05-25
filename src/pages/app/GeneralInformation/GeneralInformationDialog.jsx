@@ -289,7 +289,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                         {/*   */}
                                     </div>
                                 </div>
-                                <div >
+                                <div style={{marginTop: 16}}>
                                     <Form.Item name="avatar">
                                         <Upload
                                             showUploadList={false}

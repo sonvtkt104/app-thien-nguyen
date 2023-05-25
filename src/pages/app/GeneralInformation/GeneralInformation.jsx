@@ -11,8 +11,12 @@ import ReactPlayer from 'react-player'
 
 function GeneralInformation() {
 
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+    function checkGoogleMapsUrl(url) {
+        if (!!url && url.indexOf("https://www.google.com/maps/embed") !== 0) {
+            return false;
+        }
+        return true;
+    }
 
     const [charity, setCharity] = useState({})
     const [openDialog, setOpenDialog] = useState(false)
@@ -24,6 +28,7 @@ function GeneralInformation() {
         getCurrentCharity().then(res => {
             console.log(res.data.data);
             setCharity(res.data.data)
+            
         })
     }, [reloadData])
     // console.log(reloadData)
@@ -38,19 +43,17 @@ function GeneralInformation() {
         setReloadData(data)
     }
 
+    
 
     return (
         <PageLayout keyActive='info'>
             <div className="gi-header">
-                <h1 style={{fontSize: 24, fontWeight: '600'}}>Thông tin chung</h1>
+                <h1 style={{ fontSize: 24, fontWeight: '600' }}>Thông tin chung</h1>
                 <div>
                     <Button
                         type="primary"
-                        // size="large"
                         style={{ marginRight: "8px", fontSize: 16, fontWeight: '400' }}
                         onClick={() => {
-                            // navigate("/profile-charity")
-                            // window.open('/profile-charity', '_blank');
                             window.open(`/profile-charity/${charity?.charityId}`, '_blank');
                         }}
                         className="btn-primary"
@@ -59,7 +62,6 @@ function GeneralInformation() {
                     </Button>
                     <Button
                         type="primary"
-                        // size="large"
                         onClick={() => {
                             setOpenDialog(true)
                             // setDataUpdate(infoCharity)
@@ -67,7 +69,7 @@ function GeneralInformation() {
                             setReloadData("1")
                         }}
                         className="btn-primary"
-                        style={{fontSize: 16, fontWeight: '400'}}
+                        style={{ fontSize: 16, fontWeight: '400' }}
                     >
                         Chỉnh sửa
                     </Button>
@@ -91,7 +93,7 @@ function GeneralInformation() {
                                         />
                                         <div style={{ marginLeft: 12 }}>
                                             <div className="gi-name">
-                                                <h4 style={{fontSize: 22, fontWeight: "600"}}>{charity?.name}</h4>
+                                                <h4 style={{ fontSize: 22, fontWeight: "600" }}>{charity?.name}</h4>
                                                 <CheckCircleFilled
                                                     className="gi-icon-check"
                                                     style={{ display: charity?.isVerified === 2 ? "" : "none" }}
@@ -135,9 +137,9 @@ function GeneralInformation() {
                                 </div>
                                 {
                                     ReactPlayer.canPlay(charity?.charityIntroVideo) ?
-                                        <ReactPlayer 
+                                        <ReactPlayer
                                             url={charity?.charityIntroVideo}
-                                            style={{ width: '100%', display: charity?.charityIntroVideo && charity?.charityIntroVideo !== "" ? "" : "none"  }}
+                                            style={{ width: '100%', display: charity?.charityIntroVideo && charity?.charityIntroVideo !== "" ? "" : "none" }}
                                             width='100%'
                                             height="350px"
                                         /> : <p>Link youtube của bạn lỗi!!</p>
@@ -196,10 +198,10 @@ function GeneralInformation() {
                                     <PhoneOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
                                     {charity?.phoneNumber}
                                 </Row>
-                                    <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px', marginLeft: 10, display: charity?.charityWebsite && charity?.charityWebsite !== "" ? "" : "none" }}>
-                                        <GlobalOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
-                                        {charity?.charityWebsite}
-                                    </Row>
+                                <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px', marginLeft: 10, display: charity?.charityWebsite && charity?.charityWebsite !== "" ? "" : "none" }}>
+                                    <GlobalOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
+                                    {charity?.charityWebsite}
+                                </Row>
                                 <Row style={{ lineHeight: '20px', fontSize: 15, marginBottom: '16px', marginLeft: 10, }}>
                                     <MailOutlined style={{ color: 'var(--color-blue', marginRight: 12, fontSize: 20 }} />
                                     {charity?.email}
@@ -209,13 +211,18 @@ function GeneralInformation() {
                                     {`${charity?.address}, ${charity?.ward}, ${charity?.district}, ${charity?.province}`}
                                 </Row>
                                 <div style={{ margin: "0 10px 20px 10px", }}>
-                                    <div style={{display: charity?.googleMap && charity?.googleMap !== "" ? "" : "none" }}>
-                                        <iframe title="Google map" alt='Lỗi rồi' onerror="this.contentDocument.body.innerHTML='src sai rồi'" src={charity?.googleMap} style={{ border: 0, width: '100%', height:200 }} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
-                                    </div>
+                                    {
+                                        checkGoogleMapsUrl(charity?.googleMap) ?
+                                            <div style={{ display: charity?.googleMap && charity?.googleMap !== "" ? "" : "none" }}>
+                                                <iframe title="Google map" src={charity?.googleMap} style={{ border: 0, width: '100%', height: 200 }} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+                                            </div>
+                                            :
+                                            <p>Link iframe Google Map của bạn bị lỗi</p>
+                                    }
                                 </div>
                                 {/* (charity?.charityFacebook || charity?.charityInstagram || charity?.charityLinkedIn || charity?.charityTwitter) && (charity?.charityFacebook !== "" || charity?.charityInstagram !== "" || charity?.charityLinkedIn !== "" || charity?.charityTwitter !== "") */}
-                                
-                                <div style={{display: (!!charity?.charityFacebook || !!charity?.charityInstagram || !!charity?.charityLinkedIn || !!charity?.charityTwitter) ? "" : "none" }}>
+
+                                <div style={{ display: (!!charity?.charityFacebook || !!charity?.charityInstagram || !!charity?.charityLinkedIn || !!charity?.charityTwitter) ? "" : "none" }}>
                                     <div style={{ fontSize: 16, fontWeight: '600', marginBottom: 20, borderLeft: '3px solid var(--color-blue)', paddingLeft: 10 }}>Liên hệ qua mạng xã hội</div>
                                     <Row>
                                         <div style={{ marginRight: 12, padding: '0 10px', textAlign: 'center', display: charity?.charityFacebook && charity?.charityFacebook !== "" ? "" : "none" }}>
