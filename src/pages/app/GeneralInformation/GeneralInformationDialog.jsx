@@ -229,7 +229,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
     return (
         <div>
             <Modal
-                title={"Sửa thông tin"}
+                title={<h2 className="h2-app">Sửa thông tin</h2>}
                 cancelText="Quay lại"
                 okText="Tạo"
                 centered
@@ -289,7 +289,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                         {/*   */}
                                     </div>
                                 </div>
-                                <div >
+                                <div style={{marginTop: 16}}>
                                     <Form.Item name="avatar">
                                         <Upload
                                             showUploadList={false}

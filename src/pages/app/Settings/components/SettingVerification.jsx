@@ -173,7 +173,7 @@ function SettingVerification() {
                                     <div style={{ display: "flex", flexWrap: "wrap", margin:"12px 0" }}>
                                         {
                                             dataRequest?.charityFile?.split(", ")?.map((image, index) =>
-                                                <div key={index} style={{ margin: "2px", border: "1px solid #e7e5e5", display: "flex", alignItems: "center", height: 164, width: "32%" }}>
+                                                <div key={index} style={{ margin: "2px", border: "1px solid #e7e5e5", display: "flex", alignItems: "center", justifyContent:"center", height: 164, width: "32%" }}>
                                                     <Image
                                                         style={{ maxHeight: 164, maxWidth: 164 }}
                                                         key={index}

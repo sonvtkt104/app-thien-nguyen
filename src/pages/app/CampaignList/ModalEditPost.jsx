@@ -193,24 +193,27 @@ function ModalEditPost({
                      open={isOpenModalEditPost} 
                      onOk={handlePressOk} 
                      onCancel={handleCancel}
-                     className="modal-create"
+                     className="modal-create modal-app"
                  >
-                     <div className="modal-header">Chỉnh sửa bài viết</div>
+                     <div className="modal-header h2-app">Chỉnh sửa bài viết</div>
                      <div className="modal-body">
                          <Row gutter={[12, 12]}>
                              <Col span={12}>
                                  <label>Tiêu đề bài viết</label>
                                  <br />
+                                 <div style={{marginBottom: 8}}></div>
                                  <Input 
                                      placeholder=""
                                      value={namePost}
                                      onChange={(e) => setNamePost(e.target.value)} 
                                      style={{width: '100%'}}
+                                     className="input-app"
                                  />
                              </Col>
                              <Col span={12}>
                                  <label>Kiểu bài viết</label>
                                  <br />
+                                 <div style={{marginBottom: 8}}></div>
                                  <Select
                                     value={options[0]}
                                     showSearch
@@ -224,6 +227,7 @@ function ModalEditPost({
                                         }
                                     }
                                     onChange={(value) => {setOptionSelect(value); setTypePost(value)}}
+                                    className="select-app"
                                  />
                              </Col>
                              {/* <Col span={6}>
@@ -248,7 +252,8 @@ function ModalEditPost({
                          <div style={{margin: '12px 0'}}></div>
                          <Row className='ck-editor-post'>
                              <label>Nội dung bài viết</label>
-                             <Col span={24}>
+                             <div style={{marginBottom: 8}}></div>
+                             <Col span={24} style={{marginTop: 8}}>
                                 <CKEditor
                                     editor={ ClassicEditor }
                                     data={contentPost}

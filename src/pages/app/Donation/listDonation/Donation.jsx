@@ -170,10 +170,15 @@ function Donation() {
     }
     return (
         <PageLayout keyActive='donation'>
+            <Row 
+                style={{padding: '10px 0 30px'}}
+            >  
+                <div style={{fontSize: 24, fontWeight: '600'}}>Danh sánh quyên góp</div>
+            </Row>
             <div className='dn-modal'>
                 <div className='dn-modal-content'>
                     <div className='dn-header'>
-                        <h2 className='dn-title'>Danh sánh quyên góp</h2>
+                        <span></span>
                         <Input.Search
                             placeholder="Tìm kiếm..."
                             allowClear 
@@ -183,7 +188,7 @@ function Donation() {
                             onChange={(e) => {
                                 globalSearch(e.target.value)
                             }}
-                            className= "db-input-search"
+                            className= "db-input-search search-app"
                         /> 
                     </div>
                     <TableApp

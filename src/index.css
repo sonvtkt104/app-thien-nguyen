@@ -167,6 +167,10 @@ a {
   font-weight: 600;
   color: var(--color-blue);
 }
+.h3-app {
+  font-size: 18px;
+  font-weight: 600;
+}
 .ant-collapse.collapse-app {
   border: none;
   border-radius: 0 0 8px 8px;
@@ -248,6 +252,74 @@ a {
 
 
 .page-layout-sidebar .ant-menu-item-selected,
-.page-layout-sidebar .ant-menu-submenu-open.ant-menu-submenu-selected .ant-menu-submenu-title {
+.page-layout-sidebar .ant-menu-submenu-open.ant-menu-submenu-selected .ant-menu-submenu-title,
+.page-layout-sidebar .ant-menu-light .ant-menu-submenu-selected >.ant-menu-submenu-title {
+  color: var(--color-blue) !important;
+}
+
+.search-app .ant-input-affix-wrapper:focus,
+.search-app .ant-input-affix-wrapper:hover,
+.search-app button:hover,
+.search-app button:hover .anticon-search {
+  border-color: var(--color-blue) !important;
+  color: var(--color-blue) !important;
+}
+
+.search-app input {
+  height: 28px;
+}
+
+.search-app button {
+  height: 38px !important;
+}
+
+.date-picker-app {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  padding: 11px 20px;
+  text-align: left;
+}
+
+.date-picker-app:hover {
+  border-color: var(--color-blue) !important;
+}
+
+.ant-picker-dropdown .ant-picker-today-btn {
+  color: var(--color-blue) !important;
+}
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before{
+  border: 1px solid var(--color-blue) !important;
+}
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner{
+  background: var(--color-blue) !important;
+}
+
+.modal-app .ant-modal-footer button:first-child {
+  font-weight: 600;
+    font-size: 13px;
+    padding: 9px 20px !important;
+    color: var(--color-blue);
+    border: 1px solid var(--color-blue) !important;
+    border-radius: 4px;
+    line-height: 18px;
+    height: auto;
+    cursor: pointer;
+}
+
+.modal-app .ant-modal-footer button:last-child {
+  font-weight: 600;
+    font-size: 13px;
+    padding: 9px 20px !important;
+    border: 1px solid var(--color-blue) !important;
+    border-radius: 4px;
+    line-height: 18px;
+    height: auto;
+    cursor: pointer;
+    background: var(--color-blue) !important;
+    color: #ffffff !important;
+}
+
+.color-blue-app {
   color: var(--color-blue) !important;
 }

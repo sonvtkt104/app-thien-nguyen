@@ -1,13 +1,13 @@
 import { Component, useMemo } from "react";
-import { ArrowLeftIcon, PageLayout, SegmentedApp, TableApp } from "../../../components";
-import { Button, Divider, Modal, Upload, message } from "antd";
+import { ArrowLeftIcon, PageLayout, SegmentedApp, TableApp, Tag } from "../../../components";
+import { Button, Col, Divider, Modal, Row, Upload, message } from "antd";
 import { Link } from "react-router-dom";
 import Chart from 'react-apexcharts';
 
 import './CampaignPreview.scss';
 
 import 'react-markdown-editor-lite/lib/index.css';
-import { DeleteOutlined, EditOutlined, ExclamationCircleFilled } from "@ant-design/icons";
+import { DeleteOutlined, DownloadOutlined, EditOutlined, ExclamationCircleFilled, VerticalAlignBottomOutlined } from "@ant-design/icons";
 import ModalCreatePost from "./ModalCreatePost";
 import { toast } from "react-toastify";
 import ModalEditPost from "./ModalEditPost";
@@ -465,12 +465,12 @@ function CamPaignPreview() {
         <>
                 <PageLayout>
                     <div className="campaign-preview-container">
-                        <div className="navigation-bar">
+                        <div className="navigation-bar" style={{marginTop: 10}}>
                             <div className="n-b-left">
                                 <Link to={"/campaign-list"} className="n-b-l-back">
                                     <ArrowLeftIcon fontSize={24} color={"black"} style={{cursor: 'pointer'}} />
                                 </Link>
-                                <div>{nameCampaign}</div>
+                                <div style={{fontSize: 24, fontWeight: '600'}}>{nameCampaign}</div>
                             </div>
                             <div className="n-b-right">
                                 <Button style={{pointerEvents: 'none'}} disabled>Xem chi tiết</Button>
@@ -521,10 +521,10 @@ function CamPaignPreview() {
                         {
                             valueOption === 2 &&
                             <div className="activity-container">
-                                <div className="header-title">
+                                <div className="header-title" style={{paddingBottom: 20}}>
                                     <div className="h-t-name">Danh sách các bài viết</div>
                                     <button 
-                                        className="btn-create-post"                                      
+                                        className=" btn-primary"                                      
                                         onClick={() => setIsOpenModalCreatePost(true)}
                                     >Thêm bài viết mới</button>
                                 </div>
@@ -561,24 +561,51 @@ function CamPaignPreview() {
                         {
                             valueOption === 3 &&
                             <div className="statement-container">
-                                <div className="s-c-up">
-                                    <div className="total-donor">Tổng số người ủng hộ: <span style={{color: 'blue'}}>{totalDonor}</span></div>
-                                    <div className="btn-actions">
+                                <div className="s-c-down" style={{position: 'relative'}}>
+                                    <div className="s-c-up"
+                                        style={{position: 'absolute', right: 20, top: '-40px'}}
+                                    >
+                                        <div className="total-donor" style={{fontSize: 16}}>Tổng số người ủng hộ: <span style={{color: 'var(--color-blue)', fontSize: 16}}>{totalDonor}</span></div>
                                         
-                                        <label htmlFor="custom-file-input">Import</label>
-                                        <input className="custom-file-input" id="custom-file-input" type="file" onChange={(e) => handleChangeImport(e)} />                                                         
-                                        <CSVLink className="btn-action-export" data={dataSource2} filename={'my-file.csv'} target="_blank">
-                                            Export
-                                        </CSVLink>
                                     </div>
-                                </div>
-                                <div className="s-c-down">
+
                                     <div className="statement-table">
-                                        <div className="header-title">
-                                            <div className="h-t-name">Danh sách sao kê</div>
-                                            <CSVLink className="h-t-tai-file-mau" data={dataSourceMau} filename={'new-file-data.csv'} target="_blank">
-                                                Tải xuống file mẫu
-                                            </CSVLink>
+                                        <div className="header-title" style={{paddingBottom: 20}}>
+                                            <Row className="h-t-name flex-col-center" justify='space-between'>
+                                                <Col>
+                                                    <Row>
+                                                        <span style={{fontSize: 18, fontWeight: '600'}}>Danh sách sao kê</span>
+                                                        <Tag
+                                                            title={(
+                                                                <span style={{color: 'var(--color-blue)', lineHeight: '23px'}}  >
+                                                                    <CSVLink className="color-blue-app" data={dataSourceMau} filename={'new-file-data.csv'} target="_blank">
+                                                                        Tải xuống file mẫu
+                                                                    </CSVLink>
+                                                                    <DownloadOutlined style={{fontSize: 16, fontWeight: '700', marginLeft: 5}} />
+                                                                </span>
+                                                            )}
+                                                            className='app-hover'
+                                                            background="#44b3cf1f"
+                                                            style={{
+                                                                fontSize: 14,
+                                                                marginLeft: 12
+                                                            }}
+                                                        >
+                                                        </Tag>
+                                                    </Row>
+                                                </Col>
+                                                <Col>
+                                                
+                                                </Col>
+                                            </Row>
+                                            <div className="btn-actions">
+                                                
+                                                <label htmlFor="custom-file-input" className="btn-primary" >Import</label>
+                                                <input className="custom-file-input" id="custom-file-input" type="file" onChange={(e) => handleChangeImport(e)} />                                                         
+                                                <CSVLink className="btn-action-export btn-primary" data={dataSource2} filename={'my-file.csv'} target="_blank">
+                                                    Export
+                                                </CSVLink>
+                                            </div>
                                         </div>
                                         <Divider />
                                         <TableApp columns={columns2} dataSource={dataSource2}>

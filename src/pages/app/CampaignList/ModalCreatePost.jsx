@@ -165,24 +165,27 @@ function ModalCreatePost({
                      open={isOpenModalCreatePost} 
                      onOk={handlePressOk} 
                      onCancel={handleCancel}
-                     className="modal-create"
+                     className="modal-create modal-app"
                  >
-                     <div className="modal-header">Tạo bài viết mới</div>
+                     <div className="modal-header h2-app">Tạo bài viết mới</div>
                      <div className="modal-body">
                          <Row gutter={[12, 12]}>
                              <Col span={12}>
                                  <label>Tiêu đề bài viết</label>
                                  <br />
+                                 <div style={{marginBottom: 8}}></div>
                                  <Input 
-                                     placeholder=""
+                                     placeholder="Tiêu đề"
                                      value={namePost}
                                      onChange={(e) => setNamePost(e.target.value)} 
                                      style={{width: '100%'}}
+                                     className="input-app"
                                  />
                              </Col>
                              <Col span={12}>
                                  <label>Kiểu bài viết</label>
                                  <br />
+                                <div style={{marginBottom: 8}}></div>
                                  <Select
                                     // value={typePost}
                                     value={options[0]}
@@ -197,6 +200,7 @@ function ModalCreatePost({
                                         }
                                     }
                                     onChange={(value) => setTypePost(value)}
+                                    className="select-app"
                                  />
                              </Col>
                              {/* <Col span={6}>
@@ -221,7 +225,7 @@ function ModalCreatePost({
                          <div style={{margin: '12px 0'}}></div>
                          <Row className='ck-editor-post'>
                              <label>Nội dung bài viết</label>
-                             <Col span={24}>
+                             <Col span={24} style={{paddingTop: 8}}>
                                 <CKEditor
                                     editor={ ClassicEditor }
                                     data={contentPost}

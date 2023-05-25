@@ -521,6 +521,7 @@ const RegistrationPage = () => {
                         className="regis-button btn-primary"
                         style={{ margin: "auto" }}
                         loading={isLoading}
+                        disabled={isLoading}
                       >
                         Đăng ký
                       </Button>
@@ -834,6 +835,7 @@ const RegistrationPage = () => {
                           className="regis-button btn-primary"
                           style={{ margin: "auto" }}
                           loading={isLoading}
+                          disabled={isLoading}
                         >
                           Đăng ký
                         </Button>
