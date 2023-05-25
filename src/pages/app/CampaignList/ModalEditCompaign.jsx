@@ -280,7 +280,7 @@ function ModalEditCampaign({
     return (
         <>
                  <Modal
-                     width={1400}
+                     width={1200}
                      bodyStyle={{height: '100%'}}
                      okText={"Lưu thay đổi"}
                      cancelText={"Quay lại"}
