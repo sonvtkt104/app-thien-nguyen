@@ -43,7 +43,7 @@ const ForgotYourPassword = (values) => {
 
   const hanleCheckCode = (values) => {
     const submitData = {
-      id: idUser,
+      id: +idUser,
       code: values.code,
     };
 
@@ -73,12 +73,13 @@ const ForgotYourPassword = (values) => {
 
   const resetPassword = (values) => {
     const submitData = {
-      id: idUser,
+      id: +idUser,
       password: values.password,
       confirmPassword: values.repeatPassword,
     };
 
     const submit = async () => {
+      setIsLoading(true);
       const response = await fetch("http://localhost:8080/reset-password", {
         method: "POST",
         headers: {
@@ -204,6 +205,7 @@ const ForgotYourPassword = (values) => {
                 className="login-button btn-primary"
                 style={{ borderRadius: 4 }}
                 loading={isLoading}
+                disabled={isLoading}
               >
                 Lấy lại mật khẩu
               </Button>
@@ -310,6 +312,7 @@ const ForgotYourPassword = (values) => {
                 htmlType="submit"
                 className="login-button btn-primary"
                 style={{ borderRadius: 4 }}
+                disabled={isLoading}
               >
                 Lấy lại mật khẩu
               </Button>
@@ -416,6 +419,7 @@ const ForgotYourPassword = (values) => {
                 className="login-button btn-primary"
                 style={{ borderRadius: 4 }}
                 loading={isLoading}
+                disabled={isLoading}
               >
                 Lấy lại mật khẩu
               </Button>

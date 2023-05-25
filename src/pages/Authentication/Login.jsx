@@ -202,6 +202,7 @@ const LoginPage = () => {
                       className="login-button btn-primary"
                       style={{ borderRadius: 4 }}
                       loading={isLoading}
+                      disabled={isLoading}
                     >
                       Đăng nhập
                     </Button>
