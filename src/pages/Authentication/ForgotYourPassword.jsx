@@ -43,13 +43,13 @@ const ForgotYourPassword = (values) => {
 
   const hanleCheckCode = (values) => {
     const submitData = {
-      id: idUser,
       code: values.code,
+      id: +idUser,
     };
 
     const submit = async () => {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:8080/reset-code`, {
+      const response = await fetch("http://localhost:8080/reset-code", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -73,12 +73,13 @@ const ForgotYourPassword = (values) => {
 
   const resetPassword = (values) => {
     const submitData = {
-      id: idUser,
+      id: +idUser,
       password: values.password,
       confirmPassword: values.repeatPassword,
     };
 
     const submit = async () => {
+      setIsLoading(true);
       const response = await fetch("http://localhost:8080/reset-password", {
         method: "POST",
         headers: {
@@ -176,6 +177,7 @@ const ForgotYourPassword = (values) => {
                 placeholder="vui lòng nhập mật khẩu mới của bạn"
                 className="input-app"
                 type="password"
+                onChange={() => setError("")}
               />
             </Form.Item>
 
@@ -192,6 +194,7 @@ const ForgotYourPassword = (values) => {
                 placeholder="Vui lòng nhập mật khẩu của bạn"
                 type="password"
                 className="input-app"
+                onChange={() => setError("")}
               />
             </Form.Item>
 
@@ -204,6 +207,7 @@ const ForgotYourPassword = (values) => {
                 className="login-button btn-primary"
                 style={{ borderRadius: 4 }}
                 loading={isLoading}
+                disabled={isLoading}
               >
                 Lấy lại mật khẩu
               </Button>
@@ -299,6 +303,7 @@ const ForgotYourPassword = (values) => {
               <Input
                 placeholder="vui lòng nhập user name"
                 className="input-app"
+                onChange={() => setError("")}
               />
             </Form.Item>
 
@@ -310,6 +315,7 @@ const ForgotYourPassword = (values) => {
                 htmlType="submit"
                 className="login-button btn-primary"
                 style={{ borderRadius: 4 }}
+                disabled={isLoading}
               >
                 Lấy lại mật khẩu
               </Button>
@@ -405,6 +411,7 @@ const ForgotYourPassword = (values) => {
               <Input
                 placeholder="Nhập Code gửi qua email"
                 className="input-app"
+                onChange={() => setError("")}
               />
             </Form.Item>
             <p>{message}</p>
@@ -416,6 +423,7 @@ const ForgotYourPassword = (values) => {
                 className="login-button btn-primary"
                 style={{ borderRadius: 4 }}
                 loading={isLoading}
+                disabled={isLoading}
               >
                 Lấy lại mật khẩu
               </Button>

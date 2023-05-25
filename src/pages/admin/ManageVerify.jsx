@@ -14,11 +14,12 @@ import {
   Input,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { changeVerified, getListVerified } from "./AdminService";
+import { changeVerified, getListVerified, notifyToUser } from "./AdminService";
 import { setListVerifies } from "../../redux/adminSlice";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { TableApp } from "../../components/TableApp/index";
+import { getUserInfomationFromCookies } from "../Authentication/HandleUserInfomation";
 
 const ManageVerify = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,16 @@ const ManageVerify = () => {
   const showModalFile = (charityId) => {
     setIsModalOpen(true);
     setIdShowCharityFile(charityId);
+  };
+
+  const handleAnnouceToUser = async () => {
+    const data = {
+      message: messageToCharity,
+      create: getUserInfomationFromCookies().Id,
+      receive: idCharitySend,
+    };
+
+    const response = await notifyToUser();
   };
 
   const handleVerifyCharity = async (charityId) => {
