@@ -167,6 +167,10 @@ a {
   font-weight: 600;
   color: var(--color-blue);
 }
+.h3-app {
+  font-size: 18px;
+  font-weight: 600;
+}
 .ant-collapse.collapse-app {
   border: none;
   border-radius: 0 0 8px 8px;
@@ -248,7 +252,8 @@ a {
 
 
 .page-layout-sidebar .ant-menu-item-selected,
-.page-layout-sidebar .ant-menu-submenu-open.ant-menu-submenu-selected .ant-menu-submenu-title {
+.page-layout-sidebar .ant-menu-submenu-open.ant-menu-submenu-selected .ant-menu-submenu-title,
+.page-layout-sidebar .ant-menu-light .ant-menu-submenu-selected >.ant-menu-submenu-title {
   color: var(--color-blue) !important;
 }
 

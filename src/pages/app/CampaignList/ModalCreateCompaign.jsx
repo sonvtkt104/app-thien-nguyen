@@ -249,7 +249,7 @@ function ModalCreateCampaign({
                      onCancel={handleCancel}
                      className="modal-create modal-app"
                  >
-                     <div className="modal-header">Tạo cuộc vận động mới</div>
+                     <div className="modal-header h2-app">Tạo cuộc vận động mới</div>
                      <div className="modal-body">
                          <Row gutter={[12, 12]}>
                              <Col span={8}>

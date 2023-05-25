@@ -147,12 +147,12 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
             onCancel={() => { setOpen(false); handleCloseModalDetail() }}
             style={{ fontFamily: "Poppins" }}
         >
-            <p style={{marginBottom: 10}}><b>Người ủng hộ:</b> {dataDetail.donorName}</p>
-            <p style={{marginBottom: 10}}><b>Thông tin liên hệ:</b> {`${dataDetail.phone}, ${dataDetail.address}, ${dataDetail.ward}, ${dataDetail.district}, ${dataDetail.province}`} </p>
-            <p style={{marginBottom: 10}}><b>Thông tin đồ ủng hộ:</b> "{dataDetail.name}", mong muốn ủng hộ cho "{dataDetail.donationObject}", ở "{dataDetail.donationAddress}"</p>
-            <p style={{marginBottom: 10}}><b>Ngày đăng:</b> {dataDetail.date}</p>
-            <p style={{marginBottom: 10}}><b>Mô tả:</b> {dataDetail.description}</p>
-            <p style={{marginBottom: 10}}><b>Ảnh:</b>{ dataDetail.images === "" ? " Không có ảnh nào!" : ""}</p>
+            <p style={{marginBottom: 10}}><b style={{fontWeight: '600'}}>Người ủng hộ:</b> {dataDetail.donorName}</p>
+            <p style={{marginBottom: 10}}><b style={{fontWeight: '600'}}>Thông tin liên hệ:</b> {`${dataDetail.phone}, ${dataDetail.address}, ${dataDetail.ward}, ${dataDetail.district}, ${dataDetail.province}`} </p>
+            <p style={{marginBottom: 10}}><b style={{fontWeight: '600'}}>Thông tin đồ ủng hộ:</b> "{dataDetail.name}", mong muốn ủng hộ cho "{dataDetail.donationObject}", ở "{dataDetail.donationAddress}"</p>
+            <p style={{marginBottom: 10}}><b style={{fontWeight: '600'}}>Ngày đăng:</b> {dataDetail.date}</p>
+            <p style={{marginBottom: 10}}><b style={{fontWeight: '600'}}>Mô tả:</b> {dataDetail.description}</p>
+            <p style={{marginBottom: 10}}><b style={{fontWeight: '600'}}>Ảnh:</b>{ dataDetail.images === "" ? " Không có ảnh nào!" : ""}</p>
             <div style={{ display: "flex", flexWrap: "wrap", marginBottom: 10 }}>
                 {
                     dataDetail.images !== "" ? dataDetail.images?.split(", ").map((image, index) =>
@@ -174,11 +174,11 @@ function ModalDetail({ dataDetail, handleCloseModalDetail, getListDonation,handl
                     <div style={{marginBottom: 10}}>
                         {
                             dataDetail.status === "Đã nhận" ? 
-                                <p style={{marginBottom: 10}}><b>Tổ chức đã nhận:</b> {dataDetail.organizationReceived}</p> : dataDetail.status === "Chờ xác nhận" ?
-                                    <p style={{marginBottom: 10}}><b>Tổ chức yêu cầu:</b> {dataDetail.organizationReceived}</p> : dataDetail.status === "Từ chối nhận" ?
-                                        <p style={{marginBottom: 10}}><b>Tổ chức đã từ chối:</b> {dataDetail.organizationReceived}</p> : 
+                                <p style={{marginBottom: 10}}><b style={{fontWeight: '600'}}>Tổ chức đã nhận:</b> {dataDetail.organizationReceived}</p> : dataDetail.status === "Chờ xác nhận" ?
+                                    <p style={{marginBottom: 10}}><b style={{fontWeight: '600'}}>Tổ chức yêu cầu:</b> {dataDetail.organizationReceived}</p> : dataDetail.status === "Từ chối nhận" ?
+                                        <p style={{marginBottom: 10}}><b style={{fontWeight: '600'}}>Tổ chức đã từ chối:</b> {dataDetail.organizationReceived}</p> : 
                                            <div>
-                                                <p style={{marginBottom: 10}}><b>Danh sách tổ chức yêu cầu xác nhận:</b> {dataDetail?.listRequest.length === 0 ? "Chưa có tổ chức nào" : ""}</p>
+                                                <p style={{marginBottom: 10}}><b style={{fontWeight: '600'}}>Danh sách tổ chức yêu cầu xác nhận:</b> {dataDetail?.listRequest.length === 0 ? "Chưa có tổ chức nào" : ""}</p>
                                                 {
                                                     dataDetail?.listRequest.length !== 0 ? (
                                                         <div>

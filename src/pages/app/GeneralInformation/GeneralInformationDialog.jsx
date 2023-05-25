@@ -229,7 +229,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
     return (
         <div>
             <Modal
-                title={"Sửa thông tin"}
+                title={<h2 className="h2-app">Sửa thông tin</h2>}
                 cancelText="Quay lại"
                 okText="Tạo"
                 centered

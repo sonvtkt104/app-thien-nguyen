@@ -120,7 +120,7 @@ function ModalEditPost({
                      onCancel={handleCancel}
                      className="modal-create modal-app"
                  >
-                     <div className="modal-header">Chỉnh sửa bài viết</div>
+                     <div className="modal-header h2-app">Chỉnh sửa bài viết</div>
                      <div className="modal-body">
                          <Row gutter={[12, 12]}>
                              <Col span={12}>

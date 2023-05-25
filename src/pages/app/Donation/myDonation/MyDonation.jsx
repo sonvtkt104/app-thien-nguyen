@@ -318,6 +318,11 @@ function MyDonation() {
 
   return (
     <PageLayout keyActive="my-donation">
+      <Row 
+          style={{paddingTop: '10px'}}
+      >  
+          <div style={{fontSize: 24, fontWeight: '600'}}>Quyên góp của tôi</div>
+      </Row>
       <div className="mdn-segmented">
         <SegmentedApp
           className="mdn-segmenttedApp"
@@ -330,7 +335,7 @@ function MyDonation() {
       </div>
       <div className="mdn-modal">
         <div className="mdn-header">
-          <h2 className="mdn-title">{segment === "Yêu cầu xác nhận" ? "Danh sách yêu cầu bạn xác nhận" : "Quyên góp của tôi"}</h2>
+          <h2 className="mdn-title h3-app">{segment === "Yêu cầu xác nhận" ? "Danh sách yêu cầu bạn xác nhận" : ""}</h2>
           <Input.Search
             placeholder="Tìm kiếm..."
             allowClear
@@ -340,7 +345,7 @@ function MyDonation() {
             onChange={(e) => {
               globalSearch(e.target.value)
             }}
-            className='mdb-input-search'
+            className='mdb-input-search search-app'
           />
         </div>
         <TableApp

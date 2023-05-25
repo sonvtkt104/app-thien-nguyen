@@ -290,7 +290,7 @@ function ModalEditCampaign({
                      onCancel={handleCancel}
                      className="modal-create modal-app"
                  >
-                     <div className="modal-header">Chỉnh sửa cuộc vận động</div>
+                     <div className="modal-header h2-app">Chỉnh sửa cuộc vận động</div>
                      <div className="modal-body">
                          <Row gutter={[12, 12]}>
                              <Col span={8}>

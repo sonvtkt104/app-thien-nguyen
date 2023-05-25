@@ -563,7 +563,7 @@ function CamPaignPreview() {
                             <div className="statement-container">
                                 <div className="s-c-down" style={{position: 'relative'}}>
                                     <div className="s-c-up"
-                                        style={{position: 'absolute', right: 20, top: '-35px'}}
+                                        style={{position: 'absolute', right: 20, top: '-40px'}}
                                     >
                                         <div className="total-donor" style={{fontSize: 16}}>Tổng số người ủng hộ: <span style={{color: 'var(--color-blue)', fontSize: 16}}>{totalDonor}</span></div>
                                         
