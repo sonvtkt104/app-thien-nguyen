@@ -1,36 +1,12 @@
-/* .sb-layout {
-    margin: 0 160px 0 440px;
-    min-height: calc(100vh - 56px);
-}
-  
-.sb-sidebar {
-    position: fixed;
-    width: 280px;
-    top: 100px;
-    left: 160px;
-    bottom: 0;
-    background: #FFFFFF;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.sb-sidebar .ant-menu-light.ant-menu-root.ant-menu-inline {
-    border-inline-end: none;
-}
-.sb-menu {
-    font-size: 18px;
-} */
-
 
 .sb-layout {
-    margin: 0 6% 0 24%;
+    margin: 0 6% 0 26%;
     min-height: calc(100vh - 56px);
 }
   
 .sb-sidebar {
     position: fixed;
-    width: 18%;
+    width: 20%;
     top: 100px;
     left: 6%;
     bottom: 0;

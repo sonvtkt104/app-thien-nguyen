@@ -444,7 +444,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                 >
-                    <div style={{ height: 500, overflowY: "scroll", paddingRight: 8, marginBottom: 15 }}>
+                    <div style={{ paddingRight: 8, marginBottom: 15 }}>
 
                         <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                             <Form.Item
@@ -504,6 +504,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                             >
                                 {/* <Input /> */}
                                 <Select
+                                    height={300}
                                     showSearch
                                     placeholder="Chọn đối tượng"
                                     optionFilterProp="children"
