@@ -167,7 +167,11 @@ const LoginPage = () => {
                     ]}
                     className="form-item"
                   >
-                    <Input placeholder="Nhập tài khoản" className="input-app" />
+                    <Input
+                      placeholder="Nhập tài khoản"
+                      className="input-app"
+                      onChange={() => setError("")}
+                    />
                   </Form.Item>
 
                   <Form.Item
@@ -181,6 +185,7 @@ const LoginPage = () => {
                     <Input.Password
                       placeholder="Nhập mật khẩu"
                       className="input-app"
+                      onChange={() => setError("")}
                     />
                   </Form.Item>
 

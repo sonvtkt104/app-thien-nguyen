@@ -7,7 +7,7 @@ const Manage = (props) => {
     <div className={classes.container}>
       <main className={classes.main}>
         <ManageControl className={classes.control} />
-        <div>
+        <div style={{ position: "relative" }}>
           <ManageHeader />
           {props.children}
         </div>
