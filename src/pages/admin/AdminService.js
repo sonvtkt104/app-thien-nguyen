@@ -187,3 +187,29 @@ export const sendFeedbackToUser = async (data) => {
     toast.error("Gửi thông báo thất bại");
   }
 };
+
+export const notifyToUser = async (data) => {
+  try {
+    const response = await fetch(
+      "http://localhost:8089/charity/notification/post-to-user",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getTokenFromCookies()}`,
+          Token: getTokenFromCookies(),
+        },
+        body: JSON.stringify({
+          receive_user_id: data.receive,
+          created_user_id: data.create,
+          message: data.message,
+        }),
+      }
+    );
+
+    toast.success("Gửi thông báo thành công");
+    return await response.json();
+  } catch (error) {
+    toast.error("Gửi thông báo thất bại");
+  }
+};

@@ -32,10 +32,6 @@ function ModalEditPost({
 
     let options = [
         {
-            label: 'Bài viết giới thiệu',
-            value: 'Bài viết giới thiệu'
-        },
-        {
             label: 'Bài viết hoạt động',
             value: 'Bài viết hoạt động'
         }
@@ -219,7 +215,7 @@ function ModalEditPost({
                                  <br />
                                  <div style={{marginBottom: 8}}></div>
                                  <Select
-                                    value={optionSelect}
+                                    value={options[0]}
                                     showSearch
                                     allowClear
                                     style={{width: '100%'}}

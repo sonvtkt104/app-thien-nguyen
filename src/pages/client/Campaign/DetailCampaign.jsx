@@ -31,6 +31,7 @@ import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
 import moment from "moment";
 import Search from "antd/es/input/Search";
 import { CSVLink } from "react-csv";
+import ReactPlayer from 'react-player';
 
 function DetailCampaign() {
 
@@ -527,15 +528,26 @@ function DetailCampaign() {
                                         <div className="class-common">Khu vực kêu gọi:</div>
                                         <div>{resultRegion}</div>
                                         <div className="class-common">Video & Ảnh mô tả:</div>
-                                        {
+                                        <div style={{ width: '100%', display: 'flex', justifyContent: 'center'}}>
+                                          {
+                                              ReactPlayer.canPlay(introVideo) ?
+                                                  <ReactPlayer 
+                                                      url={introVideo}
+                                                      style={{ width: '100%', display: 'flex', justifyContent: 'center'}}
+                                                      width='60%'
+                                                      height="350px"
+                                                  /> : ''
+                                          }
+                                        </div>
+                                        {/* {
                                           introVideo && (
                                             <div style={{display: 'flex', justifyContent: 'center'}}>
                                               <iframe width="60%" height="315" src={introVideo} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                                             </div>
                                           )
-                                        }
+                                        } */}
                                         
-                                        <div className="img-info">
+                                        <div className="img-info" style={{marginTop: 24}}>
                                           {
                                             imageCampaign && imageCampaign.length > 0 &&
                                             imageCampaign.map((img, index) => (
@@ -630,10 +642,10 @@ function DetailCampaign() {
                             <div>
                                 <div style={{fontSize: 20, fontWeight: 600}}>{item.title}</div>
                                 <div>Thời gian đăng: <span style={{fontWeight: 600}}>{moment(item.submitTime).format('DD/MM/YYYY')}</span></div>
-                                <div>Kiểu bài đăng: <span style={{fontWeight: 600}}>{item.type}</span></div>
+                                {/* <div>Kiểu bài đăng: <span style={{fontWeight: 600}}>{item.type}</span></div> */}
                             </div>
                             <br />
-                            <div style={{fontSize: 18, fontWeight: 600}}>Mô tả - Giới thiệu:</div>
+                            {/* <div style={{fontSize: 18, fontWeight: 600}}>Mô tả - Giới thiệu:</div> */}
                             <div
                               dangerouslySetInnerHTML={{__html: item.content}}
                             />

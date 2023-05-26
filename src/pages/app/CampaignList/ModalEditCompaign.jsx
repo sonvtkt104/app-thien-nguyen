@@ -39,6 +39,8 @@ function ModalEditCampaign({
     const [imageCampaign, setImageCampaign] = useState('')
     const [introVideo, setIntroVideo] = useState('')
     const [receiveAmount, setReceiveAmount] = useState('')
+    const [status, setStatus] = useState('')
+
 
     const [fileList, setFileList] = useState([]);
     const [previewImage, setPreviewImage] = useState(false);
@@ -47,6 +49,16 @@ function ModalEditCampaign({
     const [provinces, setProvinces] = useState([])
     let [optionSelect, setOptionSelect] = useState([])
 
+    let optionStatus = [
+        {
+            label: 'Đang vận động',
+            value: 'Đang vận động'
+        },
+        {
+            label: 'Kết thúc',
+            value: 'Kết thúc'
+        }
+    ]
 
         const getBase64 = (file) =>
             new Promise((resolve, reject) => {
@@ -175,6 +187,7 @@ function ModalEditCampaign({
                         // console.log(arr)
                         setFileList(arr)
                         setReceiveAmount(res.receiveAmount)
+                        setStatus(res.status)
                         
                         let splitRegion = res.region.split(', ')
                         let dataRegion = provinces.filter((item) => {
@@ -205,6 +218,7 @@ function ModalEditCampaign({
         // console.log(startDay)
         // console.log(endDay)
         // console.log(region)
+        // console.log(status)
         // console.log(introVideo)
         // console.log(imageCampaign)
         // console.log(introductoryPost)
@@ -226,7 +240,7 @@ function ModalEditCampaign({
                     introduction: introductoryPost,
                     target_object: targetAudience,
                     region: region,
-                    status: 'Đang vận động',
+                    status: status,
                     images: images,
                     intro_video: introVideo,
                     target_amount: targetCampaign,
@@ -450,6 +464,29 @@ function ModalEditCampaign({
                          </Row>
                          <div style={{margin: '12px 0'}}></div>
                          <Row>
+                            <Col span={8}>
+                                <label>Trạng thái</label>
+                                <br></br>
+                                <Select
+                                    value={status}
+                                    showSearch
+                                    allowClear
+                                    style={{width: '100%'}}
+                                    options={optionStatus}
+                                    placement={'bottomLeft'}
+                                    filterOption={(input, option) => {
+                                        return option.label.toLowerCase().includes(input.toLowerCase())
+                                        }
+                                    }
+                                    onChange={(value) => setStatus(value)}
+                                 />
+                                {/* <Select
+                                    style={{width: '100%'}}
+                                    options={optionStatus}
+                                    onChange={(value) => setStatus(value)}
+                                 /> */}
+                            </Col>
+                            <div style={{margin: '12px 8px'}}></div>
                             <Col span={8} style={{marginRight: 24}}>
                                 <label>Link video youtube</label>
                                 <div style={{marginBottom: 8}}></div>
@@ -461,7 +498,7 @@ function ModalEditCampaign({
                                  />
                             </Col>
 
-                            <Col span={8}>
+                            <Col span={24} style={{marginTop: 12}}>
                             Chọn ảnh đăng tải
                             <div style={{marginBottom: 8}}></div>
                                 <Upload

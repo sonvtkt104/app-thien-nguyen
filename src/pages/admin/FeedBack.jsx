@@ -119,7 +119,7 @@ const FeedBack = () => {
 
   return (
     <Manage>
-      <div className="main">
+      <div className="main-feedback">
         <h2 className="header-title">Quản lý thông báo</h2>
 
         <div className="list">

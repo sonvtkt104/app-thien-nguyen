@@ -22,16 +22,12 @@ function ModalCreatePost({
 }) {
     const {TextArea} = Input;
     const [namePost, setNamePost] = useState('')
-    const [typePost, setTypePost] = useState('')
+    const [typePost, setTypePost] = useState('Bài viết hoạt động')
     const [contentPost, setContentPost] = useState('')
 
     const {campaignId} = useParams();
 
     let options = [
-        {
-            label: 'Bài viết giới thiệu',
-            value: 'Bài viết giới thiệu'
-        },
         {
             label: 'Bài viết hoạt động',
             value: 'Bài viết hoạt động'
@@ -192,6 +188,7 @@ function ModalCreatePost({
                                 <div style={{marginBottom: 8}}></div>
                                  <Select
                                     // value={typePost}
+                                    value={options[0]}
                                     showSearch
                                     allowClear
                                     style={{width: '100%'}}
