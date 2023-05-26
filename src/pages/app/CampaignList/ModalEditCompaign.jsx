@@ -467,6 +467,7 @@ function ModalEditCampaign({
                             <Col span={8}>
                                 <label>Trạng thái</label>
                                 <br></br>
+                                <div style={{marginBottom: 8}}></div>
                                 <Select
                                     value={status}
                                     showSearch
@@ -479,6 +480,7 @@ function ModalEditCampaign({
                                         }
                                     }
                                     onChange={(value) => setStatus(value)}
+                                    className="select-app"
                                  />
                                 {/* <Select
                                     style={{width: '100%'}}

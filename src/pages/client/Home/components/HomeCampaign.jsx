@@ -57,6 +57,7 @@ function HomeCampaign({
                     let end = new Date(item?.stopDate)?.getTime()
                     let obj = {}
                     obj.key = key
+                    obj.id = item?.id
                     obj.image = item?.images?.split(',')[0]
                     obj.type = item?.targetObject
                     obj.name = item?.campaignName
@@ -83,6 +84,7 @@ function HomeCampaign({
                     campaigns.map((item, i) => (
                         <ItemCampaign 
                             key={i}
+                            id={item.id}
                             image={item.image}
                             type={item.type}
                             name={item.name}

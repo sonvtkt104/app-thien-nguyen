@@ -429,6 +429,7 @@ function ModalCreateCampaign({
                             <Col span={8}>
                                 <label>Trạng thái</label>
                                 <br></br>
+                                <div style={{marginTop: 8}}></div>
                                 <Select
                                     value={status}
                                     showSearch
@@ -441,6 +442,7 @@ function ModalCreateCampaign({
                                         }
                                     }
                                     onChange={(value) => setStatus(value)}
+                                    className="select-app"
                                  />
                                 {/* <Select
                                     style={{width: '100%'}}
@@ -451,6 +453,7 @@ function ModalCreateCampaign({
                             <div style={{margin: '12px 8px'}}></div>
                             <Col span={8} style={{marginRight: 24}}>
                                 <label>Link video youtube</label>
+                                <div style={{margin: '12px 8px'}}></div>
                                 <Input
                                     placeholder="Link video" 
                                     value={introVideo}

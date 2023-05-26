@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom"
 
 function ItemCampaign({
     key= 1,
+    id,
     image,
     type,
     name,
@@ -32,7 +33,7 @@ function ItemCampaign({
                     cursor: 'pointer'
                 }}
                 onClick={() => {
-                    navigate("/detail-campaign/1")
+                    navigate("/detail-campaign/" + id)
                 }}
             >
                 <div>
@@ -56,9 +57,9 @@ function ItemCampaign({
                         <span
                             style={{color:"var(--color-blue)"}}
                         >{type}</span>
-                        <span>
+                        {/* <span>
                             <HeartOutlined  style={{color: 'var(--color-red)'}}/>
-                        </span>
+                        </span> */}
                     </Row>
                     <Row
                         style={{fontSize: 20, lineHeight:'1.57'}}
