@@ -55,6 +55,7 @@ function DetailCampaign() {
   const [imagePosts, setImagePosts] = useState('')
   const [introVideo, setIntroVideo] = useState('')
   const [imageOriganization, setImageOriganization] = useState('')
+  const [charityIsVerified, setCharityIsVerified] = useState(0)
 
   let [provinces, setProvinces] = useState([])
   let [dataPosts, setDataPosts] = useState([])
@@ -137,6 +138,7 @@ function DetailCampaign() {
         console.log(res[0])
         setNameCampaign(res[0].campaignName)
         setNameOrganization(res[0].organization.charityName)
+        setCharityIsVerified(res[0].organization.isVerified)
         setTargetObject(res[0].targetObject)
         setTargetAmount(res[0].targetAmount)
         setReceiveAmount(res[0].receiveAmount)
@@ -359,11 +361,15 @@ function DetailCampaign() {
                     />
                     {/* Xuan Son */}
                     {nameOrganization}
-                    <div
-                      style={{marginLeft: 12}}
-                    >
-                      <TickIcon />
-                    </div>
+                    {
+                      charityIsVerified == 2 ? (
+                        <div
+                          style={{marginLeft: 12}}
+                        >
+                          <TickIcon />
+                        </div>
+                      ) : ""
+                    }
                   </Row>
                   <Row justify='space-between'
                     style={{marginTop: 15}}
@@ -516,7 +522,11 @@ function DetailCampaign() {
                                                     style={{ fontWeight: 600, fontSize: "20px" }}
                                                     twoToneColor="#52c41a"
                                                   /> */}
-                                                  <TickIcon />
+                                                  {
+                                                    charityIsVerified == 2 ? (
+                                                      <TickIcon />
+                                                    ) : ''
+                                                  }
                                                 </Space>
                                           </div>
                                         <div className="class-common">Giới thiệu về cuộc vận động:</div>

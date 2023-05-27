@@ -1,4 +1,4 @@
-import { Col, Form, Input, Popover, Row } from "antd"
+import { Col, Form, Input, Popover, Row, Select } from "antd"
 import { memo, useMemo, useState } from "react"
 import { FilterIcon, SearchIcon, Tag } from "../../../../components"
 import { CloseOutlined } from "@ant-design/icons"
@@ -33,6 +33,48 @@ function CampaignSearch({
             "Áo ấm trao em",
         ]
     }, [])
+
+    let optionStatus = [
+        {
+            label: 'Đang vận động',
+            value: 'Đang vận động'
+        },
+        {
+            label: 'Kết thúc',
+            value: 'Kết thúc'
+        }
+    ]
+
+    let options = [
+        {
+            label: 'Trẻ em',
+            value: 'Trẻ em'
+        },
+        {
+            label: 'Trẻ em mồ côi',
+            value: 'Trẻ em mồ côi'
+        },
+        {
+            label: 'Người già',
+            value: 'Người già'
+        },
+        {
+            label: 'Người khuyết tật',
+            value: 'Người khuyết tật'
+        },
+        {
+            label: 'Thương binh liệt sỹ',
+            value: 'Thương binh liệt sỹ'
+        },
+        {
+            label: 'Người vô gia cư',
+            value: 'Người vô gia cư'
+        },
+        {
+            label: 'Khác',
+            value: 'Khác'
+        },
+    ]
 
     return (
         <Row
@@ -138,7 +180,16 @@ function CampaignSearch({
                                             Trạng thái
                                         </Col>
                                         <Col xs={8} sm={8} md={8} lg={8} xl={8}>
-                                            <input type="text" 
+                                            <Select
+                                                value={status}
+                                                style={{width: '100%'}}
+                                                options={optionStatus}
+                                                placement={'bottomLeft'}
+                                                onChange={(value) => setStatus(value)}
+                                                className="select-app"
+                                            />
+
+                                            {/* <input type="text" 
                                                 // placeholder="Tên cuộc vận động"
                                                 value={status}
                                                 onChange={(e) => {
@@ -151,7 +202,7 @@ function CampaignSearch({
                                                     padding: '2px 20px 2px 0',
                                                     outline: 'none'
                                                 }}
-                                            />
+                                            /> */}
                                         </Col>
                                         <Col xs={3} sm={3} md={3} lg={3} xl={3}
                                             className="flex-col-center"
@@ -160,7 +211,15 @@ function CampaignSearch({
                                             Đối tượng
                                         </Col>
                                         <Col xs={8} sm={8} md={8} lg={8} xl={8}>
-                                            <input type="text" 
+                                            <Select
+                                                className="select-app"
+                                                style={{width: '100%'}}
+                                                options={options}
+                                                value={targetObject}
+                                                placement={'bottomLeft'}
+                                                onChange={(value) => {setTargetObject(value)}}
+                                            />
+                                            {/* <input type="text" 
                                                 // placeholder="Tên cuộc vận động"
                                                 value={targetObject}
                                                 onChange={(e) => {
@@ -173,7 +232,7 @@ function CampaignSearch({
                                                     padding: '2px 20px 2px 0',
                                                     outline: 'none'
                                                 }}
-                                            />
+                                            /> */}
                                         </Col>
                                     </Row>
                                     <Row justify='space-between'

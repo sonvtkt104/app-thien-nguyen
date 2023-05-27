@@ -212,7 +212,7 @@ export default function CharitySearch() {
                                                         >
                                                             {item?.charityName}
                                                             {
-                                                                item?.isVerified ? (
+                                                                item?.isVerified == 2 ? (
                                                                     <span style={{marginLeft: 10}}>
                                                                         <TickIcon  />
                                                                     </span>

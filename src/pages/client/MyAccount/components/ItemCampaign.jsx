@@ -201,7 +201,7 @@ export function ItemCampaign({
                                 {data?.charityName}
                             </Col>
                             {
-                                data?.charityIsVerified ? (
+                                data?.charityIsVerified == 2 ? (
                                     <Col className="flex-col-center" style={{marginLeft: 7}}>
                                         <TickIcon />
                                     </Col>

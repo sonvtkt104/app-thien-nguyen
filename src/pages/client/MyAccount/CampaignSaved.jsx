@@ -26,7 +26,7 @@ function CampaignSaved() {
                 let obj = {
                     campaignId: item.id,
                     campaignName: item.campaignName,
-                    campaignImage: item.campaignImage,  // ???
+                    campaignImage: item?.images?.split(',')[0],  // ???
                     campaignTargetAmount: Number(item.targetAmount),
                     campaignReceiveAmount: Number(item.receiveAmount),
                     campaignRegion: item.region,

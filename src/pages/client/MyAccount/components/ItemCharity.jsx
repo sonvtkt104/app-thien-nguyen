@@ -74,7 +74,7 @@ function ItemCharity({
                     >
                         {data?.charityName}
                         {
-                            data?.isVerified ? (
+                            data?.isVerified == 2 ? (
                                 <span style={{marginLeft: 10}}>
                                     <TickIcon  />
                                 </span>

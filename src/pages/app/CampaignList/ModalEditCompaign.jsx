@@ -466,7 +466,6 @@ function ModalEditCampaign({
                          <Row>
                             <Col span={8}>
                                 <label>Trạng thái</label>
-                                <br></br>
                                 <Select
                                     value={status}
                                     showSearch
@@ -487,7 +486,7 @@ function ModalEditCampaign({
                                     onChange={(value) => setStatus(value)}
                                  /> */}
                             </Col>
-                            <div style={{margin: '12px 8px'}}></div>
+                            <div style={{margin: '0px 8px'}}></div>
                             <Col span={8} style={{marginRight: 24}}>
                                 <label>Link video youtube</label>
                                 <div style={{marginBottom: 8}}></div>
