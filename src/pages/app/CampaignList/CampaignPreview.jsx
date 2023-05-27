@@ -478,6 +478,7 @@ function CamPaignPreview() {
                         </div>
                         <SegmentedApp 
                             className="segmented-preview"
+                            style={{boxShadow:"rgba(0, 0, 0, 0.16) 0px 1px 4px"}}
                             options={options}
                             value={valueOption}
                             onChange={(valueOption) => setValueOption(valueOption)}
@@ -485,7 +486,7 @@ function CamPaignPreview() {
                         {
                             valueOption === 1 &&
                             <>
-                                <div className="c-p-c-content">
+                                <div className="c-p-c-content" style={{boxShadow:"rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px"}}>
                                     {/* <button className="btn-preview-edit">Chỉnh sửa</button> */}
                                     <div className="content-info">
                                         <div className="form-group">
@@ -520,7 +521,7 @@ function CamPaignPreview() {
                         }
                         {
                             valueOption === 2 &&
-                            <div className="activity-container">
+                            <div className="activity-container" style={{boxShadow:"rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px"}}>
                                 <div className="header-title" style={{paddingBottom: 20}}>
                                     <div className="h-t-name">Danh sách các bài viết</div>
                                     <button 
@@ -560,7 +561,7 @@ function CamPaignPreview() {
                         }
                         {
                             valueOption === 3 &&
-                            <div className="statement-container">
+                            <div className="statement-container" style={{boxShadow:"rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px"}}>
                                 <div className="s-c-down" style={{position: 'relative'}}>
                                     <div className="s-c-up"
                                         style={{position: 'absolute', right: 20, top: '-40px'}}
