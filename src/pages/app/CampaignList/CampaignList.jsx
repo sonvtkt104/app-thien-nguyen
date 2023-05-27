@@ -343,18 +343,14 @@ class CamPaignList extends Component {
                             />
                         ) : ''
                     }
-                    {
-                        isOpenModalEdit ? (
-                            <ModalEditCompaign 
-                                isOpenModalEdit={isOpenModalEdit}
-                                handleOk={this.handleOk} 
-                                handleCancel={this.handleCancel}
-                                getData={this.getData}
-                                campaign_id={this.state.campaign_id}
-                                organization_id={this.state.organization_id}
-                            />
-                        ) : ''
-                    }
+                        <ModalEditCompaign 
+                            isOpenModalEdit={isOpenModalEdit}
+                            handleOk={this.handleOk} 
+                            handleCancel={this.handleCancel}
+                            getData={this.getData}
+                            campaign_id={this.state.campaign_id}
+                            organization_id={this.state.organization_id}
+                        />
                     
                 </PageLayout>
             </>

@@ -427,15 +427,13 @@ function ModalCreateCampaign({
                          </Row>
                          <div style={{margin: '12px 0'}}></div>
                          <Row>
-                            <Col span={8}>
+                            <Col span={8} >
                                 <label>Trạng thái</label>
-                                <br></br>
-                                <div style={{marginTop: 8}}></div>
                                 <Select
                                     value={status}
                                     showSearch
                                     allowClear
-                                    style={{width: '100%'}}
+                                    style={{width: '100%', marginTop: 8}}
                                     options={optionStatus}
                                     placement={'bottomLeft'}
                                     filterOption={(input, option) => {
@@ -444,6 +442,7 @@ function ModalCreateCampaign({
                                     }
                                     onChange={(value) => setStatus(value)}
                                     className="select-app"
+                                   
                                  />
                                 {/* <Select
                                     style={{width: '100%'}}
@@ -451,10 +450,10 @@ function ModalCreateCampaign({
                                     onChange={(value) => setStatus(value)}
                                  /> */}
                             </Col>
-                            <div style={{margin: '12px 8px'}}></div>
+                            <div style={{margin: '0px 8px'}}></div>
                             <Col span={8} style={{marginRight: 24}}>
                                 <label>Link video youtube</label>
-                                <div style={{margin: '12px 8px'}}></div>
+                                <div style={{marginBottom: 8}}></div>
                                 <Input
                                     placeholder="Link video" 
                                     value={introVideo}

@@ -138,7 +138,7 @@ function ModalEditCampaign({
                     method: 'get',
                     url: 'http://localhost:8089/charity/address/provinces',
                     headers: {
-                        token: getTokenFromCookies()
+                        token: ''
                     }
                 });
                 if(res.data && res.data.length > 0) {
@@ -467,13 +467,11 @@ function ModalEditCampaign({
                          <Row>
                             <Col span={8}>
                                 <label>Trạng thái</label>
-                                <br></br>
-                                <div style={{marginBottom: 8}}></div>
                                 <Select
                                     value={status}
                                     showSearch
                                     allowClear
-                                    style={{width: '100%'}}
+                                    style={{width: '100%', marginTop: 8}}
                                     options={optionStatus}
                                     placement={'bottomLeft'}
                                     filterOption={(input, option) => {
@@ -489,7 +487,7 @@ function ModalEditCampaign({
                                     onChange={(value) => setStatus(value)}
                                  /> */}
                             </Col>
-                            <div style={{margin: '12px 8px'}}></div>
+                            <div style={{margin: '0px 8px'}}></div>
                             <Col span={8} style={{marginRight: 24}}>
                                 <label>Link video youtube</label>
                                 <div style={{marginBottom: 8}}></div>
