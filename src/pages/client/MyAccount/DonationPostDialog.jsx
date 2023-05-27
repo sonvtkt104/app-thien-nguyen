@@ -413,7 +413,8 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
     return (
         <div>
             <Modal
-                title={dataUpdate?.id ? "Sửa bài đăng" : "Tạo bài đăng"}
+                // title={dataUpdate?.id ? "Sửa bài đăng" : "Tạo bài đăng"}
+                title={<span className="h2-app">{dataUpdate?.id ? "Chỉnh sửa bài đăng" : "Tạo bài đăng"}</span>}
                 cancelText="Quay lại"
                 okText="Tạo"
                 centered
@@ -458,7 +459,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                                     },
                                 ]}
                             >
-                                <Input />
+                                <Input className="input-app"/>
                             </Form.Item>
                             <Form.Item
                                 style={{ width: "49%", marginBottom: 16 }}
@@ -474,6 +475,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
 
                                 <Select
                                     showSearch
+                                    className="select-app"
                                     placeholder="Chọn tổ chức"
                                     optionFilterProp="children"
                                     onChange={onChange}
@@ -505,6 +507,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                                 {/* <Input /> */}
                                 <Select
                                     height={300}
+                                    className="select-app"
                                     showSearch
                                     placeholder="Chọn đối tượng"
                                     optionFilterProp="children"
@@ -530,7 +533,7 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                                     },
                                 ]}
                             >
-                                <Input />
+                                <Input className="input-app"/>
                             </Form.Item>
                         </div>
 
@@ -546,10 +549,10 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                             ]}
                         >
                             {/* <Input /> */}
-                            <Input.TextArea rows={3} />
+                            <Input.TextArea rows={3} className="input-app"/>
                         </Form.Item>
 
-                        <Form.Item label="Ảnh" name="images">
+                        <Form.Item label="Ảnh về đồ ủng hộ" name="images">
                             <Upload
                                 multiple
                                 listType="picture-card"
@@ -594,12 +597,14 @@ function DonationPostDialog({ dataUpdate, handleCloseModal, getListDonation }) {
                             <Button
                                 style={{ marginRight: 10 }}
                                 onClick={onClose}
+                                className="btn"
                             >
                                 Quay lại
                             </Button>
                             <Button
                                 type="primary"
                                 htmlType="submit"
+                                className="btn-primary"
                             >
                                 {dataUpdate?.id ? "Lưu" : "Tạo"}
                             </Button>

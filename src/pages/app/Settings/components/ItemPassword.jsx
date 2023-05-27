@@ -174,7 +174,7 @@ export default function ItemPassword({
         {
             openDialogChangePassword && (
                 <Modal
-                    title={"Thay đổi mật khẩu"}
+                    title={<span className="h2-app">Thay đổi mật khẩu</span>}
                     cancelText="Quay lại"
                     okText="Tạo"
                     centered
@@ -217,7 +217,7 @@ export default function ItemPassword({
                                 },
                             ]}
                         >
-                            <Input.Password />
+                            <Input.Password className="input-app" />
                         </Form.Item>
 
                         <Form.Item
@@ -232,7 +232,7 @@ export default function ItemPassword({
                                 },
                             ]}
                         >
-                            <Input.Password />
+                            <Input.Password className="input-app" />
                         </Form.Item>
 
 
@@ -260,7 +260,7 @@ export default function ItemPassword({
                                 }),
                             ]}
                         >
-                            <Input.Password />
+                            <Input.Password className="input-app" />
                         </Form.Item>
 
                         <Form.Item
@@ -276,10 +276,11 @@ export default function ItemPassword({
                                     onClick={() => {
                                         setOpenDialogChangePassword(false)
                                     }}
+                                    className="btn"
                                 >
                                     Quay lại
                                 </Button>
-                                <Button type="primary" htmlType="submit">
+                                <Button type="primary" htmlType="submit" className="btn-primary">
                                     Lưu
                                 </Button>
                             </div>

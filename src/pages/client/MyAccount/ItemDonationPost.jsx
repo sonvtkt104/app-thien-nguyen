@@ -212,6 +212,7 @@ function ItemDonationPost({ data, handleOpenModal, getListDonation, handleReload
                                             onClick={() => {
                                                 handleOpenModal()
                                             }}
+                                            // className="btn-primary"
                                         >
                                             Sửa
                                         </Button>

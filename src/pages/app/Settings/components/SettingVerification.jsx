@@ -109,7 +109,7 @@ function SettingVerification() {
                                 onFinishFailed={onFinishFailed}
 
                             >
-
+                                <p style={{marginBottom: 8}}>Hãy đăng tải lên những ảnh liên quan đến tài liệu xác minh của bạn.</p>
                                 <div>
                                     <Form.Item name="verificationPhoto" >
                                         <Upload
@@ -144,7 +144,7 @@ function SettingVerification() {
                                 //     },
                                 // ]}
                                 >
-                                    <Input.TextArea placeholder="Nhập..." rows={6} />
+                                    <Input.TextArea placeholder="Nhập..." rows={6} className="input-app" />
                                 </Form.Item>
                                 <Form.Item
                                     wrapperCol={{
@@ -158,6 +158,7 @@ function SettingVerification() {
                                         <Button
                                             type="primary"
                                             htmlType="submit"
+                                            className="btn-primary"
                                         >
                                             Gửi
                                         </Button>

@@ -262,6 +262,7 @@ function ModalCreateCampaign({
                  >
                      <div className="modal-header h2-app">Tạo cuộc vận động mới</div>
                      <div className="modal-body">
+                        <div style={{ height: 500, overflowY: "scroll", paddingRight: 8, marginBottom: 15 }}>
                          <Row gutter={[12, 12]}>
                              <Col span={8}>
                                  <label><span style={{color: 'red'}}>*</span> Tên cuộc vận động</label>
@@ -491,6 +492,7 @@ function ModalCreateCampaign({
                             </Col>
                             
                          </Row>
+                        </div>
                      </div>
                  </Modal>
         </>

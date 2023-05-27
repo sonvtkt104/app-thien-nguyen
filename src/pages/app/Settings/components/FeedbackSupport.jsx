@@ -39,6 +39,7 @@ function FeedbackSupport() {
                 </div>
                 <Row>
                     <Input.TextArea 
+                        className="input-app"
                         placeholder="Nhập..." rows={6}
                         value={feedback}
                         onChange={(e) => {
@@ -51,6 +52,7 @@ function FeedbackSupport() {
                         type="primary"
                         // htmlType="submit"
                         onClick={onSubmit}
+                        className="btn-primary"
                         
                     >
                         Gửi
