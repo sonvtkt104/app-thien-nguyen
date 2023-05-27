@@ -138,7 +138,7 @@ function ModalEditCampaign({
                     method: 'get',
                     url: 'http://localhost:8089/charity/address/provinces',
                     headers: {
-                        token: getTokenFromCookies()
+                        token: ''
                     }
                 });
                 if(res.data && res.data.length > 0) {
@@ -471,7 +471,7 @@ function ModalEditCampaign({
                                     value={status}
                                     showSearch
                                     allowClear
-                                    style={{width: '100%'}}
+                                    style={{width: '100%', marginTop: 8}}
                                     options={optionStatus}
                                     placement={'bottomLeft'}
                                     filterOption={(input, option) => {
@@ -479,6 +479,7 @@ function ModalEditCampaign({
                                         }
                                     }
                                     onChange={(value) => setStatus(value)}
+                                    className="select-app"
                                  />
                                 {/* <Select
                                     style={{width: '100%'}}
