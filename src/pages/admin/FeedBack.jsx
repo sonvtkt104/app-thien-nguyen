@@ -135,14 +135,16 @@ const FeedBack = () => {
           />
 
           <Modal
-            title="Gửi lại thông báo cho người dùng"
+            title="Gửi Phản hồi cho người dùng"
             open={open}
             onCancel={() => setOpen(false)}
             footer={null}
+            centered
           >
-            <Input
+            <Input.TextArea
               onChange={(event) => setMes(event.target.value)}
               style={{ marginTop: "10px" }}
+              rows={4}
             />
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
               <Button

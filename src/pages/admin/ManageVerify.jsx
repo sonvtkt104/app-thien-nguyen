@@ -27,7 +27,9 @@ const ManageVerify = () => {
   const [idShowCharityFile, setIdShowCharityFile] = useState(null);
   const [idCharitySend, setIdCharitySend] = useState(null);
   const [isModalDenyOpen, setIsModalDenyOpen] = useState(false);
+  const [isModalSuccsssOpen, setIsSuccssDenyOpen] = useState(false);
   const [messageToCharity, setMessageToCharity] = useState("");
+  const [messageSuccessToCharity, setMessageSuccessToCharity] = useState("");
   const [isLoading, setIsloading] = useState(false);
   const [isLoadingDeny, setIsloadingDeny] = useState(false);
 
@@ -36,25 +38,26 @@ const ManageVerify = () => {
     return charityId;
   });
   const verifies = useSelector((state) => state.admin.listVerifies);
-  console.log(verifies);
+
   const showModalFile = (charityId) => {
     setIsModalOpen(true);
     setIdShowCharityFile(charityId);
   };
 
-  const handleAnnouceToUser = async () => {
+  const handleAnnouceToUser = async (message) => {
     const data = {
-      message: messageToCharity,
+      message: message,
       create: getUserInfomationFromCookies().Id,
       receive: idCharitySend,
     };
 
-    const response = await notifyToUser();
+    const response = await notifyToUser(data);
   };
 
   const handleVerifyCharity = async (charityId) => {
+    setIsSuccssDenyOpen(false);
     const data = {
-      charityId: charityId,
+      charityId: idCharitySend,
       isAccepted: true,
     };
 
@@ -63,13 +66,13 @@ const ManageVerify = () => {
     const response = await changeVerified(data);
 
     setIsloading(false);
-
+    handleAnnouceToUser(messageSuccessToCharity);
     if (response.isSuccess) {
       (async () => {
         const resData = await getListVerified();
         dispatch(setListVerifies(resData.data));
       })();
-      toast.success("Xác minh người dùng thành công");
+      toast.success("Xác minh tổ chức thành công");
     }
   };
 
@@ -78,7 +81,13 @@ const ManageVerify = () => {
     setIdCharitySend(charityId);
   };
 
+  const handVerifyCharity = (charityId) => {
+    setIsSuccssDenyOpen(true);
+    setIdCharitySend(charityId);
+  };
+
   const hanleDenySendToBackend = async () => {
+    setIsModalDenyOpen(false);
     const data = {
       charityId: idCharitySend,
       isAccepted: false,
@@ -90,13 +99,13 @@ const ManageVerify = () => {
     const response = await changeVerified(data);
 
     setIsloadingDeny(false);
-
+    handleAnnouceToUser(messageToCharity);
     if (response.isSuccess) {
       (async () => {
         const resData = await getListVerified();
         dispatch(setListVerifies(resData.data));
       })();
-      toast.success("Xác minh người dùng thành công");
+      toast.success("Từ xác minh tổ chức thành công");
     }
   };
 
@@ -151,7 +160,7 @@ const ManageVerify = () => {
           <Button
             type="primary"
             className={classes["user-button"]}
-            onClick={() => handleVerifyCharity(record.charityId)}
+            onClick={() => handVerifyCharity(record.charityId)}
             loading={isLoading}
           >
             Cấp
@@ -174,7 +183,7 @@ const ManageVerify = () => {
   useEffect(() => {
     (async () => {
       const resData = await getListVerified();
-      dispatch(setListVerifies(resData.data));
+      dispatch(setListVerifies(resData.data ? resData.data : []));
     })();
     return () => {};
   }, []);
@@ -229,7 +238,7 @@ const ManageVerify = () => {
                   .filter((item) => item.charityId === idShowCharityFile)[0]
                   .charityFile.split(", ")
                   .map((item) => (
-                    <Image width={200} src={item} />
+                    <Image width={200} height={200} src={item} />
                   ))}
               </Image.PreviewGroup>
             </div>
@@ -239,7 +248,7 @@ const ManageVerify = () => {
         {isModalDenyOpen && (
           <Modal
             open={isModalDenyOpen}
-            title="Xác minh tổ chức"
+            title="Từ chối xác minh tổ chức"
             footer={null}
             onCancel={() => setIsModalDenyOpen(false)}
           >
@@ -260,7 +269,34 @@ const ManageVerify = () => {
                 type="primary"
                 danger
               >
-                Từ chối xác minh
+                Gửi
+              </Button>
+            </div>
+          </Modal>
+        )}
+        {isModalSuccsssOpen && (
+          <Modal
+            open={isModalSuccsssOpen}
+            title="Xác minh tổ chức"
+            footer={null}
+            onCancel={() => setIsSuccssDenyOpen(false)}
+          >
+            <Input.TextArea
+              rows={4}
+              onChange={(event) =>
+                setMessageSuccessToCharity(event.target.value)
+              }
+            />
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginTop: "12px",
+              }}
+            >
+              <Button onClick={() => handleVerifyCharity()} type="primary">
+                Gửi
               </Button>
             </div>
           </Modal>
