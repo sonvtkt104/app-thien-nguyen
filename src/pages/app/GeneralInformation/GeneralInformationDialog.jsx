@@ -18,6 +18,8 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
         return [...a, { url: b }]
     }, []) : []
 
+    const [saveLoading, setSaveLoading] = useState(false);
+
     const [loading, setLoading] = useState(false);
     const [loadingAvatar, setLoadingAvatar] = useState(false);
     const [loadingBanner, setLoadingBanner] = useState(false);
@@ -107,6 +109,7 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
         handleCloseModal()
     }
     const onFinish = (values) => {
+        setSaveLoading(true)
         values.avatar = fileImage
         values.charityBanner = imageBanner
         values.charityImages = images?.reduce((a, b) => {
@@ -160,11 +163,13 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
             } else {
                 toast.error("Hệ thống lỗi, xin thử lại sau!")
             }
+            setSaveLoading(false)
         })
     };
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
+        toast.error("Bạn chưa nhập đầy đủ thông tin các trường bắt buộc!")
     };
     console.log(images);
     console.log(files);
@@ -654,7 +659,9 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                 htmlType="submit"
                                 className="btn-primary"
                             >
-                                Lưu
+                                {
+                                    saveLoading ? <LoadingOutlined/> : "Lưu"
+                                }
                             </Button>
                         </div>
                     </Form.Item>

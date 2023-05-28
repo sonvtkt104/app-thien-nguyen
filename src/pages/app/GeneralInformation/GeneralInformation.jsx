@@ -141,7 +141,7 @@ function GeneralInformation() {
                                             url={charity?.charityIntroVideo}
                                             style={{ width: '100%', display: charity?.charityIntroVideo && charity?.charityIntroVideo !== "" ? "" : "none" }}
                                             width='100%'
-                                            height="350px"
+                                            minHeight="auto"
                                         /> : <p>Link youtube của bạn lỗi!!</p>
                                 }
                             </div>

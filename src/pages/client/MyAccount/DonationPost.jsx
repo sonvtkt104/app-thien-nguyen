@@ -106,7 +106,7 @@ function DonationPost() {
               key={index}
               data={post}
             />
-          }) : (<p style={{fontSize: 17, margin:"8px 4px"}}>Bạn chưa có bài đăng quyến góp nào</p>)
+          }) : (<p style={{fontSize: 17, margin:"8px 4px"}}>Bạn chưa có bài đăng quyến góp, ủng hộ nào</p>)
         }
       </div>
       {
