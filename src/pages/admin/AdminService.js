@@ -190,6 +190,20 @@ export const sendFeedbackToUser = async (data) => {
 
 export const notifyToUser = async (data) => {
   try {
+    const userId = await fetch(
+      `http://localhost:8089/charity/access/get-user-id-by-organization-id?organization-id=${data.receive}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getTokenFromCookies()}`,
+          Token: getTokenFromCookies(),
+        },
+      }
+    );
+
+    const id = (await userId.json()).message;
+
     const response = await fetch(
       "http://localhost:8089/charity/notification/post-to-user",
       {
@@ -200,7 +214,7 @@ export const notifyToUser = async (data) => {
           Token: getTokenFromCookies(),
         },
         body: JSON.stringify({
-          receive_user_id: data.receive,
+          receive_user_id: id,
           created_user_id: data.create,
           message: data.message,
         }),
