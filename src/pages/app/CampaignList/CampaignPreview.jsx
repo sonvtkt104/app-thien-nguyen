@@ -164,8 +164,8 @@ function CamPaignPreview() {
     let dataSourceMau = [
         {
             name: 'ten nguoi ung ho',
-            money: 'nhap so tien ung ho',
-            content: 'nhap noi dung o day',
+            amount: 'nhap so tien ung ho',
+            note: 'nhap noi dung o day',
             type: 'nhan hoac trao',
         }
     ]
