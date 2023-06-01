@@ -323,3 +323,6 @@ a {
 .color-blue-app {
   color: var(--color-blue) !important;
 }
+.select-app .ant-select-selection-search-input {
+  margin-top: 7px !important
+}

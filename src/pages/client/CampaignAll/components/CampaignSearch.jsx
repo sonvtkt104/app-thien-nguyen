@@ -21,6 +21,8 @@ function CampaignSearch({
     handleSearch,
     reSetListCampaign,
     handleFilter,
+
+    listProvinces
  
 }) {
     const [openFilter, setOpenFilter] = useState(false)
@@ -76,6 +78,20 @@ function CampaignSearch({
         },
     ]
 
+    const optionRegion = useMemo(() => {
+          const newArray = [];
+          
+          for (const key in listProvinces) {
+            const newObject = {
+              value: key,
+              label: listProvinces[key]
+            };
+            newArray.push(newObject);
+          }
+          
+          return newArray
+    }, [listProvinces])
+
     return (
         <Row
             style={{ height: 300, background: '#f0f0f0', textAlign: 'center' }}
@@ -127,7 +143,7 @@ function CampaignSearch({
                                         >
                                             Tên
                                         </Col>
-                                        <Col xs={20} sm={20} md={20} lg={20} xl={20}>
+                                        <Col xs={8} sm={8} md={8} lg={8} xl={8}>
                                             <input type="text" 
                                                 // placeholder="Tên cuộc vận động"
                                                 value={name}
@@ -142,19 +158,17 @@ function CampaignSearch({
                                                     outline: 'none'
                                                 }}
                                             />
+
+                                           
                                         </Col>
-                                    </Row>
-                                    <Row justify='space-between'
-                                        style={{marginBottom:20}}
-                                    >
                                         <Col xs={3} sm={3} md={3} lg={3} xl={3}
                                             className="flex-col-center"
-                                            style={{textAlign: 'left', lineHeight: '25px', fontWeight: '500'}}
+                                            style={{textAlign: 'center', lineHeight: '25px', fontWeight: '500'}}
                                         >
                                             Khu vực
                                         </Col>
-                                        <Col xs={20} sm={20} md={20} lg={20} xl={20}>
-                                            <input type="text" 
+                                        <Col xs={8} sm={8} md={8} lg={8} xl={8}>
+                                            {/* <input type="text" 
                                                 // placeholder="Tên cuộc vận động"
                                                 value={region}
                                                 onChange={(e) => {
@@ -167,7 +181,17 @@ function CampaignSearch({
                                                     padding: '2px 20px 2px 0',
                                                     outline: 'none'
                                                 }}
+                                            /> */}
+                                            <Select
+                                                showSearch
+                                                value={region}
+                                                style={{width: '100%'}}
+                                                options={optionRegion}
+                                                placement={'bottomLeft'}
+                                                onChange={(value) => setRegion(value)}
+                                                className="select-app"
                                             />
+                                           
                                         </Col>
                                     </Row>
                                     <Row justify='space-between'

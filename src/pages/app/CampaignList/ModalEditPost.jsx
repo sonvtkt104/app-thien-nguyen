@@ -25,6 +25,8 @@ function ModalEditPost({
     const [typePost, setTypePost] = useState('')
     const [statusPost, setStatusPost] = useState(1)
     const [contentPost, setContentPost] = useState('')
+
+    console.log('contentPost', contentPost)
     
     let [optionSelect, setOptionSelect] = useState({})
 
@@ -62,8 +64,8 @@ function ModalEditPost({
                     }).then(res => res.data)
                     // console.log(res)
                     setNamePost(res.title)
-                    options = options.filter(item => (item.value === res.type))
-                    setTypePost(options[0].value)
+                    //options = options?.filter(item => (item.value === res.type))
+                    setTypePost(options[0]?.value)
                     setOptionSelect(options[0])
                     setContentPost(res.content)
                     let arr = res.images && res.images.length > 0 ? res.images.split(', ').map(image => ({url: image})) : null;

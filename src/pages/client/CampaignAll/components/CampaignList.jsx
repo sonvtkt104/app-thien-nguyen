@@ -29,10 +29,12 @@ function CampaignList({
     setStatus,
     setCampaignTargetAmountFrom,
     setCampaignTargetAmountTo,
+
+    listProvinces
 }) {
 
     const [listCampaignFollow, setListCampaignFollow] = useState([])
-    const [listProvinces, setListProvinces] = useState({})
+
 
     useEffect(() => {
         console.log('list campaign')
@@ -46,17 +48,8 @@ function CampaignList({
             setListCampaignFollow(arr)
         })
 
-        getAllProvinces().then(res => {
-            console.log('getAllProvinces', res.data)
-            let obj = {}
-            res?.data?.forEach(item => {
-                obj[item?.codeName] =  item?.name
-            })
-            setListProvinces(JSON.parse(JSON.stringify(obj)))
-        })
     }, [])
 
-    console.log("listProvinces", listProvinces)
 
 
     return (
@@ -119,7 +112,7 @@ function CampaignList({
                                 regionKey ? (
                                     <span style={{ padding: '10px 12px 10px 12px', borderRadius: 8, fontSize: 16, fontWeight: '600', background :'rgba(13,12,34,0.05)', marginRight: 12 }}>
                                         <Row>
-                                            {regionKey}
+                                            {listProvinces[regionKey]}
                                             <span
                                                 style={{marginLeft: 7,cursor: 'pointer'}}
                                                 onClick={() => {

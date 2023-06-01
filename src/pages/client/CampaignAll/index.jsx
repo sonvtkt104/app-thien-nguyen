@@ -3,7 +3,7 @@ import { FooterClient, HeaderClient } from "../../../components";
 import CampaignList from "./components/CampaignList";
 import CampaignSearch from "./components/CampaignSearch";
 import './css/index.css'
-import { getAllCampaignsClient, setUserFollowCampaign } from "../../../api/campaigns";
+import { getAllCampaignsClient, getAllProvinces, setUserFollowCampaign } from "../../../api/campaigns";
 
 export default function CampaignAll() {
 
@@ -44,6 +44,10 @@ export default function CampaignAll() {
     const [campaignTargetAmountFromKey, setCampaignTargetAmountFromKey] = useState(0)
     const [campaignTargetAmountToKey, setCampaignTargetAmountToKey] = useState(0)
 
+    const [listProvinces, setListProvinces] = useState({})
+
+    console.log("listProvinces" ,listProvinces)
+
     
     console.log('status', {
         listCampaign,
@@ -82,6 +86,15 @@ export default function CampaignAll() {
             console.log(arr)
             setListCampaign(arr)
             setListCampaignOrigin(arr)
+        })
+
+        getAllProvinces().then(res => {
+            console.log('getAllProvinces', res.data)
+            let obj = {}
+            res?.data?.forEach(item => {
+                obj[item?.codeName] =  item?.name
+            })
+            setListProvinces(JSON.parse(JSON.stringify(obj)))
         })
     }, [])
 
@@ -209,7 +222,7 @@ export default function CampaignAll() {
                 reSetListCampaign={reSetListCampaign}
                 handleFilter={handleFilter}
 
-                
+                listProvinces={listProvinces}
             />
             <CampaignList 
                 listCampaign={listCampaign} 
@@ -236,6 +249,8 @@ export default function CampaignAll() {
                 setStatus={setStatus}
                 setCampaignTargetAmountFrom={setCampaignTargetAmountFrom}
                 setCampaignTargetAmountTo={setCampaignTargetAmountTo}
+
+                listProvinces={listProvinces}
             />
             <FooterClient />
         </div>
