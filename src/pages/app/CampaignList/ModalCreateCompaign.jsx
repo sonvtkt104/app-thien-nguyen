@@ -475,7 +475,7 @@ function ModalCreateCampaign({
                                     multiple
                                 >
                                     {
-                                        fileList && fileList.length >= 3 ? null : uploadButton
+                                        uploadButton
                                     }
                                     
                                 </Upload>
