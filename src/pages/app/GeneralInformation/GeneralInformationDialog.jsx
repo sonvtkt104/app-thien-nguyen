@@ -522,12 +522,12 @@ function GeneralInformationDialog({ dataUpdate, handleCloseModal, handleReloadDa
                                     style={{ width: "32%", marginBottom: 16 }}
                                     label="Tài khoản ngân hàng"
                                     name="charityAccountNumber"
-                                // rules={[
-                                //     {
-                                //         required: true,
-                                //         message: 'Vui lòng nhập Thông tin Tài khoản ngân hàng!',
-                                //     },
-                                // ]}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Vui lòng nhập Thông tin Tài khoản ngân hàng!',
+                                        },
+                                    ]}
                                 >
                                     <Input placeholder="Nhập thông tin Tài khoản ngân hàng" className="input-app" />
                                 </Form.Item>

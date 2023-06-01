@@ -47,7 +47,7 @@ function DetailCampaign() {
   // const { Search } = Input;
 
   const {campaignId} = useParams();
-
+  
   const [nameCampaign, setNameCampaign] = useState('')
   const [nameOrganization, setNameOrganization] = useState('')
   const [targetAmount, setTargetAmount] = useState('')
@@ -69,7 +69,7 @@ function DetailCampaign() {
 
   let [provinces, setProvinces] = useState([])
   let [dataPosts, setDataPosts] = useState([])
-
+  
   let [dataDonation, setDataDonation] = useState([])
   let [dataDonationSearch, setDataDonationSearch] = useState([])
 
@@ -82,17 +82,17 @@ function DetailCampaign() {
     }
   ]
 
-  useEffect(() => {
-    if(stopDateCampaign) {
-      let stop = new Date(stopDateCampaign).getTime()
-      let current = new Date().getTime()
-      if(stop < current) {
-        setStatusCampaign("Kết thúc")
-      } else {
-        setStatusCampaign("Đang vận động")
-      }
-    }
-  }, [stopDateCampaign, setStatusCampaign])
+  // useEffect(() => {
+  //   if(stopDateCampaign) {
+  //     let stop = new Date(stopDateCampaign).getTime()
+  //     let current = new Date().getTime()
+  //     if(stop < current) {
+  //       setStatusCampaign("Kết thúc")
+  //     } else {
+  //       setStatusCampaign("Đang vận động")
+  //     }
+  //   }
+  // }, [stopDateCampaign, setStatusCampaign])
 
   // Modal thông tin ủng hộ
   const [isModalOpen, setIsModalOpen] = useState(false);
