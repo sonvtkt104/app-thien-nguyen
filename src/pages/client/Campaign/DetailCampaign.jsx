@@ -13,6 +13,7 @@ import {
   EnvironmentOutlined,
   UpOutlined,
   TeamOutlined,
+  HeartFilled,
 } from "@ant-design/icons";
 import { Button, Col, Input, Progress, Row, Space, Modal } from "antd";
 import {Input as InputApp, TableApp, Tag, TickIcon} from '../../../components'
@@ -26,17 +27,22 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import campaignService from "../../app/CampaignList/CampaignService";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getTokenFromCookies } from "../../Authentication/HandleUserInfomation";
 import moment from "moment";
 import Search from "antd/es/input/Search";
 import { CSVLink } from "react-csv";
 import ReactPlayer from 'react-player';
+import { useSelector } from "react-redux";
+import { setUserFollowCampaign, setUserUnFollowCampaign } from "../../../api/campaigns";
 
 function DetailCampaign() {
 
   const [tab, setTab] = useState(0);
   const [valueSearch, setValueSearch] = useState()
+
+  const navigate = useNavigate()
+  const { infoUser, userType } = useSelector(state => state?.app) 
 
   // const { Search } = Input;
 
@@ -56,6 +62,10 @@ function DetailCampaign() {
   const [introVideo, setIntroVideo] = useState('')
   const [imageOriganization, setImageOriganization] = useState('')
   const [charityIsVerified, setCharityIsVerified] = useState(0)
+  const [followCampaign, setFollowCampaign] = useState(false)
+  const [statusCampaign, setStatusCampaign] = useState("Đang vận động")
+  const [charityId, setCharityId] = useState();
+  const [stopDateCampaign, setStopDateCampaign] = useState()
 
   let [provinces, setProvinces] = useState([])
   let [dataPosts, setDataPosts] = useState([])
@@ -71,6 +81,18 @@ function DetailCampaign() {
         type: 'nhan hoac trao',
     }
   ]
+
+  useEffect(() => {
+    if(stopDateCampaign) {
+      let stop = new Date(stopDateCampaign).getTime()
+      let current = new Date().getTime()
+      if(stop < current) {
+        setStatusCampaign("Kết thúc")
+      } else {
+        setStatusCampaign("Đang vận động")
+      }
+    }
+  }, [stopDateCampaign, setStatusCampaign])
 
   // Modal thông tin ủng hộ
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -139,6 +161,10 @@ function DetailCampaign() {
         setNameCampaign(res[0].campaignName)
         setNameOrganization(res[0].organization.charityName)
         setCharityIsVerified(res[0].organization.isVerified)
+        setCharityId(res[0].organization.id)
+        setFollowCampaign(res[0]?.follow)
+        setStatusCampaign(res[0]?.status)
+        setStopDateCampaign(res[0]?.stopDate)
         setTargetObject(res[0].targetObject)
         setTargetAmount(res[0].targetAmount)
         setReceiveAmount(res[0].receiveAmount)
@@ -336,16 +362,41 @@ function DetailCampaign() {
                     position: 'relative'
                   }}
                 >
-                  <span
+                  {/* <span
                     style={{
                       position: 'absolute',
                       right: 30,
                       top: 28,
                       cursor: 'pointer'
                     }}
+                    onClick={() => {
+                      if(userType == 'normal_user') { // follow or un follow
+                        if(followCampaign) { // click to un follow
+                          setUserUnFollowCampaign(campaignId).then(res => {
+                              setFollowCampaign(false)
+                              if(follow > 0) {
+                                setFollow(pre => pre - 1)
+                              }
+                          }) 
+                        } else { // click to follow
+                          setUserFollowCampaign(campaignId).then(res => {
+                              setFollowCampaign(true)
+                              setFollow(pre => pre + 1)
+                          }) 
+                        }
+                      } else { // login
+                          navigate("/login")
+                      }
+                    }}
                   >
-                    <HeartOutlined style={{fontSize: 20, fontWeight: '600', color: 'var(--color-gray)', color: 'var(--color-gray)', transform: 'translateY(-3px)'}} />
-                  </span>
+                    {
+                      followCampaign ? (
+                        <HeartFilled style={{fontSize: 20, fontWeight: '600', color: 'var(--color-red)'}} />
+                      ) : (
+                        <HeartOutlined style={{fontSize: 20, fontWeight: '600', color: 'var(--color-gray)',}} />
+                      )
+                    }
+                  </span> */}
                   <div 
                     className="h1-app"
                     style={{fontSize: 20, paddingRight: 30}}
@@ -356,8 +407,13 @@ function DetailCampaign() {
                   <Row
                     style={{lineHeight: '60px', fontWeight: '600', fontSize: 16, marginTop: 10}}
                   >
-                    <img src={imageOriganization ? imageOriganization : "https://givenow.vn/wp-content/uploads/2023/02/NhaCuaVui-scaled.jpeg"} alt="image campaign" 
-                      style={{width: 60, height: 60, borderRadius: '50%', marginRight: 12}}
+                    <img src={imageOriganization ? imageOriganization : "https://givenow.vn/wp-content/uploads/2023/02/NhaCuaVui-scaled.jpeg"} alt="campaign" 
+                      style={{width: 60, height: 60, borderRadius: '50%', marginRight: 12, cursor: 'pointer'}}
+                      onClick={() => {
+                        if(charityId) {
+                          navigate("/profile-charity/" + charityId)
+                        }
+                      }}
                     />
                     {/* Xuan Son */}
                     {nameOrganization}
@@ -392,14 +448,14 @@ function DetailCampaign() {
                   >
                     <Col>
                       <span style={{marginRight: 4, }}>
-                        <TeamOutlined style={{fontSize: 20, fontWeight: '600', color: 'var(--color-gray)', transform: 'translateY(-3px)'}} />
+                        <TeamOutlined style={{fontSize: 20, fontWeight: '600', color: 'var(--color-gray)',}} />
                       </span>
                       <span style={{fontSize: 16, fontWeight: '600', color: 'var(--color-gray)'}}>
                         {`${totalDonor} lượt ủng hộ`}
                       </span>
 
                       <span style={{marginRight: 4, marginLeft: 12, }}>
-                        <HeartOutlined style={{fontSize: 20, fontWeight: '600', color: 'var(--color-gray)', color: 'var(--color-gray)', transform: 'translateY(-3px)'}} />
+                        <HeartOutlined style={{fontSize: 20, fontWeight: '600', color: 'var(--color-gray)',}} />
                       </span>
                       <span style={{fontSize: 16, fontWeight: '600', color: 'var(--color-gray)'}}>
                         {/* 10 lượt yêu thích */}
@@ -429,13 +485,31 @@ function DetailCampaign() {
                     >
                       Chia sẻ
                     </button> */}
-                    <button
-                      className="btn-primary"
-                      style={{fontSize: 16, fontWeight: '600'}}
-                      onClick={() => setIsModalOpen(true)}
-                    >
-                      Ủng hộ ngay
-                    </button>
+                    {
+                      statusCampaign == 'Đang vận động' ? (
+                        <button
+                          className="btn-primary"
+                          style={{fontSize: 16, fontWeight: '600'}}
+                          onClick={() => setIsModalOpen(true)}
+                        >
+                          Ủng hộ ngay
+                        </button>
+                      ) : (
+                        <span style={{
+                          padding: "10px 20px",
+                          background: "var(--color-background)",
+                          borderRadius: "12px",
+                          marginTop: "10px",
+                        }}>
+                          <Row>
+                            <img src="https://givenow.vn/wp-content/themes/funlin-progression-child/images/icons/hoanthanh.svg" alt="icon" />
+                            <span style={{lineHeight :'32px', marginLeft: 10, color: 'var(--color-blue)'}} className="h3-app">
+                              Cuộc vận động kết thúc
+                            </span>
+                          </Row>
+                        </span>
+                      )
+                    }
                   </Row>
                   {/* <header className="header">
                       <div className="header-body">
@@ -570,13 +644,31 @@ function DetailCampaign() {
                                         </div>
                                       
                                         <div style={{margin: '16px auto', display: 'flex', justifyContent: 'center'}}>
-                                          <button
-                                            className="btn-primary"
-                                            style={{fontSize: 16, fontWeight: '600'}}
-                                            onClick={() => setIsModalOpen(true)}
-                                          >
-                                            Ủng hộ ngay
-                                          </button>
+                                          {
+                                            statusCampaign == 'Đang vận động' ? (
+                                            <button
+                                              className="btn-primary"
+                                              style={{fontSize: 16, fontWeight: '600'}}
+                                              onClick={() => setIsModalOpen(true)}
+                                            >
+                                              Ủng hộ ngay
+                                            </button>
+                                            ) : (
+                                              <span style={{
+                                                padding: "10px 20px",
+                                                background: "var(--color-background)",
+                                                borderRadius: "12px",
+                                                marginTop: "10px",
+                                              }}>
+                                                <Row>
+                                                  <img src="https://givenow.vn/wp-content/themes/funlin-progression-child/images/icons/hoanthanh.svg" alt="icon" />
+                                                  <span style={{lineHeight :'32px', marginLeft: 10, color: 'var(--color-blue)'}} className="h3-app">
+                                                    Cuộc vận động kết thúc
+                                                  </span>
+                                                </Row>
+                                              </span>
+                                            )
+                                          }
                                         </div>
                                         
                   </div>          
@@ -691,16 +783,72 @@ function DetailCampaign() {
       {
         isModalOpen && (
           <Modal 
-            title="Thông tin ủng hộ của tổ chức" 
             centered
             okText={'Đồng ý'}
             cancelText={'Hủy bỏ'}
             open={isModalOpen} 
             onOk={handleOk} 
-            onCancel={handleCancel}>
-            <div>Tên tổ chức: <span style={{fontSize: 16, fontWeight: 600, fontStyle: 'italic'}}>{nameOrganization}</span></div>
-            <div>Tên cuộc vận động: <span style={{fontSize: 16, fontWeight: 600, fontStyle: 'italic'}}>{nameCampaign}</span></div>
-            <div>Số tài khoản: <span style={{fontSize: 16, fontWeight: 600, fontStyle: 'italic'}}>{stkBank}</span></div>
+            onCancel={handleCancel}
+            className="modal-app modal-app-1"
+            footer={null}
+            // width={800}
+          >
+            <div>
+              {/* <div className="h2-app" style={{color: 'var(--color-blue)'}}>Thông tin ủng hộ của tổ chức</div> */}
+              <div>
+                <div style={{textAlign: 'center'}}>
+                  <img src={imageOriganization} alt="avatar" 
+                    style={{width: 70, height: 70, borderRadius:'50%', margin: 'auto'}}
+                  />
+                </div>
+                <div style={{fontSize: 16, fontWeight: "600", textAlign: 'center'}}>
+                  {nameOrganization} 
+                  {
+                    charityIsVerified == 2? (
+                      <span
+                        style={{marginLeft: 12}}
+                      >
+                        <TickIcon />
+                      </span>
+                    ) : ""
+                  }
+                </div>
+                <Row style={{ textAlign: 'center', margin: '10px 0'}} justify='center'>
+                  <Col span={16}>
+                    <span>
+                      Hãy cùng ủng hộ vào cuộc vận động <span style={{color: 'var(--color-blue)', fontWeight: '600'}}>{nameCampaign}</span> ngay nào
+                    </span>
+                  </Col>
+                </Row>
+                <Row style={{ textAlign: 'center', margin: '10px 0'}} justify='center'>
+                  <span style={{whiteSpace: 'nowrap',padding: "10px 20px",
+                          background: "var(--color-background)",
+                          borderRadius: "12px",
+                          marginTop: "10px",
+                          fontWeight: "600"
+                        }}>
+                    {stkBank}
+                  </span>
+                </Row>
+                <Row
+                    justify='center'
+                    style={{margin: 20}}
+                >
+                    <span>
+                      <Row style={{fontSize: 12, fontWeight: 600, lineHeight: '20px', cursor: 'pointer'}}
+                        onClick={() => {
+                            navigate("/")
+                        }} 
+                      >
+                        <img src="/images/logo-app.png" alt="logo app"
+                            style={{width: 20, marginRight: 4}}
+                        />
+                        Thiện Nguyện
+                      </Row>
+                    </span>
+                </Row>
+              </div>
+            </div>
           </Modal>
         )
       }
