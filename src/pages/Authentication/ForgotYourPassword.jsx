@@ -186,6 +186,16 @@ const ForgotYourPassword = (values) => {
               name="repeatPassword"
               rules={[
                 { required: true, message: "Vui lòng nhập mật khẩu của bạn" },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue("password") === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(
+                      new Error("Hai mật khẩu bạn nhập không trùng nhau")
+                    );
+                  },
+                }),
               ]}
               className="form-item"
               labelCol={{ style: { width: "100%" } }}
@@ -213,7 +223,9 @@ const ForgotYourPassword = (values) => {
               </Button>
             </Form.Item>
 
-            <div className="for-sign">
+            <p className="error mt-2">{error}</p>
+
+            <div className="for-sign" style={{ marginTop: "20px" }}>
               <span className="sign-up">
                 Bạn đã có tài khoản? ---
                 <Link
