@@ -20,8 +20,12 @@ const FeedBack = () => {
     UserSendId: item?.userAccount.id,
     UserSendUserName: item?.userAccount?.name,
     UserSendRoleId: item?.userAccount?.roleId,
-    timeCreate: item?.timeCreate?.slice(0, 10),
-    timeReply: item?.timeReply?.slice(0, 10),
+    timeCreate: item?.timeCreate?.slice(0, 10)
+      ? item?.timeCreate?.slice(0, 10)
+      : "Không có",
+    timeReply: item?.timeReply?.slice(0, 10)
+      ? item?.timeReply?.slice(0, 10)
+      : "Không có",
   }));
 
   const handleResponseUser = async () => {
