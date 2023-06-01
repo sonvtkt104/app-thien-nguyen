@@ -72,7 +72,7 @@ const ManageVerify = () => {
         const resData = await getListVerified();
         dispatch(setListVerifies(resData.data));
       })();
-      toast.success("Xác minh người dùng thành công");
+      toast.success("Xác minh tổ chức thành công");
     }
   };
 
@@ -105,7 +105,7 @@ const ManageVerify = () => {
         const resData = await getListVerified();
         dispatch(setListVerifies(resData.data));
       })();
-      toast.success("Xác minh người dùng thành công");
+      toast.success("Từ xác minh tổ chức thành công");
     }
   };
 
@@ -238,7 +238,7 @@ const ManageVerify = () => {
                   .filter((item) => item.charityId === idShowCharityFile)[0]
                   .charityFile.split(", ")
                   .map((item) => (
-                    <Image width={200} src={item} />
+                    <Image width={200} height={200} src={item} />
                   ))}
               </Image.PreviewGroup>
             </div>
@@ -248,7 +248,7 @@ const ManageVerify = () => {
         {isModalDenyOpen && (
           <Modal
             open={isModalDenyOpen}
-            title="Xác minh tổ chức"
+            title="Từ chối xác minh tổ chức"
             footer={null}
             onCancel={() => setIsModalDenyOpen(false)}
           >
@@ -269,7 +269,7 @@ const ManageVerify = () => {
                 type="primary"
                 danger
               >
-                Từ chối xác minh
+                Gửi
               </Button>
             </div>
           </Modal>
@@ -295,12 +295,8 @@ const ManageVerify = () => {
                 marginTop: "12px",
               }}
             >
-              <Button
-                onClick={() => handleVerifyCharity()}
-                type="primary"
-                danger
-              >
-                Từ chối xác minh
+              <Button onClick={() => handleVerifyCharity()} type="primary">
+                Gửi
               </Button>
             </div>
           </Modal>

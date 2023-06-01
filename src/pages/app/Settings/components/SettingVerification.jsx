@@ -18,6 +18,8 @@ function SettingVerification() {
     const [dataRequest, setDataRequest] = useState()
     const [reload, setReload] = useState()
 
+    const [saveLoading, setSaveLoading] = useState(false);
+
     useEffect(() => {
         getVerificationRequest(getInfoOfUserFromCookies().charityId).then(res => {
             console.log((res));
@@ -29,6 +31,7 @@ function SettingVerification() {
     console.log(getInfoOfUserFromCookies());
 
     const onFinish = (values) => {
+        setSaveLoading(true)
         const formData = new FormData();
         formData.append('message', values.message);
 
@@ -40,10 +43,11 @@ function SettingVerification() {
             console.log(res)
             if(res?.status === 200) {
                 toast.success("Đăng ký xác minh thành công")
-                setReload({})
             } else {
                 toast.error("Hệ thống lỗi, xin thử lại sau!")
             }
+            setSaveLoading(false)
+            setReload({})
 
         })
 
@@ -109,7 +113,7 @@ function SettingVerification() {
                                 onFinishFailed={onFinishFailed}
 
                             >
-                                <p style={{marginBottom: 8}}>Hãy đăng tải lên những ảnh liên quan đến tài liệu xác minh của bạn.</p>
+                                <p style={{marginBottom: 8}}>Hãy đăng tải lên những ảnh liên quan đến tài liệu xác minh tài khoản, tổ chức của bạn.</p>
                                 <div>
                                     <Form.Item name="verificationPhoto" >
                                         <Upload
@@ -131,7 +135,7 @@ function SettingVerification() {
                                         </Upload>
                                     </Form.Item>
                                 </div>
-                                <p style={{ fontSize: 20, fontWeight: '600', margin: '20px 0 10px' }}>Nội dung</p>
+                                <p style={{ fontSize: 20, fontWeight: '600', margin: '4px 0 10px' }}>Nội dung</p>
                                 <Form.Item
                                     style={{ width: "100%", marginBottom: 16 }}
                                     // label="Thêm lời nhắn"
@@ -160,7 +164,9 @@ function SettingVerification() {
                                             htmlType="submit"
                                             className="btn-primary"
                                         >
-                                            Gửi
+                                            {
+                                                saveLoading ? <LoadingOutlined/> : "Gửi"
+                                            }
                                         </Button>
                                     </div>
                                 </Form.Item>
