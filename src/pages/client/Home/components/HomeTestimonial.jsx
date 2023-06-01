@@ -13,7 +13,7 @@ function HomeTestimonial() {
         },
         {
             content: "Tôi rất vui khi được tham gia vào hoạt động từ thiện và góp phần giúp đỡ cộng đồng. Tôi hy vọng mọi người cũng có cơ hội tham gia và tạo ra sự khác biệt tích cực trong xã hội. Tôi rất vui khi được tham gia vào hoạt động từ thiện và góp phần giúp đỡ cộng đồng.",
-            image: 'https://yt3.ggpht.com/E3JBNV2aemjkHRKMYcDseHW7HxDsjGuOCFMxasJYxz_ZbEAARF3x22IncTkdSpWfBJXbq2mU=s88-c-k-c0x00ffffff-no-rj',
+            image: 'https://yt3.ggpht.com/FE-VTtA9VuFb8GVKU5bJo6yb25e8Gtv5ay48HYZd712wHwGAJmOUyCXVBBiM4W2r2D8C31Qz=s68-c-k-c0x00ffffff-no-rj',
             name:'Trịnh Hoàng',
             date: 'Mar 12, 2023'
         },
