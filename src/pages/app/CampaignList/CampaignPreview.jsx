@@ -472,9 +472,9 @@ function CamPaignPreview() {
                                 </Link>
                                 <div style={{fontSize: 24, fontWeight: '600'}}>{nameCampaign}</div>
                             </div>
-                            <div className="n-b-right">
+                            {/* <div className="n-b-right">
                                 <Button style={{pointerEvents: 'none'}} disabled>Xem chi tiết</Button>
-                            </div>
+                            </div> */}
                         </div>
                         <SegmentedApp 
                             className="segmented-preview"
