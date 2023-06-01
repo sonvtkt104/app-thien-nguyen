@@ -830,6 +830,23 @@ function DetailCampaign() {
                     {stkBank}
                   </span>
                 </Row>
+                <Row
+                    justify='center'
+                    style={{margin: 20}}
+                >
+                    <span>
+                      <Row style={{fontSize: 12, fontWeight: 600, lineHeight: '20px', cursor: 'pointer'}}
+                        onClick={() => {
+                            navigate("/")
+                        }} 
+                      >
+                        <img src="/images/logo-app.png" alt="logo app"
+                            style={{width: 20, marginRight: 4}}
+                        />
+                        Thiện Nguyện
+                      </Row>
+                    </span>
+                </Row>
               </div>
             </div>
           </Modal>
