@@ -789,7 +789,7 @@ function DetailCampaign() {
             open={isModalOpen} 
             onOk={handleOk} 
             onCancel={handleCancel}
-            className="modal-app"
+            className="modal-app modal-app-1"
             footer={null}
             // width={800}
           >

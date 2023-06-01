@@ -326,3 +326,7 @@ a {
 .select-app .ant-select-selection-search-input {
   margin-top: 7px !important
 }
+
+.modal-app-1 {
+  width: auto !important;
+}
